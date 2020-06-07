@@ -1,22 +1,39 @@
+# -*- coding: utf-8 -*-
+
 class State():
 
-	def update():
+	#
+	# クラス初期化
+	#
+	def __init__(self):
 
-		# 各フレームごとの処理
-		pass
+		self.stateName = "(none)"
 
-	def render():
+	#
+	# 各フレームの処理
+	#
+	def update(self):
 
-		# 各フレームの画面描画処理
-		pass
+		print(self.stateName + ":update")
 
-	def onEnter():
+	#
+	# 各フレームの画面描画処理
+	#
+	def render(self):
 
-		# 状態開始時の処理
-		pass
+		print(self.stateName + ":render")
 
-	def onExit():
+	#
+	# 状態開始時の処理
+	#
+	def onEnter(self):
 
-		# 状態終了時の処理
-		pass
+		print(self.stateName + ":onEnter")
+
+	#
+	# 状態終了時の処理
+	#
+	def onExit(self):
+
+		print(self.stateName + ":onExit")
 

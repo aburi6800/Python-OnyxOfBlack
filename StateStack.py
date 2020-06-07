@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
+
 import stateTitle
 import stateCity
 import stateWeaponShop
-import stateArmorShop
+#import StateArmorShop
 #import stateShieldShop
 #import stateHelmetShop
 #import stateBarbar
@@ -12,37 +14,54 @@ import stateArmorShop
 
 class StateStack():
 
-	states = []
-	stateDic = {
-		"Title" : StateTitle(),
-		"City" : stateCity(),
-		"WeaponShop" : stateWeaponShop()
-	}
+	STATE_TITLE = "Title"
+	STATE_CITY = "City"
+	STATE_WEAPONSHOP = "WeaponShop"
+
+	#
+	# クラス初期化
+	#
+	def __init__(self):
+		self.states = []
+		self.stateDic = {
+			self.STATE_TITLE : stateTitle.StateTitle(),
+			self.STATE_CITY : stateCity.StateCity(),
+			self.STATE_WEAPONSHOP : stateWeaponShop.StateWeaponShop()
+		}
+
 
 	#
 	# 現在先頭にあるstateのupdate処理を呼び出す
 	#
-	def update():
+	def update(self):
 
-		pass
+		state = self.states[0]
+		state.update()
+
 
 	#
 	# 現在先頭にあるstateのrender処理を呼び出す
 	# 
-	def render():
+	def render(self):
 
-		pass
+		state = self.states[0]
+		state.render()
+
 
 	# 
 	# stateを追加する(push)
 	#
-	def push(stateName, state);
+	def push(self, stateName):		
 
-		states{stateName} = state
+		self.states.insert(0, self.stateDic[stateName])
+		self.states[0].onEnter()
+
 
 	#
 	# stateを削除する(pop)
 	#
-	def addState(stateName, state):
+	def pop(self):
 
-		pass
+		self.states[0].onExit()
+		self.states.pop(0)
+
