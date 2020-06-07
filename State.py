@@ -1,39 +1,38 @@
 # -*- coding: utf-8 -*-
+from abc import ABCMeta, abstractmethod
 
-class State():
+class State(metaclass = ABCMeta):
 
-	#
-	# クラス初期化
-	#
-	def __init__(self):
+    #
+    # 各フレームの処理
+    #
+    @abstractmethod
+    def update(self):
 
-		self.stateName = "(none)"
+        pass
 
-	#
-	# 各フレームの処理
-	#
-	def update(self):
+    #
+    # 各フレームの画面描画処理
+    #
+    @abstractmethod
+    def render(self):
 
-		print(self.stateName + ":update")
+        pass
 
-	#
-	# 各フレームの画面描画処理
-	#
-	def render(self):
+    #
+    # 状態開始時の処理
+    #
+    @abstractmethod
+    def onEnter(self):
 
-		print(self.stateName + ":render")
+        pass
 
-	#
-	# 状態開始時の処理
-	#
-	def onEnter(self):
+    #
+    # 状態終了時の処理
+    #
+    @abstractmethod
+    def onExit(self):
 
-		print(self.stateName + ":onEnter")
+        pass
 
-	#
-	# 状態終了時の処理
-	#
-	def onExit(self):
-
-		print(self.stateName + ":onExit")
 

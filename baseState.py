@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
-from baseState import BaseState
-import pyxel
+from state import State
 
-class StateWeaponShop(BaseState):
+class BaseState(State):
 
     #
     # クラス初期化
     #
     def __init__(self, stateStack):
 
-        super(StateWeaponShop, self).__init__(stateStack)
-        self.stateName = "WeaponShop"
+        self.stateStack = stateStack
+        self.stateName = "(none)"
 
     #
     # 各フレームの処理
@@ -18,15 +17,12 @@ class StateWeaponShop(BaseState):
     def update(self):
 
         print(self.stateName + ":update")
-        self.stateStack.pop()
 
     #
     # 各フレームの画面描画処理
     #
     def render(self, app):
 
-        pyxel.text(0, app.message_y, self.stateName , 7)
-        app.message_y = app.message_y + 6
         print(self.stateName + ":render")
 
     #

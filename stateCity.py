@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
+from baseState import BaseState
+import pyxel
 
-import state
-
-class StateCity(state.State):
+class StateCity(BaseState):
 
 	#
 	# クラス初期化
 	#
-    def __init__(self):
+    def __init__(self, stateStack):
 
+        super(StateCity, self).__init__(stateStack)
         self.stateName = "City"
 
 	#
@@ -16,26 +17,29 @@ class StateCity(state.State):
 	#
     def update(self):
 
-        pass
+        print(self.stateName + ":update")
+        self.stateStack.push(self.stateStack.STATE_WEAPONSHOP)
 
 	#
 	# 各フレームの画面描画処理
 	#
-    def render(self):
+    def render(self, app):
 
-        pass
+        pyxel.text(0, app.message_y, self.stateName , 7)
+        app.message_y = app.message_y + 6
+        print(self.stateName + ":render")
 
 	#
 	# 状態開始時の処理
 	#
     def onEnter(self):
 
-        pass
+        print(self.stateName + ":onEnter")
 
 	#
 	# 状態終了時の処理
 	#
     def onExit(self):
 
-        pass
+        print(self.stateName + ":onExit")
 

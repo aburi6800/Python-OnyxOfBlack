@@ -1,19 +1,31 @@
 # -*- coding: utf-8 -*-
-import stateStack
+from stateStack import StateStack
+import pyxel
 
-# stateStackのテスト
-sStack = stateStack.StateStack()
+class App:
 
-sStack.push(sStack.STATE_TITLE)
-sStack.update()
-sStack.render()
-sStack.push(sStack.STATE_CITY)
-sStack.update()
-sStack.render()
-sStack.push(sStack.STATE_WEAPONSHOP)
-sStack.update()
-sStack.render()
-sStack.pop()
-sStack.update()
-sStack.render()
+    def __init__(self):
+
+        # stateStackのテスト
+        self.sStack = StateStack()
+        self.sStack.push(self.sStack.STATE_TITLE)
+
+        self.message_y = 0
+        self.timeCount = 0
+
+        pyxel.init(192, 192)
+        pyxel.run(self.update, self.draw)
+
+    def update(self):
+
+        print("update")
+        self.sStack.update()
+
+    def draw(self):
+
+        print("draw")
+        self.sStack.render(self)
+        self.timeCount = self.timeCount + 1
+
+App()
 
