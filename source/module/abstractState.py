@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from abc import ABCMeta, abstractmethod
 
-class State(metaclass = ABCMeta):
+class AbstractState(metaclass = ABCMeta):
 
     #
     # 各フレームの処理

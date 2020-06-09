@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from baseState import BaseState
 import pyxel
+from module.system.baseSystemState import BaseSystemState
 
-class StateTitle(BaseState):
+class StateTitle(BaseSystemState):
 
     #
     # クラス初期化

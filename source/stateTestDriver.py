@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from stateStack import StateStack
+from module.stateStack import StateStack
 import pyxel
 
 class App:
@@ -18,12 +18,12 @@ class App:
 
     def update(self):
 
-        print("update")
+#        print("update")
         self.sStack.update()
 
     def draw(self):
 
-        print("draw")
+#        print("draw")
         self.sStack.render(self)
         self.timeCount = self.timeCount + 1
 

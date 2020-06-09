@@ -1,15 +1,21 @@
 # -*- coding: utf-8 -*-
-from state import State
+import pyxel
+from module.facility.baseFacilityState import BaseFacilityState
 
-class BaseState(State):
+'''
+ StateHelmetShopクラス
+ - 兜屋のクラス
+ - 選択した商品の購入、キャラクターへの装備を行う
+'''
+class StateHelmetShop(BaseFacilityState):
 
     #
     # クラス初期化
     #
     def __init__(self, stateStack):
 
-        self.stateStack = stateStack
-        self.stateName = "(none)"
+        super(StateHelmetShop, self).__init__(stateStack)
+        self.stateName = "HelmetShop"
 
     #
     # 各フレームの処理
@@ -17,12 +23,15 @@ class BaseState(State):
     def update(self):
 
         print(self.stateName + ":update")
+        self.stateStack.pop()
 
     #
     # 各フレームの画面描画処理
     #
     def render(self, app):
 
+        pyxel.text(0, app.message_y, self.stateName , 7)
+        app.message_y = app.message_y + 6
         print(self.stateName + ":render")
 
     #

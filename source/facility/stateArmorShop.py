@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
-from baseState import BaseState
+from module.facility.baseFacilityState import BaseFacilityState
 import pyxel
 
-class StateWeaponShop(BaseState):
+class StateArmorShop(BaseFacilityState):
 
     #
     # クラス初期化
     #
     def __init__(self, stateStack):
 
-        super(StateWeaponShop, self).__init__(stateStack)
-        self.stateName = "WeaponShop"
+        super(StateArmorShop, self).__init__(stateStack)
+        self.stateName = "ArmorShop"
 
     #
     # 各フレームの処理

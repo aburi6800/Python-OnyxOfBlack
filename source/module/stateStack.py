@@ -1,22 +1,30 @@
 # -*- coding: utf-8 -*-
 
-from stateTitle import StateTitle
-from stateCity import StateCity
-from stateWeaponShop import StateWeaponShop
-#import StateArmorShop
-#import stateShieldShop
-#import stateHelmetShop
+from module.system.stateTitle import StateTitle
+from module.field.stateCity import StateCity
+from module.facility.stateWeaponShop import StateWeaponShop
+from module.facility.stateArmorShop import StateArmorShop
+from module.facility.stateShieldShop import StateShieldShop
+from module.facility.stateHelmetShop import StateHelmetShop
 #import stateBarbar
 #import stateBank
 #import stateSurgery
 #import stateDrug
 #import stateExaminations
 
+'''
+ StateStackクラス
+ - Stateをスタック管理する
+ - Stateのpush,popは各Stateの中で行う
+'''
 class StateStack():
 
     STATE_TITLE = "Title"
     STATE_CITY = "City"
     STATE_WEAPONSHOP = "WeaponShop"
+    STATE_ARMORSHOP = "ArmorShop"
+    STATE_SHIELDSHOP = "ShieldShop"
+    STATE_HELMETSHOP = "HelmetShop"
 
     #
     # クラス初期化
@@ -26,7 +34,10 @@ class StateStack():
         self.stateDic = {
             self.STATE_TITLE : StateTitle(self),
             self.STATE_CITY : StateCity(self),
-            self.STATE_WEAPONSHOP : StateWeaponShop(self)
+            self.STATE_WEAPONSHOP : StateWeaponShop(self),
+            self.STATE_ARMORSHOP : StateArmorShop(self),
+            self.STATE_SHIELDSHOP : StateShieldShop(self),
+            self.STATE_HELMETSHOP : StateHelmetShop(self)
         }
 
 
