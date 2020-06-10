@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from module.stateStack import StateStack
+
 import pyxel
+from module.stateStack import StateStack
 
 class App:
 
@@ -15,7 +16,7 @@ class App:
 
         pyxel.init(192, 192)
         pyxel.run(self.update, self.draw)
-
+ 
     def update(self):
 
 #        print("update")

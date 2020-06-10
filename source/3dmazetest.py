@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import const
+import module.const
 import tkinter
 #from PIL import Image, ImageTk, ImageDraw, ImageOps, ImageChops
 from PIL import Image, ImageTk, ImageDraw
@@ -10,10 +10,10 @@ from PIL import Image, ImageTk, ImageDraw
 """
 
 # 方向
-const.DIRECTION_NORTH = 0
-const.DIRECTION_EAST = 1
-const.DIRECTION_SOUTH = 2
-const.DIRECTION_WEST = 3
+module.const.DIRECTION_NORTH = 0
+module.const.DIRECTION_EAST = 1
+module.const.DIRECTION_SOUTH = 2
+module.const.DIRECTION_WEST = 3
 
 # 方向に対する増分
 vx = ( 0, 1, 0,-1)
@@ -44,7 +44,7 @@ pos_y = (
 # 自分の最初の座標と方向
 x = 1
 y = 1
-direction = const.DIRECTION_SOUTH
+direction = module.const.DIRECTION_SOUTH
 
 # マップ
 # 0 = 通路

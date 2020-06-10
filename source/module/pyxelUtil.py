@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
+import pyxel
 
-class kana:
+class PyxelUtil:
 
     KANA_DIC = {
         "A"  : [  0,   1],
@@ -123,3 +124,22 @@ class kana:
         "d"  : [184,   9],
         "hd" : [192,   9]
     }
+
+    @staticmethod
+    def text(x, y, txt, color=7):  
+
+        print(txt)
+
+        for i in range(len(txt)):
+            if txt[i][0] == "*":
+                t = txt[i].replace("*", "")
+                pyxel.text(x, y, t, color)
+                x = x + 4 * len(t)
+            
+            else:
+                font_xy = PyxelUtil.KANA_DIC[txt[i]]
+                fontx = font_xy[0]
+                fonty = font_xy[1]
+                pyxel.pal(7, color)
+                pyxel.blt(x, y - 1, 0, fontx, fonty, 7, 6, 0)
+                x = x + 8

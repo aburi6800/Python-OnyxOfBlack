@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
  
 import pyxel
-import pyxelKana
+from module.pyxelUtil import PyxelUtil
 
 """
   3D迷路
@@ -15,7 +15,7 @@ class App:
         pyxel.init(256, 192)
 
         # リソースをロード
-        pyxel.load("data/onyxofblack.pyxres", True, False, False, False)
+        pyxel.load("../data/onyxofblack.pyxres", True, False, False, False)
 
         # 方向
         self.DIRECTION_NORTH = 0
@@ -95,19 +95,18 @@ class App:
 #            print(str(map_x) + ":" + str(map_y) + "=" + str(data))
 
             if data == 1:
-                self.drawMaze(i)
+                self.__drawMaze(i)
 
         # test
+        self.__drawPlayer(0,  1, 0, 0, 0, 0)
+        self.__drawPlayer(1, 34, 0, 0, 0, 0)
+        self.__drawPlayer(2, 88, 0, 0, 0, 0)
+        self.__drawPlayer(3,100, 0, 0, 0, 0)
 
-        self.drawPlayer(0,  1, 0, 0, 0, 0)
-        self.drawPlayer(1, 34, 0, 0, 0, 0)
-        self.drawPlayer(2, 88, 0, 0, 0, 0)
-        self.drawPlayer(3,100, 0, 0, 0, 0)
-
-        self.writeText(8, 128, ["*ONYX", "WO", "ME", "SA", "D", "SI", "TE", ",", "KA", "D", "NN", "HA", "D", "RI", "MA", "SI", "LYO", "U", "*!"], 14)
+        PyxelUtil.text(8, 128, ["*ONYX", "WO", "ME", "SA", "D", "SI", "TE", ",", "KA", "D", "NN", "HA", "D", "RI", "MA", "SI", "LYO", "U", "*!"], 14)
 
 
-    def drawMaze(self, num):
+    def __drawMaze(self, num):
 
         if num == 0:
             pyxel.rect(  154+8, 40, 16, 16, 12)
@@ -162,30 +161,14 @@ class App:
             pyxel.rect( 154+0,  0, 96, 96, 12)
 
 
-    def drawPlayer(self, number, head, helm, body, weapon, shield):
+    def __drawPlayer(self, number, head, helm, body, weapon, shield):
 
         pyxel.blt( 12, (number * 20) +  2, 1,  (head % 32) * 8,  int(head / 32) * 8,  8,  8, 0) # 頭
         pyxel.blt( 12, (number * 20) + 10, 1,  32, 32,  8, 16, 0) # 体
         pyxel.blt(  4, (number * 20) +  2, 1,   0, 48,  8, 16, 0) # 武器
-        self.writeText( 24,  (number * 20) + 4, ["*PLAYER"], number + 7) # 名前
+        PyxelUtil.text( 24,  (number * 20) + 4, ["*PLAYER"], number + 7) # 名前
         pyxel.rect( 24, (number * 20) + 12, 16, 3,  5)
         pyxel.rect( 24, (number * 20) + 15, 30, 1,  6)
 
-
-    def writeText(self, x, y, txt, color=7):  
-
-        for i in range(len(txt)):
-            if txt[i][0] == "*":
-                t = txt[i].replace("*", "")
-                pyxel.text(x, y, t, color)
-                x = x + 4 * len(t)
-            
-            else:
-                font_xy = pyxelKana.kana.KANA_DIC[txt[i]]
-                fontx = font_xy[0]
-                fonty = font_xy[1]
-                pyxel.pal(7, color)
-                pyxel.blt(x, y - 1, 0, fontx, fonty, 7, 6, 0)
-                x = x + 8
 
 App()
