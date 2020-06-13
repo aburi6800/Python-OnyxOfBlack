@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
 import pyxel
-from module.facility.baseFacilityState import BaseFacilityState
+from module.facilityStates.baseFacilityState import BaseFacilityState
 
 '''
- StateHelmetShopクラス
- - 兜屋のクラス
+ StateArmorShopクラス
+ - 鎧屋のクラス
  - 選択した商品の購入、キャラクターへの装備を行う
 '''
-class StateHelmetShop(BaseFacilityState):
+class StateArmorShop(BaseFacilityState):
 
     #
     # クラス初期化
     #
     def __init__(self, stateStack):
 
-        super(StateHelmetShop, self).__init__(stateStack)
-        self.stateName = "HelmetShop"
+        super(StateArmorShop, self).__init__(stateStack)
+        self.stateName = "ArmorShop"
 
     #
     # 各フレームの処理

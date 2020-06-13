@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import pyxel
-from module.field.baseFieldState import BaseFieldState
+from module.fieldStates.baseFieldState import BaseFieldState
 
 '''
  StateCityクラス

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import pyxel
-from module.system.baseSystemState import BaseSystemState
+from module.systemStates.baseSystemState import BaseSystemState
 
 class StateTitle(BaseSystemState):
 
