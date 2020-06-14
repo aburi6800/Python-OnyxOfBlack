@@ -40,10 +40,10 @@ class StateCity(BaseFieldState):
     #
     # 各フレームの画面描画処理
     #
-    def render(self, app):
+    def render(self):
 
-        pyxel.text(0, app.message_y, self.stateName , 7)
-        app.message_y = app.message_y + 6
+#        pyxel.text(0, app.message_y, self.stateName , 7)
+#        app.message_y = app.message_y + 6
         print(self.stateName + ":render")
 
     #

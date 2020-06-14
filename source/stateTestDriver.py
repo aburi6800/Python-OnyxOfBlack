@@ -11,22 +11,31 @@ class App:
         self.sStack = StateStack()
         self.sStack.push(self.sStack.STATE_TITLE)
 
+        # ゲーム全体で使う情報をここで初期化する
+        # 各stateからはapp.xxxで参照できる
         self.message_y = 0
         self.timeCount = 0
 
-        pyxel.init(192, 192)
+        # Pyxel初期化
+        pyxel.init(256, 192, fps=5)
+        pyxel.load("../data/onyxofblack.pyxres")
         pyxel.run(self.update, self.draw)
- 
+
+
     def update(self):
 
-#        print("update")
+#        pyxel.cls(pyxel.COLOR_BLACK)
         self.sStack.update()
+
 
     def draw(self):
 
-#        print("draw")
-        self.sStack.render(self)
+        render = self.sStack.getRender()
+        print(render)
+        render()
         self.timeCount = self.timeCount + 1
 
-App()
+
+if __name__ == "__main__":
+    App()
 

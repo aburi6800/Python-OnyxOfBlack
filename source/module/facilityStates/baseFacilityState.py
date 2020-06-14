@@ -19,7 +19,7 @@ class BaseFacilityState(BaseState):
     #
     # 各フレームの処理
     #
-    def update(self):
+    def update(self, app):
 
         print(self.stateName + ":update")
 

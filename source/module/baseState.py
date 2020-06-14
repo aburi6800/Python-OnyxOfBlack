@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#import pyxel
 from module.abstractState import AbstractState
 
 class BaseState(AbstractState):
@@ -10,6 +11,8 @@ class BaseState(AbstractState):
 
         self.stateStack = stateStack
         self.stateName = "(none)"
+#        # リソースをロード
+#        pyxel.load("../../data/onyxofblack.pyxres", True, False, False, False)
 
     #
     # 各フレームの処理
@@ -21,7 +24,7 @@ class BaseState(AbstractState):
     #
     # 各フレームの画面描画処理
     #
-    def render(self, app):
+    def render(self):
 
         print(self.stateName + ":render")
 

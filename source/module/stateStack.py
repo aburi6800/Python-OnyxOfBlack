@@ -53,16 +53,24 @@ class StateStack():
     #
     # 現在先頭にあるstateのrender処理を呼び出す
     # 
-    def render(self, app):
+    def render(self):
 
         state = self.states[0]
-        state.render(app)
+        state.render()
+
+
+    #
+    # 現在先頭にあるstateのrender処理を取得する
+    #
+    def getRender(self):
+
+        return self.states[0].render
 
 
     # 
     # stateを追加する(push)
     #
-    def push(self, stateName):		
+    def push(self, stateName):
 
         self.states.insert(0, self.stateDic[stateName])
         self.states[0].onEnter()

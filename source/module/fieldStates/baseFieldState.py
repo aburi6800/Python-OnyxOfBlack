@@ -26,7 +26,7 @@ class BaseFieldState(BaseState):
     #
     # 各フレームの画面描画処理
     #
-    def render(self, app):
+    def render(self):
 
         print(self.stateName + ":render")
 

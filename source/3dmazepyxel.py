@@ -2,66 +2,75 @@
  
 import pyxel
 from module.pyxelUtil import PyxelUtil
+from module.stateStack import StateStack
 
 """
-  3D迷路
+  The Onyx of Black
+  Created By 
 """
+
+# 方向
+DIRECTION_NORTH = 0
+DIRECTION_EAST = 1
+DIRECTION_SOUTH = 2
+DIRECTION_WEST = 3
+
+# 方向に対する増分
+VX = [ 0, 1, 0,-1]
+VY = [-1, 0, 1, 0]
+
+# 自分の位置と方向からマップのどこを参照するかを、参照順に定義
+# 参照順のイメージは以下（上向きである前提、自分の位置はCとする）
+# |0|1|2|3|4|
+#   |5|6|7|
+#   |8|9|A|
+#   |B|C|D|
+POS_X = [
+    [-2,-1, 2, 1, 0,-1, 1, 0,-1, 1, 0,-1, 1, 0],
+    [ 3, 3, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0],
+    [ 2, 1,-2,-1, 0, 1,-1, 0, 1,-1, 0, 1,-1, 0],
+    [-3,-3,-3,-3,-3,-2,-2,-2,-1,-1,-1, 0, 0, 0]
+]
+POS_Y = [
+    [-3,-3,-3,-3,-3,-2,-2,-2,-1,-1,-1, 0, 0, 0],
+    [-2,-1, 2, 1, 0,-1, 1, 0,-1, 1, 0,-1, 1, 0],
+    [ 3, 3, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0],
+    [ 2, 1,-2,-1, 0, 1,-1, 0, 1,-1, 0, 1,-1, 0]
+]
+
 class App:
 
     def __init__(self):
 
         # pyxel初期化
 #        pyxel.init(192, 128)
-        pyxel.init(256, 192)
+        pyxel.init(256, 192, fps=5)
 
         # リソースをロード
         pyxel.load("../data/onyxofblack.pyxres", True, False, False, False)
 
-        # 方向
-        self.DIRECTION_NORTH = 0
-        self.DIRECTION_EAST = 1
-        self.DIRECTION_SOUTH = 2
-        self.DIRECTION_WEST = 3
-
-        # 方向に対する増分
-        self.VX = ( 0, 1, 0,-1)
-        self.VY = (-1, 0, 1, 0)
-
-        # 自分の位置と方向からマップのどこを参照するかを、参照順に定義
-        # 参照順のイメージは以下（上向きである前提、自分の位置はCとする）
-        # |0|1|2|3|4|
-        #   |5|6|7|
-        #   |8|9|A|
-        #   |B|C|D|
-        self.POS_X = (
-            (-2,-1, 2, 1, 0,-1, 1, 0,-1, 1, 0,-1, 1, 0),
-            ( 3, 3, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0),
-            ( 2, 1,-2,-1, 0, 1,-1, 0, 1,-1, 0, 1,-1, 0),
-            (-3,-3,-3,-3,-3,-2,-2,-2,-1,-1,-1, 0, 0, 0)
-        )
-        self.POS_Y = (
-            (-3,-3,-3,-3,-3,-2,-2,-2,-1,-1,-1, 0, 0, 0),
-            (-2,-1, 2, 1, 0,-1, 1, 0,-1, 1, 0,-1, 1, 0),
-            ( 3, 3, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0),
-            ( 2, 1,-2,-1, 0, 1,-1, 0, 1,-1, 0, 1,-1, 0)
-        )
+        # StateStack初期化   
+        self.sStack = StateStack()
+        self.sStack.push(self.sStack.STATE_TITLE)
 
         # 変数定義
         # 自分の最初の座標と方向
         self.x = 1
         self.y = 1
-        self.direction = self.DIRECTION_SOUTH
+        self.direction = DIRECTION_SOUTH
 
         # マップ
         # 0 = 通路
         # 1 = 壁
         # 外周は必ず壁とする
         self.map = [
-            [ 1, 1, 1, 1, 1],
-            [ 0, 0, 0, 0, 1],
-            [ 1, 0, 1, 0, 1],
-            [ 1, 0, 0, 1, 1],
-            [ 1, 1, 1, 1, 1]
+            [ 1, 1, 1, 1, 1, 1],
+            [ 1, 0, 0, 0, 1, 1],
+            [ 1, 0, 1, 0, 1, 1],
+            [ 1, 0, 1, 0, 0, 1],
+            [ 1, 0, 1, 1, 0, 1],
+            [ 1, 0, 0, 0, 0, 1],
+            [ 1, 1, 1, 1, 1, 1]
         ]
 
         # pyxel実行
@@ -69,9 +78,32 @@ class App:
 
 
     def update(self):
-        pass
+        self.__update_move()
 
+    #
+    # キー入力で方向・座標変更
+    #
+    def __update_move(self):
+        # 上：前進する
+        if pyxel.btn(pyxel.KEY_UP):
+            # 前が壁であるかチェック
+            if self.map[self.y + VY[self.direction]][self.x + VX[self.direction]] == 0:
+                self.x = self.x + VX[self.direction]
+                self.y = self.y + VY[self.direction]
 
+        # 右：右回転する
+        if pyxel.btn(pyxel.KEY_RIGHT):
+            self.direction = self.direction + 1
+            if self.direction > DIRECTION_WEST:
+                self.direction = DIRECTION_NORTH
+        
+        # 左：左回転する
+        if pyxel.btn(pyxel.KEY_LEFT):
+            self.direction = self.direction - 1
+            if self.direction < DIRECTION_NORTH:
+                self.direction = DIRECTION_WEST
+
+        
     def draw(self):
         pyxel.cls(0)
 
@@ -86,8 +118,8 @@ class App:
         # 街なら空を描く
 
         for i in range(14):
-            map_x = self.x + self.POS_X[self.direction][i]
-            map_y = self.y + self.POS_Y[self.direction][i]
+            map_x = self.x + POS_X[self.direction][i]
+            map_y = self.y + POS_Y[self.direction][i]
             if map_x < 0 or map_x > 5 or map_y < 0 or map_y > 5:
                 data = 1
             else:
@@ -134,7 +166,7 @@ class App:
             pyxel.tri( 154+71, 24, 154+56, 39, 154+71, 39, 1)
             pyxel.tri( 154+71, 56, 154+56, 56, 154+71, 71, 1)
         elif num == 7:
-            pyxel.rect( 154+24, 154+24, 48, 48, 12)
+            pyxel.rect( 154+24, 24, 48, 48, 12)
 
         elif num == 8:
             pyxel.rect(  154+0,  8,  8, 80, 12)
@@ -171,4 +203,5 @@ class App:
         pyxel.rect( 24, (number * 20) + 15, 30, 1,  6)
 
 
-App()
+if __name__ == "__main__":
+    App()

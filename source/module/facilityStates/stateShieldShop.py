@@ -20,7 +20,7 @@ class StateShieldShop(BaseFacilityState):
     #
     # 各フレームの処理
     #
-    def update(self):
+    def update(self, app):
 
         print(self.stateName + ":update")
         self.stateStack.pop()
@@ -30,8 +30,8 @@ class StateShieldShop(BaseFacilityState):
     #
     def render(self, app):
 
-        pyxel.text(0, app.message_y, self.stateName , 7)
-        app.message_y = app.message_y + 6
+#        pyxel.text(0, app.message_y, self.stateName , 7)
+#        app.message_y = app.message_y + 6
         print(self.stateName + ":render")
 
     #
