@@ -21,26 +21,26 @@ class BaseFieldState(BaseState):
     #
     def update(self):
 
-        print(self.stateName + ":update")
+        print("BaseFieldState:update")
 
     #
     # 各フレームの画面描画処理
     #
     def render(self):
-
-        print(self.stateName + ":render")
+        super().render()
+        print("BaseFieldState:render")
 
     #
     # 状態開始時の処理
     #
     def onEnter(self):
 
-        print(self.stateName + ":onEnter")
+        print("BaseFieldState:onEnter")
 
     #
     # 状態終了時の処理
     #
     def onExit(self):
 
-        print(self.stateName + ":onExit")
+        print("BaseFieldState:onExit")
 

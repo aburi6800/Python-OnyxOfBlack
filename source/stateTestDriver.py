@@ -17,14 +17,14 @@ class App:
         self.timeCount = 0
 
         # Pyxel初期化
-        pyxel.init(256, 192, fps=5)
+        pyxel.init(256, 192, fps=8)
         pyxel.load("../data/onyxofblack.pyxres")
         pyxel.run(self.update, self.draw)
 
 
     def update(self):
 
-#        pyxel.cls(pyxel.COLOR_BLACK)
+        pyxel.cls(pyxel.COLOR_BLACK)
         self.sStack.update()
 
 
