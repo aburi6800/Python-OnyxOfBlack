@@ -21,25 +21,24 @@ class StateTitle(BaseSystemState):
     #
     def update(self):
 
-        print(self.stateName + ":update")
+#        print(self.stateName + ":update")
+
         if pyxel.btn(pyxel.KEY_G):
             self.selected = 1
             self.tick = 0
 
         if self.selected != 0:
             self.tick = self.tick + 1
-            if self.tick > 10:
+            if self.tick > 11:
                 if self.selected == 1:
                     self.stateStack.push(self.stateStack.STATE_CITY)
-
-        pass
 
     #
     # 各フレームの画面描画処理
     #
     def render(self):
 
-        print(self.stateName + ":render")
+#        print(self.stateName + ":render")
 
         PyxelUtil.text(64, 36, ["*Role Playing game"], 2)
         pyxel.blt(72, 48, 0, 0,  0, 26, 16, 0)

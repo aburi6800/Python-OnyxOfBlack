@@ -31,7 +31,6 @@ class App:
     def draw(self):
 
         render = self.sStack.getRender()
-        print(render)
         render()
         self.timeCount = self.timeCount + 1
 

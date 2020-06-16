@@ -83,4 +83,7 @@ class StateStack():
 
         self.states[0].onExit()
         self.states.pop(0)
+        print("pop")
+        for state in self.states:
+            print(state)
 

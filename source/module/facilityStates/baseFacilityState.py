@@ -15,20 +15,25 @@ class BaseFacilityState(BaseState):
 
         super(BaseFacilityState, self).__init__(stateStack)
         self.stateName = "(none)"
+        print("BaseFacilityState:")
+        print(self.stateStack)
 
     #
     # 各フレームの処理
     #
-    def update(self, app):
+    def update(self):
 
-        print(self.stateName + ":update")
+#        print(self.stateName + ":update")
+        pass
 
     #
     # 各フレームの画面描画処理
     #
-    def render(self, app):
+    def render(self):
 
-        print(self.stateName + ":render")
+#        print(self.stateName + ":render")
+
+        super().render()
 
     #
     # 状態開始時の処理

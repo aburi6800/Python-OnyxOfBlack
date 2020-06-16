@@ -20,19 +20,20 @@ class StateShieldShop(BaseFacilityState):
     #
     # 各フレームの処理
     #
-    def update(self, app):
+    def update(self):
 
-        print(self.stateName + ":update")
-        self.stateStack.pop()
+#        print(self.stateName + ":update")
+
+        pass
 
     #
     # 各フレームの画面描画処理
     #
-    def render(self, app):
+    def render(self):
 
-#        pyxel.text(0, app.message_y, self.stateName , 7)
-#        app.message_y = app.message_y + 6
-        print(self.stateName + ":render")
+#        print(self.stateName + ":render")
+
+        super().render()
 
     #
     # 状態開始時の処理

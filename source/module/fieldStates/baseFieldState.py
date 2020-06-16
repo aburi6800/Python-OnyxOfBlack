@@ -21,14 +21,18 @@ class BaseFieldState(BaseState):
     #
     def update(self):
 
-        print("BaseFieldState:update")
+#        print("BaseFieldState:update")
+
+        pass
 
     #
     # 各フレームの画面描画処理
     #
     def render(self):
+
+#        print("BaseFieldState:render")
+
         super().render()
-        print("BaseFieldState:render")
 
     #
     # 状態開始時の処理
