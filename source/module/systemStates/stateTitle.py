@@ -2,7 +2,15 @@
 import pyxel
 from module.pyxelUtil import PyxelUtil
 from module.systemStates.baseSystemState import BaseSystemState
+# 以下テスト用に宣言
+from module.character import Character
+from module.party import Party
 
+'''
+ StateTitleクラス
+ - タイトル画面のクラス(BaseSystemStateを継承)
+ - タイトルの表示と各Stateへの遷移を行う
+'''
 class StateTitle(BaseSystemState):
 
     #
@@ -31,6 +39,15 @@ class StateTitle(BaseSystemState):
             self.tick = self.tick + 1
             if self.tick > 11:
                 if self.selected == 1:
+                    # テストで固定パーティー生成
+                    party = Party()
+                    print(party)
+                    i = 0
+                    while i < 5:
+                        c = Character()
+                        party.addMember(c.create())
+                        i += 1
+
                     self.stateStack.push(self.stateStack.STATE_CITY)
 
     #

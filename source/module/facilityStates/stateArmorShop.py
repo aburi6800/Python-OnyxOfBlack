@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import pyxel
 from module.pyxelUtil import PyxelUtil
+from module.character import Character
+from module.party import Party
 from module.facilityStates.baseFacilityState import BaseFacilityState
 
 '''
@@ -20,6 +22,7 @@ class StateArmorShop(BaseFacilityState):
 
         self.tick = 0
         self.selected = 0
+        self.party = Party()
 
     #
     # 各フレームの処理

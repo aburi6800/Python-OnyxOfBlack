@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import pyxel
 from module.baseState import BaseState
 
 '''
@@ -15,8 +16,6 @@ class BaseFacilityState(BaseState):
 
         super(BaseFacilityState, self).__init__(stateStack)
         self.stateName = "(none)"
-        print("BaseFacilityState:")
-        print(self.stateStack)
 
     #
     # 各フレームの処理
@@ -34,6 +33,8 @@ class BaseFacilityState(BaseState):
 #        print(self.stateName + ":render")
 
         super().render()
+
+        pyxel.rectb(152, 16, 79, 79, pyxel.COLOR_DARKBLUE)
 
     #
     # 状態開始時の処理
