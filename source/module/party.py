@@ -5,6 +5,7 @@ from module.character import Character
 '''
  Partyクラス
  - パーティーを管理するクラス
+ - Singletonとする
 '''
 class Party(Singleton):
 
@@ -17,7 +18,7 @@ class Party(Singleton):
     #
     # メンバー追加
     #
-    def addMember(self, chr):
+    def addMember(self, chr: Character):
         if len(self.member) < 5:
             self.member.append(chr)
         else:

@@ -51,9 +51,9 @@ class BaseFieldState(BaseState):
         ]
 
         # 壁の色1（正面）
-        self.wallColor_front = pyxel.COLOR_DARKBLUE
+        self.wallColor_front = pyxel.COLOR_LIGHTBLUE
         # 壁の色2（横）
-        self.wallColor_side = pyxel.COLOR_LIGHTBLUE
+        self.wallColor_side = pyxel.COLOR_DARKBLUE
 
     #
     # 各フレームの処理

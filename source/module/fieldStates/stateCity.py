@@ -113,12 +113,12 @@ class StateCity(BaseFieldState):
             else:
                 menuColor[self.selected - 1] = 7
 
-        PyxelUtil.text(16,  16, ["u", "tu", "ro", "NO", "MA", "TI"], 7)
-        PyxelUtil.text(24,  30, ["*[W]:", "HU", "D", "KI", "YA"], menuColor[0])
-        PyxelUtil.text(24,  38, ["*[A]:", "YO", "RO", "I", "YA"], menuColor[1])
-        PyxelUtil.text(24,  46, ["*[S]:", "TA", "TE", "YA"], menuColor[2])
-        PyxelUtil.text(24,  54, ["*[H]:", "KA", "HU", "D", "TO", "YA"], menuColor[3])
-        PyxelUtil.text(24,  62, ["*[B]:", "TO", "KO", "YA"], menuColor[4])
+        PyxelUtil.text(16,  140, ["u", "tu", "ro", "NO", "MA", "TI"], 7)
+        PyxelUtil.text(24,  148, ["*[W]:", "HU", "D", "KI", "YA"], menuColor[0])
+        PyxelUtil.text(24,  156, ["*[A]:", "YO", "RO", "I", "YA"], menuColor[1])
+        PyxelUtil.text(24,  164, ["*[S]:", "TA", "TE", "YA"], menuColor[2])
+        PyxelUtil.text(24,  172, ["*[H]:", "KA", "HU", "D", "TO", "YA"], menuColor[3])
+        PyxelUtil.text(24,  180, ["*[B]:", "TO", "KO", "YA"], menuColor[4])
 
     #
     # 状態開始時の処理

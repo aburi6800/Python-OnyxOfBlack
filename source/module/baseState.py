@@ -1,7 +1,14 @@
 # -*- coding: utf-8 -*-
 import pyxel
 from module.abstractState import AbstractState
+from module.party import Party
 
+'''
+ BaseStateクラス
+ - 各Stateの規定クラス
+ - AbstractStateを継承
+ - 
+'''
 class BaseState(AbstractState):
 
     #
@@ -11,6 +18,7 @@ class BaseState(AbstractState):
 
         self.stateStack = stateStack
         self.stateName = "(none)"
+        self.playerParty = Party()
 
     #
     # 各フレームの処理
