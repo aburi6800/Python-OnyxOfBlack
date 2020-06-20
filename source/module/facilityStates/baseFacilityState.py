@@ -34,8 +34,6 @@ class BaseFacilityState(BaseState):
 
         super().render()
 
-        pyxel.rectb(152, 16, 79, 79, pyxel.COLOR_DARKBLUE)
-
     #
     # 状態開始時の処理
     #

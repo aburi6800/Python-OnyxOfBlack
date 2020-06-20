@@ -4,7 +4,7 @@ from module.character import Character
 
 '''
  Partyクラス
- - プレイヤーパーティーを管理するクラス
+ - パーティーを管理するクラス
 '''
 class Party(Singleton):
 

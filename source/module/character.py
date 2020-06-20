@@ -2,7 +2,7 @@
 
 '''
  Characterクラス
- - キャラクタ1人の属性を持つクラス
+ - キャラクタの基本属性を持つクラス
 '''
 class Character:
 
@@ -21,7 +21,7 @@ class Character:
     # キャラクタ生成
     #
     def create(self):
-        self._name = "AAAAA"
+        self._name = ""
         self._life = 10
         self._str = 10
         self._dex = 10

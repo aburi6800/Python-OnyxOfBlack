@@ -19,7 +19,8 @@ class App:
         self.timeCount = 0
 
         # Pyxel初期化
-        pyxel.init(256, 192, fps=10)
+#        pyxel.init(256, 192, fps=10)
+        pyxel.init(256, 192)
         pyxel.load("../data/onyxofblack.pyxres")
         pyxel.run(self.update, self.draw)
 

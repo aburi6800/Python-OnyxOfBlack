@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from module.singleton import Singleton
 from module.systemStates.stateTitle import StateTitle
 from module.fieldStates.stateCity import StateCity
 from module.facilityStates.stateWeaponShop import StateWeaponShop
@@ -15,9 +16,10 @@ from module.facilityStates.stateHelmetShop import StateHelmetShop
 '''
  StateStackクラス
  - Stateをスタック管理する
+ - SIngletonとする
  - Stateのpush,popは各Stateの中で行う
 '''
-class StateStack():
+class StateStack(Singleton):
 
     STATE_TITLE = "Title"
     STATE_CITY = "City"
