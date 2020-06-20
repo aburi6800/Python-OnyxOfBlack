@@ -28,9 +28,6 @@ class BaseState(AbstractState):
 
 #        print("BaseState:render")
 
-#        pyxel.rectb(8, 8, 240, 96, pyxel.COLOR_DARKBLUE)
-#        pyxel.rectb(8, 103, 120, 32, pyxel.COLOR_DARKBLUE)
-#        pyxel.rectb(127, 103, 121, 32, pyxel.COLOR_DARKBLUE)
         pyxel.rectb(8, 8, 240, 128, pyxel.COLOR_DARKBLUE)
         pyxel.line(128, 8 ,128, 135, pyxel.COLOR_DARKBLUE)
         pyxel.line(8, 104 ,248, 104, pyxel.COLOR_DARKBLUE)

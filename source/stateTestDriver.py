@@ -2,6 +2,12 @@
 import pyxel
 from module.stateStack import StateStack
 
+'''
+ Appクラス
+ - アプリケーション本体クラス
+ - StateStackを持ち、先頭のStateのupdateとdrawを実行する
+'''
+
 class App:
 
     #
@@ -9,19 +15,20 @@ class App:
     #
     def __init__(self):
 
-        # stateStackのテスト
+        # StateStack
         self.sStack = StateStack()
-        self.sStack.push(self.sStack.STATE_TITLE)
 
-        # ゲーム全体で使う情報をここで初期化する
-        # 各stateからはapp.xxxで参照できる
-        self.message_y = 0
-        self.timeCount = 0
+        # 最初のStateを登録
+#        self.sStack.push(self.sStack.STATE_TITLE)
+        self.sStack.push(self.sStack.STATE_CITY)
 
         # Pyxel初期化
-#        pyxel.init(256, 192, fps=10)
-        pyxel.init(256, 192)
+        pyxel.init(256, 192, fps=10)
+
+        # リソースのロード
         pyxel.load("../data/onyxofblack.pyxres")
+
+        # Pyxel実行
         pyxel.run(self.update, self.draw)
 
     #
@@ -39,7 +46,6 @@ class App:
 
         render = self.sStack.getRender()
         render()
-        self.timeCount = self.timeCount + 1
 
 
 if __name__ == "__main__":
