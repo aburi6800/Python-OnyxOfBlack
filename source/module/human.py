@@ -22,3 +22,4 @@ class Human(Character):
         self._armor = None
         self._shield = None
         self._weapon = None
+        self._potion = -1
