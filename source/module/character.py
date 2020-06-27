@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 import random
 from module.singleton import Singleton
+from module.item import WeaponParams
+from module.item import ArmorParams
+from module.item import ShieldParams
+from module.item import HelmParams
 
 '''
  Characterクラス
@@ -38,6 +42,20 @@ class Human(Character):
         self.shield = None
         self.weapon = None
         self.potion = -1
+
+
+'''
+ Monster
+ - モンスターのクラス
+'''
+class Monster(Character):
+
+    #
+    # クラス初期化
+    #
+    def __init__(self):
+        super(Monster, self).__init__()
+        self.item = None
 
 
 '''
@@ -130,6 +148,12 @@ class PlayerParty(Singleton):
             raise Exception("specified a member who doesn't exist.：" + str(idx))
 
     #
+    # メンバーリスト取得
+    #
+    def getMemberList(self):
+        return self.memberList
+
+    #
     # 平均レベルを算出
     #
     def getAvarageLevel(self):
@@ -174,19 +198,65 @@ class HumanPartyGenerator(Singleton):
  HumanGeneratorクラス
  - 人間のキャラクターを自動作成するクラス
 '''
-class HumanGenerator():
+class HumanGenerator(Singleton):
 
     @staticmethod
     def generate(__level):
         print("[HumanGenerator]generate target level=" + str(__level))
         human = Human()
+
         human.level = __level
         human.life = random.randint(1, __level * 10)
         human.exp = random.randint(1, 50)
-        human.name = "DUMMYNAME"
+        human.str = random.randint(1, __level * 5)
+        human.dex = random.randint(1, __level * 5)
+        human.gold = random.randint(1, __level * 100)
+        human.weapon = WeaponParams().weaponList[random.randint(0, 3)]
+        human.armor = ArmorParams().armorList[random.randint(0, 1)]
+        human.name = HumanGenerator().generateName()
+        human.head = random.randint(0, 128)
         print("[HumanGenerator]generated.")
         print(id(human))
+
         return human
+
+    @staticmethod
+    def generateName():
+        __name1 = [
+            "ANNA", "ARES", "ALEY", "ADAL",
+            "BEBY", "BORD", "BEAN", "BOYO",
+            "CHRY", "CHAC", "CIEL", "CALM",
+            "DALD", "DORY", "DEOL", "DWAF",
+            "ENNE", "ELAC", "EYAR", "ERAC",
+            "FARD", "FISH", "FEEN", "FOYA",
+            "GEAR", "GINN", "GORY", "GANG",
+            "HEAR", "HACK", "HIYA", "HIRO",
+            "INO", "IYAN", "IELA", "IONC",
+            "JOE", "JACK", "JOHN", "JEIB",
+            "KARL", "KIM", "KALK", "KORE",
+            "LARY", "LESY", "LOKA", "LYCK",
+            "MICH", "MARY", "MOMO", "MEAR",
+            "NU", "NOE", "NACK", "NICK",
+            "OTTO", "ORA", "OMNY", "OWAR",
+            "PYCKY", "PACK", "PARY", "PONY",
+            "QUER", "QUCK", "QUA", "QUNE",
+            "ROBY", "RABI", "RENY", "ROSA",
+            "SHERY", "SACK", "SOYA", "SEAN",
+            "TERL", "TONY", "TORA", "TANY",
+            "UAE", "UNO", "UNIY", "UES",
+            "VARY", "VOCK", "VELY", "VYLO",
+            "WICK", "WOOD", "WAGO", "WENN",
+            "XECK", "XALY", "XYAS", "XORA",
+            "YEAN", "YONA", "YOHA", "YACK",
+            "ZALY", "ZOE", "ZEE", "ZERA"]
+        __name2 = ["SON", "A", "RY", "N", "NA", "NIA", "PU", "PO", "ON", "Y", "K", "S", "EL", "ER", "CS", "FA", "PI", "C", "CK", "DA", "ON"]
+
+        __idx1 = random.randint(0, len(__name1))
+        __idx2 = random.randint(0, len(__name2))
+        print("idx1=" + str(__idx1) + "/idx2=" + str(__idx2))
+
+        return __name1[random.randint(0, __idx1)] + __name2[random.randint(0, __idx2)]
+
 
 '''
  MonsterPartyGeneratorクラス

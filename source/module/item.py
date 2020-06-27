@@ -29,8 +29,8 @@ class WeaponParams(Singleton):
     def __init__(self):
 
         # 武器の初期データを登録
-        self.weaponList.append(WeaponParam("KNIFE"      ,  0, 40, 8, 16,  2, False,  10))
-        self.weaponList.append(WeaponParam("CLUB"       ,  8, 40, 8, 16,  4, False,  20))
+        self.weaponList.append(WeaponParam("KNIFE"      ,  0, 48, 8, 16,  2, False,  10))
+        self.weaponList.append(WeaponParam("CLUB"       ,  8, 48, 8, 16,  4, False,  20))
         self.weaponList.append(WeaponParam("MACE"       , 16, 48, 8, 16,  8, False,  40))
         self.weaponList.append(WeaponParam("SHORT SWORD", 24, 48, 8, 16, 16, False,  80))
         self.weaponList.append(WeaponParam("AXE"        , 32, 48, 8, 16, 24, False,  160))
@@ -39,8 +39,6 @@ class WeaponParams(Singleton):
         self.weaponList.append(WeaponParam("CLAYMORE"   , 56, 48, 8, 16, 48,  True, 1280))
         self.weaponList.append(WeaponParam("BATTLE AXE" , 80, 48, 8, 16, 60,  True, 2560))
 
-#-*- coding: utf-8 -*-
-from module.singleton import Singleton
 
 '''
  ArmorParamクラス
@@ -57,6 +55,7 @@ class ArmorParam():
         self.attack = attack
         self.price = price
 
+
 '''
  ArmorParamsクラス
  - 鎧のパラメータのリストを持つ
@@ -68,12 +67,13 @@ class ArmorParams(Singleton):
     def __init__(self):
 
         # 鎧の初期データを登録
-        self.armorList.append(ArmorParam("LEATHER"      , 34, 32, 8, 16,   4,    40))
+        self.armorList.append(ArmorParam("LEATHER"      , 24, 32, 8, 16,   4,    40))
         self.armorList.append(ArmorParam("HAUBERK"      , 32, 32, 8, 16,   8,   160))
         self.armorList.append(ArmorParam("HALF PLATE"   , 40, 32, 8, 16,  16,   640))
         self.armorList.append(ArmorParam("FULL PLATE"   , 48, 32, 8, 16,  32,  2560))
         self.armorList.append(ArmorParam("TABARD"       , 56, 32, 8, 16,  64, 10240))
-        self.armorList.append(ArmorParam("MAGIC MANTLE" , 48, 48, 8, 16, 128,     0))
+        self.armorList.append(ArmorParam("MAGIC MANTLE" , 72, 32, 8, 16, 128,     0))
+
 
 '''
  ShieldParamクラス
@@ -90,6 +90,7 @@ class ShieldParam():
         self.defence = defence
         self.price = price
 
+
 '''
  ShieldParamsクラス
  - 盾のパラメータのリストを持つ
@@ -105,6 +106,7 @@ class ShieldParams(Singleton):
         self.shieldList.append(ArmorParam("M SHIELD" , 136, 40, 8, 8,   8,   270))
         self.shieldList.append(ArmorParam("L SHIELD" , 144, 40, 8, 8,  24,  2430))
 
+
 '''
  HelmParamクラス
  - 兜のパラメータを持つ
@@ -119,6 +121,7 @@ class HelmParam():
         self.blt_h = blt_h
         self.defence = defence
         self.price = price
+
 
 '''
  HelmParamsクラス

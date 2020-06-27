@@ -3,8 +3,9 @@ import pyxel
 from module.pyxelUtil import PyxelUtil
 from module.systemStates.baseSystemState import BaseSystemState
 # 以下テスト用に宣言
-from module.character import Character
-from module.party import Party
+from module.character import HumanPartyGenerator
+from module.character import PlayerParty
+from module.character import Human
 
 '''
  StateTitleクラス
@@ -20,6 +21,8 @@ class StateTitle(BaseSystemState):
 
         super(StateTitle, self).__init__(stateStack)
         self.stateName = "Title"
+
+        self.playerParty = PlayerParty()
 
         self.tick = 0
         self.selected = 0
@@ -39,15 +42,11 @@ class StateTitle(BaseSystemState):
             self.tick = self.tick + 1
             if self.tick > 11:
                 if self.selected == 1:
-                    # テストで固定パーティー生成
-                    party = Party()
-                    print(party)
-                    i = 0
-                    while i < 5:
-                        c = Character()
-                        party.addMember(c.create())
-                        i += 1
-
+                    # テストでランダムパーティー生成をプレイヤーパーティとする
+                    self.party = HumanPartyGenerator.generate()
+                    for __member in self.party.getMemberList():
+                        self.playerParty.addMember(__member)
+                    
                     self.stateStack.push(self.stateStack.STATE_CITY)
 
     #

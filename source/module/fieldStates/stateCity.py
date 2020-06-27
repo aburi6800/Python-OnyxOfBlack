@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 import pyxel
 from module.pyxelUtil import PyxelUtil
-from module.character import Character
-from module.party import Party
 from module.fieldStates.baseFieldState import BaseFieldState
 
 '''
@@ -35,7 +33,6 @@ class StateCity(BaseFieldState):
         # 変数定義
         self.tick = 0
         self.selected = 0
-        self.party = Party()
 
         # 自分の最初の座標と方向
         self.x = 1
@@ -113,12 +110,12 @@ class StateCity(BaseFieldState):
             else:
                 menuColor[self.selected - 1] = 7
 
-        PyxelUtil.text(16,  140, ["u", "tu", "ro", "NO", "MA", "TI"], 7)
-        PyxelUtil.text(24,  148, ["*[W]:", "HU", "D", "KI", "YA"], menuColor[0])
-        PyxelUtil.text(24,  156, ["*[A]:", "YO", "RO", "I", "YA"], menuColor[1])
-        PyxelUtil.text(24,  164, ["*[S]:", "TA", "TE", "YA"], menuColor[2])
-        PyxelUtil.text(24,  172, ["*[H]:", "KA", "HU", "D", "TO", "YA"], menuColor[3])
-        PyxelUtil.text(24,  180, ["*[B]:", "TO", "KO", "YA"], menuColor[4])
+#        PyxelUtil.text(16,  140, ["u", "tu", "ro", "NO", "MA", "TI"], 7)
+#        PyxelUtil.text(24,  148, ["*[W]:", "HU", "D", "KI", "YA"], menuColor[0])
+#        PyxelUtil.text(24,  156, ["*[A]:", "YO", "RO", "I", "YA"], menuColor[1])
+#        PyxelUtil.text(24,  164, ["*[S]:", "TA", "TE", "YA"], menuColor[2])
+#        PyxelUtil.text(24,  172, ["*[H]:", "KA", "HU", "D", "TO", "YA"], menuColor[3])
+#        PyxelUtil.text(24,  180, ["*[B]:", "TO", "KO", "YA"], menuColor[4])
 
     #
     # 状態開始時の処理

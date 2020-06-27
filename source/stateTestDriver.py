@@ -20,7 +20,6 @@ class App:
 
         # 最初のStateを登録
         self.sStack.push(self.sStack.STATE_TITLE)
-#        self.sStack.push(self.sStack.STATE_CITY)
 
         # Pyxel初期化
         pyxel.init(256, 192, fps=10)

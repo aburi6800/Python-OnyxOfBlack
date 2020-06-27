@@ -6,7 +6,4 @@ from module.character import Human
 if __name__ == "__main__":
     party = HumanPartyGenerator.generate()
     for human in party.getMemberList():
-        print(human.name)
-        print(human.life)
-        print(human.exp)
-
+        print(human.name + ":LIFE=" + str(human.life) + "/EXP=" + str(human.exp) + "/WEAPON="+ human.weapon.name + "/ARMOR=" + human.armor.name)
