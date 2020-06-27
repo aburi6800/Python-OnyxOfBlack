@@ -149,7 +149,7 @@ class PlayerParty(Singleton):
  - 人間のパーティーを自動作成するクラス
  - Singletonとする
 '''
-class HumanPartyGenerator():
+class HumanPartyGenerator(Singleton):
 
     @staticmethod
     def generate():
