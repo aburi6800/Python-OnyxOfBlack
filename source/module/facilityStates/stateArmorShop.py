@@ -2,7 +2,7 @@
 import pyxel
 from module.pyxelUtil import PyxelUtil
 from module.character import Character
-from module.party import Party
+from module.character import Party
 from module.facilityStates.baseFacilityState import BaseFacilityState
 
 '''
