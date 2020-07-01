@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import pyxel
-from module.baseState import BaseState
+from ..baseState import BaseState
 
 '''
  BaseFieldStateクラス
@@ -11,6 +11,37 @@ from module.baseState import BaseState
 '''
 class BaseFieldState(BaseState):
 
+    # 方向
+    # これはサブクラスでも必要・・・？
+    DIRECTION_NORTH = 0
+    DIRECTION_EAST = 1
+    DIRECTION_SOUTH = 2
+    DIRECTION_WEST = 3
+
+    # 方向に対する増分
+    # これはサブクラスでも必要・・・？
+    VX = [ 0, 1, 0,-1]
+    VY = [-1, 0, 1, 0]
+
+    # 自分の位置と方向からマップのどこを参照するかを、参照順に定義
+    # 参照順のイメージは以下（上向きである前提、自分の位置はCとする）
+    # |0|1|2|3|4|
+    #   |5|6|7|
+    #   |8|9|A|
+    #   |B|C|D|
+    POS_X = [
+        [-2,-1, 2, 1, 0,-1, 1, 0,-1, 1, 0,-1, 1, 0],
+        [ 3, 3, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0],
+        [ 2, 1,-2,-1, 0, 1,-1, 0, 1,-1, 0, 1,-1, 0],
+        [-3,-3,-3,-3,-3,-2,-2,-2,-1,-1,-1, 0, 0, 0]
+    ]
+    POS_Y = [
+        [-3,-3,-3,-3,-3,-2,-2,-2,-1,-1,-1, 0, 0, 0],
+        [-2,-1, 2, 1, 0,-1, 1, 0,-1, 1, 0,-1, 1, 0],
+        [ 3, 3, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0],
+        [ 2, 1,-2,-1, 0, 1,-1, 0, 1,-1, 0, 1,-1, 0]
+    ]
+
     #
     # クラス初期化
     #
@@ -18,38 +49,7 @@ class BaseFieldState(BaseState):
 
         super(BaseFieldState, self).__init__(stateStack)
         self.stateName = "(none)"
-
-        # 方向
-        # これはサブクラスでも必要・・・？
-        self.DIRECTION_NORTH = 0
-        self.DIRECTION_EAST = 1
-        self.DIRECTION_SOUTH = 2
-        self.DIRECTION_WEST = 3
-
-        # 方向に対する増分
-        # これはサブクラスでも必要・・・？
-        self.VX = [ 0, 1, 0,-1]
-        self.VY = [-1, 0, 1, 0]
-
-        # 自分の位置と方向からマップのどこを参照するかを、参照順に定義
-        # 参照順のイメージは以下（上向きである前提、自分の位置はCとする）
-        # |0|1|2|3|4|
-        #   |5|6|7|
-        #   |8|9|A|
-        #   |B|C|D|
-        self.POS_X = [
-            [-2,-1, 2, 1, 0,-1, 1, 0,-1, 1, 0,-1, 1, 0],
-            [ 3, 3, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0],
-            [ 2, 1,-2,-1, 0, 1,-1, 0, 1,-1, 0, 1,-1, 0],
-            [-3,-3,-3,-3,-3,-2,-2,-2,-1,-1,-1, 0, 0, 0]
-        ]
-        self.POS_Y = [
-            [-3,-3,-3,-3,-3,-2,-2,-2,-1,-1,-1, 0, 0, 0],
-            [-2,-1, 2, 1, 0,-1, 1, 0,-1, 1, 0,-1, 1, 0],
-            [ 3, 3, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0],
-            [ 2, 1,-2,-1, 0, 1,-1, 0, 1,-1, 0, 1,-1, 0]
-        ]
-
+        
         # 壁の色1（正面）
         self.wallColor_front = pyxel.COLOR_LIGHTBLUE
         # 壁の色2（横）
@@ -104,17 +104,30 @@ class BaseFieldState(BaseState):
     #     1 : 壁
     #     2 : ドア（黄色）
     #     3 : ブラックタワーの壁（黒）
-    def drawMaze(self, dataList):
+#    def drawMaze(self, dataList):
+    def drawMaze(self, _x, _y, _direction, _map):
 
-        for idx, data in enumerate(dataList):
-            self.__drawWall(idx, data)
+        _data = []
+        for i in range(14):
+            _get_x = _x + self.POS_X[_direction][i]
+            _get_y = _y + self.POS_Y[_direction][i]
+            if _get_x < 0 or _get_x > len(_map[_y]) or _get_y < 0 or _get_y > len(_map):
+                _data.append(1)
+            else:
+                _data.append(_map[_get_y][_get_x])
+
+        for _idx, _data in enumerate(_data):
+            self._drawWall(_idx, _data)
 
     #
     # 3D迷路の壁表示
     # - idx : 何番目の壁を描くか
     # - data : マップの地形情報
     #
-    def __drawWall(self, idx, data):
+    def _drawWall(self, idx, data):
+
+        _wallColor_front = pyxel.COLOR_BLACK
+        _wallColor_side = pyxel.COLOR_BLACK
 
         # dataが0の場合は抜ける
         if data == 0:

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from module.singleton import Singleton
+from .singleton import Singleton
 
 '''
  WeaponParamクラス

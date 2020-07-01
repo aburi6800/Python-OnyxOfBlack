@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
+import random
 import pyxel
-from module.pyxelUtil import PyxelUtil
-from module.fieldStates.baseFieldState import BaseFieldState
+from ..pyxelUtil import PyxelUtil
+from ..fieldStates.baseFieldState import BaseFieldState
 
 '''
  StateCityクラス
@@ -10,16 +11,6 @@ from module.fieldStates.baseFieldState import BaseFieldState
  - イベントの処理を持つ
  - 各Stateへの遷移を行う
 '''
-# 方向
-DIRECTION_NORTH = 0
-DIRECTION_EAST = 1
-DIRECTION_SOUTH = 2
-DIRECTION_WEST = 3
-
-# 方向に対する増分
-VX = [ 0, 1, 0,-1]
-VY = [-1, 0, 1, 0]
-
 class StateCity(BaseFieldState):
 
     #
@@ -31,13 +22,14 @@ class StateCity(BaseFieldState):
         self.stateName = "City"
 
         # 変数定義
+        self.isEncount = False
         self.tick = 0
         self.selected = 0
 
         # 自分の最初の座標と方向
         self.x = 1
         self.y = 1
-        self.direction = DIRECTION_SOUTH
+        self.direction = BaseFieldState.DIRECTION_SOUTH
 
         # マップ
         # 0 = 通路
@@ -53,15 +45,21 @@ class StateCity(BaseFieldState):
             [ 1, 1, 1, 1, 1, 1]
         ]
 
-        # 画面描画用のリスト
-        self.drawData = []
-
     #
     # 各フレームの処理
     #
     def update(self):
 
 #        print(self.stateName + ":update")
+
+        if pyxel.btn(pyxel.KEY_UP):
+            if random.randint(0, 10) == 0:
+                self.isEncount = True
+
+        if self.isEncount:
+            self.tick +=1
+            if self.tick > 10:
+                self.stateStack.push(self.stateStack.STATE_BATTLE)
 
         '''
         if pyxel.btn(pyxel.KEY_W):
@@ -83,15 +81,6 @@ class StateCity(BaseFieldState):
                     self.stateStack.push(self.stateStack.STATE_ARMORSHOP)
         '''
 
-        self.drawData = []
-        for i in range(14):
-            map_get_x = self.x + self.POS_X[self.direction][i]
-            map_get_y = self.y + self.POS_Y[self.direction][i]
-            if map_get_x < 0 or map_get_x > 5 or map_get_y < 0 or map_get_y > 5:
-                self.drawData.append(1)
-            else:
-                self.drawData.append(self.map[map_get_y][map_get_x])
-
     #
     # 各フレームの画面描画処理
     #
@@ -101,15 +90,27 @@ class StateCity(BaseFieldState):
 
         super().render()
         pyxel.blt(152, 17, 0, 0, 40, 80, 32, 0)
-        super().drawMaze(self.drawData)
+        
+#        _drawData = []
+#        for i in range(14):
+#            map_get_x = self.x + self.POS_X[self.direction][i]
+#            map_get_y = self.y + self.POS_Y[self.direction][i]
+#            if map_get_x < 0 or map_get_x > 5 or map_get_y < 0 or map_get_y > 5:
+#                _drawData.append(1)
+#            else:
+#                _drawData.append(self.map[map_get_y][map_get_x])
+#        super().drawMaze(_drawData)
+        super().drawMaze(self.x, self.y, self.direction, self.map)
 
-        menuColor = [7, 7, 7, 7, 7]
-        if self.selected != 0:
-            if self.tick % 2 == 0:
-                menuColor[self.selected - 1] = 0
-            else:
-                menuColor[self.selected - 1] = 7
+        if self.isEncount:
+            PyxelUtil.text(8, 140, ["NA", "NI", "KA", "TI", "KA", "TU", "D", "I", "TE", "KI", "TA", "*!"], pyxel.COLOR_RED)
 
+#        menuColor = [7, 7, 7, 7, 7]
+#        if self.selected != 0:
+#            if self.tick % 2 == 0:
+#                menuColor[self.selected - 1] = 0
+#            else:
+#                menuColor[self.selected - 1] = 7
 #        PyxelUtil.text(16,  140, ["u", "tu", "ro", "NO", "MA", "TI"], 7)
 #        PyxelUtil.text(24,  148, ["*[W]:", "HU", "D", "KI", "YA"], menuColor[0])
 #        PyxelUtil.text(24,  156, ["*[A]:", "YO", "RO", "I", "YA"], menuColor[1])
@@ -126,6 +127,7 @@ class StateCity(BaseFieldState):
 
         self.tick = 0
         self.selected = 0
+        self.isEncount = False
 
     #
     # 状態終了時の処理

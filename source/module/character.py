@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import random
-from module.singleton import Singleton
-from module.item import WeaponParams
-from module.item import ArmorParams
-from module.item import ShieldParams
-from module.item import HelmParams
+from .singleton import Singleton
+from .item import WeaponParams
+from .item import ArmorParams
+from .item import ShieldParams
+from .item import HelmParams
 
 '''
  Characterクラス
@@ -201,16 +201,16 @@ class HumanPartyGenerator(Singleton):
 class HumanGenerator(Singleton):
 
     @staticmethod
-    def generate(__level):
-        print("[HumanGenerator]generate target level=" + str(__level))
+    def generate(_level):
+        print("[HumanGenerator]generate target level=" + str(_level))
         human = Human()
 
-        human.level = __level
-        human.life = random.randint(1, __level * 10)
+        human.level = _level
+        human.life = random.randint(1, _level * 8)
         human.exp = random.randint(1, 50)
-        human.str = random.randint(1, __level * 5)
-        human.dex = random.randint(1, __level * 5)
-        human.gold = random.randint(1, __level * 100)
+        human.str = random.randint(1, _level * 5)
+        human.dex = random.randint(1, _level * 5)
+        human.gold = random.randint(1, _level * 100)
         human.weapon = WeaponParams().weaponList[random.randint(0, 3)]
         human.armor = ArmorParams().armorList[random.randint(0, 1)]
         human.name = HumanGenerator().generateName()
@@ -249,7 +249,7 @@ class HumanGenerator(Singleton):
             "XECK", "XALY", "XYAS", "XORA",
             "YEAN", "YONA", "YOHA", "YACK",
             "ZALY", "ZOE", "ZEE", "ZERA"]
-        __name2 = ["SON", "A", "RY", "N", "NA", "NIA", "PU", "PO", "ON", "Y", "K", "S", "EL", "ER", "CS", "FA", "PI", "C", "CK", "DA", "ON"]
+        __name2 = ["", "SON", "A", "RY", "N", "NA", "NIA", "PU", "PO", "ON", "Y", "K", "S", "EL", "ER", "CS", "FA", "PI", "C", "CK", "DA", "ON", "B"]
 
         __idx1 = random.randint(0, len(__name1))
         __idx2 = random.randint(0, len(__name2))

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from module.baseState import BaseState
+from ..baseState import BaseState
 
 '''
  BaseSystemStateクラス
@@ -19,14 +19,14 @@ class BaseSystemState(BaseState):
     #
     # 各フレームの処理
     #
-    def update(self, app):
+    def update(self):
 
         print(self.stateName + ":update")
 
     #
     # 各フレームの画面描画処理
     #
-    def render(self, app):
+    def render(self):
 
         print(self.stateName + ":render")
 

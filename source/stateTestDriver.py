@@ -7,7 +7,6 @@ from module.stateStack import StateStack
  - アプリケーション本体クラス
  - StateStackを持ち、先頭のStateのupdateとdrawを実行する
 '''
-
 class App:
 
     #

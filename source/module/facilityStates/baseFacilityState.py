@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import pyxel
-from module.baseState import BaseState
+from ..baseState import BaseState
 
 '''
  BaseFacilityStateクラス

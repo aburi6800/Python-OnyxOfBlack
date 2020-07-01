@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pyxel
-from module.pyxelUtil import PyxelUtil
-from module.facilityStates.baseFacilityState import BaseFacilityState
+from ..pyxelUtil import PyxelUtil
+from ..facilityStates.baseFacilityState import BaseFacilityState
 
 '''
  StateWeaponShopクラス

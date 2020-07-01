@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import pyxel
-from module.facilityStates.baseFacilityState import BaseFacilityState
+from ..facilityStates.baseFacilityState import BaseFacilityState
 
 '''
  StateHelmetShopクラス

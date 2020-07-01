@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import pyxel
-from module.pyxelUtil import PyxelUtil
-from module.systemStates.baseSystemState import BaseSystemState
+from ..pyxelUtil import PyxelUtil
+from ..systemStates.baseSystemState import BaseSystemState
 # 以下テスト用に宣言
-from module.character import HumanPartyGenerator
-from module.character import PlayerParty
-from module.character import Human
+from ..character import HumanPartyGenerator
+from ..character import PlayerParty
+from ..character import Human
 
 '''
  StateTitleクラス

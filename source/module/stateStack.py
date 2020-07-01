@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from module.singleton import Singleton
-from module.systemStates.stateTitle import StateTitle
-from module.fieldStates.stateCity import StateCity
-from module.facilityStates.stateWeaponShop import StateWeaponShop
-from module.facilityStates.stateArmorShop import StateArmorShop
-from module.facilityStates.stateShieldShop import StateShieldShop
-from module.facilityStates.stateHelmetShop import StateHelmetShop
+from .singleton import Singleton
+from .systemStates.stateTitle import StateTitle
+from .fieldStates.stateBattle import StateBattle
+from .fieldStates.stateCity import StateCity
+from .facilityStates.stateWeaponShop import StateWeaponShop
+from .facilityStates.stateArmorShop import StateArmorShop
+from .facilityStates.stateShieldShop import StateShieldShop
+from .facilityStates.stateHelmetShop import StateHelmetShop
 #import stateBarbar
 #import stateBank
 #import stateSurgery
@@ -23,6 +24,7 @@ class StateStack(Singleton):
 
     STATE_TITLE = "Title"
     STATE_CITY = "City"
+    STATE_BATTLE = "Battle"
     STATE_WEAPONSHOP = "WeaponShop"
     STATE_ARMORSHOP = "ArmorShop"
     STATE_SHIELDSHOP = "ShieldShop"
@@ -36,6 +38,7 @@ class StateStack(Singleton):
         self.stateDic = {
             self.STATE_TITLE : StateTitle(self),
             self.STATE_CITY : StateCity(self),
+            self.STATE_BATTLE : StateBattle(self),
             self.STATE_WEAPONSHOP : StateWeaponShop(self),
             self.STATE_ARMORSHOP : StateArmorShop(self),
             self.STATE_SHIELDSHOP : StateShieldShop(self),

@@ -1,28 +1,26 @@
 # -*- coding: utf-8 -*-
 import pyxel
-from ..facilityStates.baseFacilityState import BaseFacilityState
+from module.pyxelUtil import PyxelUtil
+from module.fieldStates.baseFieldState import BaseFieldState
 
 '''
- StateShieldShopクラス
- - 盾屋のクラス
- - 選択した商品の購入、キャラクターへの装備を行う
+ StateBattleクラス
+ - 戦闘シーンのクラス(BaseSystemStateを継承)
 '''
-class StateShieldShop(BaseFacilityState):
+class StateBattle(BaseFieldState):
 
     #
     # クラス初期化
     #
     def __init__(self, stateStack):
 
-        super(StateShieldShop, self).__init__(stateStack)
-        self.stateName = "ShieldShop"
+        super(StateBattle, self).__init__(stateStack)
+        self.stateName = "Battle"
 
     #
     # 各フレームの処理
     #
     def update(self):
-
-#        print(self.stateName + ":update")
 
         pass
 
@@ -30,8 +28,6 @@ class StateShieldShop(BaseFacilityState):
     # 各フレームの画面描画処理
     #
     def render(self):
-
-#        print(self.stateName + ":render")
 
         super().render()
 
@@ -48,4 +44,3 @@ class StateShieldShop(BaseFacilityState):
     def onExit(self):
 
         print(self.stateName + ":onExit")
-
