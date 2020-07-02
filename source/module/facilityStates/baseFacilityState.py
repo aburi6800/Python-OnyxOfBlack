@@ -14,7 +14,7 @@ class BaseFacilityState(BaseState):
     #
     def __init__(self, stateStack):
 
-        super(BaseFacilityState, self).__init__(stateStack)
+        super().__init__(stateStack)
         self.stateName = "(none)"
 
     #

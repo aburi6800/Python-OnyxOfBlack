@@ -54,7 +54,7 @@ class Monster(Character):
     # クラス初期化
     #
     def __init__(self):
-        super(Monster, self).__init__()
+        super().__init__()
         self.item = None
 
 
@@ -62,7 +62,9 @@ class Monster(Character):
  Partyクラス
  - パーティーを管理するクラス
 '''
-class Party():
+class Party(Singleton):
+
+    memberList = []
 
     #
     # クラス初期化
@@ -75,10 +77,7 @@ class Party():
     # メンバー追加
     #
     def addMember(self, chr: Character):
-        if len(self.memberList) < 5:
-            self.memberList.append(chr)
-        else:
-            raise Exception("can't add a member.")
+        self.memberList.append(chr)
 
     #
     # メンバー削除
@@ -118,6 +117,7 @@ class PlayerParty(Singleton):
     # クラス初期化
     #
     def __init__(self):
+        print("[PlayerParty]initialized.")
         self.memberList = []
 
     #
@@ -222,7 +222,7 @@ class HumanGenerator(Singleton):
 
     @staticmethod
     def generateName():
-        __name1 = [
+        _name1 = [
             "ANNA", "ARES", "ALEY", "ADAL",
             "BEBY", "BORD", "BEAN", "BOYO",
             "CHRY", "CHAC", "CIEL", "CALM",
@@ -249,13 +249,13 @@ class HumanGenerator(Singleton):
             "XECK", "XALY", "XYAS", "XORA",
             "YEAN", "YONA", "YOHA", "YACK",
             "ZALY", "ZOE", "ZEE", "ZERA"]
-        __name2 = ["", "SON", "A", "RY", "N", "NA", "NIA", "PU", "PO", "ON", "Y", "K", "S", "EL", "ER", "CS", "FA", "PI", "C", "CK", "DA", "ON", "B"]
+        _name2 = ["", "SON", "A", "RY", "N", "NA", "NIA", "PU", "PO", "ON", "Y", "K", "S", "EL", "ER", "CS", "FA", "PI", "C", "CK", "DA", "ON", "B"]
 
-        __idx1 = random.randint(0, len(__name1))
-        __idx2 = random.randint(0, len(__name2))
-        print("idx1=" + str(__idx1) + "/idx2=" + str(__idx2))
+        _idx1 = random.randint(0, len(_name1))
+        _idx2 = random.randint(0, len(_name2))
+        print("idx1=" + str(_idx1) + "/idx2=" + str(_idx2))
 
-        return __name1[random.randint(0, __idx1)] + __name2[random.randint(0, __idx2)]
+        return _name1[random.randint(0, _idx1)] + _name2[random.randint(0, _idx2)]
 
 
 '''

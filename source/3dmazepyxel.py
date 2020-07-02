@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
  
 import pyxel
-from module.pyxelUtil import PyxelUtil
-from module.stateStack import StateStack
+from .module.pyxelUtil import PyxelUtil
+from .module.stateStack import StateStack
 
 """
   The Onyx of Black

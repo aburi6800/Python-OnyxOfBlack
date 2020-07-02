@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import module.const
+import .module.const
 import tkinter
 #from PIL import Image, ImageTk, ImageDraw, ImageOps, ImageChops
 from PIL import Image, ImageTk, ImageDraw

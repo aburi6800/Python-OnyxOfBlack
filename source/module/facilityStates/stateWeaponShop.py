@@ -15,7 +15,7 @@ class StateWeaponShop(BaseFacilityState):
     #
     def __init__(self, stateStack):
 
-        super(StateWeaponShop, self).__init__(stateStack)
+        super().__init__(stateStack)
         self.stateName = "WeaponShop"
 
         self.tick = 0

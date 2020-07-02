@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import random
 import pyxel
 from ..pyxelUtil import PyxelUtil
 from ..fieldStates.baseFieldState import BaseFieldState
@@ -18,7 +17,7 @@ class StateCity(BaseFieldState):
     #
     def __init__(self, stateStack):
 
-        super(StateCity, self).__init__(stateStack)
+        super().__init__(stateStack)
         self.stateName = "City"
 
         # 変数定義
@@ -51,7 +50,7 @@ class StateCity(BaseFieldState):
     def update(self):
 
 #        print(self.stateName + ":update")
-
+        '''
         if pyxel.btn(pyxel.KEY_UP):
             if random.randint(0, 10) == 0:
                 self.isEncount = True
@@ -60,6 +59,7 @@ class StateCity(BaseFieldState):
             self.tick +=1
             if self.tick > 10:
                 self.stateStack.push(self.stateStack.STATE_BATTLE)
+        '''
 
         '''
         if pyxel.btn(pyxel.KEY_W):
@@ -102,8 +102,8 @@ class StateCity(BaseFieldState):
 #        super().drawMaze(_drawData)
         super().drawMaze(self.x, self.y, self.direction, self.map)
 
-        if self.isEncount:
-            PyxelUtil.text(8, 140, ["NA", "NI", "KA", "TI", "KA", "TU", "D", "I", "TE", "KI", "TA", "*!"], pyxel.COLOR_RED)
+#        if self.isEncount:
+#            PyxelUtil.text(8, 140, ["NA", "NI", "KA", "TI", "KA", "TU", "D", "I", "TE", "KI", "TA", "*!"], pyxel.COLOR_RED)
 
 #        menuColor = [7, 7, 7, 7, 7]
 #        if self.selected != 0:

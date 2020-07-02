@@ -19,7 +19,7 @@ class StateTitle(BaseSystemState):
     #
     def __init__(self, stateStack):
 
-        super(StateTitle, self).__init__(stateStack)
+        super().__init__(stateStack)
         self.stateName = "Title"
 
         self.playerParty = PlayerParty()

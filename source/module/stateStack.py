@@ -2,7 +2,8 @@
 
 from .singleton import Singleton
 from .systemStates.stateTitle import StateTitle
-from .fieldStates.stateBattle import StateBattle
+from .battleStates.stateBattle import StateBattle
+from .fieldStates.baseFieldState import BaseFieldState
 from .fieldStates.stateCity import StateCity
 from .facilityStates.stateWeaponShop import StateWeaponShop
 from .facilityStates.stateArmorShop import StateArmorShop
@@ -89,3 +90,13 @@ class StateStack(Singleton):
         self.states[0].onExit()
         self.states.pop(0)
 
+
+    #
+    # フィールドにいるかを判定して返す
+    #
+    def isField(self):
+
+        if isinstance(self.states[0], BaseFieldState):
+            return True
+        else:
+            return False

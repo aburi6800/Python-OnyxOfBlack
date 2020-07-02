@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import pyxel
-from module.stateStack import StateStack
+from module.gameMaster import GameMaster
 
 '''
  Appクラス
@@ -14,11 +14,8 @@ class App:
     #
     def __init__(self):
 
-        # StateStack
-        self.sStack = StateStack()
-
-        # 最初のStateを登録
-        self.sStack.push(self.sStack.STATE_TITLE)
+        # GameMaster誕生
+        self.gameMaster = GameMaster()
 
         # Pyxel初期化
         pyxel.init(256, 192, fps=10)
@@ -35,15 +32,14 @@ class App:
     def update(self):
 
         pyxel.cls(pyxel.COLOR_BLACK)
-        self.sStack.update()
+        self.gameMaster.update()
 
     #
     # 各フレームの画面描画処理
     #
     def draw(self):
 
-        render = self.sStack.getRender()
-        render()
+        self.gameMaster.render()
 
 
 if __name__ == "__main__":

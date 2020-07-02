@@ -14,7 +14,7 @@ class StateHelmetShop(BaseFacilityState):
     #
     def __init__(self, stateStack):
 
-        super(StateHelmetShop, self).__init__(stateStack)
+        super().__init__(stateStack)
         self.stateName = "HelmetShop"
 
     #

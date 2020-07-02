@@ -47,7 +47,7 @@ class BaseFieldState(BaseState):
     #
     def __init__(self, stateStack):
 
-        super(BaseFieldState, self).__init__(stateStack)
+        super().__init__(stateStack)
         self.stateName = "(none)"
         
         # 壁の色1（正面）

@@ -13,7 +13,7 @@ class BaseSystemState(BaseState):
     #
     def __init__(self, stateStack):
 
-        super(BaseSystemState, self).__init__(stateStack)
+        super().__init__(stateStack)
         self.stateName = "(none)"
 
     #
