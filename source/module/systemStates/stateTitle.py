@@ -2,27 +2,19 @@
 import pyxel
 from ..pyxelUtil import PyxelUtil
 from ..systemStates.baseSystemState import BaseSystemState
-# 以下テスト用に宣言
-from ..character import HumanPartyGenerator
-from ..character import PlayerParty
-from ..character import Human
 
-'''
- StateTitleクラス
- - タイトル画面のクラス(BaseSystemStateを継承)
- - タイトルの表示と各Stateへの遷移を行う
-'''
+
 class StateTitle(BaseSystemState):
+    '''タイトル画面クラス
 
-    #
-    # クラス初期化
-    #
+    BaseSystemStateを継承
+    タイトル画面の表示と各Stateへの遷移を行う
+    '''
+
     def __init__(self, stateStack):
-
+        '''クラス初期化'''
         super().__init__(stateStack)
         self.stateName = "Title"
-
-        self.playerParty = PlayerParty()
 
         self.tick = 0
         self.selected = 0
@@ -31,9 +23,7 @@ class StateTitle(BaseSystemState):
     # 各フレームの処理
     #
     def update(self):
-
-#        print(self.stateName + ":update")
-
+        '''各フレームの処理'''
         if pyxel.btn(pyxel.KEY_G):
             self.selected = 1
             self.tick = 0
@@ -42,20 +32,10 @@ class StateTitle(BaseSystemState):
             self.tick = self.tick + 1
             if self.tick > 11:
                 if self.selected == 1:
-                    # テストでランダムパーティー生成をプレイヤーパーティとする
-                    self.party = HumanPartyGenerator.generate()
-                    for __member in self.party.getMemberList():
-                        self.playerParty.addMember(__member)
-                    
                     self.stateStack.push(self.stateStack.STATE_CITY)
 
-    #
-    # 各フレームの画面描画処理
-    #
     def render(self):
-
-#        print(self.stateName + ":render")
-
+        '''各フレームの描画処理'''
         PyxelUtil.text(64, 36, ["*Role Playing game"], 2)
         pyxel.blt(72, 48, 0, 0,  0, 26, 16, 0)
         pyxel.blt(52, 54, 0, 0, 16, 63, 24, 0)
@@ -77,17 +57,10 @@ class StateTitle(BaseSystemState):
         PyxelUtil.text(68, 160, ["*COPYRIGHT BY ABURI6800 2020"], 2)
         PyxelUtil.text(68, 168, ["*ORIGINAL GAME BY B.P.S. 1984"], 2)
 
-    #
-    # 状態開始時の処理
-    #
     def onEnter(self):
+        '''状態開始時の処理'''
+        pass
 
-        print(self.stateName + ":onEnter")
-
-    #
-    # 状態終了時の処理
-    #
     def onExit(self):
-
-        print(self.stateName + ":onExit")
-
+        '''状態終了時の処理'''
+        pass

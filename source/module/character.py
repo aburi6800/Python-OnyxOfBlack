@@ -6,16 +6,13 @@ from .item import ArmorParams
 from .item import ShieldParams
 from .item import HelmParams
 
-'''
- Characterクラス
- - キャラクタの基本属性を持つクラス
-'''
-class Character(object):
 
-    #
-    # クラス初期化
-    #
+class Character(object):
+    '''キャラクタの基底クラス'''
+
     def __init__(self):
+        '''クラス初期化'''
+
         self.name = ""
         self.level = 0
         self.life = 0
@@ -25,16 +22,12 @@ class Character(object):
         self.gold = 0
 
 
-'''
- Human
- - 人間のクラス
-'''
 class Human(Character):
+    '''人間のクラス'''
 
-    #
-    # クラス初期化
-    #
     def __init__(self):
+        '''クラス初期化'''
+
         super(Human, self).__init__()
         self.head = None
         self.helmet = None
@@ -44,119 +37,73 @@ class Human(Character):
         self.potion = -1
 
 
-'''
- Monster
- - モンスターのクラス
-'''
 class Monster(Character):
+    '''モンスターのクラス'''
 
-    #
-    # クラス初期化
-    #
     def __init__(self):
+        '''クラス初期化'''
+
         super().__init__()
         self.item = None
 
 
-'''
- Partyクラス
- - パーティーを管理するクラス
-'''
 class Party(Singleton):
+    '''パーティーを管理するクラス'''
 
+    # パーティーメンバーのリスト
     memberList = []
 
-    #
-    # クラス初期化
-    #
     def __init__(self):
-        print("[Party]initialized.")
+        '''クラス初期化'''
         self.memberList = []
 
-    #
-    # メンバー追加
-    #
     def addMember(self, chr: Character):
+        '''パーティーメンバー追加'''
         self.memberList.append(chr)
 
-    #
-    # メンバー削除
-    #
-    def removeMember(self, idx):
+    def removeMember(self, idx: int):
+        '''パーティーメンバー削除
+
+        削除したいパーティーメンバーのリストのインデックスを指定する
+        リストに存在しないインデックスを指定した場合は、Exceptionが発生する
+        '''
         try:
             del self.memberList[idx]
         except:
-            raise Exception("specified a member who doesn't exist.：" + str(idx))
-
-    #
-    # メンバー取得
-    #
-    def getMember(self, idx):
-        try:
-            return self.memberList[idx]
-        except:
-            raise Exception("specified a member who doesn't exist.：" + str(idx))
-
-    #
-    # メンバーリスト取得
-    #
-    def getMemberList(self):
-        return self.memberList
+            raise Exception(
+                "specified a member who doesn't exist.：" + str(idx))
 
 
-'''
- PlayerPartyクラス
- - プレイヤーパーティーを管理するクラス
- - Singletonとする
-'''
 class PlayerParty(Singleton):
+    '''プレイヤーパーティーのクラス
 
+    Singletonクラスとする
+    '''
+
+    # パーティーメンバーのリスト
     memberList = []
 
-    #
-    # クラス初期化
-    #
     def __init__(self):
-        print("[PlayerParty]initialized.")
+        '''クラス初期化'''
         self.memberList = []
 
-    #
-    # メンバー追加
-    #
     def addMember(self, chr: Human):
+        '''パーティーメンバー追加'''
         if len(self.memberList) < 5:
             self.memberList.append(chr)
         else:
             raise Exception("can't add a member.")
 
-    #
-    # メンバー削除
-    #
     def removeMember(self, idx):
+        '''パーティーメンバー削除'''
         try:
             del self.memberList[idx]
         except:
-            raise Exception("specified a member who doesn't exist.：" + str(idx))
+            raise Exception(
+                "specified a member who doesn't exist.：" + str(idx))
 
-    #
-    # メンバー取得
-    #
-    def getMember(self, idx):
-        try:
-            return self.memberList[idx]
-        except:
-            raise Exception("specified a member who doesn't exist.：" + str(idx))
-
-    #
-    # メンバーリスト取得
-    #
-    def getMemberList(self):
-        return self.memberList
-
-    #
-    # 平均レベルを算出
-    #
     def getAvarageLevel(self):
+        '''平均レベルを算出'''
         avr = 0
 
         if len(self.memberList) > 0:
@@ -164,20 +111,20 @@ class PlayerParty(Singleton):
                 if self.memberList[idx] is not None:
                     avr = avr + self.memberList[idx]._level
             avr = avr // len(self.memberList)
-        
+
         return avr
 
 
-'''
- HumanPartyGeneratorクラス
- - 人間のパーティーを自動作成するクラス
- - Singletonとする
-'''
 class HumanPartyGenerator(Singleton):
+    '''人間のパーティーを自動作成するクラス
 
+    Singletonとする
+    人数は1～4人でランダム
+    レベルは1～プレイヤーパーティーの平均+2の範囲でランダム
+    '''
     @staticmethod
     def generate():
-
+        '''人間のパーティー生成'''
         # 人数
         count = random.randint(1, 4)
         print("[HumanPartyGenerator]COUNT:" + str(count))
@@ -194,14 +141,15 @@ class HumanPartyGenerator(Singleton):
         return party
 
 
-'''
- HumanGeneratorクラス
- - 人間のキャラクターを自動作成するクラス
-'''
 class HumanGenerator(Singleton):
+    '''人間のキャラクターを自動作成するクラス
+
+    Singletonとする
+    '''
 
     @staticmethod
-    def generate(_level):
+    def generate(_level: int) -> Human:
+        '''生成する'''
         print("[HumanGenerator]generate target level=" + str(_level))
         human = Human()
 
@@ -221,7 +169,8 @@ class HumanGenerator(Singleton):
         return human
 
     @staticmethod
-    def generateName():
+    def generateName() -> str:
+        '''名前を生成する'''
         _name1 = [
             "ANNA", "ARES", "ALEY", "ADAL",
             "BEBY", "BORD", "BEAN", "BOYO",
@@ -249,23 +198,22 @@ class HumanGenerator(Singleton):
             "XECK", "XALY", "XYAS", "XORA",
             "YEAN", "YONA", "YOHA", "YACK",
             "ZALY", "ZOE", "ZEE", "ZERA"]
-        _name2 = ["", "SON", "A", "RY", "N", "NA", "NIA", "PU", "PO", "ON", "Y", "K", "S", "EL", "ER", "CS", "FA", "PI", "C", "CK", "DA", "ON", "B"]
+        _name2 = ["", "SON", "A", "RY", "N", "NA", "NIA", "PU", "PO", "ON", "Y",
+                  "K", "S", "EL", "ER", "CS", "FA", "PI", "C", "CK", "DA", "ON", "B"]
 
         _idx1 = random.randint(0, len(_name1))
         _idx2 = random.randint(0, len(_name2))
-        print("idx1=" + str(_idx1) + "/idx2=" + str(_idx2))
 
         return _name1[random.randint(0, _idx1)] + _name2[random.randint(0, _idx2)]
 
 
-'''
- MonsterPartyGeneratorクラス
- - モンスターのパーティーを自動作成するクラス
- - Singletonとする
-'''
 class MonsterPartyGenerator(Singleton):
+    '''モンスターのパーティーを自動生成するクラス
+
+    Singletonとする
+    '''
 
     @staticmethod
     def generate(self):
-
+        '''モンスターのパーティー生成'''
         pass

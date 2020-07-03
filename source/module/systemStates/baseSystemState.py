@@ -7,40 +7,29 @@ from ..baseState import BaseState
  - 各画面で共通の処理を持つ
 '''
 class BaseSystemState(BaseState):
+    '''システム周りのStateの基底クラス
+    
+    タイトル画面やキャラクター作成等、特殊な画面を想定している
+    '''
 
-    #
-    # クラス初期化
-    #
     def __init__(self, stateStack):
-
+        '''クラス初期化'''
         super().__init__(stateStack)
         self.stateName = "(none)"
 
-    #
-    # 各フレームの処理
-    #
     def update(self):
+        '''各フレームの処理'''
+        pass
 
-        print(self.stateName + ":update")
-
-    #
-    # 各フレームの画面描画処理
-    #
     def render(self):
+        '''各フレームの描画処理'''
+        pass
 
-        print(self.stateName + ":render")
-
-    #
-    # 状態開始時の処理
-    #
     def onEnter(self):
+        '''状態開始時の処理'''
+        pass
 
-        print(self.stateName + ":onEnter")
-
-    #
-    # 状態終了時の処理
-    #
     def onExit(self):
-
-        print(self.stateName + ":onExit")
+        '''状態終了時の処理'''
+        pass
 
