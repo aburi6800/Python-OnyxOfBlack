@@ -48,7 +48,7 @@ class BaseState(AbstractState):
 
         # プレイヤーキャラクタ描画
         for _idx in range(len(self.playerParty.memberList)):
-            _member = self.playerParty.getMember(_idx)
+            _member = self.playerParty.memberList[_idx]
             # キャラクタ
             BaseState.drawCharacter(_member, _x[_idx], _y[_idx])
             # ステータス
