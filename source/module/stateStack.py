@@ -15,13 +15,14 @@ from .facilityStates.stateHelmetShop import StateHelmetShop
 #import stateDrug
 #import stateExaminations
 
-'''
- StateStackクラス
- - Stateをスタック管理する
- - SIngletonとする
- - Stateのpush,popは各Stateの中で行う
-'''
+
 class StateStack(Singleton):
+    '''
+    Stateをスタックで保持するクラス
+
+    SIngletonとする
+    Stateのpush,popは各Stateの中で行う
+    '''
 
     STATE_TITLE = "Title"
     STATE_CITY = "City"
@@ -31,71 +32,58 @@ class StateStack(Singleton):
     STATE_SHIELDSHOP = "ShieldShop"
     STATE_HELMETSHOP = "HelmetShop"
 
-    #
-    # クラス初期化
-    #
     def __init__(self):
+        '''
+        クラス初期化
+        '''
         self.states = []
         self.stateDic = {
-            self.STATE_TITLE : StateTitle(self),
-            self.STATE_CITY : StateCity(self),
-            self.STATE_BATTLE : StateBattle(self),
-            self.STATE_WEAPONSHOP : StateWeaponShop(self),
-            self.STATE_ARMORSHOP : StateArmorShop(self),
-            self.STATE_SHIELDSHOP : StateShieldShop(self),
-            self.STATE_HELMETSHOP : StateHelmetShop(self)
+            self.STATE_TITLE: StateTitle(self),
+            self.STATE_CITY: StateCity(self),
+            self.STATE_BATTLE: StateBattle(self),
+            self.STATE_WEAPONSHOP: StateWeaponShop(self),
+            self.STATE_ARMORSHOP: StateArmorShop(self),
+            self.STATE_SHIELDSHOP: StateShieldShop(self),
+            self.STATE_HELMETSHOP: StateHelmetShop(self)
         }
 
-
-    #
-    # 現在先頭にあるstateのupdate処理を呼び出す
-    #
     def update(self):
+        '''
+        現在先頭にあるStateのupdateメソッドを実行する
+        '''
+        self.states[0].update()
 
-        state = self.states[0]
-        state.update()
-
-
-    #
-    # 現在先頭にあるstateのrender処理を呼び出す
-    # 
     def render(self):
+        '''
+        現在先頭にあるStateのrenderメソッドを実行する
+        '''
+        self.states[0].render()
 
-        state = self.states[0]
-        state.render()
+    def push(self, stateName: str):
+        '''
+        StateNameで指定されたStateをスタックに追加する
 
-
-    #
-    # 現在先頭にあるstateのrender処理を取得する
-    #
-    def getRender(self):
-
-        return self.states[0].render
-
-
-    # 
-    # stateを追加する(push)
-    #
-    def push(self, stateName):
-
+        StateNameはこのクラスで定義した変数（STATE_～）を使用する
+        追加されたStackはonEnterメソッドが実行される
+        '''
         self.states.insert(0, self.stateDic[stateName])
+        # State開始時の処理を呼び出す
         self.states[0].onEnter()
 
-
-    #
-    # stateを削除する(pop)
-    #
     def pop(self):
+        '''
+        スタックの先頭からStateを削除する
 
+        削除前にStackのonExitメソッドが実行される
+        '''
+        # State終了時の処理を呼び出す
         self.states[0].onExit()
         self.states.pop(0)
 
-
-    #
-    # フィールドにいるかを判定して返す
-    #
-    def isField(self):
-
+    def isField(self) -> bool:
+        '''
+        現在のStateがBaseFieldの派生クラスかを判定する
+        '''
         if isinstance(self.states[0], BaseFieldState):
             return True
         else:

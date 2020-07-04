@@ -4,13 +4,16 @@ from module.gameMaster import GameMaster
 
 
 class App:
-    '''アプリケーションのクラス
+    '''
+    アプリケーションのクラス
 
     StateStackを持ち、先頭のStateのupdateとdrawを実行する
     '''
 
     def __init__(self):
-        '''クラス初期化'''
+        '''
+        クラス初期化
+        '''
         # GameMaster誕生
         self.gameMaster = GameMaster()
 
@@ -20,15 +23,21 @@ class App:
         pyxel.run(self.update, self.draw)
 
     def update(self):
-        '''各フレームの処理'''
+        '''
+        各フレームの処理
+        '''
         pyxel.cls(pyxel.COLOR_BLACK)
         self.gameMaster.update()
 
     def draw(self):
-        '''各フレームの画面描画処理'''
+        '''
+        各フレームの画面描画処理
+        '''
         self.gameMaster.render()
 
 
 if __name__ == "__main__":
-    '''アプリケーション実行'''
+    '''
+    アプリケーション実行
+    '''
     App()

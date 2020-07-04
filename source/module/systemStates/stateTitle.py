@@ -5,25 +5,27 @@ from ..systemStates.baseSystemState import BaseSystemState
 
 
 class StateTitle(BaseSystemState):
-    '''タイトル画面クラス
+    '''
+    タイトル画面クラス
 
     BaseSystemStateを継承
     タイトル画面の表示と各Stateへの遷移を行う
     '''
 
     def __init__(self, stateStack):
-        '''クラス初期化'''
+        '''
+        クラス初期化
+        '''
         super().__init__(stateStack)
         self.stateName = "Title"
 
         self.tick = 0
         self.selected = 0
 
-    #
-    # 各フレームの処理
-    #
     def update(self):
-        '''各フレームの処理'''
+        '''
+        各フレームの処理
+        '''
         if pyxel.btn(pyxel.KEY_G):
             self.selected = 1
             self.tick = 0
@@ -35,7 +37,9 @@ class StateTitle(BaseSystemState):
                     self.stateStack.push(self.stateStack.STATE_CITY)
 
     def render(self):
-        '''各フレームの描画処理'''
+        '''
+        各フレームの描画処理
+        '''
         PyxelUtil.text(64, 36, ["*Role Playing game"], 2)
         pyxel.blt(72, 48, 0, 0,  0, 26, 16, 0)
         pyxel.blt(52, 54, 0, 0, 16, 63, 24, 0)
@@ -58,9 +62,13 @@ class StateTitle(BaseSystemState):
         PyxelUtil.text(68, 168, ["*ORIGINAL GAME BY B.P.S. 1984"], 2)
 
     def onEnter(self):
-        '''状態開始時の処理'''
+        '''
+        状態開始時の処理
+        '''
         pass
 
     def onExit(self):
-        '''状態終了時の処理'''
+        '''
+        状態終了時の処理
+        '''
         pass

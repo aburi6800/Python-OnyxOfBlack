@@ -4,7 +4,8 @@ from ..baseState import BaseState
 
 
 class BaseFieldState(BaseState):
-    '''フィールドのStateクラスの基底クラス
+    '''
+    フィールドのStateクラスの基底クラス
 
     各フィールドで共通の処理を持つ
     迷路の描画処理に必要な情報を持つ（他のクラスでは必要としない）
@@ -18,8 +19,8 @@ class BaseFieldState(BaseState):
     DIRECTION_WEST = 3
 
     # 方向に対する増分
-    VX = [0, 1, 0, -1]
-    VY = [-1, 0, 1, 0]
+    VX = (0, 1, 0, -1)
+    VY = (-1, 0, 1, 0)
 
     # 自分の位置と方向からマップのどこを参照するかを、参照順に定義
     # 参照順のイメージは以下（上向きである前提、自分の位置はCとする）
@@ -27,21 +28,23 @@ class BaseFieldState(BaseState):
     #   |5|6|7|
     #   |8|9|A|
     #   |B|C|D|
-    POS_X = [
-        [-2, -1, 2, 1, 0, -1, 1, 0, -1, 1, 0, -1, 1, 0],
-        [3, 3, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0],
-        [2, 1, -2, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0],
-        [-3, -3, -3, -3, -3, -2, -2, -2, -1, -1, -1, 0, 0, 0]
-    ]
-    POS_Y = [
-        [-3, -3, -3, -3, -3, -2, -2, -2, -1, -1, -1, 0, 0, 0],
-        [-2, -1, 2, 1, 0, -1, 1, 0, -1, 1, 0, -1, 1, 0],
-        [3, 3, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0],
-        [2, 1, -2, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0]
-    ]
+    POS_X = (
+        (-2, -1, 2, 1, 0, -1, 1, 0, -1, 1, 0, -1, 1, 0),
+        (3, 3, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0),
+        (2, 1, -2, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0),
+        (-3, -3, -3, -3, -3, -2, -2, -2, -1, -1, -1, 0, 0, 0)
+    )
+    POS_Y = (
+        (-3, -3, -3, -3, -3, -2, -2, -2, -1, -1, -1, 0, 0, 0),
+        (-2, -1, 2, 1, 0, -1, 1, 0, -1, 1, 0, -1, 1, 0),
+        (3, 3, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0),
+        (2, 1, -2, -1, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0)
+    )
 
     def __init__(self, stateStack):
-        '''クラス初期化'''
+        '''
+        クラス初期化
+        '''
         super().__init__(stateStack)
         self.stateName = "(none)"
 
@@ -51,14 +54,15 @@ class BaseFieldState(BaseState):
         self.wallColor_side = pyxel.COLOR_DARKBLUE
 
     def update(self):
-        '''各フレームの処理'''
+        '''
+        各フレームの処理
+        '''
         pass
 
-    #
-    # 各フレームの画面描画処理
-    #
     def render(self):
-        '''各フレームの描画処理'''
+        '''
+        各フレームの描画処理
+        '''
         super().render()
         # 迷路の枠線
         pyxel.rectb(151, 16, 82, 80, pyxel.COLOR_DARKBLUE)
@@ -67,18 +71,25 @@ class BaseFieldState(BaseState):
         pyxel.line(193, 56, 232, 95, pyxel.COLOR_DARKBLUE)
         pyxel.line(152, 59, 232, 59, pyxel.COLOR_DARKBLUE)
         pyxel.line(152, 67, 232, 67, pyxel.COLOR_DARKBLUE)
-        pyxel.line(152, 82, 232, 82, pyxel.COLOR_DARKBLUE)
+        pyxel.line(152, 83, 232, 83, pyxel.COLOR_DARKBLUE)
 
     def onEnter(self):
-        '''状態開始時の処理'''
+        '''
+        状態開始時の処理
+        '''
+        pass
 
     def onExit(self):
-        '''状態終了時の処理'''
+        '''
+        状態終了時の処理
+        '''
+        pass
 
     def draw_maze(self, _x, _y, _direction, _map):
-        '''迷路を表示する
+        '''
+        迷路を表示する
 
-        利用元では、X座標、Y座標、方向、マップデータを引数に与えること
+        利用元からは、X座標、Y座標、方向、マップデータを引数に与えること
         '''
         _data = []
         for i in range(14):
@@ -92,13 +103,9 @@ class BaseFieldState(BaseState):
         for _idx, _data in enumerate(_data):
             self._draw_wall(_idx, _data)
 
-    #
-    # 3D迷路の壁表示
-    # - idx : 何番目の壁を描くか
-    # - data : マップの地形情報
-    #
     def _draw_wall(self, idx, data):
-        '''迷路を表示する
+        '''
+        迷路を表示する
 
         drawMazeクラスからの利用を想定し、他のモジュールからの使用は想定していない
         描画番号とマップの地形情報に従って壁を描画する

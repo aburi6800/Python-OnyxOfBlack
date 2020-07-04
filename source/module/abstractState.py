@@ -3,14 +3,16 @@ from abc import ABCMeta, abstractmethod
 
 
 class AbstractState(metaclass=ABCMeta):
-    '''Stateクラスの抽象クラス
+    '''
+    Stateクラスの抽象クラス
 
     BaseStateクラスの基底クラス。もしかしていらないかも？
     '''
 
     @abstractmethod
     def update(self):
-        '''各フレームの処理
+        '''
+        各フレームの処理
 
         実装はなし
         '''
@@ -18,7 +20,8 @@ class AbstractState(metaclass=ABCMeta):
 
     @abstractmethod
     def render(self):
-        '''各フレームの描画処理
+        '''
+        各フレームの描画処理
 
         実装はなし
         '''
@@ -26,7 +29,8 @@ class AbstractState(metaclass=ABCMeta):
 
     @abstractmethod
     def onEnter(self):
-        '''状態開始時の処理
+        '''
+        状態開始時の処理
 
         実装はなし
         '''
@@ -34,7 +38,8 @@ class AbstractState(metaclass=ABCMeta):
 
     @abstractmethod
     def onExit(self):
-        '''状態終了時の処理
+        '''
+        状態終了時の処理
 
         実装はなし
         '''

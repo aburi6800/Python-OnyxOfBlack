@@ -9,36 +9,41 @@ from .character import Monster
 from .item import WeaponParams
 from .item import ArmorParams
 from .item import ShieldParams
-from .item import HelmParams
+from .item import HelmetParams
 
 
 class BaseState(AbstractState):
-    '''各Stateクラス全ての基底クラス
+    '''
+    各Stateクラス全ての基底クラス
 
     AbstractStateを継承
     renderメソッドでは画面の枠線とプレイヤーキャラクターの描画を行う
     '''
 
     def __init__(self, stateStack):
-        '''クラス初期化'''
+        '''
+        クラス初期化
+        '''
         self.stateStack = stateStack
         self.stateName = "(none)"
         self.playerParty = PlayerParty()
 
     def update(self):
-        '''各フレームの処理
+        '''
+        各フレームの処理
 
         実装なし
         '''
         pass
 
     def render(self):
-        '''各フレームの描画処理
+        '''
+        各フレームの描画処理
 
         各Stateで必ず必要な、画面の枠線とプレイヤーキャラクタ、ステータスの描画を行う
         '''
         # 枠線
-        pyxel.rectb(8, 8, 240, 128, pyxel.COLOR_DARKBLUE)
+        pyxel.rectb(8, 8, 240, 146, pyxel.COLOR_DARKBLUE)
         pyxel.line(128, 8, 128, 135, pyxel.COLOR_DARKBLUE)
         pyxel.line(8, 104, 248, 104, pyxel.COLOR_DARKBLUE)
 
@@ -58,14 +63,16 @@ class BaseState(AbstractState):
             pyxel.rect(16, (_idx + 1) * 16 + 11, _member.exp, 1,  6)
 
     def onEnter(self):
-        '''状態開始時の処理
+        '''
+        状態開始時の処理
 
         実装なし
         '''
         pass
 
     def onExit(self):
-        '''状態終了時の処理
+        '''
+        状態終了時の処理
 
         実装なし
         '''
@@ -73,7 +80,8 @@ class BaseState(AbstractState):
 
     @staticmethod
     def drawCharacter(_chr: Character, _x: int, _y: int):
-        '''キャラクターグラフィックの描画を行う
+        '''
+        キャラクターグラフィックの描画を行う
 
         Characterクラスのインスタンスと、表示位置を渡すと装備等に合わせて描画する
         Humanクラスの場合は装備を組み合わせたパターンを表示する
@@ -116,4 +124,5 @@ class BaseState(AbstractState):
                 pass
 
         elif isinstance(_chr, Monster):
-            pass
+            pyxel.blt(_x, _y, 1, _chr.blt_x, _chr.blt_y,
+                      _chr.blt_w, _chr.blt_h, 0)

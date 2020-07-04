@@ -10,7 +10,8 @@ from .character import Human
 
 
 class GameMaster(object):
-    '''ゲームマスタークラス
+    '''
+    ゲームマスタークラス
 
     StateStackとゲーム全体の進行を管理する
     ゲームループのupdate/renderからStateを呼び出すアダプタとなる
@@ -23,7 +24,9 @@ class GameMaster(object):
     playerParty = PlayerParty()
 
     def __init__(self):
-        '''クラス初期化'''
+        '''
+        クラス初期化
+        '''
         # 最初のStateを登録
         self.stateStack.push(self.stateStack.STATE_TITLE)
 
@@ -39,7 +42,9 @@ class GameMaster(object):
             self.playerParty.addMember(__member)
 
     def update(self):
-        '''各フレームの処理'''
+        '''
+        各フレームの処理
+        '''
         self.stateStack.update()
 
         # fieldのstateの場合はランダムエンカウントする
@@ -55,7 +60,9 @@ class GameMaster(object):
                     self.stateStack.push(self.stateStack.STATE_BATTLE)
 
     def render(self):
-        '''各フレームの描画処理'''
+        '''
+        各フレームの描画処理
+        '''
         self.stateStack.render()
 
         # エンカウント時のメッセージ

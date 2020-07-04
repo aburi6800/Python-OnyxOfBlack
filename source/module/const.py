@@ -1,8 +1,10 @@
-"""
-Constant types in Python.
-"""
+import sys
+
 
 class _const:
+    '''
+    定数を保持するクラス
+    '''
     class ConstError(TypeError):
         pass
 
@@ -11,5 +13,5 @@ class _const:
             raise self.ConstError("Can't rebind const (%s)" % name)
         self.__dict__[name] = value
 
-import sys
-sys.modules[__name__]=_const()
+
+sys.modules[__name__] = _const()

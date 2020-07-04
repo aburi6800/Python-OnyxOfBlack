@@ -3,31 +3,29 @@ import pyxel
 from ..pyxelUtil import PyxelUtil
 from ..facilityStates.baseFacilityState import BaseFacilityState
 
-'''
- StateArmorShopクラス
- - 鎧屋のクラス
- - 選択した商品の購入、キャラクターへの装備を行う
-'''
+
 class StateArmorShop(BaseFacilityState):
+    '''
+    鎧屋のクラス
 
-    #
-    # クラス初期化
-    #
+    BaseFacilityStateクラスを継承
+    選択した商品の購入、キャラクターへの装備を行う
+    '''
+
     def __init__(self, stateStack):
-
+        '''
+        クラス初期化
+        '''
         super().__init__(stateStack)
         self.stateName = "ArmorShop"
 
         self.tick = 0
         self.selected = 0
 
-    #
-    # 各フレームの処理
-    #
     def update(self):
-
-#        print(self.stateName + ":update")
-
+        '''
+        各フレームの処理
+        '''
         if pyxel.btn(pyxel.KEY_E):
             self.selected = 3
             self.tick = 0
@@ -38,13 +36,10 @@ class StateArmorShop(BaseFacilityState):
                 if self.selected == 3:
                     self.stateStack.pop()
 
-    #
-    # 各フレームの画面描画処理
-    #
     def render(self):
-
-#        print(self.stateName + ":render")
-
+        '''
+        各フレームの描画処理
+        '''
         super().render()
 
         color = [7, 7, 7]
@@ -56,23 +51,19 @@ class StateArmorShop(BaseFacilityState):
 
         PyxelUtil.text(16,  16, ["YO", "RO", "I", "YA"], 7)
         PyxelUtil.text(24,  30, ["*[B]:", "KA", "U"], color[0])
-        PyxelUtil.text(24,  38, ["*[N]:", "TU", "KI", "D", "NO", "SI", "LYO", "U", "HI", "NN"], color[1])
+        PyxelUtil.text(24,  38, ["*[N]:", "TU", "KI", "D",
+                                 "NO", "SI", "LYO", "U", "HI", "NN"], color[1])
         PyxelUtil.text(24,  46, ["*[E]:", "TE", "D", "RU"], color[2])
 
-    #
-    # 状態開始時の処理
-    #
     def onEnter(self):
-
-        print(self.stateName + ":onEnter")
-
+        '''
+        状態開始時の処理
+        '''
         self.tick = 0
         self.selected = 0
-        
-    #
-    # 状態終了時の処理
-    #
+
     def onExit(self):
-
-        print(self.stateName + ":onExit")
-
+        '''
+        状態終了時の処理
+        '''
+        pass

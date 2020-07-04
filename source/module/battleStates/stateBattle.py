@@ -8,13 +8,16 @@ from ..character import Human
 from ..character import HumanPartyGenerator
 
 class StateBattle(BaseState):
-    '''戦闘シーンのクラス
+    '''
+    戦闘シーンのクラス
 
     BaseStateクラスを継承
     '''
 
     def __init__(self, stateStack):
-        '''クラス初期化'''
+        '''
+        クラス初期化
+        '''
         super().__init__(stateStack)
         self.stateName = "Battle"
 
@@ -25,7 +28,9 @@ class StateBattle(BaseState):
         self.enemyParty = Party()
 
     def update(self):
-        '''各フレームの処理'''
+        '''
+        各フレームの処理
+        '''
         pass
         # 流れ：
         # ・行動決定フェーズ
@@ -39,17 +44,24 @@ class StateBattle(BaseState):
         #   2.敵パーティーが全滅した場合は、勝利の処理を行い、Stateを抜ける
 
     def render(self):
-        '''各フレームの描画処理'''
+        '''
+        各フレームの描画処理
+        '''
         super().render()
         # 敵の描画
         for _idx in range(len(self.enemyParty.memberList)):
-            _chr = self.enemyParty.getMember(_idx)
+            _chr = self.enemyParty.memberList[_idx]
             super().drawCharacter(_chr, 136 + _idx * 18, 108 + (_idx % 2) * 4)
 
     def onEnter(self):
-        '''状態開始時の処理'''
+        '''
+        状態開始時の処理
+        '''
         # 敵パーティー生成
         self.enemyParty = HumanPartyGenerator.generate()
 
     def onExit(self):
-        '''状態終了時の処理'''
+        '''
+        状態終了時の処理
+        '''
+        pass

@@ -2,50 +2,42 @@
 import pyxel
 from ..facilityStates.baseFacilityState import BaseFacilityState
 
-'''
- StateHelmetShopクラス
- - 兜屋のクラス
- - 選択した商品の購入、キャラクターへの装備を行う
-'''
+
 class StateHelmetShop(BaseFacilityState):
+    '''
+    兜屋のクラス
 
-    #
-    # クラス初期化
-    #
+    BaseFacilityStateクラスを継承
+    選択した商品の購入、キャラクターへの装備を行う
+    '''
+
     def __init__(self, stateStack):
-
+        '''
+        クラス初期化
+        '''
         super().__init__(stateStack)
         self.stateName = "HelmetShop"
 
-    #
-    # 各フレームの処理
-    #
     def update(self):
-
-#        print(self.stateName + ":update")
-
+        '''
+        各フレームの処理
+        '''
         pass
 
-    #
-    # 各フレームの画面描画処理
-    #
     def render(self):
-
-#        print(self.stateName + ":render")
-
+        '''
+        各フレームの描画処理
+        '''
         super().render()
 
-    #
-    # 状態開始時の処理
-    #
     def onEnter(self):
+        '''
+        状態開始時の処理
+        '''
+        pass
 
-        print(self.stateName + ":onEnter")
-
-    #
-    # 状態終了時の処理
-    #
     def onExit(self):
-
-        print(self.stateName + ":onExit")
-
+        '''
+        状態終了時の処理
+        '''
+        pass

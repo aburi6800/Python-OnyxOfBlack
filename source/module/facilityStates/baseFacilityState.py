@@ -2,49 +2,41 @@
 import pyxel
 from ..baseState import BaseState
 
-'''
- BaseFacilityStateクラス
- - 施設の基底クラス
- - 各施設で共通の処理を持つ
-'''
+
 class BaseFacilityState(BaseState):
+    '''
+    施設の基底クラス
 
-    #
-    # クラス初期化
-    #
+    各施設で共通の処理を持つ
+    '''
+
     def __init__(self, stateStack):
-
+        '''
+        クラス初期化
+        '''
         super().__init__(stateStack)
         self.stateName = "(none)"
 
-    #
-    # 各フレームの処理
-    #
     def update(self):
-
-#        print(self.stateName + ":update")
+        '''
+        各フレームの処理
+        '''
         pass
 
-    #
-    # 各フレームの画面描画処理
-    #
     def render(self):
-
-#        print(self.stateName + ":render")
-
+        '''
+        各フレームの描画処理
+        '''
         super().render()
 
-    #
-    # 状態開始時の処理
-    #
     def onEnter(self):
+        '''
+        状態開始時の処理
+        '''
+        pass
 
-        print(self.stateName + ":onEnter")
-
-    #
-    # 状態終了時の処理
-    #
     def onExit(self):
-
-        print(self.stateName + ":onExit")
-
+        '''
+        状態終了時の処理
+        '''
+        pass
