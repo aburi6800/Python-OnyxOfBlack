@@ -43,9 +43,9 @@ class BaseState(AbstractState):
         各Stateで必ず必要な、画面の枠線とプレイヤーキャラクタ、ステータスの描画を行う
         '''
         # 枠線
-        pyxel.rectb(8, 8, 240, 146, pyxel.COLOR_DARKBLUE)
-        pyxel.line(128, 8, 128, 135, pyxel.COLOR_DARKBLUE)
-        pyxel.line(8, 104, 248, 104, pyxel.COLOR_DARKBLUE)
+        pyxel.rectb(8, 8, 240, 134, pyxel.COLOR_DARKBLUE)
+        pyxel.line(128, 8, 128, 140, pyxel.COLOR_DARKBLUE)
+        pyxel.line(8, 104, 247, 104, pyxel.COLOR_DARKBLUE)
 
         # プレイヤーキャラクタの描画位置
         _x = [16, 36, 60, 84, 104]

@@ -57,7 +57,30 @@ class BaseFieldState(BaseState):
         '''
         各フレームの処理
         '''
-        pass
+        if pyxel.btn(pyxel.KEY_RIGHT):
+            self.direction += 1
+            if self.direction > self.DIRECTION_WEST:
+                self.direction = self.DIRECTION_NORTH
+
+        if pyxel.btn(pyxel.KEY_LEFT):
+            self.direction -= 1
+            if self.direction < self.DIRECTION_NORTH:
+                self.direction = self.DIRECTION_WEST
+
+        if pyxel.btn(pyxel.KEY_UP) and self.can_move_forward():
+            self.x = self.x + self.VX[self.direction]
+            self.y = self.y + self.VY[self.direction]
+
+    def can_move_forward(self) -> bool:
+        '''
+        前進できるかを判定する
+
+        マップデータの下位1ビットが立っていると前進不可と判定する
+        '''
+        if self.map[self.y + self.VY[self.direction]][self.x + self.VX[self.direction]] & 1 == 0:
+            return True
+        else:
+            return False
 
     def render(self):
         '''
@@ -95,8 +118,8 @@ class BaseFieldState(BaseState):
         for i in range(14):
             _get_x = _x + self.POS_X[_direction][i]
             _get_y = _y + self.POS_Y[_direction][i]
-            if _get_x < 0 or _get_x > len(_map[_y]) or _get_y < 0 or _get_y > len(_map):
-                _data.append(1)
+            if _get_x < 0 or _get_x > len(_map[_y]) - 1 or _get_y < 0 or _get_y > len(_map) - 1:
+                _data.append(0)
             else:
                 _data.append(_map[_get_y][_get_x])
 
@@ -168,7 +191,7 @@ class BaseFieldState(BaseState):
             pyxel.tri(219, 29, 204, 44, 219, 44, _wallColor_side)
             pyxel.tri(204, 67, 219, 67, 219, 82, _wallColor_side)
         elif idx == 10:
-            pyxel.rect(154+8,  28, 80, 80, 12)
+            pyxel.rect(164, 28, 56, 56, _wallColor_front)
 
         elif idx == 11:
             pyxel.rect(152, 28, 12, 56, _wallColor_side)

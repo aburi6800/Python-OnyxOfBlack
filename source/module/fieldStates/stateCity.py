@@ -63,10 +63,15 @@ class StateCity(BaseFieldState):
         '''
         各フレームの処理
         '''
+        super().update()
+
         try:
             # イベントが登録されている座標ならイベントの関数を呼び出す
             _key = "{:02d}".format(self.x) + "{:02d}".format(self.y) + "U"
-            self.event[_key]
+            _event = self.event[_key]
+            if _event != None:
+                print(_event)
+                _event()
         except KeyError:
             None
 
@@ -105,6 +110,9 @@ class StateCity(BaseFieldState):
         pyxel.blt(152, 17, 0, 0, 40, 80, 32, 0)
         # 迷路
         super().draw_maze(self.x, self.y, self.direction, self.map)
+
+        # テスト：タコさんが表示できるのか？
+        pyxel.blt(136, 105, 2, 0, 16, 32, 32, 0)
 
     def onEnter(self):
         '''

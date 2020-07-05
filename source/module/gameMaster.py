@@ -1,26 +1,26 @@
 # -*- coding: utf-8 -*-
 import random
 import pyxel
+from .singleton import Singleton
 from .pyxelUtil import PyxelUtil
 from .stateStack import StateStack
 from .character import HumanPartyGenerator
 from .character import PlayerParty
-from .character import Party
-from .character import Human
 
 
-class GameMaster(object):
+class GameMaster(Singleton):
     '''
     ゲームマスタークラス
 
-    StateStackとゲーム全体の進行を管理する
+    Singletonとする
+    シーンを管理すろStateStackとプレイヤーパーティーの情報を持つ
+    ゲーム全体の進行を管理する
     ゲームループのupdate/renderからStateを呼び出すアダプタとなる
     '''
-
     # StateStack
     stateStack = StateStack()
 
-    # プレイヤーパーティー    
+    # プレイヤーパーティー
     playerParty = PlayerParty()
 
     def __init__(self):
@@ -28,7 +28,7 @@ class GameMaster(object):
         クラス初期化
         '''
         # 最初のStateを登録
-        self.stateStack.push(self.stateStack.STATE_TITLE)
+        self.stateStack.push(self.stateStack.STATE_CITY)
 
         # エンカウントした？
         self.isEncount = False
@@ -38,8 +38,8 @@ class GameMaster(object):
 
         # テストでランダムパーティー生成をプレイヤーパーティとする
         _party = HumanPartyGenerator.generate()
-        for __member in _party.memberList:
-            self.playerParty.addMember(__member)
+        for _member in _party.memberList:
+            self.playerParty.addMember(_member)
 
     def update(self):
         '''
@@ -49,9 +49,9 @@ class GameMaster(object):
 
         # fieldのstateの場合はランダムエンカウントする
         if self.stateStack.isField():
-            if pyxel.btn(pyxel.KEY_UP):
-                if random.randint(0, 10) == 0:
-                    self.isEncount = True
+            #            if pyxel.btn(pyxel.KEY_UP):
+            #                if random.randint(0, 20) == 0:
+            #                    self.isEncount = True
 
             if self.isEncount:
                 self.tick += 1
@@ -67,5 +67,5 @@ class GameMaster(object):
 
         # エンカウント時のメッセージ
         if self.isEncount:
-            PyxelUtil.text(8, 140, ["NA", "NI", "KA", "TI", "KA", "TU",
-                                    "D", "I", "TE", "KI", "TA", "*!"], pyxel.COLOR_RED)
+            PyxelUtil.text(10, 146, ["NA", "NI", "KA", "TI", "KA", "TU",
+                                     "D", "I", "TE", "KI", "TA", "*!"], pyxel.COLOR_RED)

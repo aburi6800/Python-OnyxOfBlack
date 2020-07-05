@@ -14,12 +14,12 @@ class App:
         '''
         クラス初期化
         '''
-        # GameMaster誕生
+        # GameMaster
         self.gameMaster = GameMaster()
 
         # Pyxel初期化～実行
         pyxel.init(256, 192, fps=10)
-        pyxel.load("../data/onyxofblack.pyxres")
+        pyxel.load("../assets/onyxofblack.pyxres")
         pyxel.run(self.update, self.draw)
 
     def update(self):
