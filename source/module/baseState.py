@@ -2,14 +2,15 @@
 import pyxel
 from .pyxelUtil import PyxelUtil
 from .abstractState import AbstractState
-from .character import PlayerParty
+#from .stateStack import stateStack
+from .character import playerParty
 from .character import Character
 from .character import Human
 from .character import Monster
-from .item import WeaponParams
-from .item import ArmorParams
-from .item import ShieldParams
-from .item import HelmetParams
+#from .item import WeaponParams
+#from .item import ArmorParams
+#from .item import ShieldParams
+#from .item import HelmetParams
 
 
 class BaseState(AbstractState):
@@ -26,7 +27,6 @@ class BaseState(AbstractState):
         '''
         self.stateStack = stateStack
         self.stateName = "(none)"
-        self.playerParty = PlayerParty()
 
     def update(self):
         '''
@@ -52,8 +52,8 @@ class BaseState(AbstractState):
         _y = [108, 112, 108, 112, 108]
 
         # プレイヤーキャラクタ描画
-        for _idx in range(len(self.playerParty.memberList)):
-            _member = self.playerParty.memberList[_idx]
+        for _idx in range(len(playerParty.memberList)):
+            _member = playerParty.memberList[_idx]
             # キャラクタ
             BaseState.drawCharacter(_member, _x[_idx], _y[_idx])
             # ステータス
@@ -98,7 +98,7 @@ class BaseState(AbstractState):
 
             # 体
             if _chr.armor == None:
-                _armor_x = 0
+                _armor_x = 160 + _chr.body * 8
                 _armor_y = 32
                 _armor_w = 8
                 _armor_h = 16

@@ -2,6 +2,9 @@
 import pyxel
 from ..pyxelUtil import PyxelUtil
 from ..facilityStates.baseFacilityState import BaseFacilityState
+from ..character import playerParty
+from ..character import Human
+from ..item import ArmorParams
 
 
 class StateArmorShop(BaseFacilityState):
@@ -21,6 +24,16 @@ class StateArmorShop(BaseFacilityState):
 
         self.tick = 0
         self.selected = 0
+
+        # 店員の初期データ
+        self.saleParson = Human()
+        self.saleParson.name = "Blick Armstrong"
+        self.saleParson.head = 13
+        self.saleParson.body = 1
+        self.saleParson.armor = None
+        self.saleParson.weapon = None
+        self.saleParson.shield = None
+        self.saleParson.helm = None
 
     def update(self):
         '''
@@ -49,11 +62,10 @@ class StateArmorShop(BaseFacilityState):
             else:
                 color[self.selected - 1] = 7
 
-        PyxelUtil.text(16,  16, ["YO", "RO", "I", "YA"], 7)
-        PyxelUtil.text(24,  30, ["*[B]:", "KA", "U"], color[0])
-        PyxelUtil.text(24,  38, ["*[N]:", "TU", "KI", "D",
-                                 "NO", "SI", "LYO", "U", "HI", "NN"], color[1])
-        PyxelUtil.text(24,  46, ["*[E]:", "TE", "D", "RU"], color[2])
+        PyxelUtil.text(16, 152, ["YO", "U", "KO", "SO", " ", "I", "RA", "LTU", "SI", "LYA", "I", "MA", "SE", "."], pyxel.COLOR_WHITE)
+        PyxelUtil.text(16, 160, ["WA", "TA", "SI" ,"HA", "* Blick Armstrong ", "TO", " ", "MO", "U", "SI", "MA", "SU", "."], pyxel.COLOR_WHITE)
+        PyxelUtil.text(180, 176, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
+        self.drawCharacter(self.saleParson, 178, 112)
 
     def onEnter(self):
         '''
@@ -66,4 +78,4 @@ class StateArmorShop(BaseFacilityState):
         '''
         状態終了時の処理
         '''
-        pass
+        playerParty.restoreCondition

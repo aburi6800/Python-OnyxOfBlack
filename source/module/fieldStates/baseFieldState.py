@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import pyxel
 from ..baseState import BaseState
+from ..character import playerParty
 
 
 class BaseFieldState(BaseState):
@@ -58,18 +59,21 @@ class BaseFieldState(BaseState):
         各フレームの処理
         '''
         if pyxel.btn(pyxel.KEY_RIGHT):
-            self.direction += 1
-            if self.direction > self.DIRECTION_WEST:
-                self.direction = self.DIRECTION_NORTH
+            playerParty.saveCondition
+            playerParty.direction += 1
+            if playerParty.direction > self.DIRECTION_WEST:
+                playerParty.direction = self.DIRECTION_NORTH
 
         if pyxel.btn(pyxel.KEY_LEFT):
-            self.direction -= 1
-            if self.direction < self.DIRECTION_NORTH:
-                self.direction = self.DIRECTION_WEST
+            playerParty.saveCondition
+            playerParty.direction -= 1
+            if playerParty.direction < self.DIRECTION_NORTH:
+                playerParty.direction = self.DIRECTION_WEST
 
         if pyxel.btn(pyxel.KEY_UP) and self.can_move_forward():
-            self.x = self.x + self.VX[self.direction]
-            self.y = self.y + self.VY[self.direction]
+            playerParty.saveCondition
+            playerParty.x = playerParty.x + self.VX[playerParty.direction]
+            playerParty.y = playerParty.y + self.VY[playerParty.direction]
 
     def can_move_forward(self) -> bool:
         '''
@@ -77,7 +81,7 @@ class BaseFieldState(BaseState):
 
         マップデータの下位1ビットが立っていると前進不可と判定する
         '''
-        if self.map[self.y + self.VY[self.direction]][self.x + self.VX[self.direction]] & 1 == 0:
+        if self.map[playerParty.y + self.VY[playerParty.direction]][playerParty.x + self.VX[playerParty.direction]] & 1 == 0:
             return True
         else:
             return False

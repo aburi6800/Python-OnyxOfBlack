@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import pyxel
 from ..pyxelUtil import PyxelUtil
+from ..character import playerParty
 from ..fieldStates.baseFieldState import BaseFieldState
 
 
@@ -21,11 +22,6 @@ class StateCity(BaseFieldState):
 
         # 変数定義
         self.tick = 0
-
-        # 自分の最初の座標と方向
-        self.x = 6
-        self.y = 1
-        self.direction = BaseFieldState.DIRECTION_SOUTH
 
         # マップ
         # 0 = 通路
@@ -67,7 +63,7 @@ class StateCity(BaseFieldState):
 
         try:
             # イベントが登録されている座標ならイベントの関数を呼び出す
-            _key = "{:02d}".format(self.x) + "{:02d}".format(self.y) + "U"
+            _key = "{:02d}".format(playerParty.x) + "{:02d}".format(playerParty.y) + "U"
             _event = self.event[_key]
             if _event != None:
                 print(_event)
@@ -109,18 +105,25 @@ class StateCity(BaseFieldState):
         # 満天の星空
         pyxel.blt(152, 17, 0, 0, 40, 80, 32, 0)
         # 迷路
-        super().draw_maze(self.x, self.y, self.direction, self.map)
+        super().draw_maze(playerParty.x, playerParty.y, playerParty.direction, self.map)
 
         # テスト：タコさんが表示できるのか？
-        pyxel.blt(136, 105, 2, 0, 16, 32, 32, 0)
+        pyxel.blt(176, 105, 2, 0, 16, 32, 32, 0)
 
     def onEnter(self):
         '''
         状態開始時の処理
         '''
+        super().onEnter()
+
         self.tick = 0
         self.selected = 0
         self.isEncount = False
+
+        # プレイヤーパーティーの最初の位置と方向
+        playerParty.x = 6
+        playerParty.y = 1
+        playerParty.direction = self.DIRECTION_SOUTH
 
     def onExit(self):
         '''

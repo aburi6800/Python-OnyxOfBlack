@@ -37,6 +37,7 @@ class Human(Character):
         '''
         super(Human, self).__init__()
         self.head = None
+        self.body = None
         self.helmet = None
         self.armor = None
         self.shield = None
@@ -72,6 +73,7 @@ class Party(Singleton):
         '''
         クラス初期化
         '''
+        # パーティーメンバーのリスト
         self.memberList = []
 
     def addMember(self, chr: Character):
@@ -94,23 +96,34 @@ class Party(Singleton):
                 "specified a member who doesn't exist.：" + str(idx))
 
 
-class PlayerParty(Singleton):
+class PlayerParty(object):
     '''
     プレイヤーパーティーのクラス
 
-    Singletonクラスとする
     Humanクラスを格納したListを管理する
     リストに登録するHumanの上限は5とする
     '''
 
-    # パーティーメンバーのリスト
+    # プレイヤーパーティーメンバーのリスト
     memberList = []
 
     def __init__(self):
         '''
         クラス初期化
         '''
+        print("PlayerParty:Initialized.")
+        # プレイヤーパーティーメンバーのリスト
         self.memberList = []
+
+        # プレイヤーパーティーの位置と方向
+        self.x = 0
+        self.y = 0
+        self.direction = 0
+
+        # プレイヤーパーティーの直前の位置と方向
+        self.x_save = 0
+        self.y_save = 0
+        self.direction_save = 0
 
     def addMember(self, chr: Human):
         '''
@@ -144,6 +157,27 @@ class PlayerParty(Singleton):
             avr = avr // len(self.memberList)
 
         return avr
+
+    def saveCondition(self):
+        '''
+        状態を保存する
+        '''
+        self.x_save = self.x
+        self.y_save = self.y
+        self.direction_save = self.direction
+        print("PlayerParty : Condition saved. x={:02d}".format(self.x_save) + ",y={:02d}".format(self.y_save) + ",direction={:01d}".format(self.direction_save))
+
+    def restoreCondition(self):
+        '''
+        状態を復元する
+        '''
+        self.x = self.x_save
+        self.y = self.y_save
+        self.direction = self.direction_save
+        print("PlayerParty : Condition restored. x={:02d}".format(self.x) + ",y={:02d}".format(self.y) + ",direction={:01d}".format(self.direction))
+
+
+playerParty = PlayerParty()
 
 
 class HumanPartyGenerator(Singleton):
@@ -196,9 +230,11 @@ class HumanGenerator(Singleton):
         human.dex = random.randint(1, _level * 5)
         human.gold = random.randint(1, _level * 100)
         human.weapon = WeaponParams().weaponList[random.randint(0, 3)]
-        human.armor = ArmorParams().armorList[random.randint(0, 1)]
+#        human.armor = ArmorParams().armorList[random.randint(0, 1)]
+        human.armor = None
         human.name = HumanGenerator()._generateName()
-        human.head = random.randint(0, 128)
+        human.head = random.randint(0, 127)
+        human.body = random.randint(0, 2)
 
         return human
 

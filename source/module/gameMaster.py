@@ -1,54 +1,46 @@
 # -*- coding: utf-8 -*-
 import random
 import pyxel
-from .singleton import Singleton
 from .pyxelUtil import PyxelUtil
-from .stateStack import StateStack
+from .stateStack import stateStack
 from .character import HumanPartyGenerator
-from .character import PlayerParty
+from .character import playerParty
 
 
-class GameMaster(Singleton):
+class GameMaster(object):
     '''
     ゲームマスタークラス
 
-    Singletonとする
     シーンを管理すろStateStackとプレイヤーパーティーの情報を持つ
     ゲーム全体の進行を管理する
     ゲームループのupdate/renderからStateを呼び出すアダプタとなる
     '''
-    # StateStack
-    stateStack = StateStack()
+    # エンカウントした？
+    isEncount = False
 
-    # プレイヤーパーティー
-    playerParty = PlayerParty()
+    # タイマー
+    tick = 0
 
     def __init__(self):
         '''
         クラス初期化
         '''
         # 最初のStateを登録
-        self.stateStack.push(self.stateStack.STATE_CITY)
-
-        # エンカウントした？
-        self.isEncount = False
-
-        # タイマー
-        self.tick = 0
+        stateStack.push(stateStack.STATE_TITLE)
 
         # テストでランダムパーティー生成をプレイヤーパーティとする
         _party = HumanPartyGenerator.generate()
         for _member in _party.memberList:
-            self.playerParty.addMember(_member)
+            playerParty.addMember(_member)
 
     def update(self):
         '''
         各フレームの処理
         '''
-        self.stateStack.update()
+        stateStack.update()
 
         # fieldのstateの場合はランダムエンカウントする
-        if self.stateStack.isField():
+        if stateStack.isField():
             #            if pyxel.btn(pyxel.KEY_UP):
             #                if random.randint(0, 20) == 0:
             #                    self.isEncount = True
@@ -57,15 +49,18 @@ class GameMaster(Singleton):
                 self.tick += 1
                 if self.tick > 10:
                     self.isEncount = False
-                    self.stateStack.push(self.stateStack.STATE_BATTLE)
+                    stateStack.push(StateStack().STATE_BATTLE)
 
     def render(self):
         '''
         各フレームの描画処理
         '''
-        self.stateStack.render()
+        stateStack.render()
 
         # エンカウント時のメッセージ
         if self.isEncount:
             PyxelUtil.text(10, 146, ["NA", "NI", "KA", "TI", "KA", "TU",
                                      "D", "I", "TE", "KI", "TA", "*!"], pyxel.COLOR_RED)
+
+
+gameMaster = GameMaster()

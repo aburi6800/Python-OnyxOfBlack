@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import pyxel
-from module.gameMaster import GameMaster
+from module.gameMaster import gameMaster
 
 
 class App:
@@ -14,9 +14,6 @@ class App:
         '''
         クラス初期化
         '''
-        # GameMaster
-        self.gameMaster = GameMaster()
-
         # Pyxel初期化～実行
         pyxel.init(256, 192, fps=10)
         pyxel.load("../assets/onyxofblack.pyxres")
@@ -27,13 +24,13 @@ class App:
         各フレームの処理
         '''
         pyxel.cls(pyxel.COLOR_BLACK)
-        self.gameMaster.update()
+        gameMaster.update()
 
     def draw(self):
         '''
         各フレームの画面描画処理
         '''
-        self.gameMaster.render()
+        gameMaster.render()
 
 
 if __name__ == "__main__":

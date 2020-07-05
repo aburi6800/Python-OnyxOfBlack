@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .singleton import Singleton
+#from .singleton import Singleton
 from .systemStates.stateTitle import StateTitle
 from .battleStates.stateBattle import StateBattle
 from .fieldStates.baseFieldState import BaseFieldState
@@ -16,7 +16,7 @@ from .facilityStates.stateHelmetShop import StateHelmetShop
 #import stateExaminations
 
 
-class StateStack(Singleton):
+class StateStack(object):
     '''
     Stateをスタックで保持するクラス
 
@@ -37,15 +37,6 @@ class StateStack(Singleton):
         クラス初期化
         '''
         self.states = []
-#        self.stateDic = {
-#            self.STATE_TITLE: StateTitle(self),
-#            self.STATE_CITY: StateCity(self),
-#            self.STATE_BATTLE: StateBattle(self),
-#            self.STATE_WEAPONSHOP: StateWeaponShop(self),
-#            self.STATE_ARMORSHOP: StateArmorShop(self),
-#            self.STATE_SHIELDSHOP: StateShieldShop(self),
-#            self.STATE_HELMETSHOP: StateHelmetShop(self)
-#        }
         self.stateDic = {
             self.STATE_TITLE: StateTitle,
             self.STATE_CITY: StateCity,
@@ -60,13 +51,15 @@ class StateStack(Singleton):
         '''
         現在先頭にあるStateのupdateメソッドを実行する
         '''
-        self.states[0].update()
+        if len(self.states) > 0:
+            self.states[0].update()
 
     def render(self):
         '''
         現在先頭にあるStateのrenderメソッドを実行する
         '''
-        self.states[0].render()
+        if len(self.states) > 0:
+            self.states[0].render()
 
     def push(self, stateName: str):
         '''
@@ -93,7 +86,10 @@ class StateStack(Singleton):
         '''
         現在のStateがBaseFieldの派生クラスかを判定する
         '''
-        if isinstance(self.states[0], BaseFieldState):
+        if len(self.states) > 0 and isinstance(self.states[0], BaseFieldState):
             return True
         else:
             return False
+
+
+stateStack = StateStack()
