@@ -107,8 +107,8 @@ class StateCity(BaseFieldState):
         # 迷路
         super().draw_maze(playerParty.x, playerParty.y, playerParty.direction, self.map)
 
-        # テスト：タコさんが表示できるのか？
-        pyxel.blt(176, 105, 2, 0, 16, 32, 32, 0)
+#        # テスト：タコさんが表示できるのか？
+#        pyxel.blt(176, 105, 2, 0, 16, 32, 32, 0)
 
     def onEnter(self):
         '''

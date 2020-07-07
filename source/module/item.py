@@ -21,12 +21,12 @@ class WeaponParam():
         self.price = price
 
 
-class WeaponParams(Singleton):
+class WeaponParams(object):
     '''
     武器のリストを持つクラス
 
-    Singletonクラスとする
     リストの要素はWeaponParamクラスのインスタンスとする
+    他モジュールから利用する場合はweaponParamsをimportすること
     '''
     weaponList = []
 
@@ -55,6 +55,9 @@ class WeaponParams(Singleton):
             "BATTLE AXE", 80, 48, 8, 16, 60,  True, 2560))
 
 
+weaponParams = WeaponParams()
+
+
 class ArmorParam():
     '''
     鎧の属性を持つクラス
@@ -73,12 +76,12 @@ class ArmorParam():
         self.price = price
 
 
-class ArmorParams(Singleton):
+class ArmorParams(object):
     '''
     鎧のリストを持つクラス
 
-    Singletonクラスとする
     リストの要素はArmorParamクラスのインスタンスとする
+    他モジュールから利用する場合はarmorParamsをimportすること
     '''
     armorList = []
 
@@ -95,7 +98,10 @@ class ArmorParams(Singleton):
             "FULL PLATE", 48, 32, 8, 16,  32,  2560))
         self.armorList.append(ArmorParam("TABARD", 56, 32, 8, 16,  64, 10240))
         self.armorList.append(ArmorParam(
-            "MAGIC MANTLE", 72, 32, 8, 16, 128,     0))
+            "MAGIC MANTLE", 72, 32, 8, 16, 128,    -1))
+
+
+armorParams = ArmorParams()
 
 
 class ShieldParam():
@@ -116,12 +122,12 @@ class ShieldParam():
         self.price = price
 
 
-class ShieldParams(Singleton):
+class ShieldParams(object):
     '''
     盾のリストを持つクラス
 
-    Singletonクラスとする
     リストの要素はShieldParamクラスのインスタンスとする
+    他モジュールから利用する場合はshieldParamsをimportすること
     '''
     shieldList = []
 
@@ -136,6 +142,9 @@ class ShieldParams(Singleton):
             "M SHIELD", 136, 40, 8, 8,   8,   270))
         self.shieldList.append(ArmorParam(
             "L SHIELD", 144, 40, 8, 8,  24,  2430))
+
+
+shieldParams = ShieldParams()
 
 
 class HelmetParam():
@@ -156,12 +165,12 @@ class HelmetParam():
         self.price = price
 
 
-class HelmetParams(Singleton):
+class HelmetParams(object):
     '''
     兜のリストを持つクラス
 
-    Singletonクラスとする
     リストの要素はHelmetParamクラスのインスタンスとする
+    他モジュールから利用する場合はhelmetParamsをimportすること
     '''
     helmList = []
 
@@ -176,3 +185,6 @@ class HelmetParams(Singleton):
             "WINGED HELM", 136, 32, 8, 8,  16,   320))
         self.helmList.append(ArmorParam(
             "HORNED HELM", 144, 32, 8, 8,  32,  2560))
+
+
+helmetParams = HelmetParams()

@@ -59,19 +59,19 @@ class BaseFieldState(BaseState):
         各フレームの処理
         '''
         if pyxel.btn(pyxel.KEY_RIGHT):
-            playerParty.saveCondition
+            playerParty.saveCondition()
             playerParty.direction += 1
             if playerParty.direction > self.DIRECTION_WEST:
                 playerParty.direction = self.DIRECTION_NORTH
 
         if pyxel.btn(pyxel.KEY_LEFT):
-            playerParty.saveCondition
+            playerParty.saveCondition()
             playerParty.direction -= 1
             if playerParty.direction < self.DIRECTION_NORTH:
                 playerParty.direction = self.DIRECTION_WEST
 
         if pyxel.btn(pyxel.KEY_UP) and self.can_move_forward():
-            playerParty.saveCondition
+            playerParty.saveCondition()
             playerParty.x = playerParty.x + self.VX[playerParty.direction]
             playerParty.y = playerParty.y + self.VY[playerParty.direction]
 
