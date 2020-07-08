@@ -14,8 +14,16 @@ class StateArmorShop(BaseFacilityState):
     BaseFacilityStateクラスを継承
     選択した商品の購入、キャラクターへの装備を行う
     '''
+    # 状態の定数
+    STATE_ENTER = 0
+    STATE_BUY = 1
+    STATE_EQUIP = 2
+    STATE_DONE = 3
+    STATE_LEAVE = 4
+    STATE_EXIT = 5
+
     # このクラスの状態
-    state = 0
+    state = STATE_ENTER
 
     # アイテム番号
     itemNumber = None
@@ -27,7 +35,16 @@ class StateArmorShop(BaseFacilityState):
     buyMember = None
 
     # 持つメンバー
-    haveMember = None
+    equipMember = None
+
+    # キーとメンバーの辞書
+    keyMap = {
+        pyxel.KEY_1: 0,
+        pyxel.KEY_2: 1,
+        pyxel.KEY_3: 2,
+        pyxel.KEY_4: 3,
+        pyxel.KEY_5: 4,
+    }
 
     def __init__(self, stateStack):
         '''
@@ -38,6 +55,7 @@ class StateArmorShop(BaseFacilityState):
 
         self.tick = 0
         self.selected = 0
+        self.state = self.STATE_ENTER
 
         # 店員の初期データ
         self.saleParson = Human()
@@ -53,36 +71,40 @@ class StateArmorShop(BaseFacilityState):
         '''
         各フレームの処理
         '''
-        if self.state == 0:
-            self._update_initial()
+        if self.state == self.STATE_ENTER:
+            self._update_enter()
 
-        if self.state == 1:
-            self._update_select()
+        elif self.state == self.STATE_BUY:
+            self._update_buy()
 
-        if self.state == 4:
+        elif self.state == self.STATE_EQUIP:
+            self._update_equip()
+
+        elif self.state == self.STATE_DONE:
+            self._update_done()
+
+        elif self.state == self.STATE_LEAVE:
             self._update_leave()
 
-        if self.state == 5:
+        elif self.state == self.STATE_EXIT:
             self._update_exit()
 
-    def _update_initial(self):
+    def _update_enter(self):
         '''
         店に入った時の処理
-
-        スペースキーの入力だけ待つ
         '''
         if pyxel.btn(pyxel.KEY_SPACE):
             self.itemNumber = 0
             self.item = armorParams.armorList[self.itemNumber]
             self.saleParson.armor = self.item
-            self.state = 1
+            self.state = self.STATE_BUY
 
-    def _update_select(self):
+    def _update_buy(self):
         '''
-        選ぶ処理
+        買う人を選ぶ処理
         '''
         if pyxel.btn(pyxel.KEY_L):
-            self.state = 4
+            self.state = self.STATE_LEAVE
 
         if pyxel.btn(pyxel.KEY_ENTER):
             _selected = False
@@ -95,12 +117,49 @@ class StateArmorShop(BaseFacilityState):
             self.item = armorParams.armorList[self.itemNumber]
             self.saleParson.armor = self.item
 
+        for _key, _value in self.keyMap.items():
+            if pyxel.btn(_key) and len(playerParty.memberList) > _value and playerParty.memberList[_value].gold > armorParams.armorList[self.itemNumber].price:
+                self.buyMember = _value
+                self.state = self.STATE_EQUIP
+
+    def _update_equip(self):
+        '''
+        装備する人を選ぶ処理
+        '''
+        if pyxel.btn(pyxel.KEY_L):
+            self.state = self.STATE_LEAVE
+
+        if pyxel.btn(pyxel.KEY_ENTER):
+            self.state = self.STATE_BUY
+            _selected = False
+            while _selected == False:
+                self.itemNumber += 1
+                if self.itemNumber > len(armorParams.armorList) - 1:
+                    self.itemNumber = 0
+                if armorParams.armorList[self.itemNumber].price > 0:
+                    _selected = True
+            self.item = armorParams.armorList[self.itemNumber]
+            self.saleParson.armor = self.item
+
+        for _key, _value in self.keyMap.items():
+            if pyxel.btn(_key) and len(playerParty.memberList) > _value:
+                self.equipMember = _value
+                self.state = self.STATE_DONE
+
+    def _update_done(self):
+        '''
+        買った処理
+        '''
+        playerParty.memberList[self.buyMember].gold -= armorParams.armorList[self.itemNumber].price
+        playerParty.memberList[self.equipMember].armor = armorParams.armorList[self.itemNumber]
+        self.state = self.STATE_BUY
+
     def _update_leave(self):
         '''
         店を出る処理
         '''
         if pyxel.btn(pyxel.KEY_SPACE):
-            self.state = 5
+            self.state = self.STATE_EXIT
 
     def _update_exit(self):
         '''
@@ -114,17 +173,25 @@ class StateArmorShop(BaseFacilityState):
         '''
         super().render()
 
-        if self.state == 0:
+        if self.state == self.STATE_ENTER:
             self._render_initial()
 
-        if self.state == 1:
-            self._render_select()
+        elif self.state == self.STATE_BUY:
+            self._render_buy()
 
-        if self.state == 4:
+        elif self.state == self.STATE_EQUIP:
+            self._render_equip()
+
+        elif self.state == self.STATE_LEAVE:
             self._render_leave()
 
         # 店員
         self.drawCharacter(self.saleParson, 178, 112)
+
+        # メンバーの所持金を表示
+        for _idx in range(len(playerParty.memberList)):
+            PyxelUtil.text(136, 16 + _idx * 16, ["*{:1d} : {:5d} G.P.".format(
+                _idx + 1, playerParty.memberList[_idx].gold)], pyxel.COLOR_WHITE)
 
     def _render_initial(self):
         '''
@@ -136,23 +203,29 @@ class StateArmorShop(BaseFacilityState):
                                  "TO", " ", "MO", "U", "SI", "MA", "SU", "."], pyxel.COLOR_WHITE)
         PyxelUtil.text(180, 176, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
-    def _render_select(self):
+    def _render_buy(self):
         '''
-        選ぶ表示
+        買う人を選ぶ表示
         '''
         PyxelUtil.text(16, 152, ["*" + self.item.name + " (" + str(self.item.price) +
                                  " G.P.) ", "TE", "D", "SU", "."], pyxel.COLOR_WHITE)
         PyxelUtil.text(16, 160, ["TO", "D", "NA", "TA", "KA", "D", " ", "O", "KA",
                                  "I", "NI", "NA", "RI", "MA", "SU", "KA", "*?"], pyxel.COLOR_WHITE)
-        PyxelUtil.text(56, 168, ["*[ANY KEY] ", "TU", "KI",
+        PyxelUtil.text(56, 168, ["*[ENTER] ", "TU", "KI",
                                  "D", "NO", "a", "i", "te", "mu"], pyxel.COLOR_YELLOW)
-        PyxelUtil.text(56, 176, ["*[L]       ", "MI", "SE",
+        PyxelUtil.text(56, 176, ["*[L]     ", "MI", "SE",
                                  "WO", "TE", "D", "RU"], pyxel.COLOR_YELLOW)
 
-        # メンバーの所持金を表示
-        for _idx in range(len(playerParty.memberList)):
-            PyxelUtil.text(136, 16 + _idx * 16, ["*{:1d} : {:5d} G.P.".format(
-                _idx + 1, playerParty.memberList[_idx].gold)], pyxel.COLOR_WHITE)
+    def _render_equip(self):
+        '''
+        装備する人を選ぶ表示
+        '''
+        PyxelUtil.text(16, 160, ["TO", "D", "NA", "TA", "KA", "D", " ", "O", "TU", "KA",
+                                 "I", "NI", "NA", "RI", "MA", "SU", "KA", "*?"], pyxel.COLOR_WHITE)
+        PyxelUtil.text(56, 168, ["*[ENTER] ", "TU", "KI",
+                                 "D", "NO", "a", "i", "te", "mu"], pyxel.COLOR_YELLOW)
+        PyxelUtil.text(56, 176, ["*[L]     ", "MI", "SE",
+                                 "WO", "TE", "D", "RU"], pyxel.COLOR_YELLOW)
 
     def _render_leave(self):
         '''
