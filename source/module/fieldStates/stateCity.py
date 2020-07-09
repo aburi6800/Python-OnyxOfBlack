@@ -49,10 +49,12 @@ class StateCity(BaseFieldState):
         # マップ上の座標に対応するイベントの関数の辞書
         # 座標は"0101U"のようにX座標とY座標を2桁にした値を結合し、"U"(update用)か"D"(draw用)を付与したものとする
         self.event = {
-            #            "0104U" : self.update_enter_shieldshop(),
+            "0104U" : self.update_enter_helmetshop,
+            "0106U" : self.update_enter_shieldshop,
             "0304U": self.update_enter_armorshop,
-            #            "0106U" : self.update_enter_helmetshop(),
             "0306U": self.update_enter_weaponshop,
+            "0305D": self.draw_frontShop1,
+            "0105D": self.draw_frontShop2,
         }
 
     def update(self):
@@ -66,7 +68,6 @@ class StateCity(BaseFieldState):
             _key = "{:02d}".format(playerParty.x) + "{:02d}".format(playerParty.y) + "U"
             _event = self.event[_key]
             if _event != None:
-                print(_event)
                 _event()
         except KeyError:
             None
@@ -75,8 +76,7 @@ class StateCity(BaseFieldState):
         '''
         盾屋に入るイベント
         '''
-#        self.stateStack.push(self.stateStack.STATE_SHIELDSHOP)
-        pass
+        self.stateStack.push(self.stateStack.STATE_SHIELDSHOP)
 
     def update_enter_armorshop(self):
         '''
@@ -88,8 +88,7 @@ class StateCity(BaseFieldState):
         '''
         兜屋に入るイベント
         '''
-#        self.stateStack.push(self.stateStack.STATE_HELMETSHOP)
-        pass
+        self.stateStack.push(self.stateStack.STATE_HELMETSHOP)
 
     def update_enter_weaponshop(self):
         '''
@@ -102,13 +101,45 @@ class StateCity(BaseFieldState):
         各フレームの描画処理
         '''
         super().render()
+
         # 満天の星空
         pyxel.blt(152, 17, 0, 0, 40, 80, 32, 0)
+
         # 迷路
         super().draw_maze(playerParty.x, playerParty.y, playerParty.direction, self.map)
 
-#        # テスト：タコさんが表示できるのか？
-#        pyxel.blt(176, 105, 2, 0, 16, 32, 32, 0)
+        try:
+            # イベントが登録されている座標ならイベントの関数を呼び出す
+            _key = "{:02d}".format(playerParty.x) + "{:02d}".format(playerParty.y) + "D"
+            _event = self.event[_key]
+            if _event != None:
+                _event()
+        except KeyError:
+            None
+
+    def draw_frontShop1(self):
+        '''
+        店の前に立った時の表示１
+        '''
+        if playerParty.direction == self.DIRECTION_NORTH:
+            PyxelUtil.text(184, 34, "*ARMOR", pyxel.COLOR_BLACK)
+            pyxel.circ(174, 56, 2, pyxel.COLOR_BLACK)
+
+        if playerParty.direction == self.DIRECTION_SOUTH:
+            PyxelUtil.text(184, 34, "*WEAPON", pyxel.COLOR_BLACK)
+            pyxel.circ(174, 56, 2, pyxel.COLOR_BLACK)
+
+    def draw_frontShop2(self):
+        '''
+        店の前に立った時の表示２
+        '''
+        if playerParty.direction == self.DIRECTION_NORTH:
+            PyxelUtil.text(184, 34, "*HELMET", pyxel.COLOR_BLACK)
+            pyxel.circ(174, 56, 2, pyxel.COLOR_BLACK)
+
+        if playerParty.direction == self.DIRECTION_SOUTH:
+            PyxelUtil.text(184, 34, "*SHIELD", pyxel.COLOR_BLACK)
+            pyxel.circ(174, 56, 2, pyxel.COLOR_BLACK)
 
     def onEnter(self):
         '''

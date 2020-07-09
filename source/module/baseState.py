@@ -93,7 +93,10 @@ class BaseState(AbstractState):
                 _head_x = (_chr.head % 32) * 8
                 _head_y = (_chr.head // 32) * 8
             else:
-                pass
+                _head_x = _chr.helmet.blt_x
+                _head_y = _chr.helmet.blt_y
+                _head_w = _chr.helmet.blt_w
+                _head_h = _chr.helmet.blt_h
             pyxel.blt(_x + 8, _y, 1, _head_x, _head_y, 8, 8, 0)
 
             # 体
@@ -121,7 +124,12 @@ class BaseState(AbstractState):
 
             # 盾
             if _chr.shield != None:
-                pass
+                _shield_x = _chr.shield.blt_x
+                _shield_y = _chr.shield.blt_y
+                _shield_w = _chr.shield.blt_w
+                _shield_h = _chr.shield.blt_h
+                pyxel.blt(_x + 8, _y + 8, 1, _shield_x, _shield_y,
+                          _shield_w, _shield_h, 0)
 
         elif isinstance(_chr, Monster):
             pyxel.blt(_x, _y, 1, _chr.blt_x, _chr.blt_y,

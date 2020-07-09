@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
 import pyxel
-from ..facilityStates.baseFacilityState import BaseFacilityState
+import pyxel
+from ..pyxelUtil import PyxelUtil
+from ..facilityStates.baseShopState import BaseShopState
+from ..character import playerParty
+from ..character import Human
+from ..item import shieldParams
 
 
-class StateShieldShop(BaseFacilityState):
+class StateShieldShop(BaseShopState):
     '''
     盾屋のクラス
 
@@ -18,26 +23,32 @@ class StateShieldShop(BaseFacilityState):
         super().__init__(stateStack)
         self.stateName = "ShieldShop"
 
-    def update(self):
-        '''
-        各フレームの処理
-        '''
-        pass
+        # この店で使うアイテムリスト
+        self.itemList = shieldParams.shieldList
 
-    def render(self):
-        '''
-        各フレームの描画処理
-        '''
-        super().render()
+        # 店員の初期データ
+        self.saleParson.name = "Hrolf"
+        self.saleParson.head = 81
+        self.saleParson.body = 1
 
-    def onEnter(self):
+    def _update_done(self):
         '''
-        状態開始時の処理
+        買った処理
         '''
-        pass
+        super()._update_done()
+        playerParty.memberList[self.equipMember].shield = self.item
 
-    def onExit(self):
+    def _update_equip_saleParson(self, item):
         '''
-        状態終了時の処理
+        店員の装備を変更する処理
         '''
-        pass
+        self.saleParson.shield = self.item
+
+    def _render_initial(self):
+        '''
+        店に入った時の表示
+        '''
+        PyxelUtil.text(16, 152, ["O", "RE", "HA", " ", "KO", "NO", " ", "KU", "NI", "I", "TI", "HA", "D", "NN", "NO", "*Shield ", "me", "-", "ka", "-"], pyxel.COLOR_WHITE)
+        PyxelUtil.text(16, 160, ["*Hrolf Battershield ", "TA", "D", "."], pyxel.COLOR_WHITE)
+        PyxelUtil.text(16, 168, ["NA", "NI", "KA", " ", "KA", "LTU", "TE", "KE", "YO", "."], pyxel.COLOR_WHITE)
+        PyxelUtil.text(180, 176, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)

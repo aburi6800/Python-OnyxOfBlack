@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 import pyxel
 from ..pyxelUtil import PyxelUtil
-from ..facilityStates.baseFacilityState import BaseFacilityState
+from ..facilityStates.baseShopState import BaseShopState
+from ..character import playerParty
+from ..character import Human
+from ..item import weaponParams
 
 
-class StateWeaponShop(BaseFacilityState):
+class StateWeaponShop(BaseShopState):
     '''
     武器屋のクラス
 
-    BaseFacilityStateクラスを継承
+    BaseShopStateクラスを継承
     選択した商品の購入、キャラクターへの装備を行う
     '''
 
@@ -19,51 +22,33 @@ class StateWeaponShop(BaseFacilityState):
         super().__init__(stateStack)
         self.stateName = "WeaponShop"
 
-        self.tick = 0
-        self.selected = 0
+        # この店で使うアイテムリスト
+        self.itemList = weaponParams.weaponList
 
-    def update(self):
-        '''
-        各フレームの処理
-        '''
-        if pyxel.btn(pyxel.KEY_E):
-            self.selected = 3
-            self.tick = 0
+        # 店員の初期データ
+        self.saleParson.name = "Darnoc"
+        self.saleParson.head = 123
+        self.saleParson.body = 3
 
-        if self.selected != 0:
-            self.tick = self.tick + 1
-            if self.tick > 11:
-                if self.selected == 3:
-                    self.stateStack.pop()
+    def _update_done(self):
+        '''
+        買った処理
+        '''
+        super()._update_done()
+        playerParty.memberList[self.equipMember].weapon = self.item
 
-    def render(self):
+    def _update_equip_saleParson(self, item):
         '''
-        各フレームの描画処理
+        店員の装備を変更する処理
         '''
-        super().render()
+        self.saleParson.weapon = self.item
 
-        color = [7, 7, 7]
-        if self.selected != 0:
-            if self.tick % 2 == 0:
-                color[self.selected - 1] = 0
-            else:
-                color[self.selected - 1] = 7
-
-        PyxelUtil.text(16,  16, ["HU", "D", "KI", "YA"], 7)
-        PyxelUtil.text(24,  30, ["*[B]:", "KA", "U"], color[0])
-        PyxelUtil.text(24,  38, ["*[N]:", "TU", "KI", "D",
-                                 "NO", "SI", "LYO", "U", "HI", "NN"], color[1])
-        PyxelUtil.text(24,  46, ["*[E]:", "TE", "D", "RU"], color[2])
-
-    def onEnter(self):
+    def _render_initial(self):
         '''
-        状態開始時の処理
+        店に入った時の表示
         '''
-        self.tick = 0
-        self.selected = 0
-
-    def onExit(self):
-        '''
-        状態終了時の処理
-        '''
-        pass
+        PyxelUtil.text(16, 152, ["I", "RA", "LTU", "SI",
+                                 "LYA", "I", "MA", "SE", "."], pyxel.COLOR_WHITE)
+        PyxelUtil.text(16, 160, ["*Darnoc ", "HU", "D", "KI", " ", "SE", "NN", "MO", "NN",
+                                 "TE", "D", " ", "KO", "D", "SA", "D", "I", "MA", "SU", "."], pyxel.COLOR_WHITE)
+        PyxelUtil.text(180, 176, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)

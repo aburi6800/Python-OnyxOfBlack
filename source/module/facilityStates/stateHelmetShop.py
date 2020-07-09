@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
 import pyxel
-from ..facilityStates.baseFacilityState import BaseFacilityState
+from ..pyxelUtil import PyxelUtil
+from ..facilityStates.baseShopState import BaseShopState
+from ..character import playerParty
+from ..character import Human
+from ..item import helmetParams
 
 
-class StateHelmetShop(BaseFacilityState):
+class StateHelmetShop(BaseShopState):
     '''
     兜屋のクラス
 
-    BaseFacilityStateクラスを継承
+    BaseShopStateクラスを継承
     選択した商品の購入、キャラクターへの装備を行う
     '''
 
@@ -18,26 +22,33 @@ class StateHelmetShop(BaseFacilityState):
         super().__init__(stateStack)
         self.stateName = "HelmetShop"
 
-    def update(self):
-        '''
-        各フレームの処理
-        '''
-        pass
+        # この店で使うアイテムリスト
+        self.itemList = helmetParams.helmetList
 
-    def render(self):
-        '''
-        各フレームの描画処理
-        '''
-        super().render()
+        # 店員の初期データ
+        self.saleParson.name = "Niels"
+        self.saleParson.head = 33
+        self.saleParson.body = 2
 
-    def onEnter(self):
+    def _update_done(self):
         '''
-        状態開始時の処理
+        買った処理
         '''
-        pass
+        super()._update_done()
+        playerParty.memberList[self.equipMember].helmet = self.item
 
-    def onExit(self):
+    def _update_equip_saleParson(self, item):
         '''
-        状態終了時の処理
+        店員の装備を変更する処理
         '''
-        pass
+        self.saleParson.helmet = self.item
+
+    def _render_initial(self):
+        '''
+        店に入った時の表示
+        '''
+        PyxelUtil.text(16, 152, ["I", "RA", "LTU", "SI",
+                                 "LYA", "I", "."], pyxel.COLOR_WHITE)
+        PyxelUtil.text(16, 160, ["*Niels Hjelmerssion ", "TO", " ",
+                                 "MO", "U", "SI", "MA", "SU", "."], pyxel.COLOR_WHITE)
+        PyxelUtil.text(180, 176, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)

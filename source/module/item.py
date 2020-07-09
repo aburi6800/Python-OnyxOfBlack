@@ -172,18 +172,18 @@ class HelmetParams(object):
     リストの要素はHelmetParamクラスのインスタンスとする
     他モジュールから利用する場合はhelmetParamsをimportすること
     '''
-    helmList = []
+    helmetList = []
 
     def __init__(self):
         '''
         クラス初期化
         '''
         #   兜の初期データを登録
-        self.helmList.append(ArmorParam(
+        self.helmetList.append(ArmorParam(
             "CHAIN COIF", 128, 32, 8, 8,   4,    40))
-        self.helmList.append(ArmorParam(
+        self.helmetList.append(ArmorParam(
             "WINGED HELM", 136, 32, 8, 8,  16,   320))
-        self.helmList.append(ArmorParam(
+        self.helmetList.append(ArmorParam(
             "HORNED HELM", 144, 32, 8, 8,  32,  2560))
 
 
