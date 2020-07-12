@@ -1,11 +1,8 @@
 __pycache__/*
 .vscode/*
 source/module/__pycache__/*
-source/module/facility/__pycache__/*
-source/module/field/__pycache__/*
-source/module/system/__pycache__/*
+source/module/battleStates/__pycache__/*
 source/module/fieldStates/__pycache__/*
 source/module/facilityStates/__pycache__/*
 source/module/systemStates/__pycache__/*
-source/module/battleStates/__pycache__/*
-source/module/battleStates/__pycache__/stateBattle.cpython-38.pyc
+

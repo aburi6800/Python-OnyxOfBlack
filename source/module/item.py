@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-#from .singleton import Singleton
 
 
 class WeaponParam():
@@ -28,31 +27,24 @@ class WeaponParams(object):
     リストの要素はWeaponParamクラスのインスタンスとする
     他モジュールから利用する場合はweaponParamsをimportすること
     '''
-    weaponList = []
+    weaponList = None
 
     def __init__(self):
         '''
         クラス初期化
         '''
         # 武器の初期データを登録
-        self.weaponList.append(WeaponParam(
-            "KNIFE",  0, 48, 8, 16,  2, False,  10))
-        self.weaponList.append(WeaponParam(
-            "CLUB",  8, 48, 8, 16,  4, False,  20))
-        self.weaponList.append(WeaponParam(
-            "MACE", 16, 48, 8, 16,  8, False,  40))
-        self.weaponList.append(WeaponParam(
-            "SHORT SWORD", 24, 48, 8, 16, 16, False,  80))
-        self.weaponList.append(WeaponParam(
-            "AXE", 32, 48, 8, 16, 24, False,  160))
-        self.weaponList.append(WeaponParam(
-            "SPEAR", 48, 48, 8, 16, 32,  True,  320))
-        self.weaponList.append(WeaponParam(
-            "BROAD SWORD", 64, 48, 8, 16, 40, False,  640))
-        self.weaponList.append(WeaponParam(
-            "CLAYMORE", 56, 48, 8, 16, 48,  True, 1280))
-        self.weaponList.append(WeaponParam(
-            "BATTLE AXE", 80, 48, 8, 16, 60,  True, 2560))
+        self.weaponList = (
+            WeaponParam("KNIFE"      ,  0, 48, 8, 16,  2, False,  10),
+            WeaponParam("CLUB"       ,  8, 48, 8, 16,  4, False,  20),
+            WeaponParam("MACE"       , 16, 48, 8, 16,  8, False,  40),
+            WeaponParam("SHORT SWORD", 24, 48, 8, 16, 16, False,  80),
+            WeaponParam("AXE"        , 32, 48, 8, 16, 24, False,  160),
+            WeaponParam("SPEAR"      , 48, 48, 8, 16, 32,  True,  320),
+            WeaponParam("BROAD SWORD", 64, 48, 8, 16, 40, False,  640),
+            WeaponParam("CLAYMORE"   , 56, 48, 8, 16, 48,  True, 1280),
+            WeaponParam("BATTLE AXE" , 80, 48, 8, 16, 60,  True, 2560),
+        )
 
 
 weaponParams = WeaponParams()
@@ -83,22 +75,21 @@ class ArmorParams(object):
     リストの要素はArmorParamクラスのインスタンスとする
     他モジュールから利用する場合はarmorParamsをimportすること
     '''
-    armorList = []
+    armorList = None
 
     def __init__(self):
         '''
         クラス初期化
         '''
         # 鎧の初期データを登録
-        self.armorList.append(ArmorParam("LEATHER", 24, 32, 8, 16,   4,    40))
-        self.armorList.append(ArmorParam("HAUBERK", 32, 32, 8, 16,   8,   160))
-        self.armorList.append(ArmorParam(
-            "HALF PLATE", 40, 32, 8, 16,  16,   640))
-        self.armorList.append(ArmorParam(
-            "FULL PLATE", 48, 32, 8, 16,  32,  2560))
-        self.armorList.append(ArmorParam("TABARD", 56, 32, 8, 16,  64, 10240))
-        self.armorList.append(ArmorParam(
-            "MAGIC MANTLE", 72, 32, 8, 16, 128,    -1))
+        self.armorList = (
+            ArmorParam("LEATHER"     , 24, 32, 8, 16,   4,    40),
+            ArmorParam("HAUBERK"     , 32, 32, 8, 16,   8,   160),
+            ArmorParam("HALF PLATE"  , 40, 32, 8, 16,  16,   640),
+            ArmorParam("FULL PLATE"  , 48, 32, 8, 16,  32,  2560),
+            ArmorParam("TABARD"      , 56, 32, 8, 16,  64, 10240),
+            ArmorParam("MAGIC MANTLE", 72, 32, 8, 16, 128,    -1),
+        )
 
 
 armorParams = ArmorParams()
@@ -129,19 +120,18 @@ class ShieldParams(object):
     リストの要素はShieldParamクラスのインスタンスとする
     他モジュールから利用する場合はshieldParamsをimportすること
     '''
-    shieldList = []
+    shieldList = None
 
     def __init__(self):
         '''
         クラス初期化
         '''
         # 盾の初期データを登録
-        self.shieldList.append(ArmorParam(
-            "S SHIELD", 128, 40, 8, 8,   2,    30))
-        self.shieldList.append(ArmorParam(
-            "M SHIELD", 136, 40, 8, 8,   8,   270))
-        self.shieldList.append(ArmorParam(
-            "L SHIELD", 144, 40, 8, 8,  24,  2430))
+        self.shieldList = (
+            ArmorParam("S SHIELD", 128, 40, 8, 8,  2,   30),
+            ArmorParam("M SHIELD", 136, 40, 8, 8,  8,  270),
+            ArmorParam("L SHIELD", 144, 40, 8, 8, 24, 2430),
+        )
 
 
 shieldParams = ShieldParams()
@@ -172,19 +162,18 @@ class HelmetParams(object):
     リストの要素はHelmetParamクラスのインスタンスとする
     他モジュールから利用する場合はhelmetParamsをimportすること
     '''
-    helmetList = []
+    helmetList = None
 
     def __init__(self):
         '''
         クラス初期化
         '''
         #   兜の初期データを登録
-        self.helmetList.append(ArmorParam(
-            "CHAIN COIF", 128, 32, 8, 8,   4,    40))
-        self.helmetList.append(ArmorParam(
-            "WINGED HELM", 136, 32, 8, 8,  16,   320))
-        self.helmetList.append(ArmorParam(
-            "HORNED HELM", 144, 32, 8, 8,  32,  2560))
+        self.helmetList = (
+            ArmorParam("CHAIN COIF" , 128, 32, 8, 8,  4,   40),
+            ArmorParam("WINGED HELM", 136, 32, 8, 8, 16,  320),
+            ArmorParam("HORNED HELM", 144, 32, 8, 8, 32, 2560),
+        )
 
 
 helmetParams = HelmetParams()

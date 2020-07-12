@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import random
-from .singleton import Singleton
 from .item import WeaponParams
 from .item import ArmorParams
 from .item import ShieldParams
@@ -20,8 +19,9 @@ class Character(object):
         self.name = ""
         self.level = 0
         self.life = 0
-        self.str = 0
-        self.dex = 0
+        self.strength = 0
+        self.defend = 0
+        self.dexterity = 0
         self.exp = 0
         self.gold = 0
 
@@ -29,6 +29,8 @@ class Character(object):
 class Human(Character):
     '''
     人間のクラス
+
+    Characterクラスを継承
     '''
 
     def __init__(self):
@@ -48,6 +50,8 @@ class Human(Character):
 class Monster(Character):
     '''
     モンスターのクラス
+
+    Characterクラスを継承
     '''
 
     def __init__(self):
@@ -58,12 +62,13 @@ class Monster(Character):
         self.item = None
 
 
-class Party(Singleton):
+class Party(object):
     '''
     パーティーを管理するクラス
 
     Characterクラスの派生クラスを格納したListを管理する
     リストに登録するCharacterの上限はない
+    このクラスを直接使用せず、派生クラスのplayerParty、enemyPartyを使用すること
     '''
 
     # パーティーメンバーのリスト
@@ -96,24 +101,21 @@ class Party(Singleton):
                 "specified a member who doesn't exist.：" + str(idx))
 
 
-class PlayerParty(object):
+class PlayerParty(Party):
     '''
     プレイヤーパーティーのクラス
 
+    Partyクラスを継承
     Humanクラスを格納したListを管理する
     リストに登録するHumanの上限は5とする
+    直接このクラスを使用せず、インスタンスを格納したplayerPartyをimportして使用すること
     '''
-
-    # プレイヤーパーティーメンバーのリスト
-    memberList = []
 
     def __init__(self):
         '''
         クラス初期化
         '''
-        print("PlayerParty:Initialized.")
-        # プレイヤーパーティーメンバーのリスト
-        self.memberList = []
+        super().__init__()
 
         # プレイヤーパーティーの位置と方向
         self.x = 0
@@ -125,6 +127,8 @@ class PlayerParty(object):
         self.y_save = 0
         self.direction_save = 0
 
+        print("PlayerParty:Initialized.")
+
     def addMember(self, chr: Human):
         '''
         パーティーメンバー追加
@@ -133,16 +137,6 @@ class PlayerParty(object):
             self.memberList.append(chr)
         else:
             raise Exception("can't add a member.")
-
-    def removeMember(self, idx: int):
-        '''
-        パーティーメンバー削除
-        '''
-        try:
-            del self.memberList[idx]
-        except:
-            raise Exception(
-                "specified a member who doesn't exist.：" + str(idx))
 
     def getAvarageLevel(self):
         '''
@@ -165,7 +159,8 @@ class PlayerParty(object):
         self.x_save = self.x
         self.y_save = self.y
         self.direction_save = self.direction
-        print("PlayerParty : Condition saved. x={:02d}".format(self.x_save) + ",y={:02d}".format(self.y_save) + ",direction={:01d}".format(self.direction_save))
+        print("PlayerParty : Condition saved. x={:02d}".format(
+            self.x_save) + ",y={:02d}".format(self.y_save) + ",direction={:01d}".format(self.direction_save))
 
     def restoreCondition(self):
         '''
@@ -174,17 +169,17 @@ class PlayerParty(object):
         self.x = self.x_save
         self.y = self.y_save
         self.direction = self.direction_save
-        print("PlayerParty : Condition restored. x={:02d}".format(self.x) + ",y={:02d}".format(self.y) + ",direction={:01d}".format(self.direction))
+        print("PlayerParty : Condition restored. x={:02d}".format(
+            self.x) + ",y={:02d}".format(self.y) + ",direction={:01d}".format(self.direction))
 
 
 playerParty = PlayerParty()
 
 
-class HumanPartyGenerator(Singleton):
+class HumanPartyGenerator(object):
     '''
     人間のパーティーを自動作成するクラス
 
-    Singletonとする
     人数は1～4人でランダム
     レベルは1～プレイヤーパーティーの平均+2の範囲でランダム
     '''
@@ -207,11 +202,9 @@ class HumanPartyGenerator(Singleton):
         return party
 
 
-class HumanGenerator(Singleton):
+class HumanGenerator(object):
     '''
     人間のキャラクターを自動作成するクラス
-
-    Singletonとする
     '''
 
     @staticmethod
@@ -226,8 +219,9 @@ class HumanGenerator(Singleton):
         human.level = _level
         human.life = random.randint(1, _level * 8)
         human.exp = random.randint(1, 50)
-        human.str = random.randint(1, _level * 5)
-        human.dex = random.randint(1, _level * 5)
+        human.strength = random.randint(1, _level * 5)
+        human.defend = random.randint(1, _level * 5)
+        human.dexterity = random.randint(1, _level * 5)
         human.gold = random.randint(1, _level * 100)
         human.weapon = WeaponParams().weaponList[random.randint(0, 3)]
 #        human.armor = ArmorParams().armorList[random.randint(0, 1)]
@@ -279,16 +273,33 @@ class HumanGenerator(Singleton):
         return _name1[random.randint(0, _idx1)] + _name2[random.randint(0, _idx2)]
 
 
-class MonsterPartyGenerator(Singleton):
+class EnemyParty(Party):
     '''
-    モンスターのパーティーを自動生成するクラス
+    敵パーティー
 
-    Singletonとする
+    Partyクラスを継承
+    HumanクラスまたはMonsterクラスを格納したListを管理する
+    直接このクラスを使用せず、インスタンスを格納したenemyPartyをimportして使用すること
+    '''
+
+    def __init__(self):
+        super().__init__()
+
+    def initializr(self):
+        self.memberList = []
+
+
+enemyParty = EnemyParty()
+
+
+class EnemyPartyGenerator():
+    '''
+    敵のパーティーを自動生成するクラス
     '''
 
     @staticmethod
     def generate(self):
         '''
-        モンスターのパーティー生成
+        敵のパーティー生成
         '''
         pass
