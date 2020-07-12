@@ -26,13 +26,13 @@ class StateTitle(BaseSystemState):
         '''
         各フレームの処理
         '''
-        if pyxel.btn(pyxel.KEY_G):
+        if pyxel.btnp(pyxel.KEY_G):
             self.selected = 1
             self.tick = 0
 
         if self.selected != 0:
             self.tick = self.tick + 1
-            if self.tick > 11:
+            if self.tick > 21:
                 if self.selected == 1:
                     self.stateStack.push(self.stateStack.STATE_CITY)
 

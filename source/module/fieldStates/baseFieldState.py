@@ -58,19 +58,19 @@ class BaseFieldState(BaseState):
         '''
         各フレームの処理
         '''
-        if pyxel.btn(pyxel.KEY_RIGHT):
+        if pyxel.btnp(pyxel.KEY_RIGHT):
             playerParty.saveCondition()
             playerParty.direction += 1
             if playerParty.direction > self.DIRECTION_WEST:
                 playerParty.direction = self.DIRECTION_NORTH
 
-        if pyxel.btn(pyxel.KEY_LEFT):
+        if pyxel.btnp(pyxel.KEY_LEFT):
             playerParty.saveCondition()
             playerParty.direction -= 1
             if playerParty.direction < self.DIRECTION_NORTH:
                 playerParty.direction = self.DIRECTION_WEST
 
-        if pyxel.btn(pyxel.KEY_UP) and self.can_move_forward():
+        if pyxel.btnp(pyxel.KEY_UP) and self.can_move_forward():
             playerParty.saveCondition()
             playerParty.x = playerParty.x + self.VX[playerParty.direction]
             playerParty.y = playerParty.y + self.VY[playerParty.direction]
@@ -92,13 +92,13 @@ class BaseFieldState(BaseState):
         '''
         super().render()
         # 迷路の枠線
-        pyxel.rectb(151, 16, 82, 80, pyxel.COLOR_DARKBLUE)
+        pyxel.rectb(151, 12, 82, 80, pyxel.COLOR_DARKBLUE)
         # 迷路のグリッド線
-        pyxel.line(190, 56, 151, 95, pyxel.COLOR_DARKBLUE)
-        pyxel.line(193, 56, 232, 95, pyxel.COLOR_DARKBLUE)
-        pyxel.line(152, 59, 232, 59, pyxel.COLOR_DARKBLUE)
-        pyxel.line(152, 67, 232, 67, pyxel.COLOR_DARKBLUE)
-        pyxel.line(152, 83, 232, 83, pyxel.COLOR_DARKBLUE)
+        pyxel.line(190, 52, 151, 91, pyxel.COLOR_DARKBLUE)
+        pyxel.line(193, 52, 232, 91, pyxel.COLOR_DARKBLUE)
+        pyxel.line(152, 55, 232, 55, pyxel.COLOR_DARKBLUE)
+        pyxel.line(152, 63, 232, 63, pyxel.COLOR_DARKBLUE)
+        pyxel.line(152, 79, 232, 79, pyxel.COLOR_DARKBLUE)
 
     def onEnter(self):
         '''
@@ -127,8 +127,8 @@ class BaseFieldState(BaseState):
             else:
                 _data.append(_map[_get_y][_get_x])
 
-        for _idx, _data in enumerate(_data):
-            self._draw_wall(_idx, _data)
+        for _idx, _value in enumerate(_data):
+            self._draw_wall(_idx, _value)
 
     def _draw_wall(self, idx, data):
         '''
@@ -157,53 +157,53 @@ class BaseFieldState(BaseState):
 
         # idxの値により壁を描画する
         if idx == 0:
-            pyxel.rect(172, 52, 8, 8, _wallColor_front)
-            pyxel.tri(180, 53, 183, 56, 180, 58, _wallColor_side)
+            pyxel.rect(172, 48, 8, 8, _wallColor_front)
+            pyxel.tri(180, 49, 183, 52, 180, 54, _wallColor_side)
         elif idx == 1:
-            pyxel.rect(180, 52, 8, 8, _wallColor_front)
-            pyxel.tri(188, 53, 191, 56, 188, 58, _wallColor_side)
+            pyxel.rect(180, 48, 8, 8, _wallColor_front)
+            pyxel.tri(188, 49, 191, 52, 188, 54, _wallColor_side)
         elif idx == 2:
-            pyxel.rect(204, 52, 8, 8, _wallColor_front)
-            pyxel.tri(203, 53, 200, 56, 203, 58, _wallColor_side)
+            pyxel.rect(204, 48, 8, 8, _wallColor_front)
+            pyxel.tri(203, 49, 200, 52, 203, 54, _wallColor_side)
         elif idx == 3:
-            pyxel.rect(196, 52, 8, 8, _wallColor_front)
-            pyxel.tri(195, 53, 192, 56, 195, 58, _wallColor_side)
+            pyxel.rect(196, 48, 8, 8, _wallColor_front)
+            pyxel.tri(195, 49, 192, 52, 195, 54, _wallColor_side)
         elif idx == 4:
-            pyxel.rect(188, 52, 8, 8, _wallColor_front)
+            pyxel.rect(188, 48, 8, 8, _wallColor_front)
 
         elif idx == 5:
-            pyxel.rect(156, 44, 24, 24, _wallColor_front)
-            pyxel.rect(180, 52, 8, 8, _wallColor_side)
-            pyxel.tri(180, 45, 187, 52, 180, 52, _wallColor_side)
-            pyxel.tri(180, 59, 187, 59, 180, 66, _wallColor_side)
+            pyxel.rect(156, 40, 24, 24, _wallColor_front)
+            pyxel.rect(180, 48, 8, 8, _wallColor_side)
+            pyxel.tri(180, 41, 187, 48, 180, 48, _wallColor_side)
+            pyxel.tri(180, 55, 187, 55, 180, 62, _wallColor_side)
         elif idx == 6:
-            pyxel.rect(204, 44, 24, 24, _wallColor_front)
-            pyxel.rect(196, 52, 8, 8, _wallColor_side)
-            pyxel.tri(203, 45, 196, 52, 203, 52, _wallColor_side)
-            pyxel.tri(197, 60, 203, 60, 203, 66, _wallColor_side)
+            pyxel.rect(204, 40, 24, 24, _wallColor_front)
+            pyxel.rect(196, 48, 8, 8, _wallColor_side)
+            pyxel.tri(203, 41, 196, 48, 203, 48, _wallColor_side)
+            pyxel.tri(197, 56, 203, 56, 203, 62, _wallColor_side)
         elif idx == 7:
-            pyxel.rect(180, 44, 24, 24, _wallColor_front)
+            pyxel.rect(180, 40, 24, 24, _wallColor_front)
 
         elif idx == 8:
-            pyxel.rect(152, 28, 12, 56, _wallColor_front)
-            pyxel.rect(164, 44, 16, 24, _wallColor_side)
-            pyxel.tri(164, 29, 179, 44, 164, 44, _wallColor_side)
-            pyxel.tri(164, 67, 179, 67, 164, 82, _wallColor_side)
+            pyxel.rect(152, 24, 12, 56, _wallColor_front)
+            pyxel.rect(164, 40, 16, 24, _wallColor_side)
+            pyxel.tri(164, 25, 179, 40, 164, 40, _wallColor_side)
+            pyxel.tri(164, 63, 179, 63, 164, 78, _wallColor_side)
         elif idx == 9:
-            pyxel.rect(220, 28, 12, 56, _wallColor_front)
-            pyxel.rect(204, 44, 16, 24, _wallColor_side)
-            pyxel.tri(219, 29, 204, 44, 219, 44, _wallColor_side)
-            pyxel.tri(204, 67, 219, 67, 219, 82, _wallColor_side)
+            pyxel.rect(220, 24, 12, 56, _wallColor_front)
+            pyxel.rect(204, 40, 16, 24, _wallColor_side)
+            pyxel.tri(219, 25, 204, 40, 219, 40, _wallColor_side)
+            pyxel.tri(204, 63, 219, 63, 219, 78, _wallColor_side)
         elif idx == 10:
-            pyxel.rect(164, 28, 56, 56, _wallColor_front)
+            pyxel.rect(164, 24, 56, 56, _wallColor_front)
 
         elif idx == 11:
-            pyxel.rect(152, 28, 12, 56, _wallColor_side)
-            pyxel.tri(152, 17, 163, 28, 152, 28, _wallColor_side)
-            pyxel.tri(152, 83, 163, 83, 152, 94, _wallColor_side)
+            pyxel.rect(152, 24, 12, 56, _wallColor_side)
+            pyxel.tri(152, 13, 163, 24, 152, 24, _wallColor_side)
+            pyxel.tri(152, 79, 163, 79, 152, 90, _wallColor_side)
         elif idx == 12:
-            pyxel.rect(220, 28, 12, 56, _wallColor_side)
-            pyxel.tri(231, 17, 220, 28, 231, 28, _wallColor_side)
-            pyxel.tri(220, 83, 231, 83, 231, 94, _wallColor_side)
+            pyxel.rect(220, 24, 12, 56, _wallColor_side)
+            pyxel.tri(231, 13, 220, 24, 231, 24, _wallColor_side)
+            pyxel.tri(220, 79, 231, 79, 231, 90, _wallColor_side)
 #        elif idx == 13:
 #            pyxel.rect( 154+0,  0, 96, 96, _wallColor_side)

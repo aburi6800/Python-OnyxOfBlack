@@ -2,15 +2,10 @@
 import pyxel
 from .pyxelUtil import PyxelUtil
 from .abstractState import AbstractState
-#from .stateStack import stateStack
 from .character import playerParty
 from .character import Character
 from .character import Human
 from .character import Monster
-#from .item import WeaponParams
-#from .item import ArmorParams
-#from .item import ShieldParams
-#from .item import HelmetParams
 
 
 class BaseState(AbstractState):
@@ -43,13 +38,13 @@ class BaseState(AbstractState):
         各Stateで必ず必要な、画面の枠線とプレイヤーキャラクタ、ステータスの描画を行う
         '''
         # 枠線
-        pyxel.rectb(8, 8, 240, 134, pyxel.COLOR_DARKBLUE)
-        pyxel.line(128, 8, 128, 140, pyxel.COLOR_DARKBLUE)
-        pyxel.line(8, 104, 247, 104, pyxel.COLOR_DARKBLUE)
+        pyxel.rectb(8, 8, 240, 126, pyxel.COLOR_DARKBLUE)
+        pyxel.line(128, 8, 128, 132, pyxel.COLOR_DARKBLUE)
+        pyxel.line(8, 96, 247, 96, pyxel.COLOR_DARKBLUE)
 
         # プレイヤーキャラクタの描画位置
         _x = [16, 36, 60, 84, 104]
-        _y = [108, 112, 108, 112, 108]
+        _y = [104, 108, 104, 108, 104]
 
         # プレイヤーキャラクタ描画
         for _idx in range(len(playerParty.memberList)):

@@ -47,8 +47,8 @@ class StateArmorShop(BaseShopState):
         '''
         店に入った時の表示
         '''
-        PyxelUtil.text(16, 152, ["YO", "U", "KO", "SO", " ", "I", "RA",
+        PyxelUtil.text(16, 140, ["YO", "U", "KO", "SO", " ", "I", "RA",
                                  "LTU", "SI", "LYA", "I", "MA", "SE", "."], pyxel.COLOR_WHITE)
-        PyxelUtil.text(16, 160, ["WA", "TA", "SI", "HA", "* Blick Armstrong ",
+        PyxelUtil.text(16, 148, ["WA", "TA", "SI", "HA", "* Blick Armstrong ",
                                  "TO", " ", "MO", "U", "SI", "MA", "SU", "."], pyxel.COLOR_WHITE)
-        PyxelUtil.text(180, 176, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
+        PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)

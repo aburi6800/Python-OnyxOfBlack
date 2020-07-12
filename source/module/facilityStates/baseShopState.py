@@ -98,7 +98,7 @@ class BaseShopState(BaseFacilityState):
         self._update_common()
 
         for _key, _value in self.keyMap.items():
-            if pyxel.btn(_key) and len(playerParty.memberList) > _value and playerParty.memberList[_value].gold > self.item.price:
+            if pyxel.btnp(_key) and len(playerParty.memberList) > _value and playerParty.memberList[_value].gold > self.item.price:
                 self.buyMember = _value
                 self.state = self.STATE_EQUIP
 
@@ -109,7 +109,7 @@ class BaseShopState(BaseFacilityState):
         self._update_common()
 
         for _key, _value in self.keyMap.items():
-            if pyxel.btn(_key) and len(playerParty.memberList) > _value:
+            if pyxel.btnp(_key) and len(playerParty.memberList) > _value:
                 self.equipMember = _value
                 self.state = self.STATE_DONE
 
@@ -126,7 +126,7 @@ class BaseShopState(BaseFacilityState):
         '''
         店を出る処理
         '''
-        if pyxel.btn(pyxel.KEY_SPACE):
+        if pyxel.btnp(pyxel.KEY_SPACE):
             self.state = self.STATE_EXIT
 
     def _update_exit(self):
@@ -140,11 +140,11 @@ class BaseShopState(BaseFacilityState):
         Lキー、ENTERキーを押したときの共通処理
         '''
         # Lキー
-        if pyxel.btn(pyxel.KEY_L):
+        if pyxel.btnp(pyxel.KEY_L):
             self.state = self.STATE_LEAVE
 
-        # ENTERキー
-        if pyxel.btn(pyxel.KEY_ENTER):
+        # SPACEキー
+        if pyxel.btnp(pyxel.KEY_SPACE):
             self.state = self.STATE_BUY
             _selected = False
             while _selected == False:
@@ -183,7 +183,7 @@ class BaseShopState(BaseFacilityState):
             self._render_leave()
 
         # 店員
-        self.drawCharacter(self.saleParson, 178, 112)
+        self.drawCharacter(self.saleParson, 178, 104)
 
         # メンバーの所持金を表示
         for _idx in range(len(playerParty.memberList)):
@@ -202,33 +202,33 @@ class BaseShopState(BaseFacilityState):
         '''
         買う人を選ぶ表示
         '''
-        PyxelUtil.text(16, 152, ["*" + self.item.name + " (" + str(self.item.price) +
+        PyxelUtil.text(16, 140, ["*" + self.item.name + " (" + str(self.item.price) +
                                  " G.P.) ", "TE", "D", "SU", "."], pyxel.COLOR_WHITE)
-        PyxelUtil.text(16, 160, ["TO", "D", "NA", "TA", "KA", "D", " ", "O", "KA",
+        PyxelUtil.text(16, 148, ["TO", "D", "NA", "TA", "KA", "D", " ", "O", "KA",
                                  "I", "NI", "NA", "RI", "MA", "SU", "KA", "*?"], pyxel.COLOR_WHITE)
-        PyxelUtil.text(56, 168, ["*[ENTER] ", "TU", "KI",
+        PyxelUtil.text(56, 156, ["*[SPACE] ", "TU", "KI",
                                  "D", "NO", "a", "i", "te", "mu"], pyxel.COLOR_YELLOW)
-        PyxelUtil.text(56, 176, ["*[L]     ", "MI", "SE",
+        PyxelUtil.text(56, 164, ["*[L]     ", "MI", "SE",
                                  "WO", "TE", "D", "RU"], pyxel.COLOR_YELLOW)
 
     def _render_equip(self):
         '''
         装備する人を選ぶ表示
         '''
-        PyxelUtil.text(16, 160, ["TO", "D", "NA", "TA", "KA", "D", " ", "O", "TU", "KA",
+        PyxelUtil.text(16, 140, ["TO", "D", "NA", "TA", "KA", "D", " ", "O", "TU", "KA",
                                  "I", "NI", "NA", "RI", "MA", "SU", "KA", "*?"], pyxel.COLOR_WHITE)
-        PyxelUtil.text(56, 168, ["*[ENTER] ", "TU", "KI",
+        PyxelUtil.text(56, 148, ["*[SPACE] ", "TU", "KI",
                                  "D", "NO", "a", "i", "te", "mu"], pyxel.COLOR_YELLOW)
-        PyxelUtil.text(56, 176, ["*[L]     ", "MI", "SE",
+        PyxelUtil.text(56, 156, ["*[L]     ", "MI", "SE",
                                  "WO", "TE", "D", "RU"], pyxel.COLOR_YELLOW)
 
     def _render_leave(self):
         '''
         店を出る表示
         '''
-        PyxelUtil.text(16, 162, ["TO", "D", "U", "MO", " ", "A", "RI", "KA", "D", "TO", "U", " ",
+        PyxelUtil.text(16, 148, ["TO", "D", "U", "MO", " ", "A", "RI", "KA", "D", "TO", "U", " ",
                                  "KO", "D", "SA", "D", "I", "MA", "SI", "TA", "."], pyxel.COLOR_WHITE)
-        PyxelUtil.text(180, 176, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
+        PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
     def onEnter(self):
         '''

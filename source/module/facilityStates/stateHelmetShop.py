@@ -47,8 +47,8 @@ class StateHelmetShop(BaseShopState):
         '''
         店に入った時の表示
         '''
-        PyxelUtil.text(16, 152, ["I", "RA", "LTU", "SI",
+        PyxelUtil.text(16, 140, ["I", "RA", "LTU", "SI",
                                  "LYA", "I", "."], pyxel.COLOR_WHITE)
-        PyxelUtil.text(16, 160, ["*Niels Hjelmerssion ", "TO", " ",
+        PyxelUtil.text(16, 148, ["*Niels Hjelmerssion ", "TO", " ",
                                  "MO", "U", "SI", "MA", "SU", "."], pyxel.COLOR_WHITE)
-        PyxelUtil.text(180, 176, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
+        PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)

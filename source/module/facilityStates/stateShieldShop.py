@@ -48,7 +48,7 @@ class StateShieldShop(BaseShopState):
         '''
         店に入った時の表示
         '''
-        PyxelUtil.text(16, 152, ["O", "RE", "HA", " ", "KO", "NO", " ", "KU", "NI", "I", "TI", "HA", "D", "NN", "NO", "*Shield ", "me", "-", "ka", "-"], pyxel.COLOR_WHITE)
-        PyxelUtil.text(16, 160, ["*Hrolf Battershield ", "TA", "D", "."], pyxel.COLOR_WHITE)
-        PyxelUtil.text(16, 168, ["NA", "NI", "KA", " ", "KA", "LTU", "TE", "KE", "YO", "."], pyxel.COLOR_WHITE)
-        PyxelUtil.text(180, 176, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
+        PyxelUtil.text(16, 140, ["O", "RE", "HA", " ", "KO", "NO", " ", "KU", "NI", "I", "TI", "HA", "D", "NN", "NO", "*Shield ", "me", "-", "ka", "-"], pyxel.COLOR_WHITE)
+        PyxelUtil.text(16, 148, ["*Hrolf Battershield ", "TA", "D", "."], pyxel.COLOR_WHITE)
+        PyxelUtil.text(16, 156, ["NA", "NI", "KA", " ", "KA", "LTU", "TE", "KE", "YO", "."], pyxel.COLOR_WHITE)
+        PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
