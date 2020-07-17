@@ -5,22 +5,24 @@ class MonsterParam():
     モンスターの属性を持つクラス
     '''
 
-    def __init__(self, name: str = "", blt_x: int = 0, blt_y: int = 0, blt_w: int = 0, blt_h.int=0, life: int = 0, strength: int = 0, defend: int = 0, dexterity: int = 0, exp: int = 0, gold: int = 0, occr_min: int = 0, occr_max: int = 0, escape: bool = False)
-    '''
+    def __init__(self, name: str = "", blt_x: int = 0, blt_y: int = 0, blt_w: int = 0, blt_h: int=0, life: int = 0, strength: int = 0, defend: int = 0, dexterity: int = 0, exp: int = 0, gold: int = 0, occr_min: int = 0, occr_max: int = 0, escape: bool = False):
+        '''
         クラス初期化
         '''
-    self.name = name
-    self.life = life
-    self.strength = strength
-    self.defend = defend
-    self.dexterity = dexterity
-    self.exp = exp
-    self.gold = gold
-    self.escape = escape
-    self.blt_x = blt_x
-    self.blt_y = blt_y
-    self.blt_w = blt_w
-    self.blt_h = blt_h
+        self.name = name
+        self.blt_x = blt_x
+        self.blt_y = blt_y
+        self.blt_w = blt_w
+        self.blt_h = blt_h
+        self.life = life
+        self.strength = strength
+        self.defend = defend
+        self.dexterity = dexterity
+        self.exp = exp
+        self.gold = gold
+        self.occr_min = occr_min
+        self.occr_max = occr_max
+        self.escape = escape
 
 
 class MonsterParams(object):

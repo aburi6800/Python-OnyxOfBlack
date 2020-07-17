@@ -52,10 +52,10 @@ class BaseState(AbstractState):
             # キャラクタ
             BaseState.drawCharacter(_member, _x[_idx], _y[_idx])
             # ステータス
-            PyxelUtil.text(16,  (_idx + 1) * 16,
+            PyxelUtil.text(16,  (_idx + 1) * 16 - 2,
                            ["*" + _member.name], pyxel.COLOR_WHITE)  # 名前
-            pyxel.rect(16, (_idx + 1) * 16 + 8, _member.life, 3,  5)
-            pyxel.rect(16, (_idx + 1) * 16 + 11, _member.exp, 1,  6)
+            pyxel.rect(16, (_idx + 1) * 16 + 6, _member.life, 3,  5)
+            pyxel.rect(16, (_idx + 1) * 16 + 9, _member.exp, 1,  6)
 
     def onEnter(self):
         '''
@@ -127,5 +127,5 @@ class BaseState(AbstractState):
                           _shield_w, _shield_h, 0)
 
         elif isinstance(_chr, Monster):
-            pyxel.blt(_x, _y, 1, _chr.blt_x, _chr.blt_y,
+            pyxel.blt(_x, _y, 2, _chr.blt_x, _chr.blt_y,
                       _chr.blt_w, _chr.blt_h, 0)
