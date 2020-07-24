@@ -104,21 +104,6 @@ class StateCity(BaseFieldState):
         '''
         super().render()
 
-        # 満天の星空
-        pyxel.blt(152, 17, 0, 0, 40, 80, 32, 0)
-
-        # 迷路
-        super().draw_maze(playerParty.x, playerParty.y, playerParty.direction, self.map)
-
-        try:
-            # イベントが登録されている座標ならイベントの関数を呼び出す
-            _key = "{:02d}".format(playerParty.x) + "{:02d}".format(playerParty.y) + "D"
-            _event = self.event[_key]
-            if _event != None:
-                _event()
-        except KeyError:
-            None
-
     def draw_frontShop1(self):
         '''
         店の前に立った時の表示１
