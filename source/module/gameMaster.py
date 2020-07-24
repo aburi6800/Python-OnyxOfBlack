@@ -5,6 +5,7 @@ from .pyxelUtil import PyxelUtil
 from .stateStack import stateStack
 from .character import HumanPartyGenerator
 from .character import playerParty
+from .character import enemyParty
 
 
 class GameMaster(object):
@@ -29,9 +30,10 @@ class GameMaster(object):
         stateStack.push(stateStack.STATE_TITLE)
 
         # テストでランダムパーティー生成をプレイヤーパーティとする
-        _party = HumanPartyGenerator.generate()
-        for _member in _party.memberList:
-            playerParty.addMember(_member)
+        level = 1
+        playerParty.memberList = HumanPartyGenerator.generate(level)
+
+        enemyParty.memberList = []
 
     def update(self):
         '''

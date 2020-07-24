@@ -34,6 +34,26 @@ class MonsterParams(object):
     '''
     monsterList = None
 
+    # モンスターリストのインデックスに対する定数
+    BAT_LV1 = 0
+    BAT_LV2 = 1
+    COBOLD_LV1 = 2
+    COBOLD_LV2 = 3
+    SKELTON_LV1 = 4
+    SKELTON_LV2 = 5
+    ZOMBIE_LV1 = 6
+    ZOMBIE_LV2 = 7
+    AZTEC = 8
+    GOBLIN = 9
+    WOLF = 10
+    LION = 11
+    SLIME = 12
+    SPIDER = 13
+    KRAKEN = 14
+    GHOUL = 15
+    ORC = 16
+    MUMMY = 17
+
     def __init__(self):
         '''
         クラス初期化
@@ -41,12 +61,16 @@ class MonsterParams(object):
         # モンスターの初期データを登録
         # NAME, BLT_X, BLT_Y, BLT_W, BLT_H, LIFE, STRENGTH, DEFEND, DEXTERITY, EXP, GOLD, OCCR_MIN, OCCR_MAX, ESCAPE
         self.monsterList = (
-            MonsterParam("BAT"    ,   0,  0, 16,  8,   1,  2,  2, 12,  1,  0,  8, 20,  True),
-            MonsterParam("COBOLD" ,  16,  0, 16, 16,   3,  4,  3,  4,  2,  5,  5, 10,  True),
-            MonsterParam("SKELTON",  32,  0, 16, 16,   4,  5,  3,  3,  2,  3,  5, 10, False),
-            MonsterParam("ZOMBIE" ,  48,  0, 16, 16,  10, 12, 10,  8,  2,  0,  3,  8, False),
-            MonsterParam("AZTEC"  ,  64,  0, 16, 16,   8, 10, 12, 10,  3, 10,  3,  5,  True),
-            MonsterParam("GOBLIN" ,  80,  0, 16, 16,  10, 10, 10, 10,  3,  8,  5, 10,  True),
+            MonsterParam("BAT"    ,   0,  0, 16,  8,   2,  2,  2,  8,  1,  0,  4, 10,  True),
+            MonsterParam("BAT"    ,   0,  0, 16,  8,   3,  2,  2,  8,  1,  0,  8, 20,  True),
+            MonsterParam("COBOLD" ,  16,  0, 16, 16,   3,  4,  3,  4,  2,  2,  2,  5,  True),
+            MonsterParam("COBOLD" ,  16,  0, 16, 16,   4,  4,  3,  4,  2,  2,  5, 10,  True),
+            MonsterParam("SKELTON",  32,  0, 16, 16,   4,  5,  3,  3,  2,  1,  3,  5, False),
+            MonsterParam("SKELTON",  32,  0, 16, 16,   5,  5,  3,  3,  2,  1,  5, 10, False),
+            MonsterParam("ZOMBIE" ,  48,  0, 16, 16,   8, 12, 10,  1,  2,  0,  2,  5, False),
+            MonsterParam("ZOMBIE" ,  48,  0, 16, 16,  10, 12, 10,  2,  2,  0,  3,  8, False),
+            MonsterParam("AZTEC"  ,  64,  0, 16, 16,   8, 10, 12, 10,  3,  5,  3,  5,  True),
+            MonsterParam("GOBLIN" ,  80,  0, 16, 16,  10, 10, 10, 10,  3,  4,  5, 10,  True),
             MonsterParam("WOLF"   ,  96,  0, 16, 16,  20, 18, 16, 20,  3,  0,  7, 14,  True),
             MonsterParam("LION"   , 112,  0, 16, 16,  24, 20, 20, 18,  4,  0,  1,  1,  True),
             MonsterParam("SLIME"  , 128,  0, 16, 16,  28, 22, 12, 12,  4,  0,  5, 10, False),

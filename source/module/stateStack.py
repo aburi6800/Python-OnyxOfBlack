@@ -91,5 +91,12 @@ class StateStack(object):
         else:
             return False
 
+    def init(self, stateName: str):
+        '''
+        スタックを初期化してstateを登録する
+        '''
+        self.states = []
+        self.push(stateName)
+
 
 stateStack = StateStack()

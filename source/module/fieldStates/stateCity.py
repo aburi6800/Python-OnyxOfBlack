@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 import pyxel
 from ..pyxelUtil import PyxelUtil
+from ..character import HumanGenerator
 from ..character import playerParty
+from ..character import enemyParty
+from ..monster import monsterParams
 from ..fieldStates.baseFieldState import BaseFieldState
+from ..map.uturotown import uturotown
 
 
 class StateCity(BaseFieldState):
@@ -22,6 +26,7 @@ class StateCity(BaseFieldState):
 
         # 変数定義
         self.tick = 0
+        self.isEncount = False
 
         # マップ
         # 0 = 通路
@@ -29,21 +34,7 @@ class StateCity(BaseFieldState):
         # 2 = ドア
         # 3 = ブラックタワー
         # 外周は必ず壁とする
-        self.map = [
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1],
-            [1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1],
-            [1, 2, 1, 2, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 2, 1, 2, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1],
-            [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        ]
+        self.map = uturotown.map
 
         # イベント
         # マップ上の座標に対応するイベントの関数の辞書
@@ -51,11 +42,22 @@ class StateCity(BaseFieldState):
         self.event = {
             "0104U" : self.update_enter_helmetshop,
             "0106U" : self.update_enter_shieldshop,
-            "0304U": self.update_enter_armorshop,
-            "0306U": self.update_enter_weaponshop,
-            "0305D": self.draw_frontShop1,
-            "0105D": self.draw_frontShop2,
+            "0304U" : self.update_enter_armorshop,
+            "0306U" : self.update_enter_weaponshop,
+            "0305D" : self.draw_frontShop1,
+            "0105D" : self.draw_frontShop2,
         }
+
+        # 出現するモンスターリスト
+        self.enemy_set = (
+            HumanGenerator.generate(1),
+            HumanGenerator.generate(2),
+            HumanGenerator.generate(3),
+            monsterParams.monsterList[monsterParams.BAT_LV1],
+            monsterParams.monsterList[monsterParams.SKELTON_LV1],
+            monsterParams.monsterList[monsterParams.WOLF],
+            monsterParams.monsterList[monsterParams.ZOMBIE_LV1],
+        )
 
     def update(self):
         '''
@@ -148,12 +150,11 @@ class StateCity(BaseFieldState):
         super().onEnter()
 
         self.tick = 0
-        self.selected = 0
         self.isEncount = False
 
         # プレイヤーパーティーの最初の位置と方向
-        playerParty.x = 6
-        playerParty.y = 1
+        playerParty.x = 17
+        playerParty.y = 3
         playerParty.direction = self.DIRECTION_SOUTH
 
     def onExit(self):

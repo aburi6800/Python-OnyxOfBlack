@@ -45,6 +45,8 @@ class Human(Character):
         self.shield = None
         self.weapon = None
         self.potion = -1
+        self.x = 0
+        self.y = 0
 
 
 class Monster(Character):
@@ -267,8 +269,8 @@ class HumanGenerator(object):
         _name2 = ["", "SON", "A", "RY", "N", "NA", "NIA", "PU", "PO", "ON", "Y",
                   "K", "S", "EL", "ER", "CS", "FA", "PI", "C", "CK", "DA", "ON", "B"]
 
-        _idx1 = random.randint(0, len(_name1))
-        _idx2 = random.randint(0, len(_name2))
+        _idx1 = random.randint(0, len(_name1) - 1)
+        _idx2 = random.randint(0, len(_name2) - 1)
 
         return _name1[random.randint(0, _idx1)] + _name2[random.randint(0, _idx2)]
 
@@ -305,26 +307,30 @@ class EnemyPartyGenerator(object):
         enemyClassがHuman型の場合はPlayerPartyGeneratorの結果をそのまま返却する（使用するレベルはenemyClassが持っているレベル）
         以外の場合はenemyClassの持つ情報を元に新しくmemberListを生成して返却する
         '''
-        if isinstance(enemyClass, Human):
-            return HumanPartyGenerator.generate(enemyClass.level)
-
         _memberList = []
+        if isinstance(enemyClass, Human):
+            enemyClass.occr_min = 1
+            enemyClass.occr_max = 5
+
         _count = random.randint(enemyClass.occr_min, enemyClass.occr_max)
         _x_step = 94 // _count if _count < 12 else 7
         for idx in range(_count):
-            _monster = Monster()
-            _monster.name = enemyClass.name + " " + chr(65 + idx) 
-            _monster.blt_x = enemyClass.blt_x
-            _monster.blt_y = enemyClass.blt_y
-            _monster.blt_w = enemyClass.blt_w
-            _monster.blt_h = enemyClass.blt_h
-            _monster.life = enemyClass.life + random.randint(0, enemyClass.life // 10 + 1)
-            _monster.strength = enemyClass.strength + random.randint(0, enemyClass.strength // 10 + 1)
-            _monster.defend = enemyClass.defend + random.randint(0, enemyClass.defend // 10 + 1)
-            _monster.dexterity = enemyClass.dexterity + random.randint(0, enemyClass.dexterity // 10 + 1)
-            _monster.exp = enemyClass.exp
-            _monster.gold = enemyClass.gold
-            _monster.escape = enemyClass.escape
+            if isinstance(enemyClass, Human):
+                _monster = HumanGenerator.generate(enemyClass.level)
+            else:
+                _monster = Monster()
+                _monster.name = enemyClass.name + " " + chr(65 + idx) 
+                _monster.blt_x = enemyClass.blt_x
+                _monster.blt_y = enemyClass.blt_y
+                _monster.blt_w = enemyClass.blt_w
+                _monster.blt_h = enemyClass.blt_h
+                _monster.life = enemyClass.life + random.randint(0, enemyClass.life // 10 + 1)
+                _monster.strength = enemyClass.strength + random.randint(0, enemyClass.strength // 10 + 1)
+                _monster.defend = enemyClass.defend + random.randint(0, enemyClass.defend // 10 + 1)
+                _monster.dexterity = enemyClass.dexterity + random.randint(0, enemyClass.dexterity // 10 + 1)
+                _monster.exp = enemyClass.exp
+                _monster.gold = enemyClass.gold
+                _monster.escape = enemyClass.escape
 
             # 表示位置
             _monster.x = (idx * _x_step if idx < 12 else (idx - 12) * _x_step) + (188 - (_count * _x_step) / 2 if _count < 12 else 188 - (12 * _x_step) / 2)

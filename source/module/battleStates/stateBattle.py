@@ -60,11 +60,19 @@ class StateBattle(BaseState):
         # 時間カウント用
         self.tick = 0
 
+        # 逃走に成功したか？
+        self.isRunaway = False
+
         # メンバーのインデックス
         self.member_index = 0
 
         # メッセージリスト
         self.message = []
+        self.memsage_color = pyxel.COLOR_WHITE
+
+        # 報酬
+        self.reward_exp = 0
+        self.reward_gold = 0
 
         # ハンドラ辞書
         self.handler = {
@@ -73,6 +81,8 @@ class StateBattle(BaseState):
             self.STATE_START_BATTLE: [self.update_start_battle, self.render_start_battle],
             self.STATE_CHOOSE_TARGET: [self.update_choose_target, self.render_choose_target],
             self.STATE_BATTLE: [self.update_battle, self.render_battle],
+            self.STATE_WIN: [self.update_win, self.render_win],
+            self.STATE_LOSE: [self.update_lose, self.render_lose],
             self.STATE_RUNAWAY_JUDGE: [self.update_runaway_judge, self.render_runaway_judge],
             self.STATE_RUNAWAY_FAILED: [self.update_runaway_failed, self.render_runaway_failed],
             self.STATE_RUNAWAY_SUCCESS: [self.update_runaway_success, self.render_runaway_success],
@@ -100,6 +110,7 @@ class StateBattle(BaseState):
         '''
         プレイヤーパーティーの行動決定処理
         '''
+        # コマンド入力
         if pyxel.btnp(pyxel.KEY_A):
             self.state = self.STATE_START_BATTLE
         if pyxel.btnp(pyxel.KEY_T):
@@ -180,11 +191,19 @@ class StateBattle(BaseState):
             self.turn_index += 1
             self.tick = 0
             if self.turn_index > len(self.turn_table) - 1:
+                # プレイヤーパーティーが全滅していたらプレイヤーパーティー全滅処理へ
+                if len(playerParty.memberList) == 0:
+                    self.state = self.STATE_LOSE
+                    return
+
+                # 敵パーティーが全滅していたらプレイヤーパーティー勝利処理へ
+                if len(enemyParty.memberList) == 0:
+                    self.state = self.STATE_WIN
+                    return
+                
+                # どちらのパーティーも残っていたらプレイヤーパーティー行動決定処理へ
                 self.state = self.STATE_CHOOSE_ACTION
                 return
-
-        if self.tick > 0:
-            None
 
         if self.tick == 0:
             # 攻撃するキャラクター
@@ -194,7 +213,7 @@ class StateBattle(BaseState):
             _target = _attacker.target
 
             # 攻撃対象が生きていなければ抜ける
-            if _target.life < 1:
+            if _target == None or _target.life < 1:
                 self.tick = 30
                 return
 
@@ -238,19 +257,25 @@ class StateBattle(BaseState):
                         self.message.append(
                             ["*" + _target.name + " ", "WO", " ", "SI", "TO", "ME", "TA", "* !"])
 
-                        # メンバーリストから外す
+                        #  行動順リストから外す
                         for _idx, _value in enumerate(self.turn_table):
                             if _value is _target:
                                 del self.turn_table[_idx]
                                 break
 
+                        # プレイヤーパーティーから外す
                         for _idx, _value in enumerate(playerParty.memberList):
                             if _value is _target:
                                 del playerParty.memberList[_idx]
                                 break
 
+                        # 敵パーティーから外す
                         for _idx, _value in enumerate(enemyParty.memberList):
                             if _value is _target:
+                                self.reward_exp = self.reward_exp + _target.exp
+                                self.reward_gold = self.reward_gold + _target.gold
+                                print("reward=" + str(self.reward_exp) +
+                                      "exp. " + str(self.reward_gold) + "gold.")
                                 del enemyParty.memberList[_idx]
                                 break
 
@@ -263,11 +288,38 @@ class StateBattle(BaseState):
 
         self.tick += 1
 
+    def update_win(self):
+        '''
+        プレイヤーパーティー勝利処理
+        '''
+        if pyxel.btn(pyxel.KEY_SPACE):
+            for _member in playerParty.memberList:
+                _member.exp = _member.exp + self.reward_exp
+                _member.gold = _member.gold + self.reward_gold
+            self.stateStack.pop()            
+
+    def update_lose(self):
+        '''
+        プレイヤーパーティー全滅処理
+        '''
+        if pyxel.btn(pyxel.KEY_SPACE):
+            self.stateStack.init(self.stateStack.STATE_TITLE)
+
     def update_runaway_judge(self):
         '''
         逃走判定処理
         '''
-        pass
+#        if self.tick > 30:
+#            if self.isRunaway:
+#                self.state = self.STATE_RUNAWAY_SUCCESS
+#            else:
+#                self.state = self.STATE_START_BATTLE
+#        for _member in enemyParty.memberList:
+#            _enemyDexterity = _enemyDexterity + _member.dexterity
+#        for _member in playerParty.memberList:
+#            _playerDexterity = _playerDexterity + _member.dexterity
+#        if random.randint(0, 100 - _enemyDexterity) > 80 - _playerDexterity:
+
 
     def update_runaway_success(self):
         '''
@@ -333,12 +385,15 @@ class StateBattle(BaseState):
         '''
         戦闘開始表示処理
         '''
-        PyxelUtil.text(56, 148, ["**** BATTLE ***"], pyxel.COLOR_RED)
+        PyxelUtil.text(90, 148, ["** * *  BATTLE  * * *"], pyxel.COLOR_RED)
 
     def render_choose_target(self):
         '''
         プレイヤーパーティーの攻撃対象選択表示処理
         '''
+        if len(enemyParty.memberList) == 1:
+            return
+
         PyxelUtil.text(16, 140, ["TO", "D", "RE", "WO", " ", "KO", "U", "KE", "D", "KI", " ", "SI", "MA",
                                  "SU", "KA", ",", "*" + playerParty.memberList[self.member_index].name, "* ?"], pyxel.COLOR_WHITE)
         for _idx in range(5 if len(enemyParty.memberList) > 5 else len(enemyParty.memberList)):
@@ -354,6 +409,21 @@ class StateBattle(BaseState):
         if self.message != None:
             PyxelUtil.text(16, 148, self.message[0], pyxel.COLOR_WHITE)
             PyxelUtil.text(16, 164, self.message[1], pyxel.COLOR_WHITE)
+
+    def render_win(self):
+        '''
+        プレイヤーパーティー勝利表示処理
+        '''
+        if self.reward_gold > 0:
+            PyxelUtil.text(16, 148, ["*" + str(self.reward_gold) + " G.P. ", "TU", "D", "TU", "NO", " ", "*gold", "WO", " ", "MI", "TU", "KE", "TA", "* !"], pyxel.COLOR_WHITE)
+            PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
+
+    def render_lose(self):
+        '''
+        プレイヤーパーティー全滅表示処理
+        '''
+        PyxelUtil.text(70, 156, ["*+ + ", "SE", "D", "NN", "ME", "TU", " ", "SI", "MA", "SI", "TA", "* + +"], pyxel.COLOR_RED)
+        PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
     def render_runaway_judge(self):
         '''
@@ -387,7 +457,11 @@ class StateBattle(BaseState):
         状態開始時の処理
         '''
         # 状態を最初に設定する
-        self.state = self.STATE_ENCOUNT
+        self.state = self.STATE_CHOOSE_ACTION
+
+        # 報酬を初期化
+        self.reward_exp = 0
+        self.reward_gold = 0
 
     def onExit(self):
         '''
