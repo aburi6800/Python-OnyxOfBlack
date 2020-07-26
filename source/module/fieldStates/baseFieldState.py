@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import random
+
 import pyxel
-from ..pyxelUtil import PyxelUtil
+
 from ..baseState import BaseState
-from ..character import playerParty
-from ..character import enemyParty
-from ..character import EnemyPartyGenerator
+from ..character import EnemyPartyGenerator, enemyParty, playerParty
+from ..pyxelUtil import PyxelUtil
 
 
 class BaseFieldState(BaseState):
@@ -86,32 +86,60 @@ class BaseFieldState(BaseState):
             if self.tick > 10:
                 self.isEncount = False
                 self.tick = 0
-                enemyParty.memberList = EnemyPartyGenerator.generate(
-                    self.enemy_set[random.randint(0, len(self.enemy_set) - 1)])
                 self.stateStack.push(self.stateStack.STATE_BATTLE)
+                return
             else:
                 return
 
+        try:
+            # イベントが登録されている座標ならイベントの関数を呼び出す
+            _key = "{:02d}".format(playerParty.x) + "{:02d}".format(playerParty.y) + "{:01d}".format(playerParty.direction) + "U"
+            _event = self.event[_key]
+            if _event != None:
+                _event()
+                return
+        except KeyError:
+            None
+
+        # キー入力（右）
         if pyxel.btnp(pyxel.KEY_RIGHT):
             playerParty.saveCondition()
             playerParty.direction += 1
             if playerParty.direction > self.DIRECTION_WEST:
                 playerParty.direction = self.DIRECTION_NORTH
 
+        # キー入力（左）
         if pyxel.btnp(pyxel.KEY_LEFT):
             playerParty.saveCondition()
             playerParty.direction -= 1
             if playerParty.direction < self.DIRECTION_NORTH:
                 playerParty.direction = self.DIRECTION_WEST
 
+        # キー入力（下）
+        if pyxel.btnp(pyxel.KEY_DOWN):
+            playerParty.saveCondition()
+            playerParty.direction = (playerParty.direction + 2) % 4
+
+        # キー入力（上）
         if pyxel.btnp(pyxel.KEY_UP) and self._can_move_forward():
             if random.randint(0, 20) == 0:
-#                self.isEncount = True
+#                self.encount_enemy()
                 pass
             else:
                 playerParty.saveCondition()
                 playerParty.x = playerParty.x + self.VX[playerParty.direction]
                 playerParty.y = playerParty.y + self.VY[playerParty.direction]
+
+    def encount_enemy(self):
+        '''
+        敵とエンカウントした時の処理
+
+        enemyPartyを生成し、isEncountをTrueに変更する
+        マップにより特殊な条件でenemyPartyを生成する場合は、サブクラスでオーバーライドする
+        '''
+        self.isEncount = True
+        enemyParty.memberList = EnemyPartyGenerator.generate(
+        self.enemy_set[random.randint(0, len(self.enemy_set) - 1)])
 
     def _can_move_forward(self) -> bool:
         '''
@@ -119,10 +147,14 @@ class BaseFieldState(BaseState):
 
         マップデータを方向によりシフトした結果の下位1ビットが立っている（＝目の前の壁情報が通行不可）場合は、前進不可と判定する
         '''
-#        _value = self._get_mapinfo(self.map, playerParty.y + self.VY[playerParty.direction], playerParty.x + self.VX[playerParty.direction], playerParty.direction)
         _value = self._get_mapinfo(self.map, playerParty.x, playerParty.y, playerParty.direction)
-        print(bin(_value))
-        if _value & 0b00000001 == 1:
+        _get_x = playerParty.x + self.POS_X[playerParty.direction][10]
+        _get_y = playerParty.y + self.POS_Y[playerParty.direction][10]
+        if _get_x < 0 or _get_x > len(self.map[playerParty.y]) - 1 or _get_y < 0 or _get_y > len(self.map) - 1:
+            _value_front = 0
+        else:
+            _value_front = self._get_mapinfo(self.map, _get_x, _get_y, playerParty.direction)
+        if _value & 0b00000001 == 0b00000001 and _value_front & 0b00010000 == 0b00010000:
             return False
         else:
             return True
@@ -163,7 +195,7 @@ class BaseFieldState(BaseState):
 
         try:
             # イベントが登録されている座標ならイベントの関数を呼び出す
-            _key = "{:02d}".format(playerParty.x) + "{:02d}".format(playerParty.y) + "D"
+            _key = "{:02d}".format(playerParty.x) + "{:02d}".format(playerParty.y) + "{:01d}".format(playerParty.direction) + "D"
             _event = self.event[_key]
             if _event != None:
                 _event()
@@ -175,9 +207,6 @@ class BaseFieldState(BaseState):
         if self.isEncount:
             PyxelUtil.text(10, 146, ["NA", "NI", "KA", "TI", "KA", "TU",
                                      "D", "I", "TE", "KI", "TA", "*!"], pyxel.COLOR_RED)
-
-        PyxelUtil.text(0, 0, "*X:" + str(playerParty.x) + " Y:" + str(playerParty.y) + " DIR:" +
-                       str(playerParty.direction) + " MAP:" + bin(self.map[playerParty.y][playerParty.x]))
 
     def onEnter(self):
         '''
@@ -360,6 +389,8 @@ class BaseFieldState(BaseState):
                 _color = _data & 0b00000011
                 pyxel.rect(10 + self.OFFSET_X, 9 + self.OFFSET_Y, 59,
                            61, self.WALLCOLOR_FRONT[_color])
+                if _data & 0b00000011 == 0b00000010:
+                    pyxel.circ(17 + self.OFFSET_X, 40 + self.OFFSET_Y, 2, pyxel.COLOR_BLACK)
             if _data & 0b00001100 != 0:
                 _color = (_data >> 2) & 0b00000011
                 pyxel.tri(78 + self.OFFSET_X, 0 + self.OFFSET_Y, 69 + self.OFFSET_X, 9 + self.OFFSET_Y,
