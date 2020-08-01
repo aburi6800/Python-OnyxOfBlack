@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 import random
+
 import pyxel
-from ..pyxelUtil import PyxelUtil
+
 from ..baseState import BaseState
-from ..character import playerParty
-from ..character import enemyParty
-from ..character import Human
-from ..character import Monster
+from ..character import Human, Monster, enemyParty, playerParty
+from ..pyxelUtil import PyxelUtil
 
 
 class StateBattle(BaseState):
@@ -18,8 +17,9 @@ class StateBattle(BaseState):
     # 状態の定数
     STATE_ENCOUNT = 0
     STATE_CHOOSE_ACTION = 1
-    STATE_START_BATTLE = 2
+    STATE_ENEMY_ESCAPE_JUDGE = 2
     STATE_CHOOSE_TARGET = 3
+    STATE_START_BATTLE = 4
     STATE_BATTLE = 5
     STATE_WIN = 6
     STATE_LOSE = 7
@@ -63,6 +63,9 @@ class StateBattle(BaseState):
         # 逃走に成功したか？
         self.isRunaway = False
 
+        # 敵は逃走したか？
+        self.isEnemyEscpaed = False
+
         # メンバーのインデックス
         self.member_index = 0
 
@@ -78,8 +81,9 @@ class StateBattle(BaseState):
         self.handler = {
             self.STATE_ENCOUNT: [self.update_encount, self.render_encount],
             self.STATE_CHOOSE_ACTION: [self.update_choose_action, self.render_choose_action],
-            self.STATE_START_BATTLE: [self.update_start_battle, self.render_start_battle],
+            self.STATE_ENEMY_ESCAPE_JUDGE: [self.update_enemy_escape_judge, self.render_enemy_escape_judge],
             self.STATE_CHOOSE_TARGET: [self.update_choose_target, self.render_choose_target],
+            self.STATE_START_BATTLE: [self.update_start_battle, self.render_start_battle],
             self.STATE_BATTLE: [self.update_battle, self.render_battle],
             self.STATE_WIN: [self.update_win, self.render_win],
             self.STATE_LOSE: [self.update_lose, self.render_lose],
@@ -101,10 +105,11 @@ class StateBattle(BaseState):
         '''
         遭遇時の処理
         '''
-        self.tick += 1
         if self.tick > 60:
             self.tick = 0
             self.state = self.STATE_CHOOSE_ACTION
+
+        self.tick += 1
 
     def update_choose_action(self):
         '''
@@ -112,46 +117,38 @@ class StateBattle(BaseState):
         '''
         # コマンド入力
         if pyxel.btnp(pyxel.KEY_A):
-            self.state = self.STATE_START_BATTLE
+            self.state = self.STATE_ENEMY_ESCAPE_JUDGE
         if pyxel.btnp(pyxel.KEY_T):
             self.state = self.STATE_CHOOSE_TALK
         if pyxel.btnp(pyxel.KEY_R):
             self.state = self.STATE_RUNAWAY_JUDGE
 
-    def update_start_battle(self):
+    def update_enemy_escape_judge(self):
         '''
-        戦闘開始処理
+        敵逃走判定処理
         '''
-        self.tick += 1
         if self.tick > 30:
             self.tick = 0
+            if self.isEnemyEscpaed:
+                # 敵が逃げる場合は勝利
+                self.state = self.STATE_WIN
+            else:
+                # 敵が逃げない場合はプレイヤーパーティーの攻撃対象選択処理へ
+                self.state = self.STATE_CHOOSE_TARGET
 
-            # 敵の全てに対して、ランダムに攻撃対象を決定
-            for _member in enemyParty.memberList:
-                _member.target = playerParty.memberList[random.randint(
-                    0, len(playerParty.memberList) - 1)]
+        if  self.tick == 0:
+            # 敵パーティーは# 逃げるか？
+            if enemyParty.isEscape():
+                _playerStrength = 0
+                for _member in playerParty.memberList:
+                    _playerStrength = _playerStrength + _member.strength
+                _enemyStrength = 0
+                for _member in enemyParty.memberList:
+                    _enemyStrength = _enemyStrength + _member.strength
+                if (_playerStrength + random.randint(0, 10)) > (_enemyStrength + random.randint(0, 10)):
+                    self.isEnemyEscpaed = True
 
-            # 行動順リスト
-            self.turn_table = playerParty.memberList + enemyParty.memberList
-
-            # イニシアチブを設定
-            for _member in self.turn_table:
-                _member.initiative = _member.dexterity + random.randint(0, 6)
-                _member.attack = _member.strength + random.randint(0, 6)
-                _member.accept = _member.defend + random.randint(0, 6)
-
-            # イニシアチブ値で降順でソート
-            self.turn_table = sorted(
-                self.turn_table, key=lambda k: k.initiative, reverse=True)
-
-            # 行動順リストのインデックス
-            self.turn_index = 0
-
-            # プレイヤーパーティーのインデックス
-            self.member_index = 0
-
-            # プレイヤーパーティーの攻撃対象選択へ
-            self.state = self.STATE_CHOOSE_TARGET
+        self.tick += 1
 
     def update_choose_target(self):
         '''
@@ -178,18 +175,51 @@ class StateBattle(BaseState):
                 playerParty.memberList[self.member_index].target = enemyParty.memberList[4]
                 self.member_index += 1
 
-        # メンバーインデックスがプレイヤーパーティーを超えたら敵の行動選択処理へ
+        # メンバーインデックスがプレイヤーパーティーを超えたら戦闘開始処理へ
         if self.member_index > len(playerParty.memberList) - 1:
             self.message = None
-            self.state = self.STATE_BATTLE
+            self.state = self.STATE_START_BATTLE
+
+    def update_start_battle(self):
+        '''
+        戦闘開始処理
+        '''
+        # 敵の全てに対して、ランダムに攻撃対象を決定
+        for _member in enemyParty.memberList:
+            _member.target = playerParty.memberList[random.randint(
+                0, len(playerParty.memberList) - 1)]
+
+        # 行動順リスト
+        self.turn_table = playerParty.memberList + enemyParty.memberList
+
+        # イニシアチブを設定
+        for _member in self.turn_table:
+            _member.initiative = _member.dexterity + random.randint(0, 6)
+            _member.attack = _member.strength + random.randint(0, 6)
+            _member.accept = _member.defend + random.randint(0, 6)
+
+        # イニシアチブ値で降順でソート
+        self.turn_table = sorted(
+            self.turn_table, key=lambda k: k.initiative, reverse=True)
+
+        # 行動順リストのインデックス初期化
+        self.turn_index = 0
+
+        # プレイヤーパーティーのインデックス初期化
+        self.member_index = 0
+
+        # 戦闘処理へ
+        self.state = self.STATE_BATTLE
 
     def update_battle(self):
         '''
         戦闘処理
         '''
         if self.tick > 30:
-            self.turn_index += 1
             self.tick = 0
+            # 次の行動順リストへ
+            self.turn_index += 1
+
             if self.turn_index > len(self.turn_table) - 1:
                 # プレイヤーパーティーが全滅していたらプレイヤーパーティー全滅処理へ
                 if len(playerParty.memberList) == 0:
@@ -214,7 +244,7 @@ class StateBattle(BaseState):
 
             # 攻撃対象が生きていなければ抜ける
             if _target == None or _target.life < 1:
-                self.tick = 30
+                self.tick = 31
                 return
 
             # メッセージ初期化
@@ -292,10 +322,15 @@ class StateBattle(BaseState):
         '''
         プレイヤーパーティー勝利処理
         '''
-        if pyxel.btn(pyxel.KEY_SPACE):
+        if self.reward_gold > 0:
+            if pyxel.btn(pyxel.KEY_SPACE):
+                for _member in playerParty.memberList:
+                    _member.exp = _member.exp + self.reward_exp
+                    _member.gold = _member.gold + self.reward_gold
+                self.stateStack.pop()            
+        else:
             for _member in playerParty.memberList:
                 _member.exp = _member.exp + self.reward_exp
-                _member.gold = _member.gold + self.reward_gold
             self.stateStack.pop()            
 
     def update_lose(self):
@@ -309,29 +344,37 @@ class StateBattle(BaseState):
         '''
         逃走判定処理
         '''
-#        if self.tick > 30:
-#            if self.isRunaway:
-#                self.state = self.STATE_RUNAWAY_SUCCESS
-#            else:
-#                self.state = self.STATE_START_BATTLE
-#        for _member in enemyParty.memberList:
-#            _enemyDexterity = _enemyDexterity + _member.dexterity
-#        for _member in playerParty.memberList:
-#            _playerDexterity = _playerDexterity + _member.dexterity
-#        if random.randint(0, 100 - _enemyDexterity) > 80 - _playerDexterity:
-
+        _enemyDexterity = 0
+        for _member in enemyParty.memberList:
+            _enemyDexterity = _enemyDexterity + _member.dexterity
+        _playerDexterity = 0
+        for _member in playerParty.memberList:
+            _playerDexterity = _playerDexterity + _member.dexterity
+        if (random.randint(0, 100) + _playerDexterity) - (random.randint(0, 100) + _enemyDexterity) > 0:
+            self.state = self.STATE_RUNAWAY_SUCCESS
+        else:
+            self.state = self.STATE_RUNAWAY_FAILED
 
     def update_runaway_success(self):
         '''
         逃走成功処理
         '''
-        pass
+        if self.tick > 30:
+            self.tick = 0
+            self.stateStack.pop()
+
+        self.tick += 1
 
     def update_runaway_failed(self):
         '''
         逃走失敗処理
         '''
-        pass
+        if self.tick > 30:
+            self.tick = 0
+            self.state = self.STATE_START_BATTLE
+            for _member in playerParty.memberList:
+                _member.target = None 
+        self.tick += 1
 
     def update_choose_talk(self):
         '''
@@ -381,11 +424,14 @@ class StateBattle(BaseState):
         PyxelUtil.text(32, 172, ["*[T] ", "HA", "NA",
                                  "SU"], pyxel.COLOR_YELLOW)
 
-    def render_start_battle(self):
+    def render_enemy_escape_judge(self):
         '''
-        戦闘開始表示処理
+        敵逃走判定表示処理
         '''
-        PyxelUtil.text(90, 148, ["** * *  BATTLE  * * *"], pyxel.COLOR_RED)
+        if self.isEnemyEscpaed:
+            PyxelUtil.text(16, 140, ["NI", "KE", "D", "TE", " ", "I", "LTU", "TA", "*..."], pyxel.COLOR_WHITE)
+        else:
+            PyxelUtil.text(90, 148, ["** * *  BATTLE  * * *"], pyxel.COLOR_RED)
 
     def render_choose_target(self):
         '''
@@ -402,11 +448,17 @@ class StateBattle(BaseState):
             PyxelUtil.text(40, 148 + _idx * 8, "*" +
                            enemyParty.memberList[_idx].name, pyxel.COLOR_LIGHTBLUE)
 
+    def render_start_battle(self):
+        '''
+        戦闘開始表示処理
+        ※実際はここで表示をするものはない
+        '''
+
     def render_battle(self):
         '''
         戦闘表示処理
         '''
-        if self.message != None:
+        if self.message != None and len(self.message) == 2:
             PyxelUtil.text(16, 148, self.message[0], pyxel.COLOR_WHITE)
             PyxelUtil.text(16, 164, self.message[1], pyxel.COLOR_WHITE)
 
@@ -430,13 +482,12 @@ class StateBattle(BaseState):
         逃走成功表示処理
         ※実際はここで表示をするものはない
         '''
-        pass
 
     def render_runaway_success(self):
         '''
         逃走成功表示処理
         '''
-        PyxelUtil.text(56, 148, ["I", "TU", "MO", " ", "U", "MA", "KU", "I", "KU", "TO", "HA",
+        PyxelUtil.text(46, 148, ["I", "TU", "MO", " ", "U", "MA", "KU", "I", "KU", "TO", "HA",
                                  " ", "KA", "KI", "D", "RI", "MA", "SE", "NN", "YO", "*..."], pyxel.COLOR_WHITE)
 
     def render_runaway_failed(self):
@@ -450,7 +501,12 @@ class StateBattle(BaseState):
         '''
         会話選択表示処理
         '''
-        pass
+        PyxelUtil.text(32, 156, ["*[J] ", "NA", "KA",
+                                 "MA", "NI", " ", "SA", "SO", "U"], pyxel.COLOR_YELLOW)
+        PyxelUtil.text(32, 164, ["*[G] ", "WA", "KA",
+                                 "RE", "RU"], pyxel.COLOR_YELLOW)
+        PyxelUtil.text(32, 172, ["*[T] ", "ka", "ne",
+                                 "WO", " ", "TA", "D", "SE"], pyxel.COLOR_YELLOW)
 
     def onEnter(self):
         '''

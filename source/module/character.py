@@ -287,9 +287,14 @@ class EnemyParty(Party):
     def __init__(self):
         super().__init__()
 
-    def initializr(self):
+    def initialize(self):
         self.memberList = []
 
+    def isEscape(self) -> bool:
+        if isinstance(self.memberList[0], Monster):
+            return self.memberList[0].escape
+        else:
+            True
 
 enemyParty = EnemyParty()
 

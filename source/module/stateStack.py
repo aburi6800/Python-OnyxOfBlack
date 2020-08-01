@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#from .singleton import Singleton
 from .systemStates.stateTitle import StateTitle
 from .battleStates.stateBattle import StateBattle
 from .fieldStates.baseFieldState import BaseFieldState
 from .fieldStates.stateCity import StateCity
+from .fieldStates.stateCemetery import StateCemetery
 from .facilityStates.stateWeaponShop import StateWeaponShop
 from .facilityStates.stateArmorShop import StateArmorShop
 from .facilityStates.stateShieldShop import StateShieldShop
@@ -26,6 +26,7 @@ class StateStack(object):
 
     STATE_TITLE = "Title"
     STATE_CITY = "City"
+    STATE_CEMETERY = "Cemetery"
     STATE_BATTLE = "Battle"
     STATE_WEAPONSHOP = "WeaponShop"
     STATE_ARMORSHOP = "ArmorShop"
@@ -44,7 +45,8 @@ class StateStack(object):
             self.STATE_WEAPONSHOP: StateWeaponShop,
             self.STATE_ARMORSHOP: StateArmorShop,
             self.STATE_SHIELDSHOP: StateShieldShop,
-            self.STATE_HELMETSHOP: StateHelmetShop
+            self.STATE_HELMETSHOP: StateHelmetShop,
+            self.STATE_CEMETERY: StateCemetery,
         }
 
     def update(self):

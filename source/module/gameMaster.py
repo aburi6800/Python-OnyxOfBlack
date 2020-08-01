@@ -34,9 +34,6 @@ class GameMaster(object):
         '''
         各フレームの処理
         '''
-        # 開発用
-        PyxelUtil.text(0, 0, "*X:" + str(playerParty.x) + " Y:" + str(playerParty.y) + " DIR:" +
-                       str(playerParty.direction) + " MAP:" + self.stateName + "-" + bin(self.map[playerParty.y][playerParty.x]))
         stateStack.update()
 
     def render(self):

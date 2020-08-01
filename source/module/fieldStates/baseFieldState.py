@@ -47,20 +47,22 @@ class BaseFieldState(BaseState):
     )
 
     # 迷路描画の壁の色（正面）
-    WALLCOLOR_FRONT = (
+    WALLCOLOR_FRONT = [
         None,
         pyxel.COLOR_LIGHTBLUE,
         pyxel.COLOR_YELLOW,
         pyxel.COLOR_BLACK,
-    )
+        pyxel.COLOR_LIGHTBLUE,
+    ]
 
     # 迷路描画の壁の色（側面）
-    WALLCOLOR_SIDE = (
+    WALLCOLOR_SIDE = [
         None,
         pyxel.COLOR_DARKBLUE,
         pyxel.COLOR_YELLOW,
         pyxel.COLOR_BLACK,
-    )
+        pyxel.COLOR_DARKBLUE,
+    ]
 
     # 迷路描画の座標オフセット
     OFFSET_X = 150
@@ -75,6 +77,22 @@ class BaseFieldState(BaseState):
 
         # エンカウントフラグ
         self.isEncount = False
+
+    def set_wall_color(self, _wallcolor_front = pyxel.COLOR_LIGHTBLUE, _wallcolor_side = pyxel.COLOR_DARKBLUE):
+        '''
+        壁の色を設定する処理
+
+        途中で変更したい場合に使用する
+        正面の壁の色、側面の壁の色の順に指定する
+        扉の色、ブラックタワーの色は変更不可
+        '''
+        # 迷路描画の壁の色（正面）
+        self.WALLCOLOR_FRONT[1] = _wallcolor_front
+        self.WALLCOLOR_FRONT[4] = _wallcolor_front
+
+        # 迷路描画の壁の色（側面）
+        self.WALLCOLOR_SIDE[1] = _wallcolor_side
+        self.WALLCOLOR_SIDE[4] = _wallcolor_side
 
     def update(self):
         '''
@@ -91,15 +109,8 @@ class BaseFieldState(BaseState):
             else:
                 return
 
-        try:
-            # イベントが登録されている座標ならイベントの関数を呼び出す
-            _key = "{:02d}".format(playerParty.x) + "{:02d}".format(playerParty.y) + "{:01d}".format(playerParty.direction) + "U"
-            _event = self.event[_key]
-            if _event != None:
-                _event()
-                return
-        except KeyError:
-            None
+        # イベントハンドラ
+        self._eventhandler("U")
 
         # キー入力（右）
         if pyxel.btnp(pyxel.KEY_RIGHT):
@@ -123,7 +134,7 @@ class BaseFieldState(BaseState):
         # キー入力（上）
         if pyxel.btnp(pyxel.KEY_UP) and self._can_move_forward():
             if random.randint(0, 20) == 0:
-#                self.encount_enemy()
+                self.encount_enemy()
                 pass
             else:
                 playerParty.saveCondition()
@@ -154,7 +165,7 @@ class BaseFieldState(BaseState):
             _value_front = 0
         else:
             _value_front = self._get_mapinfo(self.map, _get_x, _get_y, playerParty.direction)
-        if _value & 0b00000001 == 0b00000001 and _value_front & 0b00010000 == 0b00010000:
+        if _value & 0b000000000001 == 0b000000000001 and _value_front & 0b000001000000 == 0b000001000000:
             return False
         else:
             return True
@@ -164,6 +175,10 @@ class BaseFieldState(BaseState):
         各フレームの描画処理
         '''
         super().render()
+
+        # 開発用
+        PyxelUtil.text(0, 0, "*X:" + str(playerParty.x) + " Y:" + str(playerParty.y) + " DIR:" +
+                       str(playerParty.direction) + " MAP:" + self.stateName + "-" + bin(self.map[playerParty.y][playerParty.x]))
 
         # 迷路の枠線
         pyxel.rectb(self.OFFSET_X - 1, self.OFFSET_Y - 1, 80, 80, pyxel.COLOR_DARKBLUE)
@@ -193,32 +208,52 @@ class BaseFieldState(BaseState):
         # 迷路
         self._draw_maze(playerParty.x, playerParty.y, playerParty.direction, self.map)
 
-        try:
-            # イベントが登録されている座標ならイベントの関数を呼び出す
-            _key = "{:02d}".format(playerParty.x) + "{:02d}".format(playerParty.y) + "{:01d}".format(playerParty.direction) + "D"
-            _event = self.event[_key]
-            if _event != None:
-                _event()
-                return
-        except KeyError:
-            None
-
         # エンカウント時のメッセージ
         if self.isEncount:
             PyxelUtil.text(10, 146, ["NA", "NI", "KA", "TI", "KA", "TU",
                                      "D", "I", "TE", "KI", "TA", "*!"], pyxel.COLOR_RED)
+            return
+            
+        # イベントハンドラ
+        self._eventhandler("D")
 
     def onEnter(self):
         '''
         状態開始時の処理
         '''
-        pass
+        # 壁の色を初期化する
+        self.set_wall_color()
 
     def onExit(self):
         '''
         状態終了時の処理
         '''
-        pass
+        # 壁の色を初期化する
+        self.set_wall_color()
+
+    def _eventhandler(self, _mode):
+        '''
+        プレイヤーパーティーの現在の座標に登録されているイベントがあれば、そのイベントの関数を呼び出す
+
+        引数の_modeには"U"(UPDATE)、または"D"(DRAW)のいづれかを指定する（以外の場合は常にNoneを返却する）
+        初めに位置＋方向で検索し、無ければ位置で検索する。
+        '''
+        if _mode != "U" and _mode != "D":
+            return
+
+        # 現在の座標＋方向でイベントが登録されている場合は、イベントの関数を呼び出す
+        _key = "{:02d}".format(playerParty.x) + "{:02d}".format(playerParty.y) + "{:01d}".format(playerParty.direction) + _mode
+        _event = self.event.get(_key, None)
+        if _event != None:
+            _event()
+            return
+
+        # 現在の座標でイベントが登録されている場合は、イベントの関数を呼び出す
+        _key = "{:02d}".format(playerParty.x) + "{:02d}".format(playerParty.y) + "9" + _mode
+        _event = self.event.get(_key, None)
+        if _event != None:
+            _event()
+            return
 
     def _draw_maze(self, _x, _y, _direction, _map):
         '''
@@ -237,17 +272,17 @@ class BaseFieldState(BaseState):
                 _data = self._get_mapinfo(_map, _get_x, _get_y, _direction)
             self._draw_wall(i, _data)
 
-    def _right_2bit_rotate(self, n):
+    def _right_3bit_rotate(self, n):
         '''
-        2ビット右にローテートした値を返却する
+        3ビット右にローテートした値を返却する
         '''
-        return ((n & 0b00000011) << 6) | ((n >> 2) & 0b11111111)
+        return ((n & 0b000000000111) << 9) | ((n >> 3) & 0b111111111111)
 
-    def _left_2bit_rotate(self, n):
+    def _left_3bit_rotate(self, n):
         '''
-        2ビット左にローテートした値を返却する
+        3ビット左にローテートした値を返却する
         '''
-        return ((n << 2) & 0b11111111) | (n >> 6)
+        return ((n << 3) & 0b111111111111) | (n >> 9)
 
     def _get_mapinfo(self, _map, _x, _y, _direction):
         '''
@@ -259,7 +294,7 @@ class BaseFieldState(BaseState):
         _data = _map[_y][_x]
         if _direction > self.DIRECTION_NORTH:
             for _ in range(_direction):
-                _data = self._right_2bit_rotate(_data)
+                _data = self._right_3bit_rotate(_data)
         return _data
 
     def _draw_wall(self, _idx, _data):
@@ -279,30 +314,30 @@ class BaseFieldState(BaseState):
         #   |8|A|9|
         #   |B|D|C|
         if _idx == 1:
-            if _data & 0b00000011 != 0:
-                _color = _data & 0b00000011
+            if _data & 0b000000000111 != 0:
+                _color = _data & 0b000000000111
                 pyxel.rect(35 + self.OFFSET_X, 38 + self.OFFSET_Y, 3,
                            3, self.WALLCOLOR_FRONT[_color])
         if _idx == 3:
-            if _data & 0b00000011 != 0:
-                _color = _data & 0b00000011
+            if _data & 0b000000000111 != 0:
+                _color = _data & 0b000000000111
                 pyxel.rect(41 + self.OFFSET_X, 38 + self.OFFSET_Y, 3,
                            3, self.WALLCOLOR_FRONT[_color])
         if _idx == 4:
-            if _data & 0b00000011 != 0:
-                _color = _data & 0b00000011
+            if _data & 0b000000000111 != 0:
+                _color = _data & 0b000000000111
                 pyxel.rect(38 + self.OFFSET_X, 38 + self.OFFSET_Y, 3,
                            3, self.WALLCOLOR_FRONT[_color])
-            if _data & 0b00001100 != 0:
-                _color = (_data >> 2) & 0b00000011
+            if _data & 0b000000111000 != 0:
+                _color = (_data >> 3) & 0b000000000111
                 pyxel.tri(43 + self.OFFSET_X, 36 + self.OFFSET_Y, 41 + self.OFFSET_X, 38 + self.OFFSET_Y,
                           43 + self.OFFSET_X, 38 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
                 pyxel.tri(41 + self.OFFSET_X, 40 + self.OFFSET_Y, 43 + self.OFFSET_X, 40 + self.OFFSET_Y,
                           43 + self.OFFSET_X, 42 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
                 pyxel.rect(41 + self.OFFSET_X, 39 + self.OFFSET_Y,
                            3, 1, self.WALLCOLOR_SIDE[_color])
-            if _data & 0b11000000 != 0:
-                _color = (_data >> 6) & 0b00000011
+            if _data & 0b111000000000 != 0:
+                _color = (_data >> 9) & 0b000000000111
                 pyxel.tri(35 + self.OFFSET_X, 36 + self.OFFSET_Y, 37 + self.OFFSET_X, 38 + self.OFFSET_Y,
                           35 + self.OFFSET_X, 38 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
                 pyxel.tri(35 + self.OFFSET_X, 40 + self.OFFSET_Y, 37 + self.OFFSET_X, 40 + self.OFFSET_Y,
@@ -311,30 +346,30 @@ class BaseFieldState(BaseState):
                            3, 1, self.WALLCOLOR_SIDE[_color])
 
         if _idx == 5:
-            if _data & 0b00000011 != 0:
-                _color = _data & 0b00000011
+            if _data & 0b000000000111 != 0:
+                _color = _data & 0b000000000111
                 pyxel.rect(26 + self.OFFSET_X, 35 + self.OFFSET_Y, 9,
                            9, self.WALLCOLOR_FRONT[_color])
         if _idx == 6:
-            if _data & 0b00000011 != 0:
-                _color = _data & 0b00000011
+            if _data & 0b000000000111 != 0:
+                _color = _data & 0b000000000111
                 pyxel.rect(44 + self.OFFSET_X, 35 + self.OFFSET_Y, 9,
                            9, self.WALLCOLOR_FRONT[_color])
         if _idx == 7:
-            if _data & 0b00000011 != 0:
-                _color = _data & 0b00000011
+            if _data & 0b000000000111 != 0:
+                _color = _data & 0b000000000111
                 pyxel.rect(35 + self.OFFSET_X, 35 + self.OFFSET_Y, 9,
                            9, self.WALLCOLOR_FRONT[_color])
-            if _data & 0b00001100 != 0:
-                _color = (_data >> 2) & 0b00000011
+            if _data & 0b000000111000 != 0:
+                _color = (_data >> 3) & 0b000000000111
                 pyxel.tri(50 + self.OFFSET_X, 29 + self.OFFSET_Y, 44 + self.OFFSET_X, 35 + self.OFFSET_Y,
                           50 + self.OFFSET_X, 35 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
                 pyxel.tri(44 + self.OFFSET_X, 43 + self.OFFSET_Y, 50 + self.OFFSET_X, 43 + self.OFFSET_Y,
                           50 + self.OFFSET_X, 49 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
                 pyxel.rect(44 + self.OFFSET_X, 36 + self.OFFSET_Y,
                            7, 7, self.WALLCOLOR_SIDE[_color])
-            if _data & 0b11000000 != 0:
-                _color = (_data >> 6) & 0b00000011
+            if _data & 0b111000000000 != 0:
+                _color = (_data >> 9) & 0b000000000111
                 pyxel.tri(28 + self.OFFSET_X, 29 + self.OFFSET_Y, 34 + self.OFFSET_X, 35 + self.OFFSET_Y,
                           28 + self.OFFSET_X, 35 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
                 pyxel.tri(28 + self.OFFSET_X, 43 + self.OFFSET_Y, 34 + self.OFFSET_X, 43 + self.OFFSET_Y,
@@ -343,30 +378,30 @@ class BaseFieldState(BaseState):
                            7, 7, self.WALLCOLOR_SIDE[_color])
 
         if _idx == 8:
-            if _data & 0b00000011 != 0:
-                _color = _data & 0b00000011
+            if _data & 0b000000000111 != 0:
+                _color = _data & 0b000000000111
                 pyxel.rect(5 + self.OFFSET_X, 28 + self.OFFSET_Y, 23,
                            23, self.WALLCOLOR_FRONT[_color])
         if _idx == 9:
-            if _data & 0b00000011 != 0:
-                _color = _data & 0b00000011
+            if _data & 0b000000000111 != 0:
+                _color = _data & 0b000000000111
                 pyxel.rect(51 + self.OFFSET_X, 28 + self.OFFSET_Y, 23,
                            23, self.WALLCOLOR_FRONT[_color])
         if _idx == 10:
-            if _data & 0b00000011 != 0:
-                _color = _data & 0b00000011
+            if _data & 0b000000000111 != 0:
+                _color = _data & 0b000000000111
                 pyxel.rect(28 + self.OFFSET_X, 28 + self.OFFSET_Y, 23,
                            23, self.WALLCOLOR_FRONT[_color])
-            if _data & 0b00001100 != 0:
-                _color = (_data >> 2) & 0b00000011
+            if _data & 0b000000111000 != 0:
+                _color = (_data >> 3) & 0b000000000111
                 pyxel.tri(69 + self.OFFSET_X, 10 + self.OFFSET_Y, 51 + self.OFFSET_X, 28 + self.OFFSET_Y,
                           69 + self.OFFSET_X, 28 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
                 pyxel.tri(51 + self.OFFSET_X, 50 + self.OFFSET_Y, 69 + self.OFFSET_X, 50 + self.OFFSET_Y,
                           69 + self.OFFSET_X, 68 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
                 pyxel.rect(51 + self.OFFSET_X, 29 + self.OFFSET_Y, 19,
                            21, self.WALLCOLOR_SIDE[_color])
-            if _data & 0b11000000 != 0:
-                _color = (_data >> 6) & 0b00000011
+            if _data & 0b111000000000 != 0:
+                _color = (_data >> 9) & 0b000000000111
                 pyxel.tri(9 + self.OFFSET_X, 10 + self.OFFSET_Y, 27 + self.OFFSET_X, 28 + self.OFFSET_Y,
                           9 + self.OFFSET_X, 28 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
                 pyxel.tri(9 + self.OFFSET_X, 50 + self.OFFSET_Y, 27 + self.OFFSET_X, 50 + self.OFFSET_Y,
@@ -375,32 +410,32 @@ class BaseFieldState(BaseState):
                            21, self.WALLCOLOR_SIDE[_color])
 
         if _idx == 11:
-            if _data & 0b00000011 != 0:
-                _color = _data & 0b00000011
+            if _data & 0b000000000111 != 0:
+                _color = _data & 0b000000000111
                 pyxel.rect(0 + self.OFFSET_X, 9 + self.OFFSET_Y, 10,
                            61, self.WALLCOLOR_FRONT[_color])
         if _idx == 12:
-            if _data & 0b00000011 != 0:
-                _color = _data & 0b00000011
+            if _data & 0b000000000111 != 0:
+                _color = _data & 0b000000000111
                 pyxel.rect(69 + self.OFFSET_X, 9 + self.OFFSET_Y, 10,
                            61, self.WALLCOLOR_FRONT[_color])
         if _idx == 13:
-            if _data & 0b00000011 != 0:
-                _color = _data & 0b00000011
+            if _data & 0b000000000111 != 0:
+                _color = _data & 0b000000000111
                 pyxel.rect(10 + self.OFFSET_X, 9 + self.OFFSET_Y, 59,
                            61, self.WALLCOLOR_FRONT[_color])
                 if _data & 0b00000011 == 0b00000010:
                     pyxel.circ(17 + self.OFFSET_X, 40 + self.OFFSET_Y, 2, pyxel.COLOR_BLACK)
-            if _data & 0b00001100 != 0:
-                _color = (_data >> 2) & 0b00000011
+            if _data & 0b000000111000 != 0:
+                _color = (_data >> 3) & 0b000000000111
                 pyxel.tri(78 + self.OFFSET_X, 0 + self.OFFSET_Y, 69 + self.OFFSET_X, 9 + self.OFFSET_Y,
                           78 + self.OFFSET_X, 9 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
                 pyxel.tri(69 + self.OFFSET_X, 69 + self.OFFSET_Y, 78 + self.OFFSET_X, 69 + self.OFFSET_Y,
                           78 + self.OFFSET_X, 78 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
                 pyxel.rect(69 + self.OFFSET_X, 10 + self.OFFSET_Y, 10,
                            59, self.WALLCOLOR_SIDE[_color])
-            if _data & 0b11000000 != 0:
-                _color = (_data >> 6) & 0b00000011
+            if _data & 0b111000000000 != 0:
+                _color = (_data >> 9) & 0b000000000111
                 pyxel.tri(0 + self.OFFSET_X, 0 + self.OFFSET_Y, 9 + self.OFFSET_X, 9 + self.OFFSET_Y,
                           0 + self.OFFSET_X, 9 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
                 pyxel.tri(0 + self.OFFSET_X, 69 + self.OFFSET_Y, 9 + self.OFFSET_X, 69 + self.OFFSET_Y,

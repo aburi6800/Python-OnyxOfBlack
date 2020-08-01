@@ -71,7 +71,7 @@ class MonsterParams(object):
             MonsterParam("ZOMBIE" ,  48,  0, 16, 16,  10, 12, 10,  2,  2,  0,  3,  8, False),
             MonsterParam("AZTEC"  ,  64,  0, 16, 16,   8, 10, 12, 10,  3,  5,  3,  5,  True),
             MonsterParam("GOBLIN" ,  80,  0, 16, 16,  10, 10, 10, 10,  3,  4,  5, 10,  True),
-            MonsterParam("WOLF"   ,  96,  0, 16, 16,  20, 18, 16, 20,  3,  0,  7, 14,  True),
+            MonsterParam("WOLF"   ,  96,  0, 16, 16,  20, 18, 16, 20,  3,  0,  4,  8,  True),
             MonsterParam("LION"   , 112,  0, 16, 16,  24, 20, 20, 18,  4,  0,  1,  1,  True),
             MonsterParam("SLIME"  , 128,  0, 16, 16,  28, 22, 12, 12,  4,  0,  5, 10, False),
             MonsterParam("SPIDER" , 144,  0, 16, 16,  22, 20, 18, 20,  4,  0,  5,  7,  True),
