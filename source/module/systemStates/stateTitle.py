@@ -11,6 +11,18 @@ class StateTitle(BaseSystemState):
     BaseSystemStateを継承
     タイトル画面の表示と各Stateへの遷移を行う
     '''
+    # 状態の定数
+    STATE_RESPECT = 1
+    STATE_TITLE = 2
+
+    # フェードイン／アウトの色
+    TEXTCOLOR = [pyxel.COLOR_BLACK] * 10
+    TEXTCOLOR += [pyxel.COLOR_DARKBLUE] * 10
+    TEXTCOLOR += [pyxel.COLOR_LIGHTBLUE] * 10
+    TEXTCOLOR += [pyxel.COLOR_WHITE] * 50
+    TEXTCOLOR += [pyxel.COLOR_LIGHTBLUE] * 10
+    TEXTCOLOR += [pyxel.COLOR_DARKBLUE] * 10
+    TEXTCOLOR += [pyxel.COLOR_BLACK] * 30
 
     def __init__(self, stateStack):
         '''
@@ -20,11 +32,30 @@ class StateTitle(BaseSystemState):
         self.stateName = "Title"
 
         self.tick = 0
+        self.state = self.STATE_RESPECT
         self.selected = 0
 
     def update(self):
         '''
         各フレームの処理
+        '''
+        self.tick += 1
+
+        if self.state == self.STATE_RESPECT:
+            self._update_respect()
+        elif self.state == self.STATE_TITLE:
+            self._update_title()
+
+    def _update_respect(self):
+        '''
+        ヘンク・B・ロジャースへの敬意
+        '''
+        if self.tick == len(self.TEXTCOLOR):
+            self.state = self.STATE_TITLE
+
+    def _update_title(self):
+        '''
+        タイトル
         '''
         if pyxel.btnp(pyxel.KEY_G):
             self.selected = 1
@@ -39,6 +70,21 @@ class StateTitle(BaseSystemState):
     def render(self):
         '''
         各フレームの描画処理
+        '''
+        if self.state == self.STATE_RESPECT:
+            self._render_respect()
+        elif self.state == self.STATE_TITLE:
+            self._render_title()
+
+    def _render_respect(self):
+        '''
+        ヘンク・B・ロジャースへの敬意
+        '''
+        PyxelUtil.text(48, 100, ["*With all due respect to Henk B. Rogers."], self.TEXTCOLOR[self.tick])
+
+    def _render_title(self):
+        '''
+        タイトル
         '''
         PyxelUtil.text(64, 36, ["*Role Playing game"], 2)
         pyxel.blt(72, 48, 0, 0,  0, 26, 16, 0)
