@@ -27,7 +27,9 @@ class StateBattle(BaseState):
     STATE_RUNAWAY_JUDGE = 10
     STATE_RUNAWAY_SUCCESS = 11
     STATE_RUNAWAY_FAILED = 12
+    STATE_JUDGE_TALK = 28
     STATE_CHOOSE_TALK = 29
+    STATE_TALK = 30
 
     # ハンドラ用定数
     HANDLER_UPDATE = 0
@@ -92,7 +94,9 @@ class StateBattle(BaseState):
             self.STATE_RUNAWAY_JUDGE: [self.update_runaway_judge, self.render_runaway_judge],
             self.STATE_RUNAWAY_FAILED: [self.update_runaway_failed, self.render_runaway_failed],
             self.STATE_RUNAWAY_SUCCESS: [self.update_runaway_success, self.render_runaway_success],
+            self.STATE_JUDGE_TALK: [self.update_judge_talk, self.render_judge_talk],
             self.STATE_CHOOSE_TALK: [self.update_choose_talk, self.render_choose_talk],
+            self.STATE_TALK: [self.update_talk, self.render_talk],
         }
 
     def change_state(self, _state):
@@ -127,7 +131,7 @@ class StateBattle(BaseState):
         if pyxel.btnp(pyxel.KEY_A):
             self.change_state(self.STATE_ENEMY_ESCAPE_JUDGE)
         if pyxel.btnp(pyxel.KEY_T):
-            self.change_state(self.STATE_CHOOSE_TALK)
+            self.change_state(self.STATE_JUDGE_TALK)
         if pyxel.btnp(pyxel.KEY_R):
             self.change_state(self.STATE_RUNAWAY_JUDGE)
 
@@ -400,9 +404,9 @@ class StateBattle(BaseState):
         _playerDexterity = (
             _playerDexterity // len(playerParty.memberList)) + random.randint(0, 10)
         if _playerDexterity > _enemyDexterity:
-            self.state = self.STATE_RUNAWAY_SUCCESS
+            self.change_state(self.STATE_RUNAWAY_SUCCESS)
         else:
-            self.state = self.STATE_RUNAWAY_FAILED
+            self.change_state(self.STATE_RUNAWAY_FAILED)
 
     def update_runaway_success(self):
         '''
@@ -419,18 +423,56 @@ class StateBattle(BaseState):
         逃走失敗処理
         '''
         if self.tick > 30:
-            self.tick = 0
-            self.state = self.STATE_START_BATTLE
+            self.change_state(self.STATE_START_BATTLE)
             for _member in playerParty.memberList:
                 _member.target = None
         else:
             self.tick += 1
 
+    def update_judge_talk(self):
+        '''
+        会話判定処理
+        '''
+        # 敵のパーティーは人間か？
+        if isinstance(enemyParty.memberList[0], Human):
+            # プレイヤーパーティーの人数 + 敵パーティーの人数 は 5以内か？
+            if len(playerParty.memberList) + len(enemyParty.memberList) <= 5:
+                # 会話選択へ
+                self.change_state(self.STATE_CHOOSE_TALK)
+            else:
+                # 会話表示へ
+                self.change_state(self.STATE_TALK)
+
+        else:
+            # 戦闘へ
+            self.change_state(self.STATE_START_BATTLE)
+
     def update_choose_talk(self):
         '''
         会話選択処理
         '''
-        pass
+        if pyxel.btnp(pyxel.KEY_J):
+            # 敵パーティーをプレイヤーパーティーに加える
+            for _member in enemyParty.memberList:
+                playerParty.memberList.append(_member)
+            # 戦闘終了
+            self.stateStack.pop()
+
+        if pyxel.btnp(pyxel.KEY_G):
+            # 戦闘終了
+            self.stateStack.pop()
+
+        if pyxel.btnp(pyxel.KEY_Y):
+            # 戦闘へ
+            self.change_state(self.STATE_ENEMY_ESCAPE_JUDGE)
+
+    def update_talk(self):
+        '''
+        会話表示処理
+        '''
+        if pyxel.btnp(pyxel.KEY_SPACE):
+            # 戦闘終了
+            self.stateStack.pop()
 
     def render(self):
         '''
@@ -506,6 +548,7 @@ class StateBattle(BaseState):
         戦闘開始表示処理
         ※実際はここで表示をするものはない
         '''
+        pass
 
     def render_battle(self):
         '''
@@ -546,6 +589,7 @@ class StateBattle(BaseState):
         逃走成功表示処理
         ※実際はここで表示をするものはない
         '''
+        pass
 
     def render_runaway_success(self):
         '''
@@ -561,16 +605,28 @@ class StateBattle(BaseState):
         PyxelUtil.text(56, 148, ["SI", "MA", "LTU", "TA", "* ! ", "NI",
                                  "KE", "D", "RA", "RE", "NA", "I", "* !"], pyxel.COLOR_RED)
 
+    def render_judge_talk(self):
+        '''
+        会話判定表示処理
+        ※実際はここで表示をするものはない
+        '''
+        pass
+
     def render_choose_talk(self):
         '''
         会話選択表示処理
         '''
-        PyxelUtil.text(32, 156, ["*[J] ", "NA", "KA",
-                                 "MA", "NI", " ", "SA", "SO", "U"], pyxel.COLOR_YELLOW)
-        PyxelUtil.text(32, 164, ["*[G] ", "WA", "KA",
-                                 "RE", "RU"], pyxel.COLOR_YELLOW)
-        PyxelUtil.text(32, 172, ["*[T] ", "ka", "ne",
-                                 "WO", " ", "TA", "D", "SE"], pyxel.COLOR_YELLOW)
+        PyxelUtil.text(16, 140, ["NA", "NI", "WO", " ", "HA", "NA", "SI", "KA", "KE", "MA", "SU", "KA", "* ?"], pyxel.COLOR_WHITE)
+        PyxelUtil.text(32, 156, ["*[J] JOIN US."], pyxel.COLOR_YELLOW)
+        PyxelUtil.text(32, 164, ["*[G] GOOD LUCK & GOOD BY."], pyxel.COLOR_YELLOW)
+        PyxelUtil.text(32, 172, ["*[Y] YOUR MONEY OR YOUR LIFE."], pyxel.COLOR_YELLOW)
+
+    def render_talk(self):
+        '''
+        会話表示処理
+        '''
+        PyxelUtil.text(16, 148, ["*ONYX", "WO", " ", "ME", "SA", "D", "SI", "TE", " ", "KA", "D", "NN", "HA", "D", "RI", "MA", "SI", "LYO", "U", "* !"], pyxel.COLOR_WHITE)
+        PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
     def onEnter(self):
         '''
