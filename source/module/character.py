@@ -26,6 +26,27 @@ class Character(object):
         self.exp = 0
         self.gold = 0
 
+    def levelup(self):
+        '''
+        レベルアップ処理
+        '''
+        # ライフ最大値の増分
+        _uplife = random.randint(2, 6)
+        # 強さの増分
+        _upstrength = random.randint(1, 13)
+        # 防御力の増分
+        _updefend = random.randint(1, 14 - _upstrength)
+        # 素早さの増分
+        _updexterity = 15 - _upstrength - _updefend
+
+        # パラメータ増加
+        self.level += 1
+        self.maxlife += _uplife
+        self.life += _uplife
+        self.strength += _upstrength
+        self.defend += _updefend
+        self.dexterity += _updexterity
+        self.exp = 0
 
 class Human(Character):
     '''
@@ -48,7 +69,6 @@ class Human(Character):
         self.potion = -1
         self.x = 0
         self.y = 0
-
 
 class Monster(Character):
     '''
@@ -220,16 +240,16 @@ class HumanGenerator(object):
         human = Human()
 
         human.level = _level
-        human.life = random.randint(1, _level * 8)
-        human.maxlife = human.life
+        for _ in range(_level):
+            human.levelup()
+
         human.exp = random.randint(1, 50)
-        human.strength = random.randint(1, _level * 5)
-        human.defend = random.randint(1, _level * 5)
-        human.dexterity = random.randint(1, _level * 5)
         human.gold = random.randint(1, _level * 100)
         human.weapon = WeaponParams().weaponList[random.randint(0, 3)]
-#        human.armor = ArmorParams().armorList[random.randint(0, 1)]
-        human.armor = None
+        if random.randint(0, 2) == 0:
+            human.armor = None
+        else:
+            human.armor = ArmorParams().armorList[random.randint(0, 1)]
         human.name = HumanGenerator()._generateName()
         human.head = random.randint(0, 127)
         human.body = random.randint(0, 2)
@@ -324,6 +344,7 @@ class EnemyPartyGenerator(object):
         for idx in range(_count):
             if isinstance(enemyClass, Human):
                 _monster = HumanGenerator.generate(enemyClass.level)
+                _monster.exp = enemyClass.level
             else:
                 _monster = Monster()
                 _monster.name = enemyClass.name + " " + chr(65 + idx) 

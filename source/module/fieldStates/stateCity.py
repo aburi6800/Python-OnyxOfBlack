@@ -91,8 +91,8 @@ class StateCity(BaseFieldState):
         # 出現するモンスターリスト
         self.enemy_set = (
             HumanGenerator.generate(1),
+            HumanGenerator.generate(1),
             HumanGenerator.generate(2),
-            HumanGenerator.generate(3),
             monsterParams.monsterList[monsterParams.BAT_LV1],
             monsterParams.monsterList[monsterParams.SKELTON_LV1],
             monsterParams.monsterList[monsterParams.WOLF],
