@@ -54,8 +54,9 @@ class BaseState(AbstractState):
             # ステータス
             PyxelUtil.text(16,  (_idx + 1) * 16 - 2,
                            ["*" + _member.name], pyxel.COLOR_WHITE)  # 名前
-            pyxel.rect(16, (_idx + 1) * 16 + 6, _member.life, 3,  5)
-            pyxel.rect(16, (_idx + 1) * 16 + 9, _member.exp, 1,  6)
+            pyxel.rect(16, (_idx + 1) * 16 + 6, _member.maxlife, 3,  pyxel.COLOR_RED)
+            pyxel.rect(16, (_idx + 1) * 16 + 6, _member.life, 3,  pyxel.COLOR_DARKBLUE)
+            pyxel.rect(16, (_idx + 1) * 16 + 9, _member.exp, 1,  pyxel.COLOR_LIGHTBLUE)
 
     def onEnter(self):
         '''

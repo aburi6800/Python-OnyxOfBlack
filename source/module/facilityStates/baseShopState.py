@@ -98,7 +98,7 @@ class BaseShopState(BaseFacilityState):
         self._update_common()
 
         for _key, _value in self.keyMap.items():
-            if pyxel.btnp(_key) and len(playerParty.memberList) > _value and playerParty.memberList[_value].gold > self.item.price:
+            if pyxel.btnp(_key) and len(playerParty.memberList) > _value and playerParty.memberList[_value].gold >= self.item.price:
                 self.buyMember = _value
                 self.state = self.STATE_EQUIP
 

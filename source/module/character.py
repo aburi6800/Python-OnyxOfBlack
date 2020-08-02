@@ -18,6 +18,7 @@ class Character(object):
 
         self.name = ""
         self.level = 0
+        self.maxlife = 0
         self.life = 0
         self.strength = 0
         self.defend = 0
@@ -220,6 +221,7 @@ class HumanGenerator(object):
 
         human.level = _level
         human.life = random.randint(1, _level * 8)
+        human.maxlife = human.life
         human.exp = random.randint(1, 50)
         human.strength = random.randint(1, _level * 5)
         human.defend = random.randint(1, _level * 5)
@@ -330,6 +332,7 @@ class EnemyPartyGenerator(object):
                 _monster.blt_w = enemyClass.blt_w
                 _monster.blt_h = enemyClass.blt_h
                 _monster.life = enemyClass.life + random.randint(0, enemyClass.life // 10 + 1)
+                _monster.maxlife = _monster.life
                 _monster.strength = enemyClass.strength + random.randint(0, enemyClass.strength // 10 + 1)
                 _monster.defend = enemyClass.defend + random.randint(0, enemyClass.defend // 10 + 1)
                 _monster.dexterity = enemyClass.dexterity + random.randint(0, enemyClass.dexterity // 10 + 1)

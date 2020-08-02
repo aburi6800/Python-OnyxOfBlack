@@ -61,14 +61,14 @@ class MonsterParams(object):
         # モンスターの初期データを登録
         # NAME, BLT_X, BLT_Y, BLT_W, BLT_H, LIFE, STRENGTH, DEFEND, DEXTERITY, EXP, GOLD, OCCR_MIN, OCCR_MAX, ESCAPE
         self.monsterList = (
-            MonsterParam("BAT"    ,   0,  0, 16,  8,   2,  2,  2,  8,  1,  0,  4, 10,  True),
-            MonsterParam("BAT"    ,   0,  0, 16,  8,   3,  2,  2,  8,  1,  0,  8, 20,  True),
-            MonsterParam("COBOLD" ,  16,  0, 16, 16,   3,  4,  3,  4,  2,  2,  2,  5,  True),
-            MonsterParam("COBOLD" ,  16,  0, 16, 16,   4,  4,  3,  4,  2,  2,  5, 10,  True),
+            MonsterParam("BAT"    ,   0,  0, 16,  8,   2,  2,  1,  7,  1,  0,  4, 10,  True),
+            MonsterParam("BAT"    ,   0,  0, 16,  8,   3,  2,  1,  8,  1,  0,  8, 20,  True),
+            MonsterParam("COBOLD" ,  16,  0, 16, 16,   3,  4,  4,  4,  2,  2,  2,  5,  True),
+            MonsterParam("COBOLD" ,  16,  0, 16, 16,   4,  4,  5,  4,  3,  2,  5, 10,  True),
             MonsterParam("SKELTON",  32,  0, 16, 16,   4,  5,  3,  3,  2,  1,  3,  5, False),
-            MonsterParam("SKELTON",  32,  0, 16, 16,   5,  5,  3,  3,  2,  1,  5, 10, False),
-            MonsterParam("ZOMBIE" ,  48,  0, 16, 16,   8, 12, 10,  1,  2,  0,  2,  5, False),
-            MonsterParam("ZOMBIE" ,  48,  0, 16, 16,  10, 12, 10,  2,  2,  0,  3,  8, False),
+            MonsterParam("SKELTON",  32,  0, 16, 16,   5,  5,  3,  4,  3,  1,  5, 10, False),
+            MonsterParam("ZOMBIE" ,  48,  0, 16, 16,   8,  7,  4,  2,  2,  0,  2,  5, False),
+            MonsterParam("ZOMBIE" ,  48,  0, 16, 16,  10,  7,  4,  3,  3,  0,  3,  8, False),
             MonsterParam("AZTEC"  ,  64,  0, 16, 16,   8, 10, 12, 10,  3,  5,  3,  5,  True),
             MonsterParam("GOBLIN" ,  80,  0, 16, 16,  10, 10, 10, 10,  3,  4,  5, 10,  True),
             MonsterParam("WOLF"   ,  96,  0, 16, 16,  20, 18, 16, 20,  3,  0,  4,  8,  True),
