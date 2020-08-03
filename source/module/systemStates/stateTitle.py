@@ -62,7 +62,6 @@ class StateTitle(BaseSystemState):
             self.tick = 0
 
         if self.selected != 0:
-            self.tick = self.tick + 1
             if self.tick > 21:
                 if self.selected == 1:
                     self.stateStack.push(self.stateStack.STATE_CITY)

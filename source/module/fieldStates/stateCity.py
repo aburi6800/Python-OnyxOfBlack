@@ -86,6 +86,8 @@ class StateCity(BaseFieldState):
             "17182U": self.update_temple,
             "18182U": self.update_temple,
             "19182U": self.update_temple,
+            "15149D": self.draw_to_well,
+            "15149U": self.update_to_well,
         }
 
         # 出現するモンスターリスト
@@ -112,12 +114,6 @@ class StateCity(BaseFieldState):
         else:
             enemyParty.memberList = EnemyPartyGenerator.generate(
                 self.enemy_set[random.randint(0, len(self.enemy_set) - 1)])
-
-    def update(self):
-        '''
-        各フレームの処理
-        '''
-        super().update()
 
     def update_gate(self):
         '''
@@ -185,17 +181,21 @@ class StateCity(BaseFieldState):
             # 墓地の地下へ
             self.stateStack.push(self.stateStack.STATE_CEMETERY)
 
+    def update_to_well(self):
+        '''
+        井戸のイベント
+        '''
+        if pyxel.btn(pyxel.KEY_D):
+            playerParty.x = 10
+            playerParty.y = 10
+            # 井戸の中へ
+            self.stateStack.push(self.stateStack.STATE_WELLB1)
+
     def update_temple(self):
         '''
         寺院に入るイベント
         '''
         playerParty.restoreCondition()
-
-    def render(self):
-        '''
-        各フレームの描画処理
-        '''
-        super().render()
 
     def draw_gate(self):
         '''
@@ -344,6 +344,13 @@ class StateCity(BaseFieldState):
         '''
         PyxelUtil.text(30 + self.OFFSET_X, 22 + self.OFFSET_Y,
                        "*TEMPLE", pyxel.COLOR_BLACK)
+
+    def draw_to_well(self):
+        '''
+        井戸の穴の表示
+        '''
+        PyxelUtil.text(16, 140, ["KA", "RE", "TA", " ", "I", "TO", "D", "KA", "D", "A", "RU", "."], pyxel.COLOR_WHITE)
+        PyxelUtil.text(16, 148, ["SI", "TA", "NI", " ", "O", "RI", "RA", "RE", "SO", "U", "TA", "D", "."], pyxel.COLOR_WHITE)
 
     def onEnter(self):
         '''

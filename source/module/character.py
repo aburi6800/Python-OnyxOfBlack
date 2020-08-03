@@ -363,7 +363,11 @@ class EnemyPartyGenerator(object):
 
             # 表示位置
             _monster.x = (idx * _x_step if idx < 12 else (idx - 12) * _x_step) + (188 - (_count * _x_step) / 2 if _count < 12 else 188 - (12 * _x_step) / 2)
-            _monster.y = random.randint(102, 112) if _count < 12 else (random.randint(102, 106) if idx < 12 else random.randint(116, 120))
+            if isinstance(_monster, Monster) and _monster.blt_h == 32:
+                _monster.y = 96
+            else:
+                _monster.y = random.randint(100, 112) if _count < 12 else (random.randint(102, 106) if idx < 12 else random.randint(116, 120))
+
             _memberList.append(_monster)
 
         return _memberList

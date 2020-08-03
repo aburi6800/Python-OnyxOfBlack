@@ -101,7 +101,7 @@ class BaseFieldState(BaseState):
         # エンカウントしたか？
         if self.isEncount:
             self.tick += 1
-            if self.tick > 10:
+            if self.tick > 30:
                 self.isEncount = False
                 self.tick = 0
                 self.stateStack.push(self.stateStack.STATE_BATTLE)

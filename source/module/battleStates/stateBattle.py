@@ -35,9 +35,6 @@ class StateBattle(BaseState):
     HANDLER_UPDATE = 0
     HANDLER_RENDER = 1
 
-    # このクラスの状態
-    state = STATE_ENCOUNT
-
     # キーとインデックスの辞書
     key_to_index = {
         pyxel.KEY_1: 0,
@@ -99,6 +96,9 @@ class StateBattle(BaseState):
             self.STATE_TALK: [self.update_talk, self.render_talk],
         }
 
+        # 状態
+        state = 0
+
     def change_state(self, _state):
         '''
         状態変更処理
@@ -120,7 +120,7 @@ class StateBattle(BaseState):
         '''
         遭遇時の処理
         '''
-        if self.tick > 60:
+        if self.tick > 80:
             self.change_state(self.STATE_CHOOSE_ACTION)
 
     def update_choose_action(self):

@@ -4,11 +4,16 @@ from .systemStates.stateTitle import StateTitle
 from .battleStates.stateBattle import StateBattle
 from .fieldStates.baseFieldState import BaseFieldState
 from .fieldStates.stateCity import StateCity
-from .fieldStates.stateCemetery import StateCemetery
 from .facilityStates.stateWeaponShop import StateWeaponShop
 from .facilityStates.stateArmorShop import StateArmorShop
 from .facilityStates.stateShieldShop import StateShieldShop
 from .facilityStates.stateHelmetShop import StateHelmetShop
+from .fieldStates.stateCemetery import StateCemetery
+from .fieldStates.stateWellB1 import StateWellB1
+from .fieldStates.stateWellB2 import StateWellB2
+from .fieldStates.stateWellB3 import StateWellB3
+from .fieldStates.stateWellB4 import StateWellB4
+from .fieldStates.stateDungionB5 import StateDungionB5
 #import stateBarbar
 #import stateBank
 #import stateSurgery
@@ -24,14 +29,20 @@ class StateStack(object):
     Stateのpush,popは各Stateの中で行う
     '''
 
+    # 各Stateの定数
     STATE_TITLE = "Title"
     STATE_CITY = "City"
-    STATE_CEMETERY = "Cemetery"
     STATE_BATTLE = "Battle"
     STATE_WEAPONSHOP = "WeaponShop"
     STATE_ARMORSHOP = "ArmorShop"
     STATE_SHIELDSHOP = "ShieldShop"
     STATE_HELMETSHOP = "HelmetShop"
+    STATE_CEMETERY = "Cemetery"
+    STATE_WELLB1 = "WellB1"
+    STATE_WELLB2 = "WellB2"
+    STATE_WELLB3 = "WellB3"
+    STATE_WELLB4 = "WellB4"
+    STATE_DUNGIONB5 = "DungionB5"
 
     def __init__(self):
         '''
@@ -47,6 +58,11 @@ class StateStack(object):
             self.STATE_SHIELDSHOP: StateShieldShop,
             self.STATE_HELMETSHOP: StateHelmetShop,
             self.STATE_CEMETERY: StateCemetery,
+            self.STATE_WELLB1: StateWellB1,
+            self.STATE_WELLB2: StateWellB2,
+            self.STATE_WELLB3: StateWellB3,
+            self.STATE_WELLB4: StateWellB4,
+            self.STATE_DUNGIONB5: StateDungionB5,
         }
 
     def update(self):

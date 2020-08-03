@@ -3,14 +3,14 @@ import pyxel
 
 from ..character import HumanGenerator, playerParty
 from ..fieldStates.baseFieldState import BaseFieldState
-from ..map.cemeteryB1 import cemeteryB1
+from ..map.wellB4 import wellB4
 from ..monster import monsterParams
 from ..pyxelUtil import PyxelUtil
 
 
-class StateCemetery(BaseFieldState):
+class StateWellB4(BaseFieldState):
     '''
-    墓地の地下のクラス
+    井戸B2のクラス
 
     BaseFieldStateを継承
     遭遇する敵リストとイベント処理を持つ
@@ -21,27 +21,21 @@ class StateCemetery(BaseFieldState):
         クラス初期化
         '''
         super().__init__(stateStack)
-        self.stateName = "Cemetery"
+        self.stateName = "WellB4"
 
         # 変数定義
         self.tick = 0
         self.isEncount = False
 
         # マップ
-        self.map = cemeteryB1.map
+        self.map = wellB4.map
 
         # イベント
         # マップ上の座標に対応するイベントの関数の辞書
         # 座標は"01013U"のようにX座標とY座標を2桁にした値と方向の値を結合し、"U"(update用)か"D"(draw用)を付与したものとする
         self.event = {
-            "09069U": self.update_to_city,
-            "10069U": self.update_to_city,
-            "09079U": self.update_to_city,
-            "10079U": self.update_to_city,
-            "09069D": self.draw_to_city,
-            "10069D": self.draw_to_city,
-            "09079D": self.draw_to_city,
-            "10079D": self.draw_to_city,
+            "10109U": self.update_to_upanddown,
+            "10109D": self.draw_to_upanddown,
         }
 
         # 出現するモンスターリスト
@@ -50,36 +44,29 @@ class StateCemetery(BaseFieldState):
             monsterParams.monsterList[monsterParams.BAT_LV1],
             monsterParams.monsterList[monsterParams.SKELTON_LV1],
             monsterParams.monsterList[monsterParams.WOLF],
-            monsterParams.monsterList[monsterParams.ZOMBIE_LV1],
             monsterParams.monsterList[monsterParams.COBOLD_LV1],
-            monsterParams.monsterList[monsterParams.MUMMY],
         )
 
-    def update_to_city(self):
+    def update_to_upanddown(self):
         '''
-        天井の抜け穴のイベント
+        抜け穴のイベント
         '''
-        if pyxel.btn(pyxel.KEY_U):
-            if playerParty.x == 9 and playerParty.y == 6:
-                playerParty.x = 25
-                playerParty.y = 19
-            if playerParty.x == 10 and playerParty.y == 6:
-                playerParty.x = 26
-                playerParty.y = 19
-            if playerParty.x == 9 and playerParty.y == 7:
-                playerParty.x = 25
-                playerParty.y = 20
-            if playerParty.x == 10 and playerParty.y == 7:
-                playerParty.x = 26
-                playerParty.y = 20
-            # 町へ戻る
+        if pyxel.btnp(pyxel.KEY_U):
+            playerParty.x = 10
+            playerParty.y = 10
+            # 井戸B2へ戻る
             self.stateStack.pop()
 
-    def draw_to_city(self):
+        if pyxel.btnp(pyxel.KEY_D):
+            playerParty.x = 10
+            playerParty.y = 10
+            self.stateStack.push(self.stateStack.STATE_DUNGIONB5)
+
+    def draw_to_upanddown(self):
         '''
         天井の抜け穴の表示
         '''
-        PyxelUtil.text(16, 140, ["TE", "NN", "SI", "D", "LYO", "U", "NI", " ", "NU",
+        PyxelUtil.text(16, 140, ["U", "E", "TO", "SI", "TA", "NI", " ", "NU",
                                  "KE", "A", "NA", "KA", "D", " ", "A", "RU", "* !!"], pyxel.COLOR_WHITE)
 
     def onEnter(self):
@@ -92,7 +79,7 @@ class StateCemetery(BaseFieldState):
         self.isEncount = False
 
         # 壁の色を初期化する
-        self.set_wall_color(pyxel.COLOR_RED, pyxel.COLOR_PURPLE)
+        self.set_wall_color(pyxel.COLOR_LIGHTBLUE, pyxel.COLOR_DARKBLUE)
 
     def onExit(self):
         '''
