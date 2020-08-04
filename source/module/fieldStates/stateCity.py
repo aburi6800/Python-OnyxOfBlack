@@ -178,6 +178,8 @@ class StateCity(BaseFieldState):
             if playerParty.x == 26 and playerParty.y == 20:
                 playerParty.x = 10
                 playerParty.y = 7
+            # カウントタイマーを初期化しておく
+            self.tick = 0
             # 墓地の地下へ
             self.stateStack.push(self.stateStack.STATE_CEMETERY)
 
@@ -188,6 +190,8 @@ class StateCity(BaseFieldState):
         if pyxel.btn(pyxel.KEY_D):
             playerParty.x = 10
             playerParty.y = 10
+            # カウントタイマーを初期化しておく
+            self.tick = 0
             # 井戸の中へ
             self.stateStack.push(self.stateStack.STATE_WELLB1)
 
@@ -357,9 +361,6 @@ class StateCity(BaseFieldState):
         状態開始時の処理
         '''
         super().onEnter()
-
-        self.tick = 0
-        self.isEncount = False
 
         # プレイヤーパーティーの最初の位置と方向
         playerParty.x = 17

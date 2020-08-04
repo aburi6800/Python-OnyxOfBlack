@@ -78,6 +78,9 @@ class BaseFieldState(BaseState):
         # エンカウントフラグ
         self.isEncount = False
 
+        # タイマーカウンタ
+        self.tick = 0
+
     def set_wall_color(self, _wallcolor_front = pyxel.COLOR_LIGHTBLUE, _wallcolor_side = pyxel.COLOR_DARKBLUE):
         '''
         壁の色を設定する処理
@@ -98,9 +101,10 @@ class BaseFieldState(BaseState):
         '''
         各フレームの処理
         '''
+        self.tick += 1
+
         # エンカウントしたか？
         if self.isEncount:
-            self.tick += 1
             if self.tick > 30:
                 self.isEncount = False
                 self.tick = 0
@@ -114,6 +118,7 @@ class BaseFieldState(BaseState):
 
         # キー入力（右）
         if pyxel.btnp(pyxel.KEY_RIGHT):
+            self.tick = 0
             playerParty.saveCondition()
             playerParty.direction += 1
             if playerParty.direction > self.DIRECTION_WEST:
@@ -121,6 +126,7 @@ class BaseFieldState(BaseState):
 
         # キー入力（左）
         if pyxel.btnp(pyxel.KEY_LEFT):
+            self.tick = 0
             playerParty.saveCondition()
             playerParty.direction -= 1
             if playerParty.direction < self.DIRECTION_NORTH:
@@ -128,11 +134,13 @@ class BaseFieldState(BaseState):
 
         # キー入力（下）
         if pyxel.btnp(pyxel.KEY_DOWN):
+            self.tick = 0
             playerParty.saveCondition()
             playerParty.direction = (playerParty.direction + 2) % 4
 
         # キー入力（上）
         if pyxel.btnp(pyxel.KEY_UP) and self._can_move_forward():
+            self.tick = 0
             if random.randint(0, 20) == 0:
                 self.encount_enemy()
                 pass
@@ -192,21 +200,22 @@ class BaseFieldState(BaseState):
         pyxel.line(39 + self.OFFSET_X, 39 + self.OFFSET_Y, 0 + self.OFFSET_X, 78 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
         pyxel.line(39 + self.OFFSET_X, 39 + self.OFFSET_Y, 78 + self.OFFSET_X, 78 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
 
-        if self.stateName != "City":
-            # 天井部のグリッド
-            pyxel.line(0 + self.OFFSET_X, 38 + self.OFFSET_Y, 78 + self.OFFSET_X, 38 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
-            pyxel.line(0 + self.OFFSET_X, 35 + self.OFFSET_Y, 78 + self.OFFSET_X, 35 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
-            pyxel.line(0 + self.OFFSET_X, 28 + self.OFFSET_Y, 78 + self.OFFSET_X, 28 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
-            pyxel.line(0 + self.OFFSET_X,9 + self.OFFSET_Y, 78 + self.OFFSET_X, 9 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
+        if self.tick > 0:
+            if self.stateName != "City":
+                # 天井部のグリッド
+                pyxel.line(0 + self.OFFSET_X, 38 + self.OFFSET_Y, 78 + self.OFFSET_X, 38 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
+                pyxel.line(0 + self.OFFSET_X, 35 + self.OFFSET_Y, 78 + self.OFFSET_X, 35 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
+                pyxel.line(0 + self.OFFSET_X, 28 + self.OFFSET_Y, 78 + self.OFFSET_X, 28 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
+                pyxel.line(0 + self.OFFSET_X,9 + self.OFFSET_Y, 78 + self.OFFSET_X, 9 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
 
-            pyxel.line(39 + self.OFFSET_X, 39 + self.OFFSET_Y, 0 + self.OFFSET_X, 0 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
-            pyxel.line(39 + self.OFFSET_X, 39 + self.OFFSET_Y, 78 + self.OFFSET_X, 0 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
-        else:
-            # 満天の星空
-            pyxel.blt(self.OFFSET_X, self.OFFSET_Y, 0, 0, 40, 80, 32, 0)
+                pyxel.line(39 + self.OFFSET_X, 39 + self.OFFSET_Y, 0 + self.OFFSET_X, 0 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
+                pyxel.line(39 + self.OFFSET_X, 39 + self.OFFSET_Y, 78 + self.OFFSET_X, 0 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
+            else:
+                # 満天の星空
+                pyxel.blt(self.OFFSET_X, self.OFFSET_Y, 0, 0, 40, 80, 32, 0)
 
-        # 迷路
-        self._draw_maze(playerParty.x, playerParty.y, playerParty.direction, self.map)
+            # 迷路
+            self._draw_maze(playerParty.x, playerParty.y, playerParty.direction, self.map)
 
         # エンカウント時のメッセージ
         if self.isEncount:
@@ -224,12 +233,21 @@ class BaseFieldState(BaseState):
         # 壁の色を初期化する
         self.set_wall_color()
 
+        # タイマーカウンタ初期化
+        self.tick = 0
+
+        # エンカウントフラグ初期化
+        self.isEncount = False
+
     def onExit(self):
         '''
         状態終了時の処理
         '''
         # 壁の色を初期化する
         self.set_wall_color()
+
+        # タイマーカウンタ初期化
+        self.tick = 0
 
     def _eventhandler(self, _mode):
         '''

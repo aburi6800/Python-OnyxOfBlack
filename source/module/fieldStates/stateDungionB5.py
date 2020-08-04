@@ -67,9 +67,6 @@ class StateDungionB5(BaseFieldState):
         '''
         super().onEnter()
 
-        self.tick = 0
-        self.isEncount = False
-
         # 壁の色を初期化する
         self.set_wall_color(pyxel.COLOR_LIGHTBLUE, pyxel.COLOR_DARKBLUE)
 
