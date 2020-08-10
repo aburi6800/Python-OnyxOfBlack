@@ -13,6 +13,9 @@ from .fieldStates.stateWellB1 import StateWellB1
 from .fieldStates.stateWellB2 import StateWellB2
 from .fieldStates.stateWellB3 import StateWellB3
 from .fieldStates.stateWellB4 import StateWellB4
+from .fieldStates.stateDungionB1 import StateDungionB1
+from .fieldStates.stateDungionB2 import StateDungionB2
+from .fieldStates.stateDungionB3 import StateDungionB3
 from .fieldStates.stateDungionB5 import StateDungionB5
 #import stateBarbar
 #import stateBank
@@ -42,6 +45,9 @@ class StateStack(object):
     STATE_WELLB2 = "WellB2"
     STATE_WELLB3 = "WellB3"
     STATE_WELLB4 = "WellB4"
+    STATE_DUNGIONB1 = "DungionB1"
+    STATE_DUNGIONB2 = "DungionB2"
+    STATE_DUNGIONB3 = "DungionB3"
     STATE_DUNGIONB5 = "DungionB5"
 
     def __init__(self):
@@ -62,6 +68,9 @@ class StateStack(object):
             self.STATE_WELLB2: StateWellB2,
             self.STATE_WELLB3: StateWellB3,
             self.STATE_WELLB4: StateWellB4,
+            self.STATE_DUNGIONB1: StateDungionB1,
+            self.STATE_DUNGIONB2: StateDungionB2,
+            self.STATE_DUNGIONB3: StateDungionB3,
             self.STATE_DUNGIONB5: StateDungionB5,
         }
 

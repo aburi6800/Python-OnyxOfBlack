@@ -78,6 +78,9 @@ class BaseFieldState(BaseState):
         # エンカウントフラグ
         self.isEncount = False
 
+        # 固定エンカウントフラグ
+        self.isFixedEncount = False
+
         # タイマーカウンタ
         self.tick = 0
 
@@ -103,6 +106,23 @@ class BaseFieldState(BaseState):
         '''
         self.tick += 1
 
+        # パーティーは逃げてきたか？
+        if playerParty.isEscape:
+            # フラグを降ろす
+            playerParty.isEscape = False
+            # 方向のリストを作ってシャッフル
+            _dirlist = [self.DIRECTION_NORTH, self.DIRECTION_EAST, self.DIRECTION_SOUTH, self.DIRECTION_WEST]
+            _dirlist = random.sample(_dirlist, len(_dirlist))
+            # 各方向について移動可能か調べる
+            for _direction in _dirlist:
+                if self._can_move_forward(playerParty.x, playerParty.y, _direction):
+                    # 移動可能の場合はその方向に移動
+                    playerParty.x = playerParty.x + self.VX[_direction]
+                    playerParty.y = playerParty.y + self.VX[_direction]
+                    playerParty.direction = _direction
+                    return
+            # どの方向にも移動できない（あり得ないが）場合はその場に留まるため、特に処理不要
+
         # エンカウントしたか？
         if self.isEncount:
             if self.tick > 30:
@@ -123,6 +143,7 @@ class BaseFieldState(BaseState):
             playerParty.direction += 1
             if playerParty.direction > self.DIRECTION_WEST:
                 playerParty.direction = self.DIRECTION_NORTH
+            return
 
         # キー入力（左）
         if pyxel.btnp(pyxel.KEY_LEFT):
@@ -131,15 +152,17 @@ class BaseFieldState(BaseState):
             playerParty.direction -= 1
             if playerParty.direction < self.DIRECTION_NORTH:
                 playerParty.direction = self.DIRECTION_WEST
+            return
 
         # キー入力（下）
         if pyxel.btnp(pyxel.KEY_DOWN):
             self.tick = 0
             playerParty.saveCondition()
             playerParty.direction = (playerParty.direction + 2) % 4
+            return
 
         # キー入力（上）
-        if pyxel.btnp(pyxel.KEY_UP) and self._can_move_forward():
+        if pyxel.btnp(pyxel.KEY_UP) and self._can_move_forward(playerParty.x, playerParty.y, playerParty.direction):
             self.tick = 0
             if random.randint(0, 20) == 0:
                 self.encount_enemy()
@@ -148,6 +171,7 @@ class BaseFieldState(BaseState):
                 playerParty.saveCondition()
                 playerParty.x = playerParty.x + self.VX[playerParty.direction]
                 playerParty.y = playerParty.y + self.VY[playerParty.direction]
+            return
 
     def encount_enemy(self):
         '''
@@ -160,20 +184,42 @@ class BaseFieldState(BaseState):
         enemyParty.memberList = EnemyPartyGenerator.generate(
         self.enemy_set[random.randint(0, len(self.enemy_set) - 1)])
 
-    def _can_move_forward(self) -> bool:
+    def fixedencount_enemy(self):
+        '''
+        敵と固定エンカウントした時の処理
+
+        固定エンカウントをしたい座標に、このメソッドをイベント辞書に登録する
+        isFixedEncountがFalseの時は、ランダムエンカウント時のメソッドを呼び出す
+        isFixedEncountがTrueの時は、イベント辞書から削除する
+        '''
+        # 固定エンカウントしていない状態か？
+        if self.isFixedEncount == False:
+            self.isFixedEncount = True
+            self.isEncount = True
+            self.encount_enemy()
+            return
+
+        # 上記の条件に合致しない場合は、固定エンカウントしている状態となる
+        # 戦闘から逃げて終了した場合は、ここに到達する前に座標が変更されているのでイベントは削除されない
+        # イベントのキー        
+        _key = "{:02d}".format(playerParty.x) + "{:02d}".format(playerParty.y) + "9U"
+        try:
+            # イベント辞書から削除
+            del(self.event[_key])
+        except KeyError as ke:
+            # KeyErrorが発生しても無視する
+            pass
+        self.isFixedEncount = False
+
+    def _can_move_forward(self, _x:int, _y:int, _direction:int) -> bool:
         '''
         前進できるかを判定する
 
         マップデータを方向によりシフトした結果の下位1ビットが立っている（＝目の前の壁情報が通行不可）場合は、前進不可と判定する
         '''
-        _value = self._get_mapinfo(self.map, playerParty.x, playerParty.y, playerParty.direction)
-        _get_x = playerParty.x + self.POS_X[playerParty.direction][10]
-        _get_y = playerParty.y + self.POS_Y[playerParty.direction][10]
-        if _get_x < 0 or _get_x > len(self.map[playerParty.y]) - 1 or _get_y < 0 or _get_y > len(self.map) - 1:
-            _value_front = 0
-        else:
-            _value_front = self._get_mapinfo(self.map, _get_x, _get_y, playerParty.direction)
-        if _value & 0b000000000001 == 0b000000000001 and _value_front & 0b000001000000 == 0b000001000000:
+        _value = self._get_mapinfo(self.map, _x, _y, _direction)
+
+        if _value & 0b000000000001 == 0b000000000001:
             return False
         else:
             return True

@@ -413,6 +413,7 @@ class StateBattle(BaseState):
         逃走成功処理
         '''
         if self.tick > 30:
+            playerParty.isEscape = True
             self.tick = 0
             self.stateStack.pop()
         else:
@@ -446,6 +447,8 @@ class StateBattle(BaseState):
         else:
             # 戦闘へ
             self.change_state(self.STATE_START_BATTLE)
+            for _member in playerParty.memberList:
+                _member.target = None
 
     def update_choose_talk(self):
         '''

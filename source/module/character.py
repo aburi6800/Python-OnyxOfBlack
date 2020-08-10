@@ -152,6 +152,9 @@ class PlayerParty(Party):
         self.y_save = 0
         self.direction_save = 0
 
+        # 状況のフラグ
+        self.isEscape = False
+
         print("PlayerParty:Initialized.")
 
     def addMember(self, chr: Human):

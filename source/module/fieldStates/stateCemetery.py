@@ -42,6 +42,19 @@ class StateCemetery(BaseFieldState):
             "10069D": self.draw_to_city,
             "09079D": self.draw_to_city,
             "10079D": self.draw_to_city,
+            "07129U": self.fixedencount_enemy,
+            "09139U": self.fixedencount_enemy,
+            "07149U": self.fixedencount_enemy,
+            "09159U": self.fixedencount_enemy,
+            "07109U": self.fixedencount_enemy,
+            "16169U": self.fixedencount_enemy,
+            "15159U": self.fixedencount_enemy,
+            "18169U": self.fixedencount_enemy,
+            "17159U": self.fixedencount_enemy,
+            "15189U": self.fixedencount_enemy,
+            "16199U": self.fixedencount_enemy,
+            "17189U": self.fixedencount_enemy,
+            "18199U": self.fixedencount_enemy,
         }
 
         # 出現するモンスターリスト

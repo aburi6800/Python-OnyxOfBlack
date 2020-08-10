@@ -3,13 +3,13 @@ import pyxel
 
 from ..character import HumanGenerator, playerParty, EnemyPartyGenerator, enemyParty
 from ..fieldStates.baseFieldState import BaseFieldState
-from ..map.dungionB5 import dungionB5
+from ..map.dungionB1 import dungionB1
 from ..monster import monsterParams
 from ..pyxelUtil import PyxelUtil
 
-class StateDungionB5(BaseFieldState):
+class StateDungionB1(BaseFieldState):
     '''
-    地下迷宮B5のクラス
+    地下迷宮B1のクラス
 
     BaseFieldStateを継承
     遭遇する敵リストとイベント処理を持つ
@@ -20,21 +20,23 @@ class StateDungionB5(BaseFieldState):
         クラス初期化
         '''
         super().__init__(stateStack)
-        self.stateName = "dungionB5"
+        self.stateName = "dungionB1"
 
         # 変数定義
         self.tick = 0
         self.isEncount = False
 
         # マップ
-        self.map = dungionB5.map
+        self.map = dungionB1.map
 
         # イベント
         # マップ上の座標に対応するイベントの関数の辞書
         # 座標は"01013U"のようにX座標とY座標を2桁にした値と方向の値を結合し、"U"(update用)か"D"(draw用)を付与したものとする
         self.event = {
-            "10109U": self.update_encount_kraken,
-            "10109D": self.draw_encount_kraken,
+            "03069U": self.update_to_up,
+            "03069D": self.draw_to_up,
+            "18219U": self.update_to_down,
+            "18219D": self.draw_to_down,
         }
 
         # 出現するモンスターリスト
@@ -46,20 +48,34 @@ class StateDungionB5(BaseFieldState):
             monsterParams.monsterList[monsterParams.COBOLD_LV1],
         )
 
-    def update_encount_kraken(self):
+    def update_to_up(self):
         '''
-        クラーケン出現イベントの処理
+        抜け穴のイベント
         '''
-        # 敵パーティー生成
-        self.isEncount = True
-        enemyParty.memberList = EnemyPartyGenerator.generate(monsterParams.monsterList[monsterParams.KRAKEN])
+        if pyxel.btnp(pyxel.KEY_U):
+            playerParty.x = 11
+            playerParty.y = 7
+            # 町へ戻る
+            self.stateStack.pop()
 
-    def draw_encount_kraken(self):
+    def update_to_down(self):
         '''
-        クラーケン出現イベントの表示
+        抜け穴のイベント
         '''
-#        PyxelUtil.text(16, 140, ["U", "E", "TO", "SI", "TA", "NI", " ", "NU",
-#                                 "KE", "A", "NA", "KA", "D", " ", "A", "RU", "* !!"], pyxel.COLOR_WHITE)
+        if pyxel.btnp(pyxel.KEY_D):
+            self.stateStack.push(self.stateStack.STATE_DUNGIONB2)
+
+    def draw_to_up(self):
+        '''
+        抜け穴の表示
+        '''
+        PyxelUtil.text(16, 140, ["U", "E", "NI", " ", "NU", "KE", "A", "NA", "KA", "D", " ", "A", "RU", "* !!"], pyxel.COLOR_WHITE)
+
+    def draw_to_down(self):
+        '''
+        抜け穴の表示
+        '''
+        PyxelUtil.text(16, 140, ["SI", "TA", "NI", " ", "NU", "KE", "A", "NA", "KA", "D", " ", "A", "RU", "* !!"], pyxel.COLOR_WHITE)
 
     def onEnter(self):
         '''

@@ -88,6 +88,8 @@ class StateCity(BaseFieldState):
             "19182U": self.update_temple,
             "15149D": self.draw_to_well,
             "15149U": self.update_to_well,
+            "11079D": self.draw_to_dungion,
+            "11079U": self.update_to_dungion,
         }
 
         # 出現するモンスターリスト
@@ -194,6 +196,18 @@ class StateCity(BaseFieldState):
             self.tick = 0
             # 井戸の中へ
             self.stateStack.push(self.stateStack.STATE_WELLB1)
+
+    def update_to_dungion(self):
+        '''
+        地下迷宮のイベント
+        '''
+        if pyxel.btn(pyxel.KEY_D):
+            playerParty.x = 3
+            playerParty.y = 6
+            # カウントタイマーを初期化しておく
+            self.tick = 0
+            # 井戸の中へ
+            self.stateStack.push(self.stateStack.STATE_DUNGIONB1)
 
     def update_temple(self):
         '''
@@ -355,6 +369,13 @@ class StateCity(BaseFieldState):
         '''
         PyxelUtil.text(16, 140, ["KA", "RE", "TA", " ", "I", "TO", "D", "KA", "D", "A", "RU", "."], pyxel.COLOR_WHITE)
         PyxelUtil.text(16, 148, ["SI", "TA", "NI", " ", "O", "RI", "RA", "RE", "SO", "U", "TA", "D", "."], pyxel.COLOR_WHITE)
+
+    def draw_to_dungion(self):
+        '''
+        地下迷宮の穴の表示
+        '''
+        PyxelUtil.text(16, 140, ["SI", "D", "ME", "NN", "NI", " ", "NU", "KE",
+                                 "A", "NA", "KA", "D", " ", "A", "RU", "* !!"], pyxel.COLOR_WHITE)
 
     def onEnter(self):
         '''
