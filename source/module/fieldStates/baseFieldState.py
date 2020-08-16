@@ -81,9 +81,6 @@ class BaseFieldState(BaseState):
         # 固定エンカウントフラグ
         self.isFixedEncount = False
 
-        # タイマーカウンタ
-        self.tick = 0
-
     def set_wall_color(self, _wallcolor_front = pyxel.COLOR_LIGHTBLUE, _wallcolor_side = pyxel.COLOR_DARKBLUE):
         '''
         壁の色を設定する処理
@@ -104,7 +101,7 @@ class BaseFieldState(BaseState):
         '''
         各フレームの処理
         '''
-        self.tick += 1
+        super().update()
 
         # パーティーは逃げてきたか？
         if playerParty.isEscape:

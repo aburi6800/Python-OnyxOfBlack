@@ -3,7 +3,7 @@ import random
 import pyxel
 from ..pyxelUtil import PyxelUtil
 from ..input import Input
-from ..character import Human, HumanGenerator
+from ..character import Human, HumanGenerator, playerParty
 from ..systemStates.baseSystemState import BaseSystemState
 
 
@@ -21,6 +21,8 @@ class StateMakeCharacter(BaseSystemState):
     STATE_SELECT_HAIR = 2
     STATE_SELECT_CROTHES = 3
     STATE_APPLY = 4
+    STATE_MORE = 5
+    STATE_DONE = 6
 
     def __init__(self, stateStack):
         '''
@@ -41,6 +43,9 @@ class StateMakeCharacter(BaseSystemState):
         # 頭のリスト
         self.hairList = []
 
+        # プレイヤーパーティーを初期化
+        playerParty.initialize()
+
     def makeInitialHuman(self):
         '''
         人間キャラクタを作成する
@@ -60,6 +65,8 @@ class StateMakeCharacter(BaseSystemState):
         '''
         各フレームの処理
         '''
+        super().update()
+
         if self.state == self.STATE_INIT:
             self.update_init()
         if self.state == self.STATE_INPUT_NAME:
@@ -70,6 +77,10 @@ class StateMakeCharacter(BaseSystemState):
             self.update_select_crothes()
         elif self.state == self.STATE_APPLY:
             self.update_apply()
+        elif self.state == self.STATE_MORE:
+            self.update_more()
+        elif self.state == self.STATE_DONE:
+            self.update_done()
 
     def update_init(self):
         '''
@@ -104,6 +115,7 @@ class StateMakeCharacter(BaseSystemState):
 
             # 人間キャラクタ作成
             self.makeInitialHuman()
+            self.character.gold = self.character.gold + 100
             self.character.name = self.nameInput.value
 
             # 髪型選択の準備
@@ -164,25 +176,75 @@ class StateMakeCharacter(BaseSystemState):
         確認処理
         '''
         if pyxel.btnp(pyxel.KEY_Y):
-            # 作ったcharacterをどうにかする処理
+            pyxel.play(3, 0, loop=False)
 
-            # キャラクタ作成終了
-            self.stateStack.pop()
+            # 作ったキャラクタをプレイヤーパーティーに追加
+            playerParty.addMember(self.character)
+
+            # プレイヤーパーティーの人数は5人未満か
+            if len(playerParty.memberList) < 5:
+                # 状態を追加確認へ
+                self.state = self.STATE_MORE
+            else:
+                # 状態をキャラクタ作成完了へ
+                self.state = self.STATE_DONE
+                self.tick = 0
 
         if pyxel.btnp(pyxel.KEY_N):
+            pyxel.play(3, 0, loop=False)
+
             # 名前入力に戻る
             self.state = self.STATE_INIT
+
+    def update_more(self):
+        '''
+        追加確認処理
+        '''
+        if pyxel.btnp(pyxel.KEY_Y):
+            pyxel.play(3, 0, loop=False)
+
+            # 状態をキャラクタ作成初期化へ
+            self.state = self.STATE_INIT
+
+        if pyxel.btnp(pyxel.KEY_N):
+            pyxel.play(3, 0, loop=False)
+
+            # 状態をキャラクタ作成完了へ
+            self.state = self.STATE_DONE
+            self.tick = 0
+
+    def update_done(self):
+        '''
+        キャラクタ作成完了処理
+        '''
+        if self.tick == 1:
+            pyxel.music(0)
+
+        if self.tick > 120:
+            # ゲーム開始
+            self.stateStack.push(self.stateStack.STATE_CITY)
 
     def render(self):
         '''
         各フレームの描画処理
         '''
-        pyxel.rectb(10, 18, 160, 25, pyxel.COLOR_NAVY)
-        PyxelUtil.text(14, 23, ("NA", "MA", "E", "WO", " ", "NI", "LYU", "U", "RI", "LYO", "KU", "SI", "TE", "KU",
-                                "TA", "D", "SA", "I"), pyxel.COLOR_YELLOW if self.state == self.STATE_INPUT_NAME else pyxel.COLOR_WHITE)
+        super().render()
+
+        # 完了
+        if self.state == self.STATE_DONE:
+            PyxelUtil.text(94, 40, ("*PREPARE TO DIE !!"), pyxel.COLOR_WHITE)
+            _x = (120 if len(playerParty.memberList) % 2 != 0 else 130) - (len(playerParty.memberList) // 2) * 32
+            for _idx in range(len(playerParty.memberList)):
+                _member = playerParty.memberList[_idx]
+                self.drawCharacter(_member, _x, 60)
+                _x += 32
+            return
 
         # 名前入力
         if self.state >= self.STATE_INPUT_NAME:
+            pyxel.rectb(10, 18, 160, 25, pyxel.COLOR_NAVY)
+            PyxelUtil.text(14, 23, ("NA", "MA", "E", "WO", " ", "NI", "LYU", "U", "RI", "LYO", "KU", "SI", "TE", "KU",
+                                    "TA", "D", "SA", "I"), pyxel.COLOR_YELLOW if self.state == self.STATE_INPUT_NAME else pyxel.COLOR_WHITE)
             self.nameInput.draw()
 
         # 髪型選択
@@ -194,7 +256,8 @@ class StateMakeCharacter(BaseSystemState):
             PyxelUtil.text(124, 52, ("E", "RA", "NN", "TE", "D", "KU", "TA", "D", "SA", "I"),
                            pyxel.COLOR_YELLOW if self.state == self.STATE_SELECT_HAIR else pyxel.COLOR_WHITE)
             for _idx in range(0, 8):
-                pyxel.blt(134 + _idx * 8, 64, 1, (self.hairList[_idx] % 32) * 8, (self.hairList[_idx] // 32) * 8, 8, 8)
+                pyxel.blt(134 + _idx * 8, 64, 1,
+                          (self.hairList[_idx] % 32) * 8, (self.hairList[_idx] // 32) * 8, 8, 8)
 
             # カーソルは髪型選択時のみ表示
             if self.state == self.STATE_SELECT_HAIR and pyxel.frame_count % 4 == 0:
@@ -215,18 +278,25 @@ class StateMakeCharacter(BaseSystemState):
             PyxelUtil.text(104, 82, ("E", "RA", "NN", "TE", "D", "KU", "TA", "D", "SA", "I"),
                            pyxel.COLOR_YELLOW if self.state == self.STATE_SELECT_CROTHES else pyxel.COLOR_WHITE)
             for _idx in range(0, 8):
-                pyxel.blt(110 + _idx * 16, 98, 1, 168 + _idx  * 8, 32, 8, 16, pyxel.COLOR_BLACK)
+                pyxel.blt(110 + _idx * 16, 98, 1, 168 + _idx *
+                          8, 32, 8, 16, pyxel.COLOR_BLACK)
 
             # カーソルは髪型選択時のみ表示
             if self.state == self.STATE_SELECT_CROTHES and pyxel.frame_count % 4 == 0:
-                pyxel.rect(110 + self.crothes_num * 16, 98, 8, 12, pyxel.COLOR_WHITE)
+                pyxel.rect(110 + self.crothes_num * 16,
+                           98, 8, 12, pyxel.COLOR_WHITE)
 
         if self.state >= self.STATE_APPLY:
             pyxel.rect(60, 160, 126, 16, pyxel.COLOR_BLACK)
             pyxel.rectb(60, 160, 126, 16, pyxel.COLOR_NAVY)
             PyxelUtil.text(64, 165, ("KO", "RE", "TE", "D", " ", "I", "I", "TE", "D", "SU", "KA", "* ? (Y/N)"),
-                           pyxel.COLOR_YELLOW if self.state == self.STATE_SELECT_CROTHES else pyxel.COLOR_WHITE)
+                           pyxel.COLOR_YELLOW if self.state == self.STATE_APPLY else pyxel.COLOR_WHITE)
 
+        if self.state >= self.STATE_MORE:
+            pyxel.rect(70, 165, 134, 16, pyxel.COLOR_BLACK)
+            pyxel.rectb(70, 165, 134, 16, pyxel.COLOR_NAVY)
+            PyxelUtil.text(74, 170, ("MO", "U", "HI", "TO", "RI", " ", "TU", "KU", "RI", "MA", "SU", "KA", "* ? (Y/N)"),
+                           pyxel.COLOR_YELLOW if self.state == self.STATE_MORE else pyxel.COLOR_WHITE)
 
     def onEnter(self):
         '''

@@ -58,12 +58,12 @@ class StateTitle(BaseSystemState):
         タイトル
         '''
         if self.selected == 0:
-            if pyxel.btnp(pyxel.KEY_C):
+            if pyxel.btnp(pyxel.KEY_N):
                 pyxel.play(3, 0, loop=False)
                 self.selected = 1
                 self.tick = 0
 
-            if pyxel.btnp(pyxel.KEY_G):
+            if pyxel.btnp(pyxel.KEY_C):
                 pyxel.play(3, 0, loop=False)
                 self.selected = 2
                 self.tick = 0
@@ -109,10 +109,10 @@ class StateTitle(BaseSystemState):
             else:
                 color[self.selected - 1] = 7
 
-        PyxelUtil.text(88, 110, ["*[C]reate Character"], color[0])
-        PyxelUtil.text(88, 118, ["*[G]o to Town"], color[1])
-        PyxelUtil.text(88, 126, ["*[L]ook character State"], color[2])
-        PyxelUtil.text(88, 134, ["*[K]ill Character"], color[3])
+        PyxelUtil.text(104, 110, ["*[N]ew Game"], color[0])
+        PyxelUtil.text(104, 125, ["*[C]ontinue"], color[1])
+#        PyxelUtil.text(88, 126, ["*[L]ook character State"], color[2])
+#        PyxelUtil.text(88, 134, ["*[K]ill Character"], color[3])
 
         PyxelUtil.text(68, 160, ["*COPYRIGHT BY ABURI6800 2020"], 2)
         PyxelUtil.text(68, 168, ["*ORIGINAL GAME BY B.P.S. 1984"], 2)

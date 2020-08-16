@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import pyxel
 from ..baseState import BaseState
 
 class BaseSystemState(BaseState):
@@ -19,13 +20,14 @@ class BaseSystemState(BaseState):
         '''
         各フレームの処理
         '''
-        pass
+        super().update()
 
     def render(self):
         '''
         各フレームの描画処理
         '''
-        pass
+        # baseStateのrenderを呼ぶと画面の枠線やキャラクタが表示されるため、消去のみ行う
+        pyxel.cls(pyxel.COLOR_BLACK)
 
     def onEnter(self):
         '''
@@ -38,4 +40,4 @@ class BaseSystemState(BaseState):
         状態終了時の処理
         '''
         pass
-
+    

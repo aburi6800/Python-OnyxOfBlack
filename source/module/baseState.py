@@ -23,13 +23,14 @@ class BaseState(AbstractState):
         self.stateStack = stateStack
         self.stateName = "(none)"
 
+        # タイマーカウンタ
+        self.tick = 0
+
     def update(self):
         '''
         各フレームの処理
-
-        実装なし
         '''
-        pass
+        self.tick += 1
 
     def render(self):
         '''
@@ -37,6 +38,8 @@ class BaseState(AbstractState):
 
         各Stateで必ず必要な、画面の枠線とプレイヤーキャラクタ、ステータスの描画を行う
         '''
+        pyxel.cls(pyxel.COLOR_BLACK)
+
         # 枠線
         pyxel.rectb(8, 8, 240, 126, pyxel.COLOR_DARKBLUE)
         pyxel.line(128, 8, 128, 132, pyxel.COLOR_DARKBLUE)
@@ -49,8 +52,8 @@ class BaseState(AbstractState):
         # プレイヤーキャラクタ描画
         for _idx in range(len(playerParty.memberList)):
             _member = playerParty.memberList[_idx]
-            # キャラクタ
-            BaseState.drawCharacter(_member, _x[_idx], _y[_idx])
+            # キャラクタグラフィック表示
+            self.drawCharacter(_member, _x[_idx], _y[_idx])
             # ステータス
             PyxelUtil.text(16,  (_idx + 1) * 16 - 2,
                            ["*" + _member.name], pyxel.COLOR_WHITE)  # 名前

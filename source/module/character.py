@@ -157,6 +157,12 @@ class PlayerParty(Party):
 
         print("PlayerParty:Initialized.")
 
+    def initialize(self):
+        '''
+        初期化処理
+        '''
+        self.__init__()
+
     def addMember(self, chr: Human):
         '''
         パーティーメンバー追加
