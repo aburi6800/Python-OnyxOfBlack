@@ -57,13 +57,24 @@ class StateTitle(BaseSystemState):
         '''
         タイトル
         '''
-        if pyxel.btnp(pyxel.KEY_G):
-            self.selected = 1
-            self.tick = 0
+        if self.selected == 0:
+            if pyxel.btnp(pyxel.KEY_C):
+                pyxel.play(3, 0, loop=False)
+                self.selected = 1
+                self.tick = 0
 
-        if self.selected != 0:
+            if pyxel.btnp(pyxel.KEY_G):
+                pyxel.play(3, 0, loop=False)
+                self.selected = 2
+                self.tick = 0
+
+        else:
             if self.tick > 21:
                 if self.selected == 1:
+                    self.selected = 0
+                    self.stateStack.push(self.stateStack.STATE_MAKE_CHARACTER)
+                if self.selected == 2:
+                    self.selected = 0
                     self.stateStack.push(self.stateStack.STATE_CITY)
 
     def render(self):
@@ -98,10 +109,10 @@ class StateTitle(BaseSystemState):
             else:
                 color[self.selected - 1] = 7
 
-        PyxelUtil.text(88, 110, ["*[C]reate Character"], color[3])
-        PyxelUtil.text(88, 118, ["*[G]o to Town"], color[0])
-        PyxelUtil.text(88, 126, ["*[L]ook character State"], color[1])
-        PyxelUtil.text(88, 134, ["*[K]ill Character"], color[2])
+        PyxelUtil.text(88, 110, ["*[C]reate Character"], color[0])
+        PyxelUtil.text(88, 118, ["*[G]o to Town"], color[1])
+        PyxelUtil.text(88, 126, ["*[L]ook character State"], color[2])
+        PyxelUtil.text(88, 134, ["*[K]ill Character"], color[3])
 
         PyxelUtil.text(68, 160, ["*COPYRIGHT BY ABURI6800 2020"], 2)
         PyxelUtil.text(68, 168, ["*ORIGINAL GAME BY B.P.S. 1984"], 2)

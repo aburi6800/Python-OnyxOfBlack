@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from .systemStates.stateMakeChracter import StateMakeCharacter
 from .systemStates.stateTitle import StateTitle
 from .battleStates.stateBattle import StateBattle
 from .fieldStates.baseFieldState import BaseFieldState
@@ -34,6 +35,7 @@ class StateStack(object):
 
     # 各Stateの定数
     STATE_TITLE = "Title"
+    STATE_MAKE_CHARACTER = "MakeCharacter"
     STATE_CITY = "City"
     STATE_BATTLE = "Battle"
     STATE_WEAPONSHOP = "WeaponShop"
@@ -57,6 +59,7 @@ class StateStack(object):
         self.states = []
         self.stateDic = {
             self.STATE_TITLE: StateTitle,
+            self.STATE_MAKE_CHARACTER: StateMakeCharacter,
             self.STATE_CITY: StateCity,
             self.STATE_BATTLE: StateBattle,
             self.STATE_WEAPONSHOP: StateWeaponShop,

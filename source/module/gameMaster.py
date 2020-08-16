@@ -4,7 +4,6 @@ import random
 import pyxel
 
 from .character import HumanPartyGenerator, enemyParty, playerParty
-from .pyxelUtil import PyxelUtil
 from .stateStack import stateStack
 
 
