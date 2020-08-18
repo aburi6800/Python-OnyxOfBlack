@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import pickle
 import random
 
 import pyxel
@@ -6,6 +7,7 @@ import pyxel
 from ..baseState import BaseState
 from ..character import EnemyPartyGenerator, enemyParty, playerParty
 from ..pyxelUtil import PyxelUtil
+from ..savedata import SaveData
 
 
 class BaseFieldState(BaseState):
@@ -117,21 +119,33 @@ class BaseFieldState(BaseState):
                     playerParty.x = playerParty.x + self.VX[_direction]
                     playerParty.y = playerParty.y + self.VX[_direction]
                     playerParty.direction = _direction
-                    return
+                    break
+            return
             # どの方向にも移動できない（あり得ないが）場合はその場に留まるため、特に処理不要
 
-        # エンカウントしたか？
-        if self.isEncount:
-            if self.tick > 30:
-                self.isEncount = False
-                self.tick = 0
-                self.stateStack.push(self.stateStack.STATE_BATTLE)
-                return
-            else:
+        # イベントハンドラ
+        if self._eventhandler("U") == False:
+
+            # エンカウントしているか？
+            if self.isEncount:
+                if self.tick > 30:
+                    self.isEncount = False
+                    self.tick = 0
+                    self.stateStack.push(self.stateStack.STATE_BATTLE)
+                    return
+                else:
+                    return
+
+            # エンカウントするか？
+            if self.tick == 1 and random.randint(0, 20) == 0:
+                self.encount_enemy()
                 return
 
-        # イベントハンドラ
-        self._eventhandler("U")
+        # キー入力（Q）
+        if pyxel.btnp(pyxel.KEY_Q):
+            s = SaveData(self.stateStack, playerParty)
+            with open('savedata.dat', 'wb') as f:
+                pickle.dump(s, f)
 
         # キー入力（右）
         if pyxel.btnp(pyxel.KEY_RIGHT):
@@ -161,13 +175,13 @@ class BaseFieldState(BaseState):
         # キー入力（上）
         if pyxel.btnp(pyxel.KEY_UP) and self._can_move_forward(playerParty.x, playerParty.y, playerParty.direction):
             self.tick = 0
-            if random.randint(0, 20) == 0:
-                self.encount_enemy()
-                pass
-            else:
-                playerParty.saveCondition()
-                playerParty.x = playerParty.x + self.VX[playerParty.direction]
-                playerParty.y = playerParty.y + self.VY[playerParty.direction]
+#            if random.randint(0, 20) == 0:
+#                self.encount_enemy()
+#                pass
+#            else:
+            playerParty.saveCondition()
+            playerParty.x = playerParty.x + self.VX[playerParty.direction]
+            playerParty.y = playerParty.y + self.VY[playerParty.direction]
             return
 
     def encount_enemy(self):
@@ -181,7 +195,7 @@ class BaseFieldState(BaseState):
         enemyParty.memberList = EnemyPartyGenerator.generate(
         self.enemy_set[random.randint(0, len(self.enemy_set) - 1)])
 
-    def fixedencount_enemy(self):
+    def update_fixedencount_enemy(self):
         '''
         敵と固定エンカウントした時の処理
 
@@ -298,23 +312,28 @@ class BaseFieldState(BaseState):
 
         引数の_modeには"U"(UPDATE)、または"D"(DRAW)のいづれかを指定する（以外の場合は常にNoneを返却する）
         初めに位置＋方向で検索し、無ければ位置で検索する。
+        戻り値として、イベントが発生した場合はTrue、発生していない場合はFalseを返却する。
         '''
+        # 引数のmodeの指定が誤っている場合は、何もせす終了する
         if _mode != "U" and _mode != "D":
-            return
+            return False
 
         # 現在の座標＋方向でイベントが登録されている場合は、イベントの関数を呼び出す
         _key = "{:02d}".format(playerParty.x) + "{:02d}".format(playerParty.y) + "{:01d}".format(playerParty.direction) + _mode
         _event = self.event.get(_key, None)
         if _event != None:
             _event()
-            return
+            return True
 
         # 現在の座標でイベントが登録されている場合は、イベントの関数を呼び出す
         _key = "{:02d}".format(playerParty.x) + "{:02d}".format(playerParty.y) + "9" + _mode
         _event = self.event.get(_key, None)
         if _event != None:
             _event()
-            return
+            return True
+
+        # ここに到達している場合はイベントが発生していないため、Falseを返却する
+        return False
 
     def _draw_maze(self, _x, _y, _direction, _map):
         '''

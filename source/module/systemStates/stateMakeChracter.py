@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import random
 import pyxel
+from pyxel import play_pos
 from ..pyxelUtil import PyxelUtil
 from ..input import Input
 from ..character import Human, HumanGenerator, playerParty
@@ -203,6 +204,9 @@ class StateMakeCharacter(BaseSystemState):
         if pyxel.btnp(pyxel.KEY_Y):
             pyxel.play(3, 0, loop=False)
 
+            # 名前入力時のメッセージ、先頭を削除
+            del self.INPUT_NAME_MESSAGE[0]
+
             # 状態をキャラクタ作成初期化へ
             self.state = self.STATE_INIT
 
@@ -243,8 +247,7 @@ class StateMakeCharacter(BaseSystemState):
         # 名前入力
         if self.state >= self.STATE_INPUT_NAME:
             pyxel.rectb(10, 18, 160, 25, pyxel.COLOR_NAVY)
-            PyxelUtil.text(14, 23, ("NA", "MA", "E", "WO", " ", "NI", "LYU", "U", "RI", "LYO", "KU", "SI", "TE", "KU",
-                                    "TA", "D", "SA", "I"), pyxel.COLOR_YELLOW if self.state == self.STATE_INPUT_NAME else pyxel.COLOR_WHITE)
+            PyxelUtil.text(14, 23, self.INPUT_NAME_MESSAGE[0] + ("ME", " ", "NO", " ", "NA", "MA", "E", "HA", "* ?"), pyxel.COLOR_YELLOW if self.state == self.STATE_INPUT_NAME else pyxel.COLOR_WHITE)
             self.nameInput.draw()
 
         # 髪型選択
@@ -302,7 +305,14 @@ class StateMakeCharacter(BaseSystemState):
         '''
         状態開始時の処理
         '''
-        pass
+        # 名前入力時のメッセージ
+        self.INPUT_NAME_MESSAGE = [
+            ("HI", "TO", "RI"),
+            ("HU", "TA", "RI"),
+            ("SA", "NN", "NI", "NN"),
+            ("YO", "NI", "NN"),
+            ("KO", "D", "NI", "NN"),
+        ]
 
     def onExit(self):
         '''

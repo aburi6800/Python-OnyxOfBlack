@@ -6,6 +6,10 @@ class SaveData():
 
     ゲームで保存する場合は、このクラスのメンバに値を設定し、saveメソッドをデータを定義する
     '''
+    def __init__(self, stateStack, playerParty):
+        # StateStack
+        self.stateStack = stateStack
 
-    def __init__(self):
-        pass
+        # PlayerParty
+        self.playerParty = playerParty
+
