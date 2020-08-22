@@ -1,23 +1,25 @@
 # -*- coding: utf-8 -*-
 
-from .systemStates.stateMakeChracter import StateMakeCharacter
-from .systemStates.stateTitle import StateTitle
 from .battleStates.stateBattle import StateBattle
-from .fieldStates.baseFieldState import BaseFieldState
-from .fieldStates.stateCity import StateCity
-from .facilityStates.stateWeaponShop import StateWeaponShop
 from .facilityStates.stateArmorShop import StateArmorShop
-from .facilityStates.stateShieldShop import StateShieldShop
 from .facilityStates.stateHelmetShop import StateHelmetShop
+from .facilityStates.stateShieldShop import StateShieldShop
+from .facilityStates.stateWeaponShop import StateWeaponShop
+from .fieldStates.baseFieldState import BaseFieldState
 from .fieldStates.stateCemetery import StateCemetery
+from .fieldStates.stateCity import StateCity
+from .fieldStates.stateDungionB1 import StateDungionB1
+from .fieldStates.stateDungionB2 import StateDungionB2
+from .fieldStates.stateDungionB3 import StateDungionB3
+from .fieldStates.stateDungionB4 import StateDungionB4
+from .fieldStates.stateDungionB5 import StateDungionB5
 from .fieldStates.stateWellB1 import StateWellB1
 from .fieldStates.stateWellB2 import StateWellB2
 from .fieldStates.stateWellB3 import StateWellB3
 from .fieldStates.stateWellB4 import StateWellB4
-from .fieldStates.stateDungionB1 import StateDungionB1
-from .fieldStates.stateDungionB2 import StateDungionB2
-from .fieldStates.stateDungionB3 import StateDungionB3
-from .fieldStates.stateDungionB5 import StateDungionB5
+from .systemStates.stateMakeChracter import StateMakeCharacter
+from .systemStates.stateTitle import StateTitle
+
 #import stateBarbar
 #import stateBank
 #import stateSurgery
@@ -50,6 +52,7 @@ class StateStack(object):
     STATE_DUNGIONB1 = "DungionB1"
     STATE_DUNGIONB2 = "DungionB2"
     STATE_DUNGIONB3 = "DungionB3"
+    STATE_DUNGIONB4 = "DungionB4"
     STATE_DUNGIONB5 = "DungionB5"
 
     def __init__(self):
@@ -74,6 +77,7 @@ class StateStack(object):
             self.STATE_DUNGIONB1: StateDungionB1,
             self.STATE_DUNGIONB2: StateDungionB2,
             self.STATE_DUNGIONB3: StateDungionB3,
+            self.STATE_DUNGIONB4: StateDungionB4,
             self.STATE_DUNGIONB5: StateDungionB5,
         }
 
