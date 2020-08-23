@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
+import os
+import pickle
+
 import pyxel
+
+from ..character import playerParty
 from ..pyxelUtil import PyxelUtil
 from ..systemStates.baseSystemState import BaseSystemState
 
@@ -35,6 +40,12 @@ class StateTitle(BaseSystemState):
         self.state = self.STATE_RESPECT
         self.selected = 0
 
+        # セーブデータ存在チェック
+        if os.path.exists("savedata.dat"):
+            self.doContinue = True
+        else:
+            self.doContinue = False
+
     def update(self):
         '''
         各フレームの処理
@@ -63,7 +74,7 @@ class StateTitle(BaseSystemState):
                 self.selected = 1
                 self.tick = 0
 
-            if pyxel.btnp(pyxel.KEY_C):
+            if pyxel.btnp(pyxel.KEY_C) and self.doContinue:
                 pyxel.play(3, 0, loop=False)
                 self.selected = 2
                 self.tick = 0
@@ -74,8 +85,15 @@ class StateTitle(BaseSystemState):
                     self.selected = 0
                     self.stateStack.push(self.stateStack.STATE_MAKE_CHARACTER)
                 if self.selected == 2:
-                    self.selected = 0
-                    self.stateStack.push(self.stateStack.STATE_CITY)
+                    # セーブデータをロード
+                    with open("savedata.dat", mode="rb") as f:
+                        SaveData = pickle.load(f)
+                    # プレイヤーパーティーの復元
+                    playerParty.resotreSaveData(SaveData.playerParty)
+                    # stateStackを復元
+                    self.stateStack.states = SaveData.stateStack.states
+                    # 先頭のstackの初期化を行う
+                    self.stateStack.states[0].onEnter()
 
     def render(self):
         '''
@@ -90,7 +108,7 @@ class StateTitle(BaseSystemState):
         '''
         ヘンク・B・ロジャースへの敬意
         '''
-        PyxelUtil.text(48, 100, ["*With all due respect to Henk B. Rogers."], self.TEXTCOLOR[self.tick])
+        PyxelUtil.text(48, 95, ["*With all due respect to Henk B. Rogers."], self.TEXTCOLOR[self.tick])
 
     def _render_title(self):
         '''
@@ -109,10 +127,9 @@ class StateTitle(BaseSystemState):
             else:
                 color[self.selected - 1] = 7
 
-        PyxelUtil.text(104, 110, ["*[N]ew Game"], color[0])
-        PyxelUtil.text(104, 125, ["*[C]ontinue"], color[1])
-#        PyxelUtil.text(88, 126, ["*[L]ook character State"], color[2])
-#        PyxelUtil.text(88, 134, ["*[K]ill Character"], color[3])
+        PyxelUtil.text(104, 110, ["*[N]EW GAME"], color[0])
+        if self.doContinue:
+            PyxelUtil.text(104, 125, ["*[C]ONTINUE"], color[1])
 
         PyxelUtil.text(68, 160, ["*COPYRIGHT BY ABURI6800 2020"], 2)
         PyxelUtil.text(68, 168, ["*ORIGINAL GAME BY B.P.S. 1984"], 2)

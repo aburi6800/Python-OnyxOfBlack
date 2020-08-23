@@ -390,11 +390,6 @@ class StateCity(BaseFieldState):
         '''
         super().onEnter()
 
-        # プレイヤーパーティーの最初の位置と方向
-        playerParty.x = 17
-        playerParty.y = 4
-        playerParty.direction = self.DIRECTION_SOUTH
-
     def onExit(self):
         '''
         状態終了時の処理

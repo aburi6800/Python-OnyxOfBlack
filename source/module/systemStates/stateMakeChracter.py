@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 import random
+
 import pyxel
-from pyxel import play_pos
-from ..pyxelUtil import PyxelUtil
+
+from ..character import HumanGenerator, playerParty
 from ..input import Input
-from ..character import Human, HumanGenerator, playerParty
+from ..pyxelUtil import PyxelUtil
 from ..systemStates.baseSystemState import BaseSystemState
 
 

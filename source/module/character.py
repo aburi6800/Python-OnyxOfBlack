@@ -162,6 +162,30 @@ class PlayerParty(Party):
 
         print("PlayerParty:Initialized.")
 
+    def resotreSaveData(self, playerParty):
+        '''
+        セーブデータの復元処理
+        '''
+        super().__init__()
+
+        # メンバーリストを復元
+        self.memberList = playerParty.memberList
+
+        # プレイヤーパーティーの位置と方向
+        self.x = playerParty.x
+        self.y = playerParty.y
+        self.direction = playerParty.direction
+
+        # プレイヤーパーティーの直前の位置と方向
+        self.x_save = playerParty.x_save
+        self.y_save = playerParty.y_save
+        self.direction_save = playerParty.direction_save
+
+        # 状況のフラグ
+        self.isEscape = playerParty.isEscape
+
+        print("PlayerParty:Restored.")
+
     def initialize(self):
         '''
         初期化処理

@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-import random
-
-import pyxel
-
-from .character import HumanPartyGenerator, enemyParty, playerParty
+from .character import playerParty
 from .stateStack import stateStack
 
 
@@ -23,11 +19,10 @@ class GameMaster(object):
         # 最初のStateを登録
         stateStack.push(stateStack.STATE_TITLE)
 
-        # テストでランダムパーティー生成をプレイヤーパーティとする
-        level = 1
-        playerParty.memberList = HumanPartyGenerator.generate(level)
-
-        enemyParty.memberList = []
+        # プレイヤーパーティーの最初の位置と方向
+        playerParty.x = 17
+        playerParty.y = 4
+        playerParty.direction = self.DIRECTION_SOUTH
 
     def update(self):
         '''
