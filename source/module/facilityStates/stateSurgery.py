@@ -18,10 +18,10 @@ class StateSurgery(BaseFacilityState):
     STATE_ENTER = 0
     STATE_CHOOSE = 1
     STATE_ISSURGERY = 2
-    STATE_NOMONEY = 6
-    STATE_DONE = 3
-    STATE_LEAVE = 4
-    STATE_NOSURGERY = 5
+    STATE_NOMONEY = 3
+    STATE_DONE = 4
+    STATE_LEAVE = 5
+    STATE_NOSURGERY = 6
 
     # 回復対象のメンバー
     member = None
@@ -61,8 +61,8 @@ class StateSurgery(BaseFacilityState):
         elif self.state == self.STATE_DONE:
             self.update_done()
 
-#        elif self.state == self.STATE_LEAVE:
-#            self.update_leave()
+        elif self.state == self.STATE_LEAVE:
+            self.update_leave()
 
         elif self.state == self.STATE_NOSURGERY:
             self.update_nosurgery()

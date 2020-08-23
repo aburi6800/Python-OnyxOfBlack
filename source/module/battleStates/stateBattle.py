@@ -66,7 +66,7 @@ class StateBattle(BaseState):
         # 敵は逃走したか？
         self.isEnemyEscpaed = False
 
-        # メンバーのインデックス
+        # メンバーのインデックス 
         self.member_index = 0
 
         # メッセージリスト
@@ -203,11 +203,11 @@ class StateBattle(BaseState):
         # 行動順リスト
         self.turn_table = playerParty.memberList + enemyParty.memberList
 
-        # イニシアチブを設定
+        # イニシアチブ、攻撃値、防御値を設定
         for _member in self.turn_table:
-            _member.initiative = _member.dexterity + random.randint(0, 6)
-            _member.attack = _member.strength + random.randint(0, 6)
-            _member.accept = _member.defend + random.randint(0, 6)
+            _member.initiative = _member.dexterity + random.randint(1, 12)
+            _member.attack = _member.strength + random.randint(1, 12)
+            _member.accept = _member.defend + random.randint(1, 12)
 
         # イニシアチブ値で降順でソート
         self.turn_table = sorted(
@@ -271,15 +271,22 @@ class StateBattle(BaseState):
                 # ダメージ算出
                 _damage = _attacker.attack
 
-                if isinstance(_attacker, Human):
+                # 人間のキャラクタで武器を持っている場合は補正
+                if isinstance(_attacker, Human) and _attacker.weapon != None:
                     _damage = _damage + _attacker.weapon.attack
+
+                # ダメージから防御値を減算
                 _damage = _damage - _target.accept
 
+                # 人間の場合は装備品の防御値をダメージから減算
                 if isinstance(_target, Human):
+                    # 鎧
                     if _target.armor != None:
                         _damage = _damage - _target.armor.armor
+                    # 盾
                     if _target.shield != None:
                         _damage = _damage - _target.shield.armor
+                    # 兜
                     if _target.helmet != None:
                         _damage = _damage - _target.helmet.armor
 

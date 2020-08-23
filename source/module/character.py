@@ -30,22 +30,27 @@ class Character(object):
         '''
         レベルアップ処理
         '''
-        # ライフ最大値の増分
-        _uplife = random.randint(2, 6)
+        # 増分値
+        addPoint = 24
+        # ライフの増分
+        addLife = random.randint(1, 8)
+        addPoint = addPoint - addLife
         # 強さの増分
-        _upstrength = random.randint(1, 13)
+        addStrength = random.randint(1, 8)
+        addPoint = addPoint - addStrength
         # 防御力の増分
-        _updefend = random.randint(1, 14 - _upstrength)
+        addDefend = random.randint(1, 8)
+        addPoint = addPoint - addDefend
         # 素早さの増分
-        _updexterity = 15 - _upstrength - _updefend
+        addDexterity = addPoint
 
         # パラメータ増加
         self.level += 1
-        self.maxlife += _uplife
-        self.life += _uplife
-        self.strength += _upstrength
-        self.defend += _updefend
-        self.dexterity += _updexterity
+        self.maxlife += addLife
+        self.life += addLife
+        self.strength += addStrength
+        self.defend += addDefend
+        self.dexterity += addDexterity
         self.exp = 0
 
 class Human(Character):
