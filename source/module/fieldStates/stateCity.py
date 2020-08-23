@@ -62,6 +62,7 @@ class StateCity(BaseFieldState):
             "23100D": self.draw_physicker_exit,
             "23103D": self.draw_drugs,
             "23101D": self.draw_surgery,
+            "24101D": self.update_surgery,
             "23111D": self.draw_examinations,
             "17141D": self.draw_thewall,
             "18143D": self.draw_thewall,
@@ -153,6 +154,12 @@ class StateCity(BaseFieldState):
         '''
         # self.stateStack.push(self.stateStack.STATE_BARBAR)
         pass
+
+    def update_surgery(self):
+        '''
+        緊急治療に入るイベント
+        '''
+        self.stateStack.push(self.stateStack.STATE_SURGERY)
 
     def update_secretmessage(self):
         '''
@@ -300,14 +307,14 @@ class StateCity(BaseFieldState):
 
     def draw_surgery(self):
         '''
-        身体検査の前に立った時の表示
+        緊急治療の前に立った時の表示
         '''
         PyxelUtil.text(28 + self.OFFSET_X, 22 + self.OFFSET_Y,
                        "*SURGERY", pyxel.COLOR_BLACK)
 
     def draw_examinations(self):
         '''
-        緊急治療の前に立った時の表示
+        身体検査の前に立った時の表示
         '''
         PyxelUtil.text(18 + self.OFFSET_X, 22 + self.OFFSET_Y,
                        "*EXAMINATIONS", pyxel.COLOR_BLACK)

@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 import pyxel
+
 from ..baseState import BaseState
+from ..character import playerParty
+from ..pyxelUtil import PyxelUtil
 
 
 class BaseFacilityState(BaseState):
@@ -28,6 +31,11 @@ class BaseFacilityState(BaseState):
         各フレームの描画処理
         '''
         super().render()
+
+        # メンバーの所持金を表示
+        for idx, member in enumerate(playerParty.memberList):
+            PyxelUtil.text(
+                136, 16 + idx * 16, ["*{:1d} : {:5d} G.P.".format(idx + 1, member.gold)], pyxel.COLOR_WHITE)
 
     def onEnter(self):
         '''

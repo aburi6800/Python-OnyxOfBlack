@@ -5,6 +5,7 @@ from .facilityStates.stateArmorShop import StateArmorShop
 from .facilityStates.stateHelmetShop import StateHelmetShop
 from .facilityStates.stateShieldShop import StateShieldShop
 from .facilityStates.stateWeaponShop import StateWeaponShop
+from .facilityStates.stateSurgery import StateSurgery
 from .fieldStates.baseFieldState import BaseFieldState
 from .fieldStates.stateCemetery import StateCemetery
 from .fieldStates.stateCity import StateCity
@@ -22,7 +23,6 @@ from .systemStates.stateTitle import StateTitle
 
 #import stateBarbar
 #import stateBank
-#import stateSurgery
 #import stateDrug
 #import stateExaminations
 
@@ -44,6 +44,7 @@ class StateStack(object):
     STATE_ARMORSHOP = "ArmorShop"
     STATE_SHIELDSHOP = "ShieldShop"
     STATE_HELMETSHOP = "HelmetShop"
+    STATE_SURGERY = "Surgery"
     STATE_CEMETERY = "Cemetery"
     STATE_WELLB1 = "WellB1"
     STATE_WELLB2 = "WellB2"
@@ -69,6 +70,7 @@ class StateStack(object):
             self.STATE_ARMORSHOP: StateArmorShop,
             self.STATE_SHIELDSHOP: StateShieldShop,
             self.STATE_HELMETSHOP: StateHelmetShop,
+            self.STATE_SURGERY: StateSurgery,
             self.STATE_CEMETERY: StateCemetery,
             self.STATE_WELLB1: StateWellB1,
             self.STATE_WELLB2: StateWellB2,
