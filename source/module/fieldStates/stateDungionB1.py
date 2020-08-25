@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 import pyxel
 
-from ..character import HumanGenerator, playerParty, EnemyPartyGenerator, enemyParty
-from ..fieldStates.baseFieldState import BaseFieldState
+from ..character import HumanGenerator, playerParty
 from ..map.dungionB1 import dungionB1
 from ..monster import monsterParams
 from ..pyxelUtil import PyxelUtil
+from .baseFieldState import BaseFieldState
+
 
 class StateDungionB1(BaseFieldState):
     '''
@@ -15,19 +16,24 @@ class StateDungionB1(BaseFieldState):
     遭遇する敵リストとイベント処理を持つ
     '''
 
+    # マップ
+    _map = dungionB1.map
+
+    # 出現するモンスターリスト
+    enemy_set = (
+        HumanGenerator.generate(2),
+        monsterParams.monsterList[monsterParams.BAT_LV1],
+        monsterParams.monsterList[monsterParams.SKELTON_LV1],
+        monsterParams.monsterList[monsterParams.WOLF],
+        monsterParams.monsterList[monsterParams.COBOLD_LV1],
+    )
+
     def __init__(self, stateStack):
         '''
         クラス初期化
         '''
         super().__init__(stateStack)
         self.stateName = "dungionB1"
-
-        # 変数定義
-        self.tick = 0
-        self.isEncount = False
-
-        # マップ
-        self.map = dungionB1.map
 
         # イベント
         # マップ上の座標に対応するイベントの関数の辞書
@@ -39,18 +45,11 @@ class StateDungionB1(BaseFieldState):
             "18219D": self.draw_to_down,
         }
 
-        # 出現するモンスターリスト
-        self.enemy_set = (
-            HumanGenerator.generate(2),
-            monsterParams.monsterList[monsterParams.BAT_LV1],
-            monsterParams.monsterList[monsterParams.SKELTON_LV1],
-            monsterParams.monsterList[monsterParams.WOLF],
-            monsterParams.monsterList[monsterParams.COBOLD_LV1],
-        )
+        self.onEnter()
 
     def update_to_up(self):
         '''
-        抜け穴のイベント
+        上に上がる階段のイベント
         '''
         if pyxel.btnp(pyxel.KEY_U):
             playerParty.x = 11
@@ -60,22 +59,24 @@ class StateDungionB1(BaseFieldState):
 
     def update_to_down(self):
         '''
-        抜け穴のイベント
+        下に降りる階段のイベント
         '''
         if pyxel.btnp(pyxel.KEY_D):
             self.stateStack.push(self.stateStack.STATE_DUNGIONB2)
 
     def draw_to_up(self):
         '''
-        抜け穴の表示
+        上に上がる階段の表示
         '''
-        PyxelUtil.text(16, 140, ["U", "E", "NI", " ", "NU", "KE", "A", "NA", "KA", "D", " ", "A", "RU", "* !!"], pyxel.COLOR_WHITE)
+        PyxelUtil.text(16, 140, ["U", "E", "NI", " ", "A", "KA", "D", "RU", " ", "KA", "I",
+                                 "TA", "D", "NN", " ", "KA", "D", " ", "A", "RU", "* !!"], pyxel.COLOR_WHITE)
 
     def draw_to_down(self):
         '''
-        抜け穴の表示
+        下に降りる階段の表示
         '''
-        PyxelUtil.text(16, 140, ["SI", "TA", "NI", " ", "NU", "KE", "A", "NA", "KA", "D", " ", "A", "RU", "* !!"], pyxel.COLOR_WHITE)
+        PyxelUtil.text(16, 140, ["SI", "TA", "NI", " ", "O", "RI", "RU", " ", "KA", "I",
+                                 "TA", "D", "NN", " ", "KA", "D", " ", "A", "RU", "* !!"], pyxel.COLOR_WHITE)
 
     def onEnter(self):
         '''
@@ -91,5 +92,3 @@ class StateDungionB1(BaseFieldState):
         状態終了時の処理
         '''
         super().onExit()
-
-        pass

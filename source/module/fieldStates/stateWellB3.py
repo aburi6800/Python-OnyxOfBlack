@@ -2,10 +2,10 @@
 import pyxel
 
 from ..character import HumanGenerator, playerParty
-from ..fieldStates.baseFieldState import BaseFieldState
 from ..map.wellB3 import wellB3
 from ..monster import monsterParams
 from ..pyxelUtil import PyxelUtil
+from .baseFieldState import BaseFieldState
 
 
 class StateWellB3(BaseFieldState):
@@ -16,19 +16,24 @@ class StateWellB3(BaseFieldState):
     遭遇する敵リストとイベント処理を持つ
     '''
 
+    # マップ
+    _map = wellB3.map
+
+    # 出現するモンスターリスト
+    enemy_set = (
+        HumanGenerator.generate(2),
+        monsterParams.monsterList[monsterParams.BAT_LV1],
+        monsterParams.monsterList[monsterParams.SKELTON_LV1],
+        monsterParams.monsterList[monsterParams.WOLF],
+        monsterParams.monsterList[monsterParams.COBOLD_LV1],
+    )
+
     def __init__(self, stateStack):
         '''
         クラス初期化
         '''
         super().__init__(stateStack)
         self.stateName = "WellB3"
-
-        # 変数定義
-        self.tick = 0
-        self.isEncount = False
-
-        # マップ
-        self.map = wellB3.map
 
         # イベント
         # マップ上の座標に対応するイベントの関数の辞書
@@ -38,14 +43,7 @@ class StateWellB3(BaseFieldState):
             "10109D": self.draw_to_upanddown,
         }
 
-        # 出現するモンスターリスト
-        self.enemy_set = (
-            HumanGenerator.generate(2),
-            monsterParams.monsterList[monsterParams.BAT_LV1],
-            monsterParams.monsterList[monsterParams.SKELTON_LV1],
-            monsterParams.monsterList[monsterParams.WOLF],
-            monsterParams.monsterList[monsterParams.COBOLD_LV1],
-        )
+        self.onEnter()
 
     def update_to_upanddown(self):
         '''
@@ -60,6 +58,7 @@ class StateWellB3(BaseFieldState):
         if pyxel.btnp(pyxel.KEY_D):
             playerParty.x = 10
             playerParty.y = 10
+            # 井戸B4へ
             self.stateStack.push(self.stateStack.STATE_WELLB4)
 
     def draw_to_upanddown(self):
@@ -83,5 +82,3 @@ class StateWellB3(BaseFieldState):
         状態終了時の処理
         '''
         super().onExit()
-
-        pass

@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 import pyxel
-import pyxel
-from ..pyxelUtil import PyxelUtil
-from ..facilityStates.baseShopState import BaseShopState
+
 from ..character import playerParty
-from ..character import Human
 from ..item import shieldParams
+from ..pyxelUtil import PyxelUtil
+from .baseShopState import BaseShopState
 
 
 class StateShieldShop(BaseShopState):
@@ -16,15 +15,15 @@ class StateShieldShop(BaseShopState):
     選択した商品の購入、キャラクターへの装備を行う
     '''
 
+    # この店で使うアイテムリスト
+    itemList = shieldParams.shieldList
+
     def __init__(self, stateStack):
         '''
         クラス初期化
         '''
         super().__init__(stateStack)
         self.stateName = "ShieldShop"
-
-        # この店で使うアイテムリスト
-        self.itemList = shieldParams.shieldList
 
         # 店員の初期データ
         self.saleParson.name = "Hrolf"
@@ -35,7 +34,7 @@ class StateShieldShop(BaseShopState):
         '''
         買った処理
         '''
-        super()._update_done()
+        super().update_done()
         playerParty.memberList[self.equipMember].shield = self.item
 
     def _update_equip_saleParson(self, item):
@@ -48,7 +47,10 @@ class StateShieldShop(BaseShopState):
         '''
         店に入った時の表示
         '''
-        PyxelUtil.text(16, 140, ["O", "RE", "HA", " ", "KO", "NO", " ", "KU", "NI", "I", "TI", "HA", "D", "NN", "NO", "*Shield ", "me", "-", "ka", "-"], pyxel.COLOR_WHITE)
-        PyxelUtil.text(16, 148, ["*Hrolf Battershield ", "TA", "D", "."], pyxel.COLOR_WHITE)
-        PyxelUtil.text(16, 156, ["NA", "NI", "KA", " ", "KA", "LTU", "TE", "KE", "YO", "."], pyxel.COLOR_WHITE)
+        PyxelUtil.text(16, 140, ["O", "RE", "HA", " ", "KO", "NO", " ", "KU", "NI", "I",
+                                 "TI", "HA", "D", "NN", "NO", "*Shield ", "me", "-", "ka", "-"], pyxel.COLOR_WHITE)
+        PyxelUtil.text(16, 148, ["*Hrolf Battershield ",
+                                 "TA", "D", "."], pyxel.COLOR_WHITE)
+        PyxelUtil.text(16, 156, ["NA", "NI", "KA", " ", "KA",
+                                 "LTU", "TE", "KE", "YO", "."], pyxel.COLOR_WHITE)
         PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)

@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 import pyxel
+
+from ..character import Human, playerParty
 from ..pyxelUtil import PyxelUtil
-from ..facilityStates.baseFacilityState import BaseFacilityState
-from ..character import playerParty
-from ..character import Human
-from ..item import weaponParams
+from .baseFacilityState import BaseFacilityState
 
 
 class StateSurgery(BaseFacilityState):
@@ -32,18 +31,18 @@ class StateSurgery(BaseFacilityState):
     # 回復費用
     price = 0
 
-    # 医者の初期データ
-    saleParson = Human()
-    saleParson.name = "Slea"
-    saleParson.head = 96
-    saleParson.body = 9
-
     def __init__(self, stateStack):
         '''
         クラス初期化
         '''
         super().__init__(stateStack)
         self.stateName = "Surgery"
+
+        # 医者の初期データ
+        self.saleParson = Human()
+        self.saleParson.name = "Slea"
+        self.saleParson.head = 96
+        self.saleParson.body = 9
 
         # 初期設定
         self.onEnter()
@@ -188,7 +187,8 @@ class StateSurgery(BaseFacilityState):
         '''
         PyxelUtil.text(16, 140, ["*" + self.member.name + " ", "NO", " ", "TI", "RI", "LYO", "U", "HI",
                                  " ", "HA", " ", "*" + str(self.price) + "gold", " ", "TE", "D", "SU", "."], pyxel.COLOR_WHITE)
-        PyxelUtil.text(16, 148, ["TI", "RI", "LYO", "U", " ", "SI", "MA", "SU", "KA", "*? [Y/N]"], pyxel.COLOR_WHITE)
+        PyxelUtil.text(16, 148, ["TI", "RI", "LYO", "U", " ",
+                                 "SI", "MA", "SU", "KA", "*? [Y/N]"], pyxel.COLOR_WHITE)
 
     def render_done(self):
         '''
@@ -202,14 +202,16 @@ class StateSurgery(BaseFacilityState):
         '''
         店を出る描画処理
         '''
-        PyxelUtil.text(16, 140, ["O", "TA", "D", "I", "SI", "D", "NI", "."], pyxel.COLOR_WHITE)
+        PyxelUtil.text(16, 140, ["O", "TA", "D", "I",
+                                 "SI", "D", "NI", "."], pyxel.COLOR_WHITE)
         PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
     def render_nosurgery(self):
         '''
         治療不要描画処理
         '''
-        PyxelUtil.text(16, 140, ["MI", "NA", "SA", "NN", " ", "KE", "NN", "KO", "U", "TE", "D", "SU", "."], pyxel.COLOR_WHITE)
+        PyxelUtil.text(16, 140, ["MI", "NA", "SA", "NN", " ", "KE",
+                                 "NN", "KO", "U", "TE", "D", "SU", "."], pyxel.COLOR_WHITE)
         PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
     def onEnter(self):

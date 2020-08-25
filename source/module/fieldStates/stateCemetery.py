@@ -2,10 +2,10 @@
 import pyxel
 
 from ..character import HumanGenerator, playerParty
-from ..fieldStates.baseFieldState import BaseFieldState
 from ..map.cemeteryB1 import cemeteryB1
 from ..monster import monsterParams
 from ..pyxelUtil import PyxelUtil
+from .baseFieldState import BaseFieldState
 
 
 class StateCemetery(BaseFieldState):
@@ -16,19 +16,26 @@ class StateCemetery(BaseFieldState):
     遭遇する敵リストとイベント処理を持つ
     '''
 
+    # マップ
+    _map = cemeteryB1.map
+
+    # 出現するモンスターリスト
+    enemy_set = (
+        HumanGenerator.generate(2),
+        monsterParams.monsterList[monsterParams.BAT_LV1],
+        monsterParams.monsterList[monsterParams.SKELTON_LV1],
+        monsterParams.monsterList[monsterParams.WOLF],
+        monsterParams.monsterList[monsterParams.ZOMBIE_LV1],
+        monsterParams.monsterList[monsterParams.COBOLD_LV1],
+        monsterParams.monsterList[monsterParams.MUMMY],
+    )
+
     def __init__(self, stateStack):
         '''
         クラス初期化
         '''
         super().__init__(stateStack)
         self.stateName = "Cemetery"
-
-        # 変数定義
-        self.tick = 0
-        self.isEncount = False
-
-        # マップ
-        self.map = cemeteryB1.map
 
         # イベント
         # マップ上の座標に対応するイベントの関数の辞書
@@ -57,16 +64,7 @@ class StateCemetery(BaseFieldState):
             "18199U": self.update_fixedencount_enemy,
         }
 
-        # 出現するモンスターリスト
-        self.enemy_set = (
-            HumanGenerator.generate(2),
-            monsterParams.monsterList[monsterParams.BAT_LV1],
-            monsterParams.monsterList[monsterParams.SKELTON_LV1],
-            monsterParams.monsterList[monsterParams.WOLF],
-            monsterParams.monsterList[monsterParams.ZOMBIE_LV1],
-            monsterParams.monsterList[monsterParams.COBOLD_LV1],
-            monsterParams.monsterList[monsterParams.MUMMY],
-        )
+        self.onEnter()
 
     def update_to_city(self):
         '''
@@ -109,5 +107,3 @@ class StateCemetery(BaseFieldState):
         状態終了時の処理
         '''
         super().onExit()
-
-        pass

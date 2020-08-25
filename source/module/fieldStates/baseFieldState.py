@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import pickle
 import random
 
 import pyxel
@@ -7,7 +6,6 @@ import pyxel
 from ..baseState import BaseState
 from ..character import EnemyPartyGenerator, enemyParty, playerParty
 from ..pyxelUtil import PyxelUtil
-from ..savedata import SaveData
 
 
 class BaseFieldState(BaseState):
@@ -77,11 +75,7 @@ class BaseFieldState(BaseState):
         super().__init__(stateStack)
         self.stateName = "(none)"
 
-        # エンカウントフラグ
-        self.isEncount = False
-
-        # 固定エンカウントフラグ
-        self.isFixedEncount = False
+        self.onEnter()
 
     def set_wall_color(self, _wallcolor_front = pyxel.COLOR_LIGHTBLUE, _wallcolor_side = pyxel.COLOR_DARKBLUE):
         '''
@@ -141,11 +135,9 @@ class BaseFieldState(BaseState):
                 self.encount_enemy()
                 return
 
-        # キー入力（Q）
-        if pyxel.btnp(pyxel.KEY_Q):
-            s = SaveData(self.stateStack, playerParty)
-            with open('savedata.dat', 'wb') as f:
-                pickle.dump(s, f)
+        # キャンプ
+        if pyxel.btnp(pyxel.KEY_SPACE):
+            self.stateStack.push(self.stateStack.STATE_CAMP)
 
         # キー入力（右）
         if pyxel.btnp(pyxel.KEY_RIGHT):
@@ -173,7 +165,7 @@ class BaseFieldState(BaseState):
             return
 
         # キー入力（上）
-        if pyxel.btnp(pyxel.KEY_UP) and self._can_move_forward(playerParty.x, playerParty.y, playerParty.direction):
+        if pyxel.btnp(pyxel.KEY_UP) and self.can_move_forward(self._map, playerParty.x, playerParty.y, playerParty.direction):
             self.tick = 0
 #            if random.randint(0, 20) == 0:
 #                self.encount_enemy()
@@ -222,13 +214,13 @@ class BaseFieldState(BaseState):
             pass
         self.isFixedEncount = False
 
-    def _can_move_forward(self, _x:int, _y:int, _direction:int) -> bool:
+    def can_move_forward(self, _map, _x:int, _y:int, _direction:int) -> bool:
         '''
         前進できるかを判定する
 
         マップデータを方向によりシフトした結果の下位1ビットが立っている（＝目の前の壁情報が通行不可）場合は、前進不可と判定する
         '''
-        _value = self._get_mapinfo(self.map, _x, _y, _direction)
+        _value = self._get_mapinfo(_map, _x, _y, _direction)
 
         if _value & 0b000000000001 == 0b000000000001:
             return False
@@ -243,7 +235,7 @@ class BaseFieldState(BaseState):
 
         # 開発用
         PyxelUtil.text(0, 0, "*X:" + str(playerParty.x) + " Y:" + str(playerParty.y) + " DIR:" +
-                       str(playerParty.direction) + " MAP:" + self.stateName + "-" + bin(self.map[playerParty.y][playerParty.x]))
+                       str(playerParty.direction) + " MAP:" + self.stateName + "-" + bin(self._map[playerParty.y][playerParty.x]))
 
         # 迷路の枠線
         pyxel.rectb(self.OFFSET_X - 1, self.OFFSET_Y - 1, 80, 80, pyxel.COLOR_DARKBLUE)
@@ -272,7 +264,7 @@ class BaseFieldState(BaseState):
                 pyxel.blt(self.OFFSET_X, self.OFFSET_Y, 0, 0, 40, 80, 32, 0)
 
             # 迷路
-            self._draw_maze(playerParty.x, playerParty.y, playerParty.direction, self.map)
+            self._draw_maze(playerParty.x, playerParty.y, playerParty.direction, self._map)
 
         # エンカウント時のメッセージ
         if self.isEncount:
@@ -295,6 +287,9 @@ class BaseFieldState(BaseState):
 
         # エンカウントフラグ初期化
         self.isEncount = False
+
+        # 固定エンカウントフラグ初期化
+        self.isFixedEncount = False
 
     def onExit(self):
         '''

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import pyxel
-from ..pyxelUtil import PyxelUtil
-from ..facilityStates.baseShopState import BaseShopState
+
 from ..character import playerParty
-from ..character import Human
 from ..item import helmetParams
+from ..pyxelUtil import PyxelUtil
+from .baseShopState import BaseShopState
 
 
 class StateHelmetShop(BaseShopState):
@@ -15,15 +15,15 @@ class StateHelmetShop(BaseShopState):
     選択した商品の購入、キャラクターへの装備を行う
     '''
 
+    # この店で使うアイテムリスト
+    itemList = helmetParams.helmetList
+
     def __init__(self, stateStack):
         '''
         クラス初期化
         '''
         super().__init__(stateStack)
         self.stateName = "HelmetShop"
-
-        # この店で使うアイテムリスト
-        self.itemList = helmetParams.helmetList
 
         # 店員の初期データ
         self.saleParson.name = "Niels"
@@ -34,7 +34,7 @@ class StateHelmetShop(BaseShopState):
         '''
         買った処理
         '''
-        super()._update_done()
+        super().update_done()
         playerParty.memberList[self.equipMember].helmet = self.item
 
     def _update_equip_saleParson(self, item):

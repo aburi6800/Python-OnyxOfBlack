@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import pyxel
 
-from ..character import HumanGenerator, playerParty, EnemyPartyGenerator, enemyParty
-from ..fieldStates.baseFieldState import BaseFieldState
+from ..character import EnemyPartyGenerator, HumanGenerator, enemyParty
 from ..map.dungionB5 import dungionB5
 from ..monster import monsterParams
-from ..pyxelUtil import PyxelUtil
+from .baseFieldState import BaseFieldState
+
 
 class StateDungionB5(BaseFieldState):
     '''
@@ -15,19 +15,24 @@ class StateDungionB5(BaseFieldState):
     遭遇する敵リストとイベント処理を持つ
     '''
 
+    # マップ
+    _map = dungionB5.map
+
+    # 出現するモンスターリスト
+    enemy_set = (
+        HumanGenerator.generate(2),
+        monsterParams.monsterList[monsterParams.BAT_LV1],
+        monsterParams.monsterList[monsterParams.SKELTON_LV1],
+        monsterParams.monsterList[monsterParams.WOLF],
+        monsterParams.monsterList[monsterParams.COBOLD_LV1],
+    )
+
     def __init__(self, stateStack):
         '''
         クラス初期化
         '''
         super().__init__(stateStack)
         self.stateName = "dungionB5"
-
-        # 変数定義
-        self.tick = 0
-        self.isEncount = False
-
-        # マップ
-        self.map = dungionB5.map
 
         # イベント
         # マップ上の座標に対応するイベントの関数の辞書
@@ -37,29 +42,24 @@ class StateDungionB5(BaseFieldState):
             "10109D": self.draw_encount_kraken,
         }
 
-        # 出現するモンスターリスト
-        self.enemy_set = (
-            HumanGenerator.generate(2),
-            monsterParams.monsterList[monsterParams.BAT_LV1],
-            monsterParams.monsterList[monsterParams.SKELTON_LV1],
-            monsterParams.monsterList[monsterParams.WOLF],
-            monsterParams.monsterList[monsterParams.COBOLD_LV1],
-        )
+        self.onEnter()
 
     def update_encount_kraken(self):
         '''
         クラーケン出現イベントの処理
         '''
-        # 敵パーティー生成
+        # エンカウントフラグをONにする
         self.isEncount = True
-        enemyParty.memberList = EnemyPartyGenerator.generate(monsterParams.monsterList[monsterParams.KRAKEN])
+
+        # 敵パーティー生成
+        enemyParty.memberList = EnemyPartyGenerator.generate(
+            monsterParams.monsterList[monsterParams.KRAKEN])
 
     def draw_encount_kraken(self):
         '''
         クラーケン出現イベントの表示
         '''
-#        PyxelUtil.text(16, 140, ["U", "E", "TO", "SI", "TA", "NI", " ", "NU",
-#                                 "KE", "A", "NA", "KA", "D", " ", "A", "RU", "* !!"], pyxel.COLOR_WHITE)
+        pass
 
     def onEnter(self):
         '''
@@ -75,5 +75,3 @@ class StateDungionB5(BaseFieldState):
         状態終了時の処理
         '''
         super().onExit()
-
-        pass

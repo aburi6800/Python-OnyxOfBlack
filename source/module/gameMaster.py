@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from .character import playerParty
-from .stateStack import stateStack
+from source.module.stateStack import stateStack
 
 
 class GameMaster(object):
@@ -18,11 +17,6 @@ class GameMaster(object):
         '''
         # 最初のStateを登録
         stateStack.push(stateStack.STATE_TITLE)
-
-        # プレイヤーパーティーの最初の位置と方向
-        playerParty.x = 17
-        playerParty.y = 4
-        playerParty.direction = self.DIRECTION_SOUTH
 
     def update(self):
         '''

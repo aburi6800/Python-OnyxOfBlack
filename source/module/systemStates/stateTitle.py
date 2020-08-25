@@ -6,7 +6,7 @@ import pyxel
 
 from ..character import playerParty
 from ..pyxelUtil import PyxelUtil
-from ..systemStates.baseSystemState import BaseSystemState
+from .baseSystemState import BaseSystemState
 
 
 class StateTitle(BaseSystemState):
@@ -36,15 +36,7 @@ class StateTitle(BaseSystemState):
         super().__init__(stateStack)
         self.stateName = "Title"
 
-        self.tick = 0
-        self.state = self.STATE_RESPECT
-        self.selected = 0
-
-        # セーブデータ存在チェック
-        if os.path.exists("savedata.dat"):
-            self.doContinue = True
-        else:
-            self.doContinue = False
+        self.onEnter()
 
     def update(self):
         '''
@@ -92,6 +84,8 @@ class StateTitle(BaseSystemState):
                     playerParty.resotreSaveData(SaveData.playerParty)
                     # stateStackを復元
                     self.stateStack.states = SaveData.stateStack.states
+                    # 先頭は必ずキャンプなので、popする
+                    self.stateStack.pop()
                     # 先頭のstackの初期化を行う
                     self.stateStack.states[0].onEnter()
 
@@ -108,7 +102,8 @@ class StateTitle(BaseSystemState):
         '''
         ヘンク・B・ロジャースへの敬意
         '''
-        PyxelUtil.text(48, 95, ["*With all due respect to Henk B. Rogers."], self.TEXTCOLOR[self.tick])
+        PyxelUtil.text(
+            48, 95, ["*With all due respect to Henk B. Rogers."], self.TEXTCOLOR[self.tick])
 
     def _render_title(self):
         '''
@@ -138,7 +133,19 @@ class StateTitle(BaseSystemState):
         '''
         状態開始時の処理
         '''
-        pass
+        super().onEnter()
+
+        # このクラスの状態
+        self.state = self.STATE_RESPECT
+
+        # 選択番号
+        self.selected = 0
+
+        # セーブデータ存在チェック
+        if os.path.exists("savedata.dat"):
+            self.doContinue = True
+        else:
+            self.doContinue = False
 
     def onExit(self):
         '''

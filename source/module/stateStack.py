@@ -20,7 +20,7 @@ from .fieldStates.stateWellB3 import StateWellB3
 from .fieldStates.stateWellB4 import StateWellB4
 from .systemStates.stateMakeChracter import StateMakeCharacter
 from .systemStates.stateTitle import StateTitle
-
+from .systemStates.stateCamp import StateCamp
 #import stateBarbar
 #import stateBank
 #import stateDrug
@@ -39,6 +39,7 @@ class StateStack(object):
     STATE_TITLE = "Title"
     STATE_MAKE_CHARACTER = "MakeCharacter"
     STATE_CITY = "City"
+    STATE_CAMP = "Camp"
     STATE_BATTLE = "Battle"
     STATE_WEAPONSHOP = "WeaponShop"
     STATE_ARMORSHOP = "ArmorShop"
@@ -65,6 +66,7 @@ class StateStack(object):
             self.STATE_TITLE: StateTitle,
             self.STATE_MAKE_CHARACTER: StateMakeCharacter,
             self.STATE_CITY: StateCity,
+            self.STATE_CAMP: StateCamp,
             self.STATE_BATTLE: StateBattle,
             self.STATE_WEAPONSHOP: StateWeaponShop,
             self.STATE_ARMORSHOP: StateArmorShop,
@@ -82,6 +84,8 @@ class StateStack(object):
             self.STATE_DUNGIONB4: StateDungionB4,
             self.STATE_DUNGIONB5: StateDungionB5,
         }
+
+        print("StateStack:Initialized.")
 
     def update(self):
         '''
@@ -102,6 +106,7 @@ class StateStack(object):
         StateNameで指定されたStateをスタックに追加する
 
         StateNameはこのクラスで定義した変数（STATE_～）を使用する
+        追加する際に自分への参照も渡す
         追加されたStackはonEnterメソッドが実行される
         '''
         self.states.insert(0, self.stateDic[stateName](self))

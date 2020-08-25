@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 import pyxel
+
+from ..character import Human, playerParty
 from ..pyxelUtil import PyxelUtil
-from ..facilityStates.baseFacilityState import BaseFacilityState
-from ..character import playerParty
-from ..character import Human
+from .baseFacilityState import BaseFacilityState
+
 
 class BaseShopState(BaseFacilityState):
     '''
@@ -57,63 +58,67 @@ class BaseShopState(BaseFacilityState):
         継承先のクラスでは、saleParsonとitemListの設定を行うこと。
         '''
         super().__init__(stateStack)
+
+        # 店員
         self.saleParson = Human()
+
+        self.onEnter()
 
     def update(self):
         '''
         各フレームの処理
         '''
         if self.state == self.STATE_ENTER:
-            self._update_enter()
+            self.update_enter()
 
         elif self.state == self.STATE_BUY:
-            self._update_buy()
+            self.update_buy()
 
         elif self.state == self.STATE_EQUIP:
-            self._update_equip()
+            self.update_equip()
 
         elif self.state == self.STATE_DONE:
-            self._update_done()
+            self.update_done()
 
         elif self.state == self.STATE_LEAVE:
-            self._update_leave()
+            self.update_leave()
 
         elif self.state == self.STATE_EXIT:
-            self._update_exit()
+            self.update_exit()
 
-    def _update_enter(self):
+    def update_enter(self):
         '''
         店に入った時の処理
         '''
         if pyxel.btn(pyxel.KEY_SPACE):
             self.itemNumber = 0
             self.item = self.itemList[self.itemNumber]
-            self._update_equip_saleParson(self.item)
+            self.update_equip_saleParson(self.item)
             self.state = self.STATE_BUY
 
-    def _update_buy(self):
+    def update_buy(self):
         '''
         買う人を選ぶ処理
         '''
-        self._update_common()
+        self.update_common()
 
         for _key, _value in self.keyMap.items():
             if pyxel.btnp(_key) and len(playerParty.memberList) > _value and playerParty.memberList[_value].gold >= self.item.price:
                 self.buyMember = _value
                 self.state = self.STATE_EQUIP
 
-    def _update_equip(self):
+    def update_equip(self):
         '''
         装備する人を選ぶ処理
         '''
-        self._update_common()
+        self.update_common()
 
         for _key, _value in self.keyMap.items():
             if pyxel.btnp(_key) and len(playerParty.memberList) > _value:
                 self.equipMember = _value
                 self.state = self.STATE_DONE
 
-    def _update_done(self):
+    def update_done(self):
         '''
         買った処理
 
@@ -122,20 +127,20 @@ class BaseShopState(BaseFacilityState):
         playerParty.memberList[self.buyMember].gold -= self.item.price
         self.state = self.STATE_BUY
 
-    def _update_leave(self):
+    def update_leave(self):
         '''
         店を出る処理
         '''
         if pyxel.btnp(pyxel.KEY_SPACE):
             self.state = self.STATE_EXIT
 
-    def _update_exit(self):
+    def update_exit(self):
         '''
         店を出た処理
         '''
         self.stateStack.pop()
 
-    def _update_common(self):
+    def update_common(self):
         '''
         Lキー、ENTERキーを押したときの共通処理
         '''
@@ -154,9 +159,9 @@ class BaseShopState(BaseFacilityState):
                 if self.itemList[self.itemNumber].price > 0:
                     _selected = True
             self.item = self.itemList[self.itemNumber]
-            self._update_equip_saleParson(self.item)
+            self.update_equip_saleParson(self.item)
 
-    def _update_equip_saleParson(self, item):
+    def update_equip_saleParson(self, item):
         '''
         店員の装備を変更する処理
 
@@ -171,26 +176,26 @@ class BaseShopState(BaseFacilityState):
         super().render()
 
         if self.state == self.STATE_ENTER:
-            self._render_initial()
+            self.render_initial()
 
         elif self.state == self.STATE_BUY:
-            self._render_buy()
+            self.render_buy()
 
         elif self.state == self.STATE_EQUIP:
-            self._render_equip()
+            self.render_equip()
 
         elif self.state == self.STATE_LEAVE:
-            self._render_leave()
+            self.render_leave()
 
         # 店員
         self.drawCharacter(self.saleParson, 178, 104)
 
         # メンバーの所持金を表示
-        for _idx in range(len(playerParty.memberList)):
-            PyxelUtil.text(136, 16 + _idx * 16, ["*{:1d} : {:5d} G.P.".format(
-                _idx + 1, playerParty.memberList[_idx].gold)], pyxel.COLOR_WHITE)
+#        for idx, member in enumerate(playerParty.memberList):
+#            PyxelUtil.text(
+#                136, 16 + idx * 16, ["*{:1d} : {:5d} G.P.".format(idx + 1, member.gold)], pyxel.COLOR_WHITE)
 
-    def _render_initial(self):
+    def render_initial(self):
         '''
         店に入った時の表示
 
@@ -198,7 +203,7 @@ class BaseShopState(BaseFacilityState):
         '''
         None
 
-    def _render_buy(self):
+    def render_buy(self):
         '''
         買う人を選ぶ表示
         '''
@@ -211,7 +216,7 @@ class BaseShopState(BaseFacilityState):
         PyxelUtil.text(56, 164, ["*[L]     ", "MI", "SE",
                                  "WO", "TE", "D", "RU"], pyxel.COLOR_YELLOW)
 
-    def _render_equip(self):
+    def render_equip(self):
         '''
         装備する人を選ぶ表示
         '''
@@ -222,7 +227,7 @@ class BaseShopState(BaseFacilityState):
         PyxelUtil.text(56, 156, ["*[L]     ", "MI", "SE",
                                  "WO", "TE", "D", "RU"], pyxel.COLOR_YELLOW)
 
-    def _render_leave(self):
+    def render_leave(self):
         '''
         店を出る表示
         '''
@@ -243,4 +248,3 @@ class BaseShopState(BaseFacilityState):
         '''
         # パーティーの座標と方向を復帰
         playerParty.restoreCondition()
-

@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 import pyxel
+
 from ..baseState import BaseState
+
 
 class BaseSystemState(BaseState):
     '''
     システム周りのStateの基底クラス
-    
+
     タイトル画面やキャラクター作成等、特殊な画面を想定している
     '''
 
@@ -33,11 +35,10 @@ class BaseSystemState(BaseState):
         '''
         状態開始時の処理
         '''
-        pass
+        super().onEnter()
 
     def onExit(self):
         '''
         状態終了時の処理
         '''
         pass
-    

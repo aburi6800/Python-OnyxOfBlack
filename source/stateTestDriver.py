@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pyxel
-from module.gameMaster import gameMaster
-
+#from module.gameMaster import gameMaster
+from module.stateStack import stateStack
 
 class App:
     '''
@@ -14,6 +14,9 @@ class App:
         '''
         クラス初期化
         '''
+        # 最初のStateを登録
+        stateStack.push(stateStack.STATE_TITLE)
+
         # Pyxel初期化～実行
         pyxel.init(256, 192)
         pyxel.load("../assets/onyxofblack.pyxres")
@@ -23,14 +26,14 @@ class App:
         '''
         各フレームの処理
         '''
-        gameMaster.update()
+        stateStack.update()
 
     def draw(self):
         '''
         各フレームの画面描画処理
         '''
         pyxel.cls(pyxel.COLOR_BLACK)
-        gameMaster.render()
+        stateStack.render()
 
 
 if __name__ == "__main__":

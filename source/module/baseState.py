@@ -20,11 +20,10 @@ class BaseState(AbstractState):
         '''
         クラス初期化
         '''
-        self.stateStack = stateStack
         self.stateName = "(none)"
 
-        # タイマーカウンタ
-        self.tick = 0
+        # StateStackへの参照
+        self.stateStack = stateStack
 
     def update(self):
         '''
@@ -65,10 +64,9 @@ class BaseState(AbstractState):
     def onEnter(self):
         '''
         状態開始時の処理
-
-        実装なし
         '''
-        pass
+        # タイマーカウンタ初期化
+        self.tick = 0
 
     def onExit(self):
         '''

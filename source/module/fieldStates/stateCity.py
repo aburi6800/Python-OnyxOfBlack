@@ -5,10 +5,10 @@ import pyxel
 
 from ..character import (EnemyPartyGenerator, HumanGenerator, enemyParty,
                          playerParty)
-from ..fieldStates.baseFieldState import BaseFieldState
 from ..map.uturotown import uturotown
 from ..monster import monsterParams
 from ..pyxelUtil import PyxelUtil
+from .baseFieldState import BaseFieldState
 
 
 class StateCity(BaseFieldState):
@@ -19,24 +19,25 @@ class StateCity(BaseFieldState):
     遭遇する敵リストと街のイベント処理を持つ
     '''
 
+    # マップ
+    _map = uturotown.map
+
+    # 出現するモンスターリスト
+    enemy_set = (
+        HumanGenerator.generate(1),
+        HumanGenerator.generate(1),
+        HumanGenerator.generate(1),
+        HumanGenerator.generate(2),
+        monsterParams.monsterList[monsterParams.BAT_LV1],
+        monsterParams.monsterList[monsterParams.SKELTON_LV1],
+    )
+
     def __init__(self, stateStack):
         '''
         クラス初期化
         '''
         super().__init__(stateStack)
         self.stateName = "City"
-
-        # 変数定義
-        self.tick = 0
-        self.isEncount = False
-
-        # マップ
-        # 0 = 通路
-        # 1 = 壁
-        # 2 = ドア
-        # 3 = ブラックタワー
-        # 外周は必ず壁とする
-        self.map = uturotown.map
 
         # イベント
         # マップ上の座標に対応するイベントの関数の辞書
@@ -93,16 +94,7 @@ class StateCity(BaseFieldState):
             "11079U": self.update_to_dungion,
         }
 
-        # 出現するモンスターリスト
-        self.enemy_set = (
-            HumanGenerator.generate(1),
-            HumanGenerator.generate(1),
-            HumanGenerator.generate(2),
-            monsterParams.monsterList[monsterParams.BAT_LV1],
-            monsterParams.monsterList[monsterParams.SKELTON_LV1],
-            monsterParams.monsterList[monsterParams.WOLF],
-            monsterParams.monsterList[monsterParams.ZOMBIE_LV1],
-        )
+        self.onEnter()
 
     def encount_enemy(self):
         '''
@@ -152,7 +144,7 @@ class StateCity(BaseFieldState):
         '''
         床屋に入るイベント
         '''
-        # self.stateStack.push(self.stateStack.STATE_BARBAR)
+        # stateStack.push(stateStack.STATE_BARBAR)
         pass
 
     def update_surgery(self):
@@ -206,14 +198,14 @@ class StateCity(BaseFieldState):
 
     def update_to_dungion(self):
         '''
-        地下迷宮のイベント
+        地下迷宮の入口のイベント
         '''
         if pyxel.btn(pyxel.KEY_D):
             playerParty.x = 3
             playerParty.y = 6
             # カウントタイマーを初期化しておく
             self.tick = 0
-            # 井戸の中へ
+            # 地下迷宮へ
             self.stateStack.push(self.stateStack.STATE_DUNGIONB1)
 
     def update_temple(self):
@@ -374,15 +366,17 @@ class StateCity(BaseFieldState):
         '''
         井戸の穴の表示
         '''
-        PyxelUtil.text(16, 140, ["KA", "RE", "TA", " ", "I", "TO", "D", "KA", "D", "A", "RU", "."], pyxel.COLOR_WHITE)
-        PyxelUtil.text(16, 148, ["SI", "TA", "NI", " ", "O", "RI", "RA", "RE", "SO", "U", "TA", "D", "."], pyxel.COLOR_WHITE)
+        PyxelUtil.text(16, 140, ["KA", "RE", "TA", " ", "I", "TO",
+                                 "D", "KA", "D", "A", "RU", "."], pyxel.COLOR_WHITE)
+        PyxelUtil.text(16, 148, ["SI", "TA", "NI", " ", "O", "RI",
+                                 "RA", "RE", "SO", "U", "TA", "D", "."], pyxel.COLOR_WHITE)
 
     def draw_to_dungion(self):
         '''
-        地下迷宮の穴の表示
+        地下迷宮の入口の表示
         '''
-        PyxelUtil.text(16, 140, ["SI", "D", "ME", "NN", "NI", " ", "NU", "KE",
-                                 "A", "NA", "KA", "D", " ", "A", "RU", "* !!"], pyxel.COLOR_WHITE)
+        PyxelUtil.text(16, 140, ["SI", "TA", "NI", " ", "O", "RI", "RU", " ", "KA", "I",
+                                 "TA", "D", "NN", " ", "KA", "D", " ", "A", "RU", "* !!"], pyxel.COLOR_WHITE)
 
     def onEnter(self):
         '''
@@ -390,10 +384,13 @@ class StateCity(BaseFieldState):
         '''
         super().onEnter()
 
+        # プレイヤーパーティーの最初の位置と方向
+        playerParty.x = 17
+        playerParty.y = 4
+        playerParty.direction = self.DIRECTION_SOUTH
+
     def onExit(self):
         '''
         状態終了時の処理
         '''
         super().onExit()
-
-        pass

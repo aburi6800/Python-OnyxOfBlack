@@ -4,7 +4,7 @@ import random
 import pyxel
 
 from ..baseState import BaseState
-from ..character import Human, Monster, enemyParty, playerParty
+from ..character import Human, enemyParty, playerParty
 from ..pyxelUtil import PyxelUtil
 
 
@@ -66,7 +66,7 @@ class StateBattle(BaseState):
         # 敵は逃走したか？
         self.isEnemyEscpaed = False
 
-        # メンバーのインデックス 
+        # メンバーのインデックス
         self.member_index = 0
 
         # メッセージリスト
@@ -393,7 +393,7 @@ class StateBattle(BaseState):
         '''
         プレイヤーパーティー全滅処理
         '''
-        if pyxel.btn(pyxel.KEY_SPACE):
+        if pyxel.btnp(pyxel.KEY_SPACE):
             self.stateStack.init(self.stateStack.STATE_TITLE)
 
     def update_runaway_judge(self):
@@ -626,16 +626,20 @@ class StateBattle(BaseState):
         '''
         会話選択表示処理
         '''
-        PyxelUtil.text(16, 140, ["NA", "NI", "WO", " ", "HA", "NA", "SI", "KA", "KE", "MA", "SU", "KA", "* ?"], pyxel.COLOR_WHITE)
+        PyxelUtil.text(16, 140, ["NA", "NI", "WO", " ", "HA", "NA",
+                                 "SI", "KA", "KE", "MA", "SU", "KA", "* ?"], pyxel.COLOR_WHITE)
         PyxelUtil.text(32, 156, ["*[J] JOIN US."], pyxel.COLOR_YELLOW)
-        PyxelUtil.text(32, 164, ["*[G] GOOD LUCK & GOOD BY."], pyxel.COLOR_YELLOW)
-        PyxelUtil.text(32, 172, ["*[Y] YOUR MONEY OR YOUR LIFE."], pyxel.COLOR_YELLOW)
+        PyxelUtil.text(
+            32, 164, ["*[G] GOOD LUCK & GOOD BY."], pyxel.COLOR_YELLOW)
+        PyxelUtil.text(
+            32, 172, ["*[Y] YOUR MONEY OR YOUR LIFE."], pyxel.COLOR_YELLOW)
 
     def render_talk(self):
         '''
         会話表示処理
         '''
-        PyxelUtil.text(16, 148, ["*ONYX", "WO", " ", "ME", "SA", "D", "SI", "TE", " ", "KA", "D", "NN", "HA", "D", "RI", "MA", "SI", "LYO", "U", "* !"], pyxel.COLOR_WHITE)
+        PyxelUtil.text(16, 148, ["*ONYX", "WO", " ", "ME", "SA", "D", "SI", "TE", " ", "KA",
+                                 "D", "NN", "HA", "D", "RI", "MA", "SI", "LYO", "U", "* !"], pyxel.COLOR_WHITE)
         PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
     def onEnter(self):

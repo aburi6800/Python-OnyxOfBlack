@@ -6,7 +6,7 @@ import pyxel
 from ..character import HumanGenerator, playerParty
 from ..input import Input
 from ..pyxelUtil import PyxelUtil
-from ..systemStates.baseSystemState import BaseSystemState
+from .baseSystemState import BaseSystemState
 
 
 class StateMakeCharacter(BaseSystemState):
@@ -33,20 +33,7 @@ class StateMakeCharacter(BaseSystemState):
         super().__init__(stateStack)
         self.stateName = "MakeCharacter"
 
-        # 名前用の文字入力クラス
-        self.nameInput = None
-
-        # 人間のキャラクタクラス
-        self.character = None
-
-        # 最初の状態
-        self.state = self.STATE_INIT
-
-        # 頭のリスト
-        self.hairList = []
-
-        # プレイヤーパーティーを初期化
-        playerParty.initialize()
+        self.onEnter()
 
     def makeInitialHuman(self):
         '''
@@ -238,17 +225,18 @@ class StateMakeCharacter(BaseSystemState):
         # 完了
         if self.state == self.STATE_DONE:
             PyxelUtil.text(94, 40, ("*PREPARE TO DIE !!"), pyxel.COLOR_WHITE)
-            _x = (120 if len(playerParty.memberList) % 2 != 0 else 130) - (len(playerParty.memberList) // 2) * 32
-            for _idx in range(len(playerParty.memberList)):
-                _member = playerParty.memberList[_idx]
-                self.drawCharacter(_member, _x, 60)
-                _x += 32
+            x = (120 if len(playerParty.memberList) % 2 != 0 else 130) - \
+                (len(playerParty.memberList) // 2) * 32
+            for member in playerParty.memberList:
+                self.drawCharacter(member, x, 60)
+                x += 32
             return
 
         # 名前入力
         if self.state >= self.STATE_INPUT_NAME:
             pyxel.rectb(10, 18, 160, 25, pyxel.COLOR_NAVY)
-            PyxelUtil.text(14, 23, self.INPUT_NAME_MESSAGE[0] + ("ME", " ", "NO", " ", "NA", "MA", "E", "HA", "* ?"), pyxel.COLOR_YELLOW if self.state == self.STATE_INPUT_NAME else pyxel.COLOR_WHITE)
+            PyxelUtil.text(14, 23, self.INPUT_NAME_MESSAGE[0] + ("ME", " ", "NO", " ", "NA", "MA", "E", "HA",
+                                                                 "* ?"), pyxel.COLOR_YELLOW if self.state == self.STATE_INPUT_NAME else pyxel.COLOR_WHITE)
             self.nameInput.draw()
 
         # 髪型選択
@@ -306,6 +294,8 @@ class StateMakeCharacter(BaseSystemState):
         '''
         状態開始時の処理
         '''
+        super().onEnter()
+
         # 名前入力時のメッセージ
         self.INPUT_NAME_MESSAGE = [
             ("HI", "TO", "RI"),
@@ -314,6 +304,21 @@ class StateMakeCharacter(BaseSystemState):
             ("YO", "NI", "NN"),
             ("KO", "D", "NI", "NN"),
         ]
+
+        # 名前用の文字入力クラス
+        self.nameInput = None
+
+        # 人間のキャラクタクラス
+        self.character = None
+
+        # 最初の状態
+        self.state = self.STATE_INIT
+
+        # 頭のリスト
+        self.hairList = []
+
+        # プレイヤーパーティーを初期化
+        playerParty.initialize()
 
     def onExit(self):
         '''
