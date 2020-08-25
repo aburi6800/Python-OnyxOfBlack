@@ -30,20 +30,23 @@ class StateWeaponShop(BaseShopState):
         self.saleParson.head = 123
         self.saleParson.body = 3
 
-    def _update_done(self):
+        # 初期設定
+        self.onEnter()
+
+    def update_done(self):
         '''
         買った処理
         '''
         super().update_done()
         playerParty.memberList[self.equipMember].weapon = self.item
 
-    def _update_equip_saleParson(self, item):
+    def update_equip_saleParson(self, item):
         '''
         店員の装備を変更する処理
         '''
         self.saleParson.weapon = self.item
 
-    def _render_initial(self):
+    def render_initial(self):
         '''
         店に入った時の表示
         '''

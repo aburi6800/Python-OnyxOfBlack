@@ -97,7 +97,7 @@ class StateBattle(BaseState):
         }
 
         # 状態
-        state = 0
+        self.state = 0
 
     def change_state(self, _state):
         '''
@@ -156,7 +156,7 @@ class StateBattle(BaseState):
                 _enemyStrength = 0
                 for _member in enemyParty.memberList:
                     _enemyStrength += _member.strength
-                if (_playerStrength + random.randint(0, 6)) > (_enemyStrength + random.randint(0, 6)):
+                if (_playerStrength + random.randint(0, 12)) > (_enemyStrength + random.randint(0, 12)):
                     self.isEnemyEscpaed = True
 
     def update_choose_target(self):
@@ -404,12 +404,12 @@ class StateBattle(BaseState):
         for _member in enemyParty.memberList:
             _enemyDexterity += _member.dexterity
         _enemyDexterity = (_enemyDexterity //
-                           len(enemyParty.memberList)) + random.randint(0, 10)
+                           len(enemyParty.memberList)) + random.randint(0, 12)
         _playerDexterity = 0
         for _member in playerParty.memberList:
             _playerDexterity += _member.dexterity
         _playerDexterity = (
-            _playerDexterity // len(playerParty.memberList)) + random.randint(0, 10)
+            _playerDexterity // len(playerParty.memberList)) + random.randint(0, 12)
         if _playerDexterity > _enemyDexterity:
             self.change_state(self.STATE_RUNAWAY_SUCCESS)
         else:

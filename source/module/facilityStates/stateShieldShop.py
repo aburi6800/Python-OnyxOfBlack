@@ -30,20 +30,22 @@ class StateShieldShop(BaseShopState):
         self.saleParson.head = 81
         self.saleParson.body = 1
 
-    def _update_done(self):
+        self.onEnter()
+
+    def update_done(self):
         '''
         買った処理
         '''
         super().update_done()
         playerParty.memberList[self.equipMember].shield = self.item
 
-    def _update_equip_saleParson(self, item):
+    def update_equip_saleParson(self, item):
         '''
         店員の装備を変更する処理
         '''
         self.saleParson.shield = self.item
 
-    def _render_initial(self):
+    def render_initial(self):
         '''
         店に入った時の表示
         '''
