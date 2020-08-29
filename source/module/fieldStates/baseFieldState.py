@@ -108,7 +108,7 @@ class BaseFieldState(BaseState):
             _dirlist = random.sample(_dirlist, len(_dirlist))
             # 各方向について移動可能か調べる
             for _direction in _dirlist:
-                if self._can_move_forward(playerParty.x, playerParty.y, _direction):
+                if self.can_move_forward(self._map, playerParty.x, playerParty.y, _direction):
                     # 移動可能の場合はその方向に移動
                     playerParty.x = playerParty.x + self.VX[_direction]
                     playerParty.y = playerParty.y + self.VX[_direction]

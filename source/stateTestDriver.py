@@ -15,7 +15,7 @@ class App:
         クラス初期化
         '''
         # 最初のStateを登録
-        stateStack.push(stateStack.STATE_TITLE)
+        stateStack.init(stateStack.STATE_TITLE)
 
         # Pyxel初期化～実行
         pyxel.init(256, 192)
