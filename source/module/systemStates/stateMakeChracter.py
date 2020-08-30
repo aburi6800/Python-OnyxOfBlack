@@ -4,6 +4,7 @@ import random
 import pyxel
 
 from ..character import HumanGenerator, playerParty
+from ..fieldStates.stateCity import StateCity
 from ..input import Input
 from ..pyxelUtil import PyxelUtil
 from .baseSystemState import BaseSystemState
@@ -26,14 +27,11 @@ class StateMakeCharacter(BaseSystemState):
     STATE_MORE = 5
     STATE_DONE = 6
 
-    def __init__(self, stateStack):
+    def __init__(self):
         '''
         クラス初期化
         '''
-        super().__init__(stateStack)
-        self.stateName = "MakeCharacter"
-
-        self.onEnter()
+        super().__init__()
 
     def makeInitialHuman(self):
         '''
@@ -214,7 +212,7 @@ class StateMakeCharacter(BaseSystemState):
 
         if self.tick > 120:
             # ゲーム開始
-            self.stateStack.push(self.stateStack.STATE_CITY)
+            self.pushState(StateCity)
 
     def render(self):
         '''

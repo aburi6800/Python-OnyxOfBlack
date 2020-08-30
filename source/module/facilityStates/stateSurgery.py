@@ -31,21 +31,17 @@ class StateSurgery(BaseFacilityState):
     # 回復費用
     price = 0
 
-    def __init__(self, stateStack):
+    def __init__(self):
         '''
         クラス初期化
         '''
-        super().__init__(stateStack)
-        self.stateName = "Surgery"
+        super().__init__()
 
         # 医者の初期データ
         self.saleParson = Human()
         self.saleParson.name = "Slea"
         self.saleParson.head = 96
         self.saleParson.body = 9
-
-        # 初期設定
-        self.onEnter()
 
     def update(self):
         '''
@@ -126,7 +122,7 @@ class StateSurgery(BaseFacilityState):
         '''
         if pyxel.btnp(pyxel.KEY_SPACE):
             # 状態を終了する
-            self.stateStack.pop()
+            self.popState()
 
     def update_nomoney(self):
         '''

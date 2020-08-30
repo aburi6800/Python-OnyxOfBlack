@@ -6,6 +6,7 @@ from ..map.wellB4 import wellB4
 from ..monster import monsterParams
 from ..pyxelUtil import PyxelUtil
 from .baseFieldState import BaseFieldState
+from .stateDungionB5 import StateDungionB5
 
 
 class StateWellB4(BaseFieldState):
@@ -53,13 +54,13 @@ class StateWellB4(BaseFieldState):
             playerParty.x = 10
             playerParty.y = 10
             # 井戸B2へ戻る
-            self.stateStack.pop()
+            self.popState()
 
         if pyxel.btnp(pyxel.KEY_D):
             playerParty.x = 10
             playerParty.y = 10
             # 地下迷宮B5へ
-            self.stateStack.push(self.stateStack.STATE_DUNGIONB5)
+            self.pushState(StateDungionB5)
 
     def draw_to_upanddown(self):
         '''

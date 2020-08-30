@@ -4,6 +4,7 @@ import random
 import pyxel
 
 from ..baseState import BaseState
+from ..battleStates.stateBattle import StateBattle
 from ..character import EnemyPartyGenerator, enemyParty, playerParty
 from ..pyxelUtil import PyxelUtil
 
@@ -68,16 +69,13 @@ class BaseFieldState(BaseState):
     OFFSET_X = 150
     OFFSET_Y = 14
 
-    def __init__(self, stateStack):
+    def __init__(self):
         '''
         クラス初期化
         '''
-        super().__init__(stateStack)
-        self.stateName = "(none)"
+        super().__init__()
 
-        self.onEnter()
-
-    def set_wall_color(self, _wallcolor_front = pyxel.COLOR_LIGHTBLUE, _wallcolor_side = pyxel.COLOR_DARKBLUE):
+    def set_wall_color(self, _wallcolor_front=pyxel.COLOR_LIGHTBLUE, _wallcolor_side=pyxel.COLOR_DARKBLUE):
         '''
         壁の色を設定する処理
 
@@ -104,7 +102,8 @@ class BaseFieldState(BaseState):
             # フラグを降ろす
             playerParty.isEscape = False
             # 方向のリストを作ってシャッフル
-            _dirlist = [self.DIRECTION_NORTH, self.DIRECTION_EAST, self.DIRECTION_SOUTH, self.DIRECTION_WEST]
+            _dirlist = [self.DIRECTION_NORTH, self.DIRECTION_EAST,
+                        self.DIRECTION_SOUTH, self.DIRECTION_WEST]
             _dirlist = random.sample(_dirlist, len(_dirlist))
             # 各方向について移動可能か調べる
             for _direction in _dirlist:
@@ -125,7 +124,7 @@ class BaseFieldState(BaseState):
                 if self.tick > 30:
                     self.isEncount = False
                     self.tick = 0
-                    self.stateStack.push(self.stateStack.STATE_BATTLE)
+                    self.pushState(StateBattle)
                     return
                 else:
                     return
@@ -185,7 +184,7 @@ class BaseFieldState(BaseState):
         '''
         self.isEncount = True
         enemyParty.memberList = EnemyPartyGenerator.generate(
-        self.enemy_set[random.randint(0, len(self.enemy_set) - 1)])
+            self.enemy_set[random.randint(0, len(self.enemy_set) - 1)])
 
     def update_fixedencount_enemy(self):
         '''
@@ -204,8 +203,9 @@ class BaseFieldState(BaseState):
 
         # 上記の条件に合致しない場合は、固定エンカウントしている状態となる
         # 戦闘から逃げて終了した場合は、ここに到達する前に座標が変更されているのでイベントは削除されない
-        # イベントのキー        
-        _key = "{:02d}".format(playerParty.x) + "{:02d}".format(playerParty.y) + "9U"
+        # イベントのキー
+        _key = "{:02d}".format(playerParty.x) + \
+            "{:02d}".format(playerParty.y) + "9U"
         try:
             # イベント辞書から削除
             del(self.event[_key])
@@ -214,7 +214,7 @@ class BaseFieldState(BaseState):
             pass
         self.isFixedEncount = False
 
-    def can_move_forward(self, _map, _x:int, _y:int, _direction:int) -> bool:
+    def can_move_forward(self, _map, _x: int, _y: int, _direction: int) -> bool:
         '''
         前進できるかを判定する
 
@@ -238,40 +238,54 @@ class BaseFieldState(BaseState):
                        str(playerParty.direction) + " MAP:" + self.stateName + "-" + bin(self._map[playerParty.y][playerParty.x]))
 
         # 迷路の枠線
-        pyxel.rectb(self.OFFSET_X - 1, self.OFFSET_Y - 1, 80, 80, pyxel.COLOR_DARKBLUE)
+        pyxel.rectb(self.OFFSET_X - 1, self.OFFSET_Y -
+                    1, 80, 80, pyxel.COLOR_DARKBLUE)
 
         # 地面部のグリッド
-        pyxel.line(0 + self.OFFSET_X, 40 + self.OFFSET_Y, 78 + self.OFFSET_X, 40 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
-        pyxel.line(0 + self.OFFSET_X, 43 + self.OFFSET_Y, 78 + self.OFFSET_X, 43 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
-        pyxel.line(0 + self.OFFSET_X, 50 + self.OFFSET_Y, 78 + self.OFFSET_X, 50 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
-        pyxel.line(0 + self.OFFSET_X, 69 + self.OFFSET_Y, 78 + self.OFFSET_X, 69 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
+        pyxel.line(0 + self.OFFSET_X, 40 + self.OFFSET_Y, 78 +
+                   self.OFFSET_X, 40 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
+        pyxel.line(0 + self.OFFSET_X, 43 + self.OFFSET_Y, 78 +
+                   self.OFFSET_X, 43 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
+        pyxel.line(0 + self.OFFSET_X, 50 + self.OFFSET_Y, 78 +
+                   self.OFFSET_X, 50 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
+        pyxel.line(0 + self.OFFSET_X, 69 + self.OFFSET_Y, 78 +
+                   self.OFFSET_X, 69 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
 
-        pyxel.line(39 + self.OFFSET_X, 39 + self.OFFSET_Y, 0 + self.OFFSET_X, 78 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
-        pyxel.line(39 + self.OFFSET_X, 39 + self.OFFSET_Y, 78 + self.OFFSET_X, 78 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
+        pyxel.line(39 + self.OFFSET_X, 39 + self.OFFSET_Y, 0 +
+                   self.OFFSET_X, 78 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
+        pyxel.line(39 + self.OFFSET_X, 39 + self.OFFSET_Y, 78 +
+                   self.OFFSET_X, 78 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
 
         if self.tick > 0:
-            if self.stateName != "City":
-                # 天井部のグリッド
-                pyxel.line(0 + self.OFFSET_X, 38 + self.OFFSET_Y, 78 + self.OFFSET_X, 38 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
-                pyxel.line(0 + self.OFFSET_X, 35 + self.OFFSET_Y, 78 + self.OFFSET_X, 35 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
-                pyxel.line(0 + self.OFFSET_X, 28 + self.OFFSET_Y, 78 + self.OFFSET_X, 28 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
-                pyxel.line(0 + self.OFFSET_X,9 + self.OFFSET_Y, 78 + self.OFFSET_X, 9 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
-
-                pyxel.line(39 + self.OFFSET_X, 39 + self.OFFSET_Y, 0 + self.OFFSET_X, 0 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
-                pyxel.line(39 + self.OFFSET_X, 39 + self.OFFSET_Y, 78 + self.OFFSET_X, 0 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
-            else:
+            if self.isOuter():
                 # 満天の星空
                 pyxel.blt(self.OFFSET_X, self.OFFSET_Y, 0, 0, 40, 80, 32, 0)
+            else:
+                # 天井部のグリッド
+                pyxel.line(0 + self.OFFSET_X, 38 + self.OFFSET_Y, 78 +
+                           self.OFFSET_X, 38 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
+                pyxel.line(0 + self.OFFSET_X, 35 + self.OFFSET_Y, 78 +
+                           self.OFFSET_X, 35 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
+                pyxel.line(0 + self.OFFSET_X, 28 + self.OFFSET_Y, 78 +
+                           self.OFFSET_X, 28 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
+                pyxel.line(0 + self.OFFSET_X, 9 + self.OFFSET_Y, 78 +
+                           self.OFFSET_X, 9 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
+
+                pyxel.line(39 + self.OFFSET_X, 39 + self.OFFSET_Y, 0 +
+                           self.OFFSET_X, 0 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
+                pyxel.line(39 + self.OFFSET_X, 39 + self.OFFSET_Y, 78 +
+                           self.OFFSET_X, 0 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
 
             # 迷路
-            self._draw_maze(playerParty.x, playerParty.y, playerParty.direction, self._map)
+            self._draw_maze(playerParty.x, playerParty.y,
+                            playerParty.direction, self._map)
 
         # エンカウント時のメッセージ
         if self.isEncount:
             PyxelUtil.text(10, 146, ["NA", "NI", "KA", "TI", "KA", "TU",
                                      "D", "I", "TE", "KI", "TA", "*!"], pyxel.COLOR_RED)
             return
-            
+
         # イベントハンドラ
         self._eventhandler("D")
 
@@ -301,6 +315,14 @@ class BaseFieldState(BaseState):
         # タイマーカウンタ初期化
         self.tick = 0
 
+    def isOuter(self) -> bool:
+        '''
+        屋外かどうかをboolで返却する
+
+        Falseが初期値。Trueとしたければ子クラスでこのメソッドをオーバーライドする
+        '''
+        return False
+
     def _eventhandler(self, _mode):
         '''
         プレイヤーパーティーの現在の座標に登録されているイベントがあれば、そのイベントの関数を呼び出す
@@ -314,14 +336,16 @@ class BaseFieldState(BaseState):
             return False
 
         # 現在の座標＋方向でイベントが登録されている場合は、イベントの関数を呼び出す
-        _key = "{:02d}".format(playerParty.x) + "{:02d}".format(playerParty.y) + "{:01d}".format(playerParty.direction) + _mode
+        _key = "{:02d}".format(playerParty.x) + "{:02d}".format(playerParty.y) + \
+            "{:01d}".format(playerParty.direction) + _mode
         _event = self.event.get(_key, None)
         if _event != None:
             _event()
             return True
 
         # 現在の座標でイベントが登録されている場合は、イベントの関数を呼び出す
-        _key = "{:02d}".format(playerParty.x) + "{:02d}".format(playerParty.y) + "9" + _mode
+        _key = "{:02d}".format(playerParty.x) + \
+            "{:02d}".format(playerParty.y) + "9" + _mode
         _event = self.event.get(_key, None)
         if _event != None:
             _event()
@@ -500,7 +524,8 @@ class BaseFieldState(BaseState):
                 pyxel.rect(10 + self.OFFSET_X, 9 + self.OFFSET_Y, 59,
                            61, self.WALLCOLOR_FRONT[_color])
                 if _data & 0b00000011 == 0b00000010:
-                    pyxel.circ(17 + self.OFFSET_X, 40 + self.OFFSET_Y, 2, pyxel.COLOR_BLACK)
+                    pyxel.circ(17 + self.OFFSET_X, 40 +
+                               self.OFFSET_Y, 2, pyxel.COLOR_BLACK)
             if _data & 0b000000111000 != 0:
                 _color = (_data >> 3) & 0b000000000111
                 pyxel.tri(78 + self.OFFSET_X, 0 + self.OFFSET_Y, 69 + self.OFFSET_X, 9 + self.OFFSET_Y,

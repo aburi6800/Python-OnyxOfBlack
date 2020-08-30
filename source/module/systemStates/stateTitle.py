@@ -7,6 +7,7 @@ import pyxel
 from ..character import playerParty
 from ..pyxelUtil import PyxelUtil
 from .baseSystemState import BaseSystemState
+from .stateMakeChracter import StateMakeCharacter
 
 
 class StateTitle(BaseSystemState):
@@ -29,14 +30,11 @@ class StateTitle(BaseSystemState):
     TEXTCOLOR += [pyxel.COLOR_DARKBLUE] * 10
     TEXTCOLOR += [pyxel.COLOR_BLACK] * 30
 
-    def __init__(self, stateStack):
+    def __init__(self):
         '''
         クラス初期化
         '''
-        super().__init__(stateStack)
-        self.stateName = "Title"
-
-        self.onEnter()
+        super().__init__()
 
     def update(self):
         '''
@@ -75,19 +73,18 @@ class StateTitle(BaseSystemState):
             if self.tick > 21:
                 if self.selected == 1:
                     self.selected = 0
-                    self.stateStack.push(self.stateStack.STATE_MAKE_CHARACTER)
+                    self.pushState(StateMakeCharacter)
                 if self.selected == 2:
                     # セーブデータをロード
                     with open("savedata.dat", mode="rb") as f:
                         SaveData = pickle.load(f)
                     # プレイヤーパーティーの復元
                     playerParty.resotreSaveData(SaveData.playerParty)
-                    # stateStackを復元
-                    self.stateStack.states = SaveData.stateStack.states
+                    # stateStackのstatesを復元
+                    # ここはSaveDataに持っているstateStackのstatesを一つづつpopしていくようにする
+#                    self.stateStack.states = SaveData.stateStack.states
                     # 先頭は必ずキャンプなので、popする
-                    self.stateStack.pop()
-                    # 先頭のstackの初期化を行う
-                    self.stateStack.states[0].onEnter()
+                    self.popState()
 
     def render(self):
         '''

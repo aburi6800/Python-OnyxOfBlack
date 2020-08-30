@@ -5,10 +5,18 @@ import pyxel
 
 from ..character import (EnemyPartyGenerator, HumanGenerator, enemyParty,
                          playerParty)
+from ..facilityStates.stateArmorShop import StateArmorShop
+from ..facilityStates.stateHelmetShop import StateHelmetShop
+from ..facilityStates.stateShieldShop import StateShieldShop
+from ..facilityStates.stateSurgery import StateSurgery
+from ..facilityStates.stateWeaponShop import StateWeaponShop
 from ..map.uturotown import uturotown
 from ..monster import monsterParams
 from ..pyxelUtil import PyxelUtil
 from .baseFieldState import BaseFieldState
+from .stateCemetery import StateCemetery
+from .stateDungionB1 import StateDungionB1
+from .stateWellB1 import StateWellB1
 
 
 class StateCity(BaseFieldState):
@@ -32,12 +40,11 @@ class StateCity(BaseFieldState):
         monsterParams.monsterList[monsterParams.SKELTON_LV1],
     )
 
-    def __init__(self, stateStack):
+    def __init__(self):
         '''
         クラス初期化
         '''
-        super().__init__(stateStack)
-        self.stateName = "City"
+        super().__init__()
 
         # イベント
         # マップ上の座標に対応するイベントの関数の辞書
@@ -94,8 +101,6 @@ class StateCity(BaseFieldState):
             "11079U": self.update_to_dungion,
         }
 
-        self.onEnter()
-
     def encount_enemy(self):
         '''
         敵とエンカウントした時の処理
@@ -120,25 +125,25 @@ class StateCity(BaseFieldState):
         '''
         盾屋に入るイベント
         '''
-        self.stateStack.push(self.stateStack.STATE_SHIELDSHOP)
+        self.pushState(StateShieldShop)
 
     def update_armorshop(self):
         '''
         鎧屋に入るイベント
         '''
-        self.stateStack.push(self.stateStack.STATE_ARMORSHOP)
+        self.pushState(StateArmorShop)
 
     def update_helmetshop(self):
         '''
         兜屋に入るイベント
         '''
-        self.stateStack.push(self.stateStack.STATE_HELMETSHOP)
+        self.pushState(StateHelmetShop)
 
     def update_weaponshop(self):
         '''
         武器屋に入るイベント
         '''
-        self.stateStack.push(self.stateStack.STATE_WEAPONSHOP)
+        self.pushState(StateWeaponShop)
 
     def update_barbar(self):
         '''
@@ -151,7 +156,7 @@ class StateCity(BaseFieldState):
         '''
         緊急治療に入るイベント
         '''
-        self.stateStack.push(self.stateStack.STATE_SURGERY)
+        self.pushState(StateSurgery)
 
     def update_secretmessage(self):
         '''
@@ -182,7 +187,7 @@ class StateCity(BaseFieldState):
             # カウントタイマーを初期化しておく
             self.tick = 0
             # 墓地の地下へ
-            self.stateStack.push(self.stateStack.STATE_CEMETERY)
+            self.pushState(StateCemetery)
 
     def update_to_well(self):
         '''
@@ -194,7 +199,7 @@ class StateCity(BaseFieldState):
             # カウントタイマーを初期化しておく
             self.tick = 0
             # 井戸の中へ
-            self.stateStack.push(self.stateStack.STATE_WELLB1)
+            self.pushState(StateWellB1)
 
     def update_to_dungion(self):
         '''
@@ -206,7 +211,7 @@ class StateCity(BaseFieldState):
             # カウントタイマーを初期化しておく
             self.tick = 0
             # 地下迷宮へ
-            self.stateStack.push(self.stateStack.STATE_DUNGIONB1)
+            self.pushState(StateDungionB1)
 
     def update_temple(self):
         '''
@@ -394,3 +399,11 @@ class StateCity(BaseFieldState):
         状態終了時の処理
         '''
         super().onExit()
+
+    def isOuter(self) -> bool:
+        '''
+        屋外かどうかをboolで返却する
+
+        このクラスは屋外なのでTrueを返却する
+        '''
+        return True

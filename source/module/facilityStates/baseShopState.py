@@ -51,18 +51,16 @@ class BaseShopState(BaseFacilityState):
         pyxel.KEY_5: 4,
     }
 
-    def __init__(self, stateStack):
+    def __init__(self):
         '''
         クラス初期化
 
         継承先のクラスでは、saleParsonとitemListの設定を行うこと。
         '''
-        super().__init__(stateStack)
+        super().__init__()
 
         # 店員
         self.saleParson = Human()
-
-        self.onEnter()
 
     def update(self):
         '''
@@ -138,7 +136,7 @@ class BaseShopState(BaseFacilityState):
         '''
         店を出た処理
         '''
-        self.stateStack.pop()
+        self.popState()
 
     def update_common(self):
         '''

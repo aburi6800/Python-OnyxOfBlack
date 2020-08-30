@@ -27,12 +27,11 @@ class StateDungionB5(BaseFieldState):
         monsterParams.monsterList[monsterParams.COBOLD_LV1],
     )
 
-    def __init__(self, stateStack):
+    def __init__(self):
         '''
         クラス初期化
         '''
-        super().__init__(stateStack)
-        self.stateName = "dungionB5"
+        super().__init__()
 
         # イベント
         # マップ上の座標に対応するイベントの関数の辞書

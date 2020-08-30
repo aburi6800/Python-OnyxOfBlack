@@ -13,12 +13,11 @@ class BaseFacilityState(BaseState):
     各施設で共通の処理を持つ
     '''
 
-    def __init__(self, stateStack):
+    def __init__(self):
         '''
         クラス初期化
         '''
-        super().__init__(stateStack)
-        self.stateName = "(none)"
+        super().__init__()
 
     def update(self):
         '''

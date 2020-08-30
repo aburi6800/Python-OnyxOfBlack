@@ -18,20 +18,16 @@ class StateArmorShop(BaseShopState):
     # この店で使うアイテムリスト
     itemList = armorParams.armorList
 
-    def __init__(self, stateStack):
+    def __init__(self):
         '''
         クラス初期化
         '''
-        super().__init__(stateStack)
-        self.stateName = "ArmorShop"
+        super().__init__()
 
         # 店員の初期データ
         self.saleParson.name = "Blick"
         self.saleParson.head = 13
         self.saleParson.body = 4
-
-        # 初期設定
-        self.onEnter()
 
     def update_done(self):
         '''

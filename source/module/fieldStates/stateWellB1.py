@@ -6,6 +6,7 @@ from ..map.wellB1 import wellB1
 from ..monster import monsterParams
 from ..pyxelUtil import PyxelUtil
 from .baseFieldState import BaseFieldState
+from .stateWellB2 import StateWellB2
 
 
 class StateWellB1(BaseFieldState):
@@ -28,12 +29,11 @@ class StateWellB1(BaseFieldState):
         monsterParams.monsterList[monsterParams.COBOLD_LV1],
     )
 
-    def __init__(self, stateStack):
+    def __init__(self):
         '''
         クラス初期化
         '''
-        super().__init__(stateStack)
-        self.stateName = "WellB1"
+        super().__init__()
 
         # イベント
         # マップ上の座標に対応するイベントの関数の辞書
@@ -43,8 +43,6 @@ class StateWellB1(BaseFieldState):
             "10109D": self.draw_to_upanddown,
         }
 
-        self.onEnter()
-
     def update_to_upanddown(self):
         '''
         抜け穴のイベント
@@ -53,13 +51,13 @@ class StateWellB1(BaseFieldState):
             playerParty.x = 15
             playerParty.y = 14
             # 町へ戻る
-            self.stateStack.pop()
+            self.popState()
 
         if pyxel.btnp(pyxel.KEY_D):
             playerParty.x = 10
             playerParty.y = 10
             # 井戸B2へ
-            self.stateStack.push(self.stateStack.STATE_WELLB2)
+            self.pushState(StateWellB2)
 
     def draw_to_upanddown(self):
         '''

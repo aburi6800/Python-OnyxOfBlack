@@ -18,19 +18,16 @@ class StateShieldShop(BaseShopState):
     # この店で使うアイテムリスト
     itemList = shieldParams.shieldList
 
-    def __init__(self, stateStack):
+    def __init__(self):
         '''
         クラス初期化
         '''
-        super().__init__(stateStack)
-        self.stateName = "ShieldShop"
+        super().__init__()
 
         # 店員の初期データ
         self.saleParson.name = "Hrolf"
         self.saleParson.head = 81
         self.saleParson.body = 1
-
-        self.onEnter()
 
     def update_done(self):
         '''

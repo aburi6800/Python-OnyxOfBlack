@@ -6,6 +6,7 @@ from ..map.dungionB2 import dungionB2
 from ..monster import monsterParams
 from ..pyxelUtil import PyxelUtil
 from .baseFieldState import BaseFieldState
+from .stateDungionB3 import StateDungionB3
 
 
 class StateDungionB2(BaseFieldState):
@@ -28,12 +29,11 @@ class StateDungionB2(BaseFieldState):
         monsterParams.monsterList[monsterParams.COBOLD_LV1],
     )
 
-    def __init__(self, stateStack):
+    def __init__(self):
         '''
         クラス初期化
         '''
-        super().__init__(stateStack)
-        self.stateName = "dungionB2"
+        super().__init__()
 
         # イベント
         # マップ上の座標に対応するイベントの関数の辞書
@@ -49,22 +49,20 @@ class StateDungionB2(BaseFieldState):
             "26129D": self.draw_to_down,
         }
 
-        self.onEnter()
-
     def update_to_up(self):
         '''
         上に上がる階段のイベント
         '''
         if pyxel.btnp(pyxel.KEY_U):
             # B1へ戻る
-            self.stateStack.pop()
+            self.popState()
 
     def update_to_down(self):
         '''
         下に降りる階段のイベント
         '''
         if pyxel.btnp(pyxel.KEY_D):
-            self.stateStack.push(self.stateStack.STATE_DUNGIONB3)
+            self.pushState(StateDungionB3)
 
     def draw_to_up(self):
         '''

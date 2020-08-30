@@ -2,6 +2,7 @@
 import pyxel
 #from module.gameMaster import gameMaster
 from module.stateStack import stateStack
+from module.systemStates.stateTitle import StateTitle
 
 class App:
     '''
@@ -14,8 +15,8 @@ class App:
         '''
         クラス初期化
         '''
-        # 最初のStateを登録
-        stateStack.init(stateStack.STATE_TITLE)
+        # StateStackの初期化
+        stateStack.clear()
 
         # Pyxel初期化～実行
         pyxel.init(256, 192)
@@ -26,6 +27,9 @@ class App:
         '''
         各フレームの処理
         '''
+        if stateStack.states[0] == None:
+            stateStack.push(StateTitle)
+
         stateStack.update()
 
     def draw(self):
@@ -33,7 +37,7 @@ class App:
         各フレームの画面描画処理
         '''
         pyxel.cls(pyxel.COLOR_BLACK)
-        stateStack.render()
+        stateStack.draw()
 
 
 if __name__ == "__main__":

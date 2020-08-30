@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from os import name
 import pyxel
 from .pyxelUtil import PyxelUtil
 from .abstractState import AbstractState
@@ -16,14 +17,11 @@ class BaseState(AbstractState):
     renderメソッドでは画面の枠線とプレイヤーキャラクターの描画を行う
     '''
 
-    def __init__(self, stateStack):
+    def __init__(self):
         '''
         クラス初期化
         '''
-        self.stateName = "(none)"
-
-        # StateStackへの参照
-        self.stateStack = stateStack
+        self.stateName = name
 
     def update(self):
         '''

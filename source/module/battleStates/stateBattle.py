@@ -44,11 +44,11 @@ class StateBattle(BaseState):
         pyxel.KEY_5: 4,
     }
 
-    def __init__(self, stateStack):
+    def __init__(self):
         '''
         クラス初期化
         '''
-        super().__init__(stateStack)
+        super().__init__()
         self.stateName = "Battle"
 
         # 行動順リスト
@@ -367,7 +367,7 @@ class StateBattle(BaseState):
 
         if self.member_index > len(playerParty.memberList) - 1:
             if self.reward_gold == 0:
-                self.stateStack.pop()
+                self.popState()
             else:
                 self.change_state(self.STATE_WIN_GETGOLD)
 
@@ -380,21 +380,21 @@ class StateBattle(BaseState):
             self.reward_gold = self.reward_gold // len(playerParty.memberList)
             # 分配した結果、0ゴールドなら戦闘終了
             if self.reward_gold == 0:
-                self.stateStack.pop()
+                self.popState()
 
         if pyxel.btnp(pyxel.KEY_SPACE):
             # プレイヤーパーティーの各メンバーのゴールドを加算
             for _member in playerParty.memberList:
                 _member.gold = _member.gold + self.reward_gold
             # 戦闘終了
-            self.stateStack.pop()
+            self.popState()
 
     def update_lose(self):
         '''
         プレイヤーパーティー全滅処理
         '''
         if pyxel.btnp(pyxel.KEY_SPACE):
-            self.stateStack.init(self.stateStack.STATE_TITLE)
+            self.clearState()
 
     def update_runaway_judge(self):
         '''
@@ -422,7 +422,7 @@ class StateBattle(BaseState):
         if self.tick > 30:
             playerParty.isEscape = True
             self.tick = 0
-            self.stateStack.pop()
+            self.popState()
         else:
             self.tick += 1
 
@@ -466,11 +466,11 @@ class StateBattle(BaseState):
             for _member in enemyParty.memberList:
                 playerParty.memberList.append(_member)
             # 戦闘終了
-            self.stateStack.pop()
+            self.popState()
 
         if pyxel.btnp(pyxel.KEY_G):
             # 戦闘終了
-            self.stateStack.pop()
+            self.popState()
 
         if pyxel.btnp(pyxel.KEY_Y):
             # 戦闘へ
@@ -482,7 +482,7 @@ class StateBattle(BaseState):
         '''
         if pyxel.btnp(pyxel.KEY_SPACE):
             # 戦闘終了
-            self.stateStack.pop()
+            self.popState()
 
     def render(self):
         '''

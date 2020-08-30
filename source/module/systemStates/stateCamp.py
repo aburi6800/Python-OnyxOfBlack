@@ -5,6 +5,7 @@ import pyxel
 
 from ..character import playerParty
 from ..facilityStates.baseFacilityState import BaseFacilityState
+from ..systemStates.stateTitle import StateTitle
 from ..pyxelUtil import PyxelUtil
 from ..savedata import SaveData
 
@@ -16,12 +17,11 @@ class StateCamp(BaseFacilityState):
     薬の使用／セーブ／ゲーム終了を行う
     '''
 
-    def __init__(self, stateStack):
+    def __init__(self):
         '''
         クラス初期化
         '''
-        super().__init__(stateStack)
-        self.stateName = "Camp"
+        super().__init__()
 
     def update(self):
         '''
@@ -33,18 +33,18 @@ class StateCamp(BaseFacilityState):
 
         # セーブ
         if pyxel.btnp(pyxel.KEY_S):
-            s = SaveData(self.stateStack, playerParty)
+            s = SaveData(self.getStates(), playerParty)
             with open('savedata.dat', 'wb') as f:
                 pickle.dump(s, f)
 
         # ゲームを中断
         if pyxel.btnp(pyxel.KEY_Q):
             # タイトルに戻る
-            self.stateStack.init(self.stateStack.STATE_TITLE)
+            self.clearState()
 
         # キャンプを終わる
         if pyxel.btnp(pyxel.KEY_SPACE):
-            self.stateStack.pop()
+            self.popState()
 
     def render(self):
         '''

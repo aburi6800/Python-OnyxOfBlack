@@ -30,12 +30,11 @@ class StateCemetery(BaseFieldState):
         monsterParams.monsterList[monsterParams.MUMMY],
     )
 
-    def __init__(self, stateStack):
+    def __init__(self):
         '''
         クラス初期化
         '''
-        super().__init__(stateStack)
-        self.stateName = "Cemetery"
+        super().__init__()
 
         # イベント
         # マップ上の座標に対応するイベントの関数の辞書
@@ -64,8 +63,6 @@ class StateCemetery(BaseFieldState):
             "18199U": self.update_fixedencount_enemy,
         }
 
-        self.onEnter()
-
     def update_to_city(self):
         '''
         天井の抜け穴のイベント
@@ -84,7 +81,7 @@ class StateCemetery(BaseFieldState):
                 playerParty.x = 26
                 playerParty.y = 20
             # 町へ戻る
-            self.stateStack.pop()
+            self.popState()
 
     def draw_to_city(self):
         '''
