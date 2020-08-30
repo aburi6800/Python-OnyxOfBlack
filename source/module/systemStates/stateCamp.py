@@ -5,7 +5,6 @@ import pyxel
 
 from ..character import playerParty
 from ..facilityStates.baseFacilityState import BaseFacilityState
-from ..systemStates.stateTitle import StateTitle
 from ..pyxelUtil import PyxelUtil
 from ..savedata import SaveData
 

@@ -7,6 +7,7 @@ from ..baseState import BaseState
 from ..battleStates.stateBattle import StateBattle
 from ..character import EnemyPartyGenerator, enemyParty, playerParty
 from ..pyxelUtil import PyxelUtil
+from ..systemStates.stateCamp import StateCamp
 
 
 class BaseFieldState(BaseState):
@@ -116,27 +117,26 @@ class BaseFieldState(BaseState):
             return
             # どの方向にも移動できない（あり得ないが）場合はその場に留まるため、特に処理不要
 
+        # エンカウントしているか？
+        if self.isEncount:
+            if self.tick > 30:
+                self.isEncount = False
+                self.tick = 0
+                self.pushState(StateBattle)
+                return
+            else:
+                return
+
         # イベントハンドラ
         if self._eventhandler("U") == False:
-
-            # エンカウントしているか？
-            if self.isEncount:
-                if self.tick > 30:
-                    self.isEncount = False
-                    self.tick = 0
-                    self.pushState(StateBattle)
-                    return
-                else:
-                    return
-
-            # エンカウントするか？
+            # イベントが何もない場合、エンカウントするか？
             if self.tick == 1 and random.randint(0, 20) == 0:
                 self.encount_enemy()
                 return
 
         # キャンプ
         if pyxel.btnp(pyxel.KEY_SPACE):
-            self.stateStack.push(self.stateStack.STATE_CAMP)
+            self.pushState(StateCamp)
 
         # キー入力（右）
         if pyxel.btnp(pyxel.KEY_RIGHT):

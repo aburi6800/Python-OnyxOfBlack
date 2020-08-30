@@ -29,12 +29,11 @@ class StateWellB4(BaseFieldState):
         monsterParams.monsterList[monsterParams.COBOLD_LV1],
     )
 
-    def __init__(self, stateStack):
+    def __init__(self):
         '''
         クラス初期化
         '''
-        super().__init__(stateStack)
-        self.stateName = "WellB4"
+        super().__init__()
 
         # イベント
         # マップ上の座標に対応するイベントの関数の辞書
@@ -43,8 +42,6 @@ class StateWellB4(BaseFieldState):
             "10109U": self.update_to_upanddown,
             "10109D": self.draw_to_upanddown,
         }
-
-        self.onEnter()
 
     def update_to_upanddown(self):
         '''

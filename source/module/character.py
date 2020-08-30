@@ -53,6 +53,7 @@ class Character(object):
         self.dexterity += addDexterity
         self.exp = 0
 
+
 class Human(Character):
     '''
     人間のクラス
@@ -74,6 +75,7 @@ class Human(Character):
         self.potion = -1
         self.x = 0
         self.y = 0
+
 
 class Monster(Character):
     '''
@@ -160,7 +162,8 @@ class PlayerParty(Party):
         # 状況のフラグ
         self.isEscape = False
 
-        print("PlayerParty:Initialized.")
+        if __debug__:
+            print("PlayerParty:Initialized.")
 
     def resotreSaveData(self, playerParty):
         '''
@@ -184,7 +187,8 @@ class PlayerParty(Party):
         # 状況のフラグ
         self.isEscape = playerParty.isEscape
 
-        print("PlayerParty:Restored.")
+        if __debug__:
+            print("PlayerParty:Restored.")
 
     def initialize(self):
         '''
@@ -222,8 +226,9 @@ class PlayerParty(Party):
         self.x_save = self.x
         self.y_save = self.y
         self.direction_save = self.direction
-        print("PlayerParty : Condition saved. x={:02d}".format(
-            self.x_save) + ",y={:02d}".format(self.y_save) + ",direction={:01d}".format(self.direction_save))
+        if __debug__:
+            print("PlayerParty : Condition saved. x={:02d}".format(
+                self.x_save) + ",y={:02d}".format(self.y_save) + ",direction={:01d}".format(self.direction_save))
 
     def restoreCondition(self):
         '''
@@ -232,8 +237,9 @@ class PlayerParty(Party):
         self.x = self.x_save
         self.y = self.y_save
         self.direction = self.direction_save
-        print("PlayerParty : Condition restored. x={:02d}".format(
-            self.x) + ",y={:02d}".format(self.y) + ",direction={:01d}".format(self.direction))
+        if __debug__:
+            print("PlayerParty : Condition restored. x={:02d}".format(
+                self.x) + ",y={:02d}".format(self.y) + ",direction={:01d}".format(self.direction))
 
 
 playerParty = PlayerParty()
@@ -356,6 +362,7 @@ class EnemyParty(Party):
         else:
             True
 
+
 enemyParty = EnemyParty()
 
 
@@ -385,26 +392,32 @@ class EnemyPartyGenerator(object):
                 _monster.exp = enemyClass.level
             else:
                 _monster = Monster()
-                _monster.name = enemyClass.name + " " + chr(65 + idx) 
+                _monster.name = enemyClass.name + " " + chr(65 + idx)
                 _monster.blt_x = enemyClass.blt_x
                 _monster.blt_y = enemyClass.blt_y
                 _monster.blt_w = enemyClass.blt_w
                 _monster.blt_h = enemyClass.blt_h
-                _monster.life = enemyClass.life + random.randint(0, enemyClass.life // 10 + 1)
+                _monster.life = enemyClass.life + \
+                    random.randint(0, enemyClass.life // 10 + 1)
                 _monster.maxlife = _monster.life
-                _monster.strength = enemyClass.strength + random.randint(0, enemyClass.strength // 10 + 1)
-                _monster.defend = enemyClass.defend + random.randint(0, enemyClass.defend // 10 + 1)
-                _monster.dexterity = enemyClass.dexterity + random.randint(0, enemyClass.dexterity // 10 + 1)
+                _monster.strength = enemyClass.strength + \
+                    random.randint(0, enemyClass.strength // 10 + 1)
+                _monster.defend = enemyClass.defend + \
+                    random.randint(0, enemyClass.defend // 10 + 1)
+                _monster.dexterity = enemyClass.dexterity + \
+                    random.randint(0, enemyClass.dexterity // 10 + 1)
                 _monster.exp = enemyClass.exp
                 _monster.gold = enemyClass.gold
                 _monster.escape = enemyClass.escape
 
             # 表示位置
-            _monster.x = (idx * _x_step if idx < 12 else (idx - 12) * _x_step) + (188 - (_count * _x_step) / 2 if _count < 12 else 188 - (12 * _x_step) / 2)
+            _monster.x = (idx * _x_step if idx < 12 else (idx - 12) * _x_step) + (
+                188 - (_count * _x_step) / 2 if _count < 12 else 188 - (12 * _x_step) / 2)
             if isinstance(_monster, Monster) and _monster.blt_h == 32:
                 _monster.y = 96
             else:
-                _monster.y = random.randint(100, 112) if _count < 12 else (random.randint(102, 106) if idx < 12 else random.randint(116, 120))
+                _monster.y = random.randint(100, 112) if _count < 12 else (
+                    random.randint(102, 106) if idx < 12 else random.randint(116, 120))
 
             _memberList.append(_monster)
 

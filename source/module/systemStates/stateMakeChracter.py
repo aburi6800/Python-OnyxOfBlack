@@ -211,6 +211,8 @@ class StateMakeCharacter(BaseSystemState):
             pyxel.music(0)
 
         if self.tick > 120:
+            # 自分自身をpopする
+            self.popState()
             # ゲーム開始
             self.pushState(StateCity)
 

@@ -78,13 +78,12 @@ class StateTitle(BaseSystemState):
                     # セーブデータをロード
                     with open("savedata.dat", mode="rb") as f:
                         SaveData = pickle.load(f)
-                    # プレイヤーパーティーの復元
-                    playerParty.resotreSaveData(SaveData.playerParty)
-                    # stateStackのstatesを復元
-                    # ここはSaveDataに持っているstateStackのstatesを一つづつpopしていくようにする
-#                    self.stateStack.states = SaveData.stateStack.states
+                    # stateStackのstatesを復元する
+                    self.setStates(SaveData.states)
                     # 先頭は必ずキャンプなので、popする
                     self.popState()
+                    # プレイヤーパーティーの復元
+                    playerParty.resotreSaveData(SaveData.playerParty)
 
     def render(self):
         '''

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from .baseState import BaseState
 from .fieldStates.baseFieldState import BaseFieldState
 
 
@@ -15,7 +16,8 @@ class StateStack(object):
         クラス初期化
         '''
         self.clear()
-        print("StateStack:Initialized.")
+        if __debug__:
+            print("StateStack:Initialized.")
 
     def update(self):
         '''
@@ -40,12 +42,14 @@ class StateStack(object):
         if state != None:
             st = self.buildState(state)
             self.states.insert(0, st)
-            print("StateStack : push " + str(st))
+            if __debug__:
+                print("StateStack : push " + str(st))
             # State開始時の処理を呼び出す
             self.states[0].onEnter()
         else:
             self.states.insert(0, None)
-            print("StateStack : push(None)")
+            if __debug__:
+                print("StateStack : push(None)")
 
     def pop(self):
         '''
@@ -54,8 +58,11 @@ class StateStack(object):
         削除前にStackのonExitメソッドが実行される
         '''
         # State終了時の処理を呼び出す
-        print("StateStack : pop " + str(self.states[0]))
-        self.states[0].onExit()
+        if __debug__:
+            print("StateStack : pop " + str(self.states[0]))
+        
+        if self.states[0] != None:
+            self.states[0].onExit()
         self.states.pop(0)
 
     def isField(self) -> bool:
@@ -72,7 +79,17 @@ class StateStack(object):
         スタックを初期化してstateを登録する
         '''
         self.states = []
+        if __debug__:
+            print("StateStack : cleared")
         self.push(state)
+
+    def setStates(self, states):
+        '''
+        スタックのstatesを設定する
+
+        データロード時のみ使用すること。
+        '''
+        self.states = states
 
     def getStates(self):
         '''
@@ -91,6 +108,7 @@ class StateStack(object):
         _class.popState = self.pop
         _class.clearState = self.clear
         _class.isField = self.isField
+        _class.setStates = self.setStates
         _class.getStates = self.getStates
         return _class
 
