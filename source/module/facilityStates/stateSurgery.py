@@ -177,7 +177,7 @@ class StateSurgery(BaseFacilityState):
                                  " ", "SI", "TE", " ", "A", "KE", "D", "MA", "SI", "LYO", "U", "."], pyxel.COLOR_WHITE)
         PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
-    def render_iseurgery(self):
+    def render_issurgery(self):
         '''
         治療確認描画処理
         '''

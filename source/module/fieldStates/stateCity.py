@@ -6,6 +6,7 @@ import pyxel
 from ..character import (EnemyPartyGenerator, HumanGenerator, enemyParty,
                          playerParty)
 from ..facilityStates.stateArmorShop import StateArmorShop
+from ..facilityStates.stateExaminations import StateExaminations
 from ..facilityStates.stateHelmetShop import StateHelmetShop
 from ..facilityStates.stateShieldShop import StateShieldShop
 from ..facilityStates.stateSurgery import StateSurgery
@@ -70,9 +71,10 @@ class StateCity(BaseFieldState):
             "23100D": self.draw_physicker_exit,
             "23103D": self.draw_drugs,
             "23101D": self.draw_surgery,
-            "24101D": self.update_surgery,
+            "24101U": self.update_surgery,
             "23111D": self.draw_examinations,
             "17141D": self.draw_thewall,
+            "24111U": self.update_examinations,
             "18143D": self.draw_thewall,
             "14050D": self.draw_jail,
             "02023D": self.draw_secretmessage,
@@ -157,6 +159,12 @@ class StateCity(BaseFieldState):
         緊急治療に入るイベント
         '''
         self.pushState(StateSurgery)
+
+    def update_examinations(self):
+        '''
+        身体検査に入るイベント
+        '''
+        self.pushState(StateExaminations)
 
     def update_secretmessage(self):
         '''
