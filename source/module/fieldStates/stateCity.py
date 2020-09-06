@@ -6,6 +6,7 @@ import pyxel
 from ..character import (EnemyPartyGenerator, HumanGenerator, enemyParty,
                          playerParty)
 from ..facilityStates.stateArmorShop import StateArmorShop
+from ..facilityStates.stateDrugs import StateDrugs
 from ..facilityStates.stateExaminations import StateExaminations
 from ..facilityStates.stateHelmetShop import StateHelmetShop
 from ..facilityStates.stateShieldShop import StateShieldShop
@@ -70,6 +71,7 @@ class StateCity(BaseFieldState):
             "23092D": self.draw_physicker,
             "23100D": self.draw_physicker_exit,
             "23103D": self.draw_drugs,
+            "22103U": self.update_drugs,
             "23101D": self.draw_surgery,
             "24101U": self.update_surgery,
             "23111D": self.draw_examinations,
@@ -153,6 +155,12 @@ class StateCity(BaseFieldState):
         '''
         # stateStack.push(stateStack.STATE_BARBAR)
         pass
+
+    def update_drugs(self):
+        '''
+        薬屋に入るイベント
+        '''
+        self.pushState(StateDrugs)
 
     def update_surgery(self):
         '''

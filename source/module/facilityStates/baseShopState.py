@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from os import name
 import pyxel
 
 from ..character import Human, playerParty
@@ -20,6 +21,7 @@ class BaseShopState(BaseFacilityState):
     STATE_DONE = 3
     STATE_LEAVE = 4
     STATE_EXIT = 5
+    STATE_ERROR = 9
 
     # このクラスの状態
     state = STATE_ENTER
@@ -62,6 +64,9 @@ class BaseShopState(BaseFacilityState):
         # 店員
         self.saleParson = Human()
 
+        # エラーメッセージ
+        self.errorMessage = []
+
     def update(self):
         '''
         各フレームの処理
@@ -84,6 +89,9 @@ class BaseShopState(BaseFacilityState):
         elif self.state == self.STATE_EXIT:
             self.update_exit()
 
+        elif self.state == self.STATE_ERROR:
+            self.update_error()
+
     def update_enter(self):
         '''
         店に入った時の処理
@@ -101,9 +109,14 @@ class BaseShopState(BaseFacilityState):
         self.update_common()
 
         for _key, _value in self.keyMap.items():
-            if pyxel.btnp(_key) and len(playerParty.memberList) > _value and playerParty.memberList[_value].gold >= self.item.price:
-                self.buyMember = _value
-                self.state = self.STATE_EQUIP
+            if pyxel.btnp(_key) and len(playerParty.memberList) > _value:
+                if playerParty.memberList[_value].gold >= self.item.price:
+                    self.buyMember = _value
+                    self.state = self.STATE_EQUIP
+                else:
+                    self.errorMessage = [
+                        "O", "KA", "NE", " ", "KA", "D", " ", "TA", "RI", "MA", "SE", "NN", "YO", "."]
+                    self.state = self.STATE_ERROR
 
     def update_equip(self):
         '''
@@ -138,6 +151,13 @@ class BaseShopState(BaseFacilityState):
         '''
         self.popState()
 
+    def update_error(self):
+        '''
+        エラー（購入できないとき）の処理
+        '''
+        if pyxel.btnp(pyxel.KEY_SPACE):
+            self.state = self.STATE_BUY
+
     def update_common(self):
         '''
         Lキー、ENTERキーを押したときの共通処理
@@ -165,7 +185,7 @@ class BaseShopState(BaseFacilityState):
 
         継承先のクラスでオーバーライドし、選択中のitemを持たせること
         '''
-        None
+        pass
 
     def render(self):
         '''
@@ -185,13 +205,11 @@ class BaseShopState(BaseFacilityState):
         elif self.state == self.STATE_LEAVE:
             self.render_leave()
 
+        elif self.state == self.STATE_ERROR:
+            self.render_error()
+
         # 店員
         self.drawCharacter(self.saleParson, 178, 104)
-
-        # メンバーの所持金を表示
-#        for idx, member in enumerate(playerParty.memberList):
-#            PyxelUtil.text(
-#                136, 16 + idx * 16, ["*{:1d} : {:5d} G.P.".format(idx + 1, member.gold)], pyxel.COLOR_WHITE)
 
     def render_initial(self):
         '''
@@ -205,13 +223,17 @@ class BaseShopState(BaseFacilityState):
         '''
         買う人を選ぶ表示
         '''
-        PyxelUtil.text(16, 140, ["*" + self.item.name + " (" + str(self.item.price) +
-                                 " G.P.) ", "TE", "D", "SU", "."], pyxel.COLOR_WHITE)
+        if type(self.item.name) is str:
+            _message = ["*" + self.item.name + " (" + str(self.item.price) +
+                        " G.P.) ", "TE", "D", "SU", "."]
+        else:
+            _message = self.item.name + ["* (" + str(self.item.price) + " G.P.) ", "TE", "D", "SU", "."]
+        PyxelUtil.text(16, 140, _message, pyxel.COLOR_WHITE)
         PyxelUtil.text(16, 148, ["TO", "D", "NA", "TA", "KA", "D", " ", "O", "KA",
                                  "I", "NI", "NA", "RI", "MA", "SU", "KA", "*?"], pyxel.COLOR_WHITE)
-        PyxelUtil.text(56, 156, ["*[SPACE] ", "TU", "KI",
+        PyxelUtil.text(56, 164, ["*[SPACE] ", "TU", "KI",
                                  "D", "NO", "a", "i", "te", "mu"], pyxel.COLOR_YELLOW)
-        PyxelUtil.text(56, 164, ["*[L]     ", "MI", "SE",
+        PyxelUtil.text(56, 172, ["*[L]     ", "MI", "SE",
                                  "WO", "TE", "D", "RU"], pyxel.COLOR_YELLOW)
 
     def render_equip(self):
@@ -220,9 +242,9 @@ class BaseShopState(BaseFacilityState):
         '''
         PyxelUtil.text(16, 140, ["TO", "D", "NA", "TA", "KA", "D", " ", "O", "TU", "KA",
                                  "I", "NI", "NA", "RI", "MA", "SU", "KA", "*?"], pyxel.COLOR_WHITE)
-        PyxelUtil.text(56, 148, ["*[SPACE] ", "TU", "KI",
+        PyxelUtil.text(56, 164, ["*[SPACE] ", "TU", "KI",
                                  "D", "NO", "a", "i", "te", "mu"], pyxel.COLOR_YELLOW)
-        PyxelUtil.text(56, 156, ["*[L]     ", "MI", "SE",
+        PyxelUtil.text(56, 172, ["*[L]     ", "MI", "SE",
                                  "WO", "TE", "D", "RU"], pyxel.COLOR_YELLOW)
 
     def render_leave(self):
@@ -231,6 +253,13 @@ class BaseShopState(BaseFacilityState):
         '''
         PyxelUtil.text(16, 148, ["TO", "D", "U", "MO", " ", "A", "RI", "KA", "D", "TO", "U", " ",
                                  "KO", "D", "SA", "D", "I", "MA", "SI", "TA", "."], pyxel.COLOR_WHITE)
+        PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
+
+    def render_error(self):
+        '''
+        エラー（購入できないとき）の表示
+        '''
+        PyxelUtil.text(16, 148, self.errorMessage, pyxel.COLOR_WHITE)
         PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
     def onEnter(self):

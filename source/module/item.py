@@ -35,15 +35,15 @@ class WeaponParams(object):
         '''
         # 武器の初期データを登録
         self.weaponList = (
-            WeaponParam("KNIFE"      ,  0, 48, 8, 16,  2, False,  10),
-            WeaponParam("CLUB"       ,  8, 48, 8, 16,  4, False,  20),
-            WeaponParam("MACE"       , 16, 48, 8, 16,  8, False,  40),
+            WeaponParam("KNIFE",  0, 48, 8, 16,  2, False,  10),
+            WeaponParam("CLUB",  8, 48, 8, 16,  4, False,  20),
+            WeaponParam("MACE", 16, 48, 8, 16,  8, False,  40),
             WeaponParam("SHORT SWORD", 24, 48, 8, 16, 16, False,  80),
-            WeaponParam("AXE"        , 32, 48, 8, 16, 24, False,  160),
-            WeaponParam("SPEAR"      , 48, 48, 8, 16, 32,  True,  320),
+            WeaponParam("AXE", 32, 48, 8, 16, 24, False,  160),
+            WeaponParam("SPEAR", 48, 48, 8, 16, 32,  True,  320),
             WeaponParam("BROAD SWORD", 64, 48, 8, 16, 40, False,  640),
-            WeaponParam("CLAYMORE"   , 56, 48, 8, 16, 48,  True, 1280),
-            WeaponParam("BATTLE AXE" , 80, 48, 8, 16, 60,  True, 2560),
+            WeaponParam("CLAYMORE", 56, 48, 8, 16, 48,  True, 1280),
+            WeaponParam("BATTLE AXE", 80, 48, 8, 16, 60,  True, 2560),
         )
 
 
@@ -83,11 +83,11 @@ class ArmorParams(object):
         '''
         # 鎧の初期データを登録
         self.armorList = (
-            ArmorParam("LEATHER"     , 24, 32, 8, 16,   4,    40),
-            ArmorParam("HAUBERK"     , 32, 32, 8, 16,   8,   160),
-            ArmorParam("HALF PLATE"  , 40, 32, 8, 16,  16,   640),
-            ArmorParam("FULL PLATE"  , 48, 32, 8, 16,  32,  2560),
-            ArmorParam("TABARD"      , 56, 32, 8, 16,  64, 10240),
+            ArmorParam("LEATHER", 24, 32, 8, 16,   4,    40),
+            ArmorParam("HAUBERK", 32, 32, 8, 16,   8,   160),
+            ArmorParam("HALF PLATE", 40, 32, 8, 16,  16,   640),
+            ArmorParam("FULL PLATE", 48, 32, 8, 16,  32,  2560),
+            ArmorParam("TABARD", 56, 32, 8, 16,  64, 10240),
             ArmorParam("MAGIC MANTLE", 72, 32, 8, 16, 128,    -1),
         )
 
@@ -170,10 +170,42 @@ class HelmetParams(object):
         '''
         #   兜の初期データを登録
         self.helmetList = (
-            ArmorParam("CHAIN COIF" , 128, 32, 8, 8,  4,   40),
+            ArmorParam("CHAIN COIF", 128, 32, 8, 8,  4,   40),
             ArmorParam("WINGED HELM", 136, 32, 8, 8, 16,  320),
             ArmorParam("HORNED HELM", 144, 32, 8, 8, 32, 2560),
         )
 
 
 helmetParams = HelmetParams()
+
+
+class DrugParam():
+    '''
+    薬と容器の属性を持つクラス
+    '''
+
+    def __init__(self, name: tuple, price: int = 0):
+        '''
+        クラス初期化
+        '''
+        self.name = name
+        self.price = price
+
+
+class DrugParams(object):
+    '''
+    薬と容器のリストを持つクラス
+    '''
+    drugList = None
+
+    def __init__(self):
+        '''
+        クラス初期化
+        '''
+        self.drugList = (
+            DrugParam(["YO", "U", "KI"], 35),
+            DrugParam(["KU", "SU", "RI"], 55),
+        )
+
+
+drugParams = DrugParams()
