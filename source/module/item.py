@@ -209,3 +209,34 @@ class DrugParams(object):
 
 
 drugParams = DrugParams()
+
+
+class BarbarParam():
+    '''
+    床屋の属性を持つクラス
+    '''
+
+    def __init__(self, name: tuple, price: int = 0):
+        '''
+        クラス初期化
+        '''
+        self.name = name
+        self.price = price
+
+
+class BarbarParams(object):
+    '''
+    床屋のリストを持つクラス
+    '''
+    barbarList = None
+
+    def __init__(self):
+        '''
+        クラス初期化
+        '''
+        self.barbarList = (
+            BarbarParam(["SA", "NN", "HA", "HD", "TU"], 1000),
+        )
+
+
+barbarParams = BarbarParams()

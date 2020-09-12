@@ -17,7 +17,7 @@ class StateStack(object):
         '''
         self.clear()
         if __debug__:
-            print("StateStack:Initialized.")
+            print("StateStack : Initialized.")
 
     def update(self):
         '''

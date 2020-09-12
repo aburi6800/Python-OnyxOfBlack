@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from this import s
 import pyxel
 
 from ..character import playerParty

@@ -6,6 +6,7 @@ import pyxel
 from ..character import (EnemyPartyGenerator, HumanGenerator, enemyParty,
                          playerParty)
 from ..facilityStates.stateArmorShop import StateArmorShop
+from ..facilityStates.stateBarbar import StateBarbar
 from ..facilityStates.stateDrugs import StateDrugs
 from ..facilityStates.stateExaminations import StateExaminations
 from ..facilityStates.stateHelmetShop import StateHelmetShop
@@ -153,8 +154,7 @@ class StateCity(BaseFieldState):
         '''
         床屋に入るイベント
         '''
-        # stateStack.push(stateStack.STATE_BARBAR)
-        pass
+        self.pushState(StateBarbar)
 
     def update_drugs(self):
         '''

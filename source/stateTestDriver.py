@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import pyxel
-#from module.gameMaster import gameMaster
 from module.stateStack import stateStack
 from module.systemStates.stateTitle import StateTitle
 

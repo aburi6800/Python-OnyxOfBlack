@@ -163,7 +163,7 @@ class PlayerParty(Party):
         self.isEscape = False
 
         if __debug__:
-            print("PlayerParty:Initialized.")
+            print("PlayerParty : Initialized.")
 
     def resotreSaveData(self, playerParty):
         '''
@@ -188,7 +188,7 @@ class PlayerParty(Party):
         self.isEscape = playerParty.isEscape
 
         if __debug__:
-            print("PlayerParty:Restored.")
+            print("PlayerParty : Restored.")
 
     def initialize(self):
         '''
