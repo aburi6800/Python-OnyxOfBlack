@@ -31,15 +31,15 @@ class Character(object):
         レベルアップ処理
         '''
         # 増分値
-        addPoint = 24
+        addPoint = 20
         # ライフの増分
-        addLife = random.randint(1, 8)
+        addLife = random.randint(4, addPoint - 3)
         addPoint = addPoint - addLife
         # 強さの増分
-        addStrength = random.randint(1, 8)
+        addStrength = random.randint(1, addPoint - 2)
         addPoint = addPoint - addStrength
         # 防御力の増分
-        addDefend = random.randint(1, 8)
+        addDefend = random.randint(1, addPoint - 1)
         addPoint = addPoint - addDefend
         # 素早さの増分
         addDexterity = addPoint
@@ -86,7 +86,7 @@ class Monster(Character):
 
     def __init__(self):
         '''
-        クラス初期化
+        # クラス初期化
         '''
         super().__init__()
         self.item = None
@@ -283,7 +283,6 @@ class HumanGenerator(object):
         '''
         human = Human()
 
-        human.level = _level
         for _ in range(_level):
             human.levelup()
 

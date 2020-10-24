@@ -239,7 +239,7 @@ class BaseFieldState(BaseState):
 
         # 迷路の枠線
         pyxel.rectb(self.OFFSET_X - 1, self.OFFSET_Y -
-                    1, 80, 80, pyxel.COLOR_DARKBLUE)
+                    1, 81, 81, pyxel.COLOR_DARKBLUE)
 
         # 地面部のグリッド
         pyxel.line(0 + self.OFFSET_X, 40 + self.OFFSET_Y, 78 +
@@ -257,7 +257,7 @@ class BaseFieldState(BaseState):
                    self.OFFSET_X, 78 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
 
         if self.tick > 0:
-            if self.isOuter():
+            if self.isOuter() == False:
                 # 満天の星空
                 pyxel.blt(self.OFFSET_X, self.OFFSET_Y, 0, 0, 40, 80, 32, 0)
             else:
@@ -415,130 +415,180 @@ class BaseFieldState(BaseState):
         if _idx == 1:
             if _data & 0b000000000111 != 0:
                 _color = _data & 0b000000000111
-                pyxel.rect(35 + self.OFFSET_X, 38 + self.OFFSET_Y, 3,
-                           3, self.WALLCOLOR_FRONT[_color])
+                pyxel.rect(35 + self.OFFSET_X, 39 + self.OFFSET_Y,
+                           3, 1,
+                           self.WALLCOLOR_FRONT[_color])
         if _idx == 3:
             if _data & 0b000000000111 != 0:
                 _color = _data & 0b000000000111
-                pyxel.rect(41 + self.OFFSET_X, 38 + self.OFFSET_Y, 3,
-                           3, self.WALLCOLOR_FRONT[_color])
+                pyxel.rect(41 + self.OFFSET_X, 39 + self.OFFSET_Y,
+                           3, 1,
+                           self.WALLCOLOR_FRONT[_color])
         if _idx == 4:
             if _data & 0b000000000111 != 0:
                 _color = _data & 0b000000000111
-                pyxel.rect(38 + self.OFFSET_X, 38 + self.OFFSET_Y, 3,
-                           3, self.WALLCOLOR_FRONT[_color])
+                pyxel.rect(38 + self.OFFSET_X, 39 + self.OFFSET_Y,
+                           3, 1,
+                           self.WALLCOLOR_FRONT[_color])
             if _data & 0b000000111000 != 0:
                 _color = (_data >> 3) & 0b000000000111
-                pyxel.tri(43 + self.OFFSET_X, 36 + self.OFFSET_Y, 41 + self.OFFSET_X, 38 + self.OFFSET_Y,
-                          43 + self.OFFSET_X, 38 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
-                pyxel.tri(41 + self.OFFSET_X, 40 + self.OFFSET_Y, 43 + self.OFFSET_X, 40 + self.OFFSET_Y,
-                          43 + self.OFFSET_X, 42 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
+                pyxel.tri(43 + self.OFFSET_X, 36 + self.OFFSET_Y,
+                          41 + self.OFFSET_X, 38 + self.OFFSET_Y,
+                          43 + self.OFFSET_X, 38 + self.OFFSET_Y,
+                          self.WALLCOLOR_SIDE[_color])
+                pyxel.tri(41 + self.OFFSET_X, 40 + self.OFFSET_Y,
+                          43 + self.OFFSET_X, 40 + self.OFFSET_Y,
+                          43 + self.OFFSET_X, 42 + self.OFFSET_Y,
+                          self.WALLCOLOR_SIDE[_color])
                 pyxel.rect(41 + self.OFFSET_X, 39 + self.OFFSET_Y,
-                           3, 1, self.WALLCOLOR_SIDE[_color])
+                           3, 1,
+                           self.WALLCOLOR_SIDE[_color])
             if _data & 0b111000000000 != 0:
                 _color = (_data >> 9) & 0b000000000111
-                pyxel.tri(35 + self.OFFSET_X, 36 + self.OFFSET_Y, 37 + self.OFFSET_X, 38 + self.OFFSET_Y,
-                          35 + self.OFFSET_X, 38 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
-                pyxel.tri(35 + self.OFFSET_X, 40 + self.OFFSET_Y, 37 + self.OFFSET_X, 40 + self.OFFSET_Y,
-                          35 + self.OFFSET_X, 42 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
+                pyxel.tri(35 + self.OFFSET_X, 36 + self.OFFSET_Y,
+                          37 + self.OFFSET_X, 38 + self.OFFSET_Y,
+                          35 + self.OFFSET_X, 38 + self.OFFSET_Y,
+                          self.WALLCOLOR_SIDE[_color])
+                pyxel.tri(35 + self.OFFSET_X, 40 + self.OFFSET_Y,
+                          37 + self.OFFSET_X, 40 + self.OFFSET_Y,
+                          35 + self.OFFSET_X, 42 + self.OFFSET_Y,
+                          self.WALLCOLOR_SIDE[_color])
                 pyxel.rect(35 + self.OFFSET_X, 39 + self.OFFSET_Y,
-                           3, 1, self.WALLCOLOR_SIDE[_color])
+                           3, 1,
+                           self.WALLCOLOR_SIDE[_color])
 
         if _idx == 5:
             if _data & 0b000000000111 != 0:
                 _color = _data & 0b000000000111
-                pyxel.rect(26 + self.OFFSET_X, 35 + self.OFFSET_Y, 9,
-                           9, self.WALLCOLOR_FRONT[_color])
+                pyxel.rect(26 + self.OFFSET_X, 36 + self.OFFSET_Y,
+                           9, 7,
+                           self.WALLCOLOR_FRONT[_color])
         if _idx == 6:
             if _data & 0b000000000111 != 0:
                 _color = _data & 0b000000000111
-                pyxel.rect(44 + self.OFFSET_X, 35 + self.OFFSET_Y, 9,
-                           9, self.WALLCOLOR_FRONT[_color])
+                pyxel.rect(44 + self.OFFSET_X, 36 + self.OFFSET_Y,
+                           9, 7,
+                           self.WALLCOLOR_FRONT[_color])
         if _idx == 7:
             if _data & 0b000000000111 != 0:
                 _color = _data & 0b000000000111
-                pyxel.rect(35 + self.OFFSET_X, 35 + self.OFFSET_Y, 9,
-                           9, self.WALLCOLOR_FRONT[_color])
+                pyxel.rect(35 + self.OFFSET_X, 36 + self.OFFSET_Y,
+                           9, 7,
+                           self.WALLCOLOR_FRONT[_color])
             if _data & 0b000000111000 != 0:
                 _color = (_data >> 3) & 0b000000000111
-                pyxel.tri(50 + self.OFFSET_X, 29 + self.OFFSET_Y, 44 + self.OFFSET_X, 35 + self.OFFSET_Y,
-                          50 + self.OFFSET_X, 35 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
-                pyxel.tri(44 + self.OFFSET_X, 43 + self.OFFSET_Y, 50 + self.OFFSET_X, 43 + self.OFFSET_Y,
-                          50 + self.OFFSET_X, 49 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
+                pyxel.tri(50 + self.OFFSET_X, 29 + self.OFFSET_Y,
+                          44 + self.OFFSET_X, 35 + self.OFFSET_Y,
+                          50 + self.OFFSET_X, 35 + self.OFFSET_Y,
+                          self.WALLCOLOR_SIDE[_color])
+                pyxel.tri(44 + self.OFFSET_X, 43 + self.OFFSET_Y,
+                          50 + self.OFFSET_X, 43 + self.OFFSET_Y,
+                          50 + self.OFFSET_X, 49 + self.OFFSET_Y,
+                          self.WALLCOLOR_SIDE[_color])
                 pyxel.rect(44 + self.OFFSET_X, 36 + self.OFFSET_Y,
-                           7, 7, self.WALLCOLOR_SIDE[_color])
+                           7, 7,
+                           self.WALLCOLOR_SIDE[_color])
             if _data & 0b111000000000 != 0:
                 _color = (_data >> 9) & 0b000000000111
-                pyxel.tri(28 + self.OFFSET_X, 29 + self.OFFSET_Y, 34 + self.OFFSET_X, 35 + self.OFFSET_Y,
-                          28 + self.OFFSET_X, 35 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
-                pyxel.tri(28 + self.OFFSET_X, 43 + self.OFFSET_Y, 34 + self.OFFSET_X, 43 + self.OFFSET_Y,
-                          28 + self.OFFSET_X, 49 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
+                pyxel.tri(28 + self.OFFSET_X, 29 + self.OFFSET_Y,
+                          34 + self.OFFSET_X, 35 + self.OFFSET_Y,
+                          28 + self.OFFSET_X, 35 + self.OFFSET_Y,
+                          self.WALLCOLOR_SIDE[_color])
+                pyxel.tri(28 + self.OFFSET_X, 43 + self.OFFSET_Y,
+                          34 + self.OFFSET_X, 43 + self.OFFSET_Y,
+                          28 + self.OFFSET_X, 49 + self.OFFSET_Y,
+                          self.WALLCOLOR_SIDE[_color])
                 pyxel.rect(28 + self.OFFSET_X, 36 + self.OFFSET_Y,
-                           7, 7, self.WALLCOLOR_SIDE[_color])
+                           7, 7,
+                           self.WALLCOLOR_SIDE[_color])
 
         if _idx == 8:
             if _data & 0b000000000111 != 0:
                 _color = _data & 0b000000000111
-                pyxel.rect(5 + self.OFFSET_X, 28 + self.OFFSET_Y, 23,
-                           23, self.WALLCOLOR_FRONT[_color])
+                pyxel.rect(5 + self.OFFSET_X, 29 + self.OFFSET_Y,
+                           23, 21,
+                           self.WALLCOLOR_FRONT[_color])
         if _idx == 9:
             if _data & 0b000000000111 != 0:
                 _color = _data & 0b000000000111
-                pyxel.rect(51 + self.OFFSET_X, 28 + self.OFFSET_Y, 23,
-                           23, self.WALLCOLOR_FRONT[_color])
+                pyxel.rect(51 + self.OFFSET_X, 29 + self.OFFSET_Y,
+                           23, 21,
+                           self.WALLCOLOR_FRONT[_color])
         if _idx == 10:
             if _data & 0b000000000111 != 0:
                 _color = _data & 0b000000000111
-                pyxel.rect(28 + self.OFFSET_X, 28 + self.OFFSET_Y, 23,
-                           23, self.WALLCOLOR_FRONT[_color])
+                pyxel.rect(28 + self.OFFSET_X, 29 + self.OFFSET_Y,
+                           23, 21,
+                           self.WALLCOLOR_FRONT[_color])
             if _data & 0b000000111000 != 0:
                 _color = (_data >> 3) & 0b000000000111
-                pyxel.tri(69 + self.OFFSET_X, 10 + self.OFFSET_Y, 51 + self.OFFSET_X, 28 + self.OFFSET_Y,
-                          69 + self.OFFSET_X, 28 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
-                pyxel.tri(51 + self.OFFSET_X, 50 + self.OFFSET_Y, 69 + self.OFFSET_X, 50 + self.OFFSET_Y,
-                          69 + self.OFFSET_X, 68 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
-                pyxel.rect(51 + self.OFFSET_X, 29 + self.OFFSET_Y, 19,
-                           21, self.WALLCOLOR_SIDE[_color])
+                pyxel.tri(69 + self.OFFSET_X, 10 + self.OFFSET_Y,
+                          51 + self.OFFSET_X, 28 + self.OFFSET_Y,
+                          69 + self.OFFSET_X, 28 + self.OFFSET_Y,
+                          self.WALLCOLOR_SIDE[_color])
+                pyxel.tri(51 + self.OFFSET_X, 50 + self.OFFSET_Y,
+                          69 + self.OFFSET_X, 50 + self.OFFSET_Y,
+                          69 + self.OFFSET_X, 68 + self.OFFSET_Y,
+                          self.WALLCOLOR_SIDE[_color])
+                pyxel.rect(51 + self.OFFSET_X, 29 + self.OFFSET_Y,
+                           19, 21,
+                           self.WALLCOLOR_SIDE[_color])
             if _data & 0b111000000000 != 0:
                 _color = (_data >> 9) & 0b000000000111
-                pyxel.tri(9 + self.OFFSET_X, 10 + self.OFFSET_Y, 27 + self.OFFSET_X, 28 + self.OFFSET_Y,
-                          9 + self.OFFSET_X, 28 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
-                pyxel.tri(9 + self.OFFSET_X, 50 + self.OFFSET_Y, 27 + self.OFFSET_X, 50 + self.OFFSET_Y,
-                          9 + self.OFFSET_X, 68 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
-                pyxel.rect(9 + self.OFFSET_X, 29 + self.OFFSET_Y, 19,
-                           21, self.WALLCOLOR_SIDE[_color])
+                pyxel.tri(9 + self.OFFSET_X, 10 + self.OFFSET_Y,
+                          27 + self.OFFSET_X, 28 + self.OFFSET_Y,
+                          9 + self.OFFSET_X, 28 + self.OFFSET_Y,
+                          self.WALLCOLOR_SIDE[_color])
+                pyxel.tri(9 + self.OFFSET_X, 50 + self.OFFSET_Y,
+                          27 + self.OFFSET_X, 50 + self.OFFSET_Y,
+                          9 + self.OFFSET_X, 68 + self.OFFSET_Y,
+                          self.WALLCOLOR_SIDE[_color])
+                pyxel.rect(9 + self.OFFSET_X, 29 + self.OFFSET_Y,
+                           19, 21,
+                           self.WALLCOLOR_SIDE[_color])
 
         if _idx == 11:
             if _data & 0b000000000111 != 0:
                 _color = _data & 0b000000000111
-                pyxel.rect(0 + self.OFFSET_X, 9 + self.OFFSET_Y, 10,
-                           61, self.WALLCOLOR_FRONT[_color])
+                pyxel.rect(0 + self.OFFSET_X, 10 + self.OFFSET_Y,
+                           10, 59, self.WALLCOLOR_FRONT[_color])
         if _idx == 12:
             if _data & 0b000000000111 != 0:
                 _color = _data & 0b000000000111
-                pyxel.rect(69 + self.OFFSET_X, 9 + self.OFFSET_Y, 10,
-                           61, self.WALLCOLOR_FRONT[_color])
+                pyxel.rect(69 + self.OFFSET_X, 10 + self.OFFSET_Y,
+                           10, 59, self.WALLCOLOR_FRONT[_color])
         if _idx == 13:
             if _data & 0b000000000111 != 0:
                 _color = _data & 0b000000000111
-                pyxel.rect(10 + self.OFFSET_X, 9 + self.OFFSET_Y, 59,
-                           61, self.WALLCOLOR_FRONT[_color])
+                pyxel.rect(10 + self.OFFSET_X, 10 + self.OFFSET_Y,
+                           59, 59,
+                           self.WALLCOLOR_FRONT[_color])
                 if _data & 0b00000011 == 0b00000010:
                     pyxel.circ(17 + self.OFFSET_X, 40 +
                                self.OFFSET_Y, 2, pyxel.COLOR_BLACK)
             if _data & 0b000000111000 != 0:
                 _color = (_data >> 3) & 0b000000000111
-                pyxel.tri(78 + self.OFFSET_X, 0 + self.OFFSET_Y, 69 + self.OFFSET_X, 9 + self.OFFSET_Y,
-                          78 + self.OFFSET_X, 9 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
-                pyxel.tri(69 + self.OFFSET_X, 69 + self.OFFSET_Y, 78 + self.OFFSET_X, 69 + self.OFFSET_Y,
-                          78 + self.OFFSET_X, 78 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
-                pyxel.rect(69 + self.OFFSET_X, 10 + self.OFFSET_Y, 10,
-                           59, self.WALLCOLOR_SIDE[_color])
+                pyxel.tri(78 + self.OFFSET_X, 1 + self.OFFSET_Y,
+                          69 + self.OFFSET_X, 10 + self.OFFSET_Y,
+                          78 + self.OFFSET_X, 10 + self.OFFSET_Y,
+                          self.WALLCOLOR_SIDE[_color])
+                pyxel.tri(69 + self.OFFSET_X, 68 + self.OFFSET_Y,
+                          78 + self.OFFSET_X, 68 + self.OFFSET_Y,
+                          78 + self.OFFSET_X, 77 + self.OFFSET_Y,
+                          self.WALLCOLOR_SIDE[_color])
+                pyxel.rect(69 + self.OFFSET_X, 10 + self.OFFSET_Y,
+                           10, 59,
+                           self.WALLCOLOR_SIDE[_color])
             if _data & 0b111000000000 != 0:
                 _color = (_data >> 9) & 0b000000000111
-                pyxel.tri(0 + self.OFFSET_X, 0 + self.OFFSET_Y, 9 + self.OFFSET_X, 9 + self.OFFSET_Y,
-                          0 + self.OFFSET_X, 9 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
-                pyxel.tri(0 + self.OFFSET_X, 69 + self.OFFSET_Y, 9 + self.OFFSET_X, 69 + self.OFFSET_Y,
-                          0 + self.OFFSET_X, 78 + self.OFFSET_Y, self.WALLCOLOR_SIDE[_color])
-                pyxel.rect(0 + self.OFFSET_X, 10 + self.OFFSET_Y, 10,
-                           59, self.WALLCOLOR_SIDE[_color])
+                pyxel.tri(0 + self.OFFSET_X, 1 + self.OFFSET_Y,
+                          9 + self.OFFSET_X, 10 + self.OFFSET_Y,
+                          0 + self.OFFSET_X, 10 + self.OFFSET_Y,
+                          self.WALLCOLOR_SIDE[_color])
+                pyxel.tri(0 + self.OFFSET_X, 68 + self.OFFSET_Y,
+                          9 + self.OFFSET_X, 68 + self.OFFSET_Y,
+                          0 + self.OFFSET_X, 77 + self.OFFSET_Y,
+                          self.WALLCOLOR_SIDE[_color])
+                pyxel.rect(0 + self.OFFSET_X, 10 + self.OFFSET_Y,
+                           10, 59,
+                           self.WALLCOLOR_SIDE[_color])
