@@ -120,12 +120,12 @@ class Input():
         '''
         各フレームの描画処理
         '''
-        # 入力文字列が変わっていたら消す
+        # 入力文字列が変わってるか
         if self.value != self.preValue:
+            # 入力文字列を消す    
             pyxel.rect(self.x, self.y, len(self.value) * 4, 5, pyxel.COLOR_BLACK)
-
-        # 入力文字列を表示する
-        pyxel.text(self.x, self.y, self.value, pyxel.COLOR_WHITE)
+            # 入力文字列を表示する
+            pyxel.text(self.x, self.y, self.value, pyxel.COLOR_WHITE)
 
         # 入力完了していなければ、カーソルを表示する
         if self.isEnter == False and pyxel.frame_count % 4 == 0:
