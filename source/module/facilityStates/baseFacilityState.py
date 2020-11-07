@@ -23,7 +23,7 @@ class BaseFacilityState(BaseState):
         '''
         各フレームの処理
         '''
-        pass
+        super().update()
 
     def render(self):
         '''
@@ -34,7 +34,9 @@ class BaseFacilityState(BaseState):
         # メンバーの所持金を表示
         for idx, member in enumerate(playerParty.memberList):
             PyxelUtil.text(
-                136, 16 + idx * 16, ["*{:1d} : {:5d} G.P.".format(idx + 1, member.gold)], pyxel.COLOR_WHITE)
+                67, 14 + idx * 16, ["*{:1d} : {:5d} G.P.".format(idx + 1, member.gold)], pyxel.COLOR_WHITE)
+
+        pyxel.blt(self.OFFSET_X + 15, self.OFFSET_Y + 15, 0, 0, 205, 50, 50)
 
     def onEnter(self):
         '''

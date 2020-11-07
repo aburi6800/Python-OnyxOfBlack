@@ -16,12 +16,18 @@ class BaseState(AbstractState):
     AbstractStateを継承
     renderメソッドでは画面の枠線とプレイヤーキャラクターの描画を行う
     '''
+    tick = 0
+
+    # 迷路描画の座標オフセット
+    OFFSET_X = 150
+    OFFSET_Y = 14
 
     def __init__(self):
         '''
         クラス初期化
         '''
         self.stateName = name
+        self.tick = 0
 
     def update(self):
         '''

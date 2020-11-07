@@ -387,6 +387,10 @@ class StateCity(BaseFieldState):
         '''
         井戸の穴の表示
         '''
+        if self.tick == 0:
+            pyxel.image(0).load(0, 205, "well.png")
+        pyxel.blt(self.OFFSET_X + 15, self.OFFSET_Y + 15, 0, 0, 205, 50, 50)
+
         PyxelUtil.text(16, 140, ["KA", "RE", "TA", " ", "I", "TO",
                                  "D", "KA", "D", "A", "RU", "."], pyxel.COLOR_WHITE)
         PyxelUtil.text(16, 148, ["SI", "TA", "NI", " ", "O", "RI",

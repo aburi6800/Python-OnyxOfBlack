@@ -26,8 +26,10 @@ class StateHelmetShop(BaseShopState):
 
         # 店員の初期データ
         self.saleParson.name = "Niels"
-        self.saleParson.head = 33
-        self.saleParson.body = 2
+        self.saleParson.head = 94
+        self.saleParson.body = 8
+
+        pyxel.image(0).load(0, 205, "helmetshop.png")
 
     def update_done(self):
         '''

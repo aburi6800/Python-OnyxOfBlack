@@ -71,6 +71,8 @@ class BaseShopState(BaseFacilityState):
         '''
         各フレームの処理
         '''
+        super().update()
+
         if self.state == self.STATE_ENTER:
             self.update_enter()
 

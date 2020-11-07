@@ -66,10 +66,6 @@ class BaseFieldState(BaseState):
         pyxel.COLOR_DARKBLUE,
     ]
 
-    # 迷路描画の座標オフセット
-    OFFSET_X = 150
-    OFFSET_Y = 14
-
     def __init__(self):
         '''
         クラス初期化
@@ -257,7 +253,7 @@ class BaseFieldState(BaseState):
                    self.OFFSET_X, 78 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
 
         if self.tick > 0:
-            if self.isOuter() == False:
+            if self.isOuter():
                 # 満天の星空
                 pyxel.blt(self.OFFSET_X, self.OFFSET_Y, 0, 0, 40, 80, 32, 0)
             else:
