@@ -3,7 +3,7 @@ import pyxel
 
 from ..character import HumanGenerator, playerParty
 from ..map.cemeteryB1 import cemeteryB1
-from ..monster import monsterParams
+from ..params.monster import monsterParams
 from ..pyxelUtil import PyxelUtil
 from .baseFieldState import BaseFieldState
 
@@ -21,13 +21,12 @@ class StateCemetery(BaseFieldState):
 
     # 出現するモンスターリスト
     enemy_set = (
+        HumanGenerator.generate(1),
         HumanGenerator.generate(2),
-        monsterParams.monsterList[monsterParams.BAT_LV1],
-        monsterParams.monsterList[monsterParams.SKELTON_LV1],
-        monsterParams.monsterList[monsterParams.WOLF],
-        monsterParams.monsterList[monsterParams.ZOMBIE_LV1],
-        monsterParams.monsterList[monsterParams.COBOLD_LV1],
-        monsterParams.monsterList[monsterParams.MUMMY],
+        monsterParams["BAT_LV1"],
+        monsterParams["SKELTON_LV1"],
+        monsterParams["ZOMBIE_LV1"],
+        monsterParams["COBOLD_LV1"],
     )
 
     def __init__(self):

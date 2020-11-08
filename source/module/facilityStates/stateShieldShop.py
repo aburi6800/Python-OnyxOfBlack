@@ -2,7 +2,7 @@
 import pyxel
 
 from ..character import playerParty
-from ..item import shieldParams
+from ..params.shield import shieldParams
 from ..pyxelUtil import PyxelUtil
 from .baseShopState import BaseShopState
 
@@ -16,7 +16,7 @@ class StateShieldShop(BaseShopState):
     '''
 
     # この店で使うアイテムリスト
-    itemList = shieldParams.shieldList
+    itemList = shieldParams
 
     def __init__(self):
         '''

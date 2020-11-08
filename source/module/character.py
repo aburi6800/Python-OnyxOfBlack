@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import random
-from .item import WeaponParams
-from .item import ArmorParams
-from .item import ShieldParams
-from .item import HelmetParams
+from module.params.weapon import weaponParams
+from module.params.armor import armorParams
+#from module.item import ShieldParams
+#from module.item import HelmetParams
 
 
 class Character(object):
@@ -31,9 +31,9 @@ class Character(object):
         レベルアップ処理
         '''
         # 増分値
-        addPoint = 20
+        addPoint = 10
         # ライフの増分
-        addLife = random.randint(4, addPoint - 3)
+        addLife = random.randint(2, addPoint - 3)
         addPoint = addPoint - addLife
         # 強さの増分
         addStrength = random.randint(1, addPoint - 2)
@@ -86,7 +86,7 @@ class Monster(Character):
 
     def __init__(self):
         '''
-        # クラス初期化
+        クラス初期化
         '''
         super().__init__()
         self.item = None
@@ -288,11 +288,11 @@ class HumanGenerator(object):
 
         human.exp = random.randint(1, 50)
         human.gold = random.randint(1, _level * 100)
-        human.weapon = WeaponParams().weaponList[random.randint(0, 3)]
+        human.weapon = weaponParams[random.randint(0, 3)]
         if random.randint(0, 2) == 0:
             human.armor = None
         else:
-            human.armor = ArmorParams().armorList[random.randint(0, 1)]
+            human.armor = armorParams[random.randint(0, 1)]
         human.name = HumanGenerator()._generateName()
         human.head = random.randint(0, 127)
         human.body = random.randint(0, 2)

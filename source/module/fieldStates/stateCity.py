@@ -14,7 +14,7 @@ from ..facilityStates.stateShieldShop import StateShieldShop
 from ..facilityStates.stateSurgery import StateSurgery
 from ..facilityStates.stateWeaponShop import StateWeaponShop
 from ..map.uturotown import uturotown
-from ..monster import monsterParams
+from ..params.monster import monsterParams
 from ..pyxelUtil import PyxelUtil
 from .baseFieldState import BaseFieldState
 from .stateCemetery import StateCemetery
@@ -39,8 +39,9 @@ class StateCity(BaseFieldState):
         HumanGenerator.generate(1),
         HumanGenerator.generate(1),
         HumanGenerator.generate(2),
-        monsterParams.monsterList[monsterParams.BAT_LV1],
-        monsterParams.monsterList[monsterParams.SKELTON_LV1],
+        monsterParams["BAT_LV1"],
+        monsterParams["SKELTON_LV1"],
+        monsterParams["ZOMBIE_LV1"],
     )
 
     def __init__(self):

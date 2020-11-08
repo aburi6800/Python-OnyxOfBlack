@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
+import sys
+
 import pyxel
-from module.pyxelUtil import PyxelUtil
-from module.stateStack import stateStack
-from module.character import HumanPartyGenerator
-from module.character import EnemyPartyGenerator
-from module.character import playerParty
-from module.character import enemyParty
-from module.monster import monsterParams
+
 from module.battleStates.stateBattle import StateBattle
+from module.character import (EnemyPartyGenerator, HumanGenerator,
+                              enemyParty, playerParty)
+from module.params.armor import armorParams
+from module.params.helmet import helmetParams
+from module.params.monster import monsterParams
+from module.params.shield import shieldParams
+from module.params.weapon import weaponParams
+from module.stateStack import stateStack
 
 
 class App:
@@ -19,6 +23,13 @@ class App:
         '''
         クラス初期化
         '''
+        # コマンドライン引数取得
+        args = sys.argv
+        print(len(args))
+        print(args)
+        if len(args) != 7:
+            args = ["", "BAT_LV1", 1, "", "", "", ""]
+
         # StateStackの初期化
         stateStack.clear()
 
@@ -26,14 +37,38 @@ class App:
         pyxel.init(256, 192)
         pyxel.load("../assets/onyxofblack.pyxres")
 
-        # テストでランダムパーティー生成をプレイヤーパーティとする
-        level = 5
-        playerParty.memberList = HumanPartyGenerator.generate(level)
-        for member in playerParty.memberList:
-            print(member)
+        # プレイヤーパーティ生成
+        playerParty.initialize()
+
+        level = int(args[2])
+
+        for idx in range(5):
+            member = HumanGenerator.generate(level)
+            # 装備の指定
+            member.weapon = weaponParams[int(args[3])] if args[3] != "" else None
+            member.armor = armorParams[int(args[4])] if args[4] != "" else None
+            member.shield = shieldParams[int(args[5])] if args[5] != "" else None
+            member.helmet = helmetParams[int(args[6])] if args[6] != "" else None
+
+            _log = member.name
+            _log += " level=" + str(member.level)
+            _log += " life=" + str(member.life)
+            _log += " str=" + str(member.strength)
+            _log += " def=" + str(member.defend)
+            _log += " dex=" + str(member.dexterity)
+            _log += " weapon=" 
+            _log += str(member.weapon.name) if member.weapon != None else "None"
+            _log += " armor=" 
+            _log += str(member.armor.name) if member.armor != None else "None"
+            _log += " shield=" 
+            _log += str(member.shield.name) if member.shield != None else "None"
+            _log += " helm=" 
+            _log += str(member.helmet.name) if member.helmet != None else "None"
+            print(_log)
+            playerParty.addMember(member)
 
         # 敵パーティー生成
-        enemyParty.memberList = EnemyPartyGenerator.generate(monsterParams.monsterList[monsterParams.AZTEC])
+        enemyParty.memberList = EnemyPartyGenerator.generate(monsterParams[args[1]])
         for value in enemyParty.memberList:
             print(value)
 

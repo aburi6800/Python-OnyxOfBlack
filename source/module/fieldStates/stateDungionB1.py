@@ -3,7 +3,7 @@ import pyxel
 
 from ..character import HumanGenerator, playerParty
 from ..map.dungionB1 import dungionB1
-from ..monster import monsterParams
+from ..params.monster import monsterParams
 from ..pyxelUtil import PyxelUtil
 from .baseFieldState import BaseFieldState
 from .stateDungionB2 import StateDungionB2
@@ -23,10 +23,11 @@ class StateDungionB1(BaseFieldState):
     # 出現するモンスターリスト
     enemy_set = (
         HumanGenerator.generate(2),
-        monsterParams.monsterList[monsterParams.BAT_LV1],
-        monsterParams.monsterList[monsterParams.SKELTON_LV1],
-        monsterParams.monsterList[monsterParams.WOLF],
-        monsterParams.monsterList[monsterParams.COBOLD_LV1],
+        monsterParams["BAT_LV1"],
+        monsterParams["BAT_LV2"],
+        monsterParams["COBOLD_LV1"],
+        monsterParams["SKELTON_LV1"],
+        monsterParams["ZOMBIE_LV1"],
     )
 
     def __init__(self):

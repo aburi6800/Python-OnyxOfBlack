@@ -108,7 +108,7 @@ class Input():
         # 毎フレーム、直前の入力文字列を退避
         self.preValue = self.value
 
-        # 辞書
+        # キーの辞書を走査
         for _key, _cont in self.keydict.items():
             if pyxel.btnp(_key):
                 if _cont["args"] == None:
@@ -124,8 +124,9 @@ class Input():
         if self.value != self.preValue:
             # 入力文字列を消す    
             pyxel.rect(self.x, self.y, len(self.value) * 4, 5, pyxel.COLOR_BLACK)
-            # 入力文字列を表示する
-            pyxel.text(self.x, self.y, self.value, pyxel.COLOR_WHITE)
+
+        # 入力文字列を表示する
+        pyxel.text(self.x, self.y, self.value, pyxel.COLOR_WHITE)
 
         # 入力完了していなければ、カーソルを表示する
         if self.isEnter == False and pyxel.frame_count % 4 == 0:

@@ -3,7 +3,7 @@ import pyxel
 
 from ..character import HumanGenerator, playerParty
 from ..map.wellB2 import wellB2
-from ..monster import monsterParams
+from ..params.monster import monsterParams
 from ..pyxelUtil import PyxelUtil
 from .baseFieldState import BaseFieldState
 from .stateWellB3 import StateWellB3
@@ -22,11 +22,12 @@ class StateWellB2(BaseFieldState):
 
     # 出現するモンスターリスト
     enemy_set = (
-        HumanGenerator.generate(2),
-        monsterParams.monsterList[monsterParams.BAT_LV1],
-        monsterParams.monsterList[monsterParams.SKELTON_LV1],
-        monsterParams.monsterList[monsterParams.WOLF],
-        monsterParams.monsterList[monsterParams.COBOLD_LV1],
+        HumanGenerator.generate(4),
+        monsterParams["COBOLD_LV2"],
+        monsterParams["SKELTON_LV2"],
+        monsterParams["ZOMBIE_LV2"],
+        monsterParams["AZTEC_LV1"],
+        monsterParams["GOBLIN_LV1"],
     )
 
     def __init__(self):

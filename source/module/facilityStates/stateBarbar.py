@@ -3,7 +3,7 @@ import random
 import pyxel
 
 from ..character import playerParty
-from ..item import barbarParams
+from ..params.barbar import barbarParams
 from ..pyxelUtil import PyxelUtil
 from .baseShopState import BaseShopState
 
@@ -17,7 +17,7 @@ class StateBarbar(BaseShopState):
     '''
 
     # この店で使うアイテムリスト
-    itemList = barbarParams.barbarList
+    itemList = barbarParams
 
     def __init__(self):
         '''
