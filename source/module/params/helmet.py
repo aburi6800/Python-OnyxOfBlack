@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 class HelmetParam():
     '''
@@ -24,7 +24,7 @@ class HelmetParam():
 リストの要素はShieldParamクラスのインスタンス
 '''
 helmetParams = (
-    HelmetParam("CHAIN COIF", 128, 32, 8, 8, 4, 1, 40),
+    HelmetParam("CHAIN COIF", 128, 32, 8, 8, 4, 1, 40),
     HelmetParam("WINGED HELM", 136, 32, 8, 8, 16, 8, 320),
     HelmetParam("HORNED HELM", 144, 32, 8, 8, 32, 16, 2560),
 )

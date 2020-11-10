@@ -28,7 +28,7 @@ class App:
         print(len(args))
         print(args)
         if len(args) != 7:
-            args = ["", "BAT_LV1", 1, "", "", "", ""]
+            args = ["", "BAT_LV1", "1", "", "", "", ""]
 
         # StateStackの初期化
         stateStack.clear()
@@ -57,13 +57,13 @@ class App:
             _log += " def=" + str(member.defend)
             _log += " dex=" + str(member.dexterity)
             _log += " weapon=" 
-            _log += str(member.weapon.name) if member.weapon != None else "None"
+            _log += member.weapon.name if member.weapon != None else "None"
             _log += " armor=" 
-            _log += str(member.armor.name) if member.armor != None else "None"
+            _log += member.armor.name if member.armor != None else "None"
             _log += " shield=" 
-            _log += str(member.shield.name) if member.shield != None else "None"
+            _log += member.shield.name if member.shield != None else "None"
             _log += " helm=" 
-            _log += str(member.helmet.name) if member.helmet != None else "None"
+            _log += member.helmet.name if member.helmet != None else "None"
             print(_log)
             playerParty.addMember(member)
 

@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 class ShieldParam():
     '''
@@ -24,7 +24,7 @@ class ShieldParam():
 リストの要素はShieldParamクラスのインスタンス
 '''
 shieldParams = (
-    ShieldParam("S SHIELD", 128, 40, 8, 8, 2, 2, 30),
-    ShieldParam("M SHIELD", 136, 40, 8, 8, 8, 8, 270),
-    ShieldParam("L SHIELD", 144, 40, 8, 8, 24, 24, 2430),
+    ShieldParam("S SHIELD", 128, 40, 8, 8, 2, 2, 30),
+    ShieldParam("M SHIELD", 136, 40, 8, 8, 8, 8, 270),
+    ShieldParam("L SHIELD", 144, 40, 8, 8, 24, 24, 2430),
 )

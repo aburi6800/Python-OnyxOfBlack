@@ -208,7 +208,7 @@ class StateMakeCharacter(BaseSystemState):
         キャラクタ作成完了処理
         '''
         if self.tick == 1:
-            pyxel.music(0)
+            pyxel.playm(0)
 
         if self.tick > 120:
             # 自分自身をpopする
