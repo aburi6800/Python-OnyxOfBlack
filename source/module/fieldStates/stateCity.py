@@ -179,7 +179,13 @@ class StateCity(BaseFieldState):
         '''
         隠しメッセージ
         '''
-        if pyxel.btn(pyxel.KEY_SPACE):
+        if self.tick == 1:
+            m = messageCommand()
+            m.addMessage(message(["I", "RO", " ", "I", "LTU", "KA", "I", " ", "TU", "D", "TU", "*..."]))
+            messagequeue.enqueue(m)
+        
+        else:
+#            if pyxel.btn(pyxel.KEY_SPACE):
             playerParty.x = 11
             playerParty.y = 8
             playerParty.direction = self.DIRECTION_NORTH
@@ -350,9 +356,7 @@ class StateCity(BaseFieldState):
         '''
         隠しメッセージ
         '''
-        m = messageCommand()
-        m.addMessage(message(["I", "RO", " ", "I", "LTU", "KA", "I", " ", "TU", "D", "TU", "*..."]))
-        messagequeue.enqueue(m)
+        pass
 #        PyxelUtil.text(16, 140, ["I", "RO", " ", "I", "LTU", "KA",
 #                                 "I", " ", "TU", "D", "TU", "*..."], pyxel.COLOR_WHITE)
 #        PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)

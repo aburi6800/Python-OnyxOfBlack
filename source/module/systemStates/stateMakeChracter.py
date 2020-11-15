@@ -47,11 +47,11 @@ class StateMakeCharacter(BaseSystemState):
         self.character.helmet = None
         self.character.body = 0
 
-    def update(self):
+    def update_execute(self):
         '''
-        各フレームの処理
+        各フレームの個別処理
         '''
-        super().update()
+        super().update_execute()
 
         if self.state == self.STATE_INIT:
             self.update_init()

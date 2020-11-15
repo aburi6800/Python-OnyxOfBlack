@@ -42,10 +42,12 @@ class StateSurgery(BaseFacilityState):
         self.saleParson.head = 96
         self.saleParson.body = 9
 
-    def update(self):
+    def update_execute(self):
         '''
         各フレームの処理
         '''
+        super().__update_execute()
+
         if self.state == self.STATE_ENTER:
             self.update_enter()
 

@@ -73,7 +73,7 @@ class BaseFieldState(BaseState):
 
     def set_wall_color(self, _wallcolor_front=pyxel.COLOR_LIGHTBLUE, _wallcolor_side=pyxel.COLOR_DARKBLUE):
         '''
-        壁の色を設定する処理
+        壁の色を設定する
 
         途中で変更したい場合に使用する
         正面の壁の色、側面の壁の色の順に指定する
@@ -87,12 +87,11 @@ class BaseFieldState(BaseState):
         self.WALLCOLOR_SIDE[1] = _wallcolor_side
         self.WALLCOLOR_SIDE[4] = _wallcolor_side
 
-    def update(self):
+    def update_execute(self):
         '''
         各フレームの処理
         '''
-        if super().update():
-            return
+        super().update_execute()
 
         # パーティーは逃げてきたか？
         if playerParty.isEscape:
@@ -104,7 +103,7 @@ class BaseFieldState(BaseState):
             _dirlist = random.sample(_dirlist, len(_dirlist))
             # 各方向について移動可能か調べる
             for _direction in _dirlist:
-                if self.can_move_forward(self._map, playerParty.x, playerParty.y, _direction):
+                if self.__can_move_forward(self._map, playerParty.x, playerParty.y, _direction):
                     # 移動可能の場合はその方向に移動
                     playerParty.x = playerParty.x + self.VX[_direction]
                     playerParty.y = playerParty.y + self.VX[_direction]
@@ -124,7 +123,7 @@ class BaseFieldState(BaseState):
                 return
 
         # イベントハンドラ
-        if self._eventhandler("U") == False:
+        if self.__eventhandler("U") == False:
             # イベントが何もない場合、エンカウントするか？
             if self.tick == 1 and random.randint(0, 20) == 0:
                 self.encount_enemy()
@@ -160,10 +159,10 @@ class BaseFieldState(BaseState):
             return
 
         # キー入力（上）
-        if pyxel.btnp(pyxel.KEY_UP) and self.can_move_forward(self._map, playerParty.x, playerParty.y, playerParty.direction):
+        if pyxel.btnp(pyxel.KEY_UP) and self.__can_move_forward(self._map, playerParty.x, playerParty.y, playerParty.direction):
             self.tick = 0
 #            if random.randint(0, 20) == 0:
-#                self.encount_enemy()
+#                self.__encount_enemy()
 #                pass
 #            else:
             playerParty.saveCondition()
@@ -182,7 +181,7 @@ class BaseFieldState(BaseState):
         enemyParty.memberList = EnemyPartyGenerator.generate(
             self.enemy_set[random.randint(0, len(self.enemy_set) - 1)])
 
-    def update_fixedencount_enemy(self):
+    def update_fixed_encount_enemy(self):
         '''
         敵と固定エンカウントした時の処理
 
@@ -210,13 +209,13 @@ class BaseFieldState(BaseState):
             pass
         self.isFixedEncount = False
 
-    def can_move_forward(self, _map, _x: int, _y: int, _direction: int) -> bool:
+    def __can_move_forward(self, _map, _x: int, _y: int, _direction: int) -> bool:
         '''
         前進できるかを判定する
 
         マップデータを方向によりシフトした結果の下位1ビットが立っている（＝目の前の壁情報が通行不可）場合は、前進不可と判定する
         '''
-        _value = self._get_mapinfo(_map, _x, _y, _direction)
+        _value = self.__get_mapinfo(_map, _x, _y, _direction)
 
         if _value & 0b000000000001 == 0b000000000001:
             return False
@@ -273,7 +272,7 @@ class BaseFieldState(BaseState):
                            self.OFFSET_X, 0 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
 
             # 迷路
-            self._draw_maze(playerParty.x, playerParty.y,
+            self.__draw_maze(playerParty.x, playerParty.y,
                             playerParty.direction, self._map)
 
         # エンカウント時のメッセージ
@@ -283,7 +282,7 @@ class BaseFieldState(BaseState):
             return
 
         # イベントハンドラ
-        self._eventhandler("D")
+        self.__eventhandler("D")
 
     def onEnter(self):
         '''
@@ -319,7 +318,7 @@ class BaseFieldState(BaseState):
         '''
         return False
 
-    def _eventhandler(self, _mode):
+    def __eventhandler(self, _mode) -> bool:
         '''
         プレイヤーパーティーの現在の座標に登録されているイベントがあれば、そのイベントの関数を呼び出す
 
@@ -350,7 +349,7 @@ class BaseFieldState(BaseState):
         # ここに到達している場合はイベントが発生していないため、Falseを返却する
         return False
 
-    def _draw_maze(self, _x, _y, _direction, _map):
+    def __draw_maze(self, _x, _y, _direction, _map):
         '''
         迷路を表示する
 
@@ -364,22 +363,22 @@ class BaseFieldState(BaseState):
             if _get_x < 0 or _get_x > len(_map[_y]) - 1 or _get_y < 0 or _get_y > len(_map) - 1:
                 _data = 0
             else:
-                _data = self._get_mapinfo(_map, _get_x, _get_y, _direction)
-            self._draw_wall(i, _data)
+                _data = self.__get_mapinfo(_map, _get_x, _get_y, _direction)
+            self.__draw_wall(i, _data)
 
-    def _right_3bit_rotate(self, n):
+    def __right_3bit_rotate(self, n) -> int:
         '''
         3ビット右にローテートした値を返却する
         '''
         return ((n & 0b000000000111) << 9) | ((n >> 3) & 0b111111111111)
 
-    def _left_3bit_rotate(self, n):
+    def __left_3bit_rotate(self, n) -> int:
         '''
         3ビット左にローテートした値を返却する
         '''
         return ((n << 3) & 0b111111111111) | (n >> 9)
 
-    def _get_mapinfo(self, _map, _x, _y, _direction):
+    def __get_mapinfo(self, _map, _x, _y, _direction) -> int:
         '''
         指定した座標のマップ情報を取得する。
 
@@ -389,10 +388,10 @@ class BaseFieldState(BaseState):
         _data = _map[_y][_x]
         if _direction > self.DIRECTION_NORTH:
             for _ in range(_direction):
-                _data = self._right_3bit_rotate(_data)
+                _data = self.__right_3bit_rotate(_data)
         return _data
 
-    def _draw_wall(self, _idx, _data):
+    def __draw_wall(self, _idx, _data):
         '''
         迷路を表示する
 

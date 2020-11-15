@@ -21,10 +21,12 @@ class StateCamp(BaseFacilityState):
         '''
         super().__init__()
 
-    def update(self):
+    def update_execute(self):
         '''
-        各フレームの処理
+        各フレームの個別処理
         '''
+        super().update_execute()
+
         # 薬を飲む
         if pyxel.btnp(pyxel.KEY_D):
             pass

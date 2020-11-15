@@ -107,11 +107,10 @@ class StateBattle(BaseState):
         self.tick = 0
         self.message = []
 
-    def update(self):
+    def update_execute(self):
         '''
-        各フレームの処理
+        各フレームの個別処理
         '''
-        self.tick += 1
         _handler = self.handler.get(self.state, None)
         if _handler != None:
             _handler[self.HANDLER_UPDATE]()

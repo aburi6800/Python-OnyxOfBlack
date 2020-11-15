@@ -6,24 +6,20 @@ class AbstractState(metaclass=ABCMeta):
     '''
     Stateクラスの抽象クラス
 
-    BaseStateクラスの基底クラス。もしかしていらないかも？
+    BaseStateクラスの基底抽象クラス。
     '''
 
     @abstractmethod
     def update(self):
         '''
         各フレームの処理
-
-        実装はなし
         '''
         pass
 
     @abstractmethod
-    def render(self):
+    def draw(self):
         '''
         各フレームの描画処理
-
-        実装はなし
         '''
         pass
 
@@ -31,8 +27,6 @@ class AbstractState(metaclass=ABCMeta):
     def onEnter(self):
         '''
         状態開始時の処理
-
-        実装はなし
         '''
         pass
 
@@ -40,7 +34,5 @@ class AbstractState(metaclass=ABCMeta):
     def onExit(self):
         '''
         状態終了時の処理
-
-        実装はなし
         '''
         pass

@@ -21,13 +21,13 @@ class StateTitle(BaseSystemState):
     STATE_TITLE = 2
 
     # フェードイン／アウトの色
-    TEXTCOLOR = [pyxel.COLOR_BLACK] * 10
-    TEXTCOLOR += [pyxel.COLOR_DARKBLUE] * 10
-    TEXTCOLOR += [pyxel.COLOR_LIGHTBLUE] * 10
-    TEXTCOLOR += [pyxel.COLOR_WHITE] * 50
-    TEXTCOLOR += [pyxel.COLOR_LIGHTBLUE] * 10
-    TEXTCOLOR += [pyxel.COLOR_DARKBLUE] * 10
-    TEXTCOLOR += [pyxel.COLOR_BLACK] * 30
+    TEXTCOLOR = [pyxel.COLOR_BLACK] * 5
+    TEXTCOLOR += [pyxel.COLOR_DARKBLUE] * 5
+    TEXTCOLOR += [pyxel.COLOR_LIGHTBLUE] * 5
+    TEXTCOLOR += [pyxel.COLOR_WHITE] * 30
+    TEXTCOLOR += [pyxel.COLOR_LIGHTBLUE] * 5
+    TEXTCOLOR += [pyxel.COLOR_DARKBLUE] * 5
+    TEXTCOLOR += [pyxel.COLOR_BLACK] * 10
 
     def __init__(self):
         '''
@@ -35,25 +35,23 @@ class StateTitle(BaseSystemState):
         '''
         super().__init__()
 
-    def update(self):
+    def update_execute(self):
         '''
-        各フレームの処理
+        各フレームの個別処理
         '''
-        self.tick += 1
-
         if self.state == self.STATE_RESPECT:
-            self._update_respect()
+            self.update_respect()
         elif self.state == self.STATE_TITLE:
-            self._update_title()
+            self.update_title()
 
-    def _update_respect(self):
+    def update_respect(self):
         '''
         ヘンク・B・ロジャースへの敬意
         '''
-        if self.tick == len(self.TEXTCOLOR):
+        if self.tick - 1 == len(self.TEXTCOLOR):
             self.state = self.STATE_TITLE
 
-    def _update_title(self):
+    def update_title(self):
         '''
         タイトル
         '''
@@ -89,18 +87,18 @@ class StateTitle(BaseSystemState):
         各フレームの描画処理
         '''
         if self.state == self.STATE_RESPECT:
-            self._draw_respect()
+            self.draw_respect()
         elif self.state == self.STATE_TITLE:
-            self._draw_title()
+            self.draw_title()
 
-    def _draw_respect(self):
+    def draw_respect(self):
         '''
         ヘンク・B・ロジャースへの敬意
         '''
         PyxelUtil.text(
-            48, 95, ["*With all due respect to Henk B. Rogers."], self.TEXTCOLOR[self.tick])
+            48, 95, ["*With all due respect to Henk B. Rogers."], self.TEXTCOLOR[self.tick - 1])
 
-    def _draw_title(self):
+    def draw_title(self):
         '''
         タイトル
         '''

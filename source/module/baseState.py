@@ -33,12 +33,22 @@ class BaseState(AbstractState):
         '''
         各フレームの処理
         '''
+        self.tick += 1
+
         # メッセージキューが登録されてる場合は、メッセージキューのupdateメソッドを呼んで終了する
+        # メッセージキューが登録されていない場合は、update_executeメソッドを呼ぶ。
         if messagequeue.isEnqueued():
             messagequeue.update()
-            return messagequeue.isEnqueued()
+        else:
+            self.update_execute()
 
-        self.tick += 1
+    def update_execute(self):
+        '''
+        各フレームの個別処理
+
+        子クラスで個別の処理があれば、このメソッドに実装する
+        '''
+        pass
 
     def draw(self):
         '''
@@ -103,12 +113,14 @@ class BaseState(AbstractState):
             if _chr.helmet == None:
                 _head_x = (_chr.head % 32) * 8
                 _head_y = (_chr.head // 32) * 8
+                _head_w = 8
+                _head_h = 8
             else:
                 _head_x = _chr.helmet.blt_x
                 _head_y = _chr.helmet.blt_y
                 _head_w = _chr.helmet.blt_w
                 _head_h = _chr.helmet.blt_h
-            pyxel.blt(_x + 8, _y, 1, _head_x, _head_y, 8, 8, 0)
+            pyxel.blt(_x + 8, _y, 1, _head_x, _head_y, _head_w, _head_h, 0)
 
             # 体
             if _chr.armor == None:
@@ -121,8 +133,7 @@ class BaseState(AbstractState):
                 _armor_y = _chr.armor.blt_y
                 _armor_w = _chr.armor.blt_w
                 _armor_h = _chr.armor.blt_h
-            pyxel.blt(_x + 8, _y + 8, 1, _armor_x,
-                      _armor_y, _armor_w, _armor_h, 0)
+            pyxel.blt(_x + 8, _y + 8, 1, _armor_x, _armor_y, _armor_w, _armor_h, 0)
 
             # 武器
             if _chr.weapon != None:
@@ -130,8 +141,7 @@ class BaseState(AbstractState):
                 _weapon_y = _chr.weapon.blt_y
                 _weapon_w = _chr.weapon.blt_w
                 _weapon_h = _chr.weapon.blt_h
-                pyxel.blt(_x, _y, 1, _weapon_x, _weapon_y,
-                          _weapon_w, _weapon_h, 0)
+                pyxel.blt(_x, _y, 1, _weapon_x, _weapon_y, _weapon_w, _weapon_h, 0)
 
             # 盾
             if _chr.shield != None:
@@ -139,9 +149,7 @@ class BaseState(AbstractState):
                 _shield_y = _chr.shield.blt_y
                 _shield_w = _chr.shield.blt_w
                 _shield_h = _chr.shield.blt_h
-                pyxel.blt(_x + 8, _y + 8, 1, _shield_x, _shield_y,
-                          _shield_w, _shield_h, 0)
+                pyxel.blt(_x + 8, _y + 8, 1, _shield_x, _shield_y, _shield_w, _shield_h, 0)
 
         elif isinstance(_chr, Monster):
-            pyxel.blt(_x, _y, 2, _chr.blt_x, _chr.blt_y,
-                      _chr.blt_w, _chr.blt_h, 0)
+            pyxel.blt(_x, _y, 2, _chr.blt_x, _chr.blt_y, _chr.blt_w, _chr.blt_h, 0)
