@@ -142,31 +142,31 @@ class StateSurgery(BaseFacilityState):
         '''
         self.update_leave()
 
-    def render(self):
+    def draw(self):
         '''
         各フレームの描画処理
         '''
-        super().render()
+        super().draw()
 
         if self.state == self.STATE_ENTER:
-            self.render_enter()
+            self.draw_enter()
 
         elif self.state == self.STATE_ISSURGERY:
-            self.render_issurgery()
+            self.draw_issurgery()
 
         elif self.state == self.STATE_DONE:
-            self.render_done()
+            self.draw_done()
 
         elif self.state == self.STATE_LEAVE:
-            self.render_leave()
+            self.draw_leave()
 
         elif self.state == self.STATE_NOSURGERY:
-            self.render_nosurgery()
+            self.draw_nosurgery()
 
         # 店員描画
         self.drawCharacter(self.saleParson, 178, 104)
 
-    def render_enter(self):
+    def draw_enter(self):
         '''
         施設に入った時の表示
         '''
@@ -176,7 +176,7 @@ class StateSurgery(BaseFacilityState):
                                  " ", "SI", "TE", " ", "A", "KE", "D", "MA", "SI", "LYO", "U", "."], pyxel.COLOR_WHITE)
         PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
-    def render_issurgery(self):
+    def draw_issurgery(self):
         '''
         治療確認描画処理
         '''
@@ -185,7 +185,7 @@ class StateSurgery(BaseFacilityState):
         PyxelUtil.text(16, 148, ["TI", "RI", "LYO", "U", " ",
                                  "SI", "MA", "SU", "KA", "*? [Y/N]"], pyxel.COLOR_WHITE)
 
-    def render_done(self):
+    def draw_done(self):
         '''
         治療完了描画処理
         '''
@@ -193,7 +193,7 @@ class StateSurgery(BaseFacilityState):
                                  "YO", "KU", "NA", "RI", "MA", "SI", "TA", "."], pyxel.COLOR_WHITE)
         PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
-    def render_leave(self):
+    def draw_leave(self):
         '''
         店を出る描画処理
         '''
@@ -201,7 +201,7 @@ class StateSurgery(BaseFacilityState):
                                  "SI", "D", "NI", "."], pyxel.COLOR_WHITE)
         PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
-    def render_nosurgery(self):
+    def draw_nosurgery(self):
         '''
         治療不要描画処理
         '''

@@ -40,7 +40,7 @@ class BaseState(AbstractState):
 
         self.tick += 1
 
-    def render(self):
+    def draw(self):
         '''
         各フレームの描画処理
 

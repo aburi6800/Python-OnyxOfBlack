@@ -189,31 +189,31 @@ class BaseShopState(BaseFacilityState):
         '''
         pass
 
-    def render(self):
+    def draw(self):
         '''
         各フレームの描画処理
         '''
-        super().render()
+        super().draw()
 
         if self.state == self.STATE_ENTER:
-            self.render_initial()
+            self.draw_initial()
 
         elif self.state == self.STATE_BUY:
-            self.render_buy()
+            self.draw_buy()
 
         elif self.state == self.STATE_EQUIP:
-            self.render_equip()
+            self.draw_equip()
 
         elif self.state == self.STATE_LEAVE:
-            self.render_leave()
+            self.draw_leave()
 
         elif self.state == self.STATE_ERROR:
-            self.render_error()
+            self.draw_error()
 
         # 店員
         self.drawCharacter(self.saleParson, 178, 104)
 
-    def render_initial(self):
+    def draw_initial(self):
         '''
         店に入った時の表示
 
@@ -221,7 +221,7 @@ class BaseShopState(BaseFacilityState):
         '''
         None
 
-    def render_buy(self):
+    def draw_buy(self):
         '''
         買う人を選ぶ表示
         '''
@@ -238,7 +238,7 @@ class BaseShopState(BaseFacilityState):
         PyxelUtil.text(56, 172, ["*[L]     ", "MI", "SE",
                                  "WO", "TE", "D", "RU"], pyxel.COLOR_YELLOW)
 
-    def render_equip(self):
+    def draw_equip(self):
         '''
         装備する人を選ぶ表示
         '''
@@ -249,7 +249,7 @@ class BaseShopState(BaseFacilityState):
         PyxelUtil.text(56, 172, ["*[L]     ", "MI", "SE",
                                  "WO", "TE", "D", "RU"], pyxel.COLOR_YELLOW)
 
-    def render_leave(self):
+    def draw_leave(self):
         '''
         店を出る表示
         '''
@@ -257,7 +257,7 @@ class BaseShopState(BaseFacilityState):
                                  "KO", "D", "SA", "D", "I", "MA", "SI", "TA", "."], pyxel.COLOR_WHITE)
         PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
-    def render_error(self):
+    def draw_error(self):
         '''
         エラー（購入できないとき）の表示
         '''

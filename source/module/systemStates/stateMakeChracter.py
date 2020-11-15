@@ -215,11 +215,11 @@ class StateMakeCharacter(BaseSystemState):
             # ゲーム開始
             self.pushState(StateCity)
 
-    def render(self):
+    def draw(self):
         '''
         各フレームの描画処理
         '''
-        super().render()
+        super().draw()
 
         # 完了
         if self.state == self.STATE_DONE:

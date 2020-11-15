@@ -44,11 +44,11 @@ class StateCamp(BaseFacilityState):
         if pyxel.btnp(pyxel.KEY_SPACE):
             self.popState()
 
-    def render(self):
+    def draw(self):
         '''
         各フレームの描画処理
         '''
-        super().render()
+        super().draw()
 
         PyxelUtil.text(97, 140, ["*** CAMP MENU **"], pyxel.COLOR_LIGHTBLUE)
         PyxelUtil.text(16, 148, ["*[D] ", "KU", "SU", "RI",

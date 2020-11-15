@@ -22,11 +22,11 @@ class BaseSystemState(BaseState):
         '''
         super().update()
 
-    def render(self):
+    def draw(self):
         '''
         各フレームの描画処理
         '''
-        # baseStateのrenderを呼ぶと画面の枠線やキャラクタが表示されるため、消去のみ行う
+        # baseStateのdrawを呼ぶと画面の枠線やキャラクタが表示されるため、消去のみ行う
         pyxel.cls(pyxel.COLOR_BLACK)
 
     def onEnter(self):

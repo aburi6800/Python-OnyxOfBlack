@@ -223,11 +223,11 @@ class BaseFieldState(BaseState):
         else:
             return True
 
-    def render(self):
+    def draw(self):
         '''
         各フレームの描画処理
         '''
-        super().render()
+        super().draw()
 
         # 開発用
         PyxelUtil.text(0, 0, "*X:" + str(playerParty.x) + " Y:" + str(playerParty.y) + " DIR:" +

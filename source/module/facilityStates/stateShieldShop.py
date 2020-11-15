@@ -41,7 +41,7 @@ class StateShieldShop(BaseShopState):
         '''
         self.saleParson.shield = self.item
 
-    def render_initial(self):
+    def draw_initial(self):
         '''
         店に入った時の表示
         '''

@@ -41,7 +41,7 @@ class StateWeaponShop(BaseShopState):
         '''
         self.saleParson.weapon = self.item
 
-    def render_initial(self):
+    def draw_initial(self):
         '''
         店に入った時の表示
         '''

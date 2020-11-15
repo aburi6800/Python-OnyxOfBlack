@@ -24,11 +24,11 @@ class BaseFacilityState(BaseState):
         '''
         super().update()
 
-    def render(self):
+    def draw(self):
         '''
         各フレームの描画処理
         '''
-        super().render()
+        super().draw()
 
         # メンバーの所持金を表示
         for idx, member in enumerate(playerParty.memberList):

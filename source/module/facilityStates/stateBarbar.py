@@ -51,7 +51,7 @@ class StateBarbar(BaseShopState):
             0, 31) * ((playerParty.memberList[self.buyMember].head // 32) * 32)
         playerParty.memberList[self.buyMember].head = head
 
-    def render_initial(self):
+    def draw_initial(self):
         '''
         店に入った時の表示
         '''
@@ -61,7 +61,7 @@ class StateBarbar(BaseShopState):
                                  "he", "a", "-", "su", "ta", "i", "ru", " ", "NI", " ", "SI", "MA", "SE", "NN", "KA", "*?"], pyxel.COLOR_WHITE)
         PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
-    def render_buy(self):
+    def draw_buy(self):
         '''
         散髪する人を選ぶ表示
 
@@ -74,7 +74,7 @@ class StateBarbar(BaseShopState):
         PyxelUtil.text(56, 172, ["*[L] ", "MI", "SE",
                                  "WO", "TE", "D", "RU"], pyxel.COLOR_YELLOW)
 
-    def render_equip(self):
+    def draw_equip(self):
         '''
         装備する人を選ぶ表示
 

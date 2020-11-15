@@ -84,23 +84,23 @@ class StateTitle(BaseSystemState):
                     # プレイヤーパーティーの復元
                     playerParty.resotreSaveData(SaveData.playerParty)
 
-    def render(self):
+    def draw(self):
         '''
         各フレームの描画処理
         '''
         if self.state == self.STATE_RESPECT:
-            self._render_respect()
+            self._draw_respect()
         elif self.state == self.STATE_TITLE:
-            self._render_title()
+            self._draw_title()
 
-    def _render_respect(self):
+    def _draw_respect(self):
         '''
         ヘンク・B・ロジャースへの敬意
         '''
         PyxelUtil.text(
             48, 95, ["*With all due respect to Henk B. Rogers."], self.TEXTCOLOR[self.tick])
 
-    def _render_title(self):
+    def _draw_title(self):
         '''
         タイトル
         '''

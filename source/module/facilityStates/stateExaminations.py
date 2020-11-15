@@ -95,28 +95,28 @@ class StateExaminations(BaseFacilityState):
             # 状態を終了する
             self.popState()
 
-    def render(self):
+    def draw(self):
         '''
         各フレームの描画処理
         '''
-        super().render()
+        super().draw()
 
         if self.state == self.STATE_ENTER:
-            self.render_enter()
+            self.draw_enter()
 
         elif self.state == self.STATE_CHOOSE:
-            self.render_choose()
+            self.draw_choose()
 
         elif self.state == self.STATE_DONE:
-            self.render_done()
+            self.draw_done()
 
         elif self.state == self.STATE_LEAVE:
-            self.render_leave()
+            self.draw_leave()
 
         # 店員描画
         self.drawCharacter(self.saleParson, 178, 104)
 
-    def render_enter(self):
+    def draw_enter(self):
         '''
         施設に入った時の表示
         '''
@@ -124,7 +124,7 @@ class StateExaminations(BaseFacilityState):
                                  "i", "si", "lya", "TE", "D", "SU", "."], pyxel.COLOR_WHITE)
         PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
-    def render_choose(self):
+    def draw_choose(self):
         '''
         メンバー選択描画処理
         '''
@@ -133,7 +133,7 @@ class StateExaminations(BaseFacilityState):
         PyxelUtil.text(16, 164, ["*[L] ", "TA", "TI",
                                  "SA", "RU"], pyxel.COLOR_YELLOW)
 
-    def render_done(self):
+    def draw_done(self):
         '''
         ステータス描画処理
         '''
@@ -149,7 +149,7 @@ class StateExaminations(BaseFacilityState):
                                  str(self.showMember.dexterity)], pyxel.COLOR_WHITE)
         PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
-    def render_leave(self):
+    def draw_leave(self):
         '''
         店を出る描画処理
         '''

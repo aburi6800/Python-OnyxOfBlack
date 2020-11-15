@@ -63,7 +63,7 @@ class StateDrugs(BaseShopState):
 
         super().update_done()
 
-    def render_initial(self):
+    def draw_initial(self):
         '''
         店に入った時の表示
         '''

@@ -79,21 +79,21 @@ class StateBattle(BaseState):
 
         # ハンドラ辞書
         self.handler = {
-            self.STATE_ENCOUNT: [self.update_encount, self.render_encount],
-            self.STATE_CHOOSE_ACTION: [self.update_choose_action, self.render_choose_action],
-            self.STATE_ENEMY_ESCAPE_JUDGE: [self.update_enemy_escape_judge, self.render_enemy_escape_judge],
-            self.STATE_CHOOSE_TARGET: [self.update_choose_target, self.render_choose_target],
-            self.STATE_START_BATTLE: [self.update_start_battle, self.render_start_battle],
-            self.STATE_BATTLE: [self.update_battle, self.render_battle],
-            self.STATE_WIN_GETEXP: [self.update_win_getexp, self.render_win_getexp],
-            self.STATE_WIN_GETGOLD: [self.update_win_getgold, self.render_win_getgold],
-            self.STATE_LOSE: [self.update_lose, self.render_lose],
-            self.STATE_RUNAWAY_JUDGE: [self.update_runaway_judge, self.render_runaway_judge],
-            self.STATE_RUNAWAY_FAILED: [self.update_runaway_failed, self.render_runaway_failed],
-            self.STATE_RUNAWAY_SUCCESS: [self.update_runaway_success, self.render_runaway_success],
-            self.STATE_JUDGE_TALK: [self.update_judge_talk, self.render_judge_talk],
-            self.STATE_CHOOSE_TALK: [self.update_choose_talk, self.render_choose_talk],
-            self.STATE_TALK: [self.update_talk, self.render_talk],
+            self.STATE_ENCOUNT: [self.update_encount, self.draw_encount],
+            self.STATE_CHOOSE_ACTION: [self.update_choose_action, self.draw_choose_action],
+            self.STATE_ENEMY_ESCAPE_JUDGE: [self.update_enemy_escape_judge, self.draw_enemy_escape_judge],
+            self.STATE_CHOOSE_TARGET: [self.update_choose_target, self.draw_choose_target],
+            self.STATE_START_BATTLE: [self.update_start_battle, self.draw_start_battle],
+            self.STATE_BATTLE: [self.update_battle, self.draw_battle],
+            self.STATE_WIN_GETEXP: [self.update_win_getexp, self.draw_win_getexp],
+            self.STATE_WIN_GETGOLD: [self.update_win_getgold, self.draw_win_getgold],
+            self.STATE_LOSE: [self.update_lose, self.draw_lose],
+            self.STATE_RUNAWAY_JUDGE: [self.update_runaway_judge, self.draw_runaway_judge],
+            self.STATE_RUNAWAY_FAILED: [self.update_runaway_failed, self.draw_runaway_failed],
+            self.STATE_RUNAWAY_SUCCESS: [self.update_runaway_success, self.draw_runaway_success],
+            self.STATE_JUDGE_TALK: [self.update_judge_talk, self.draw_judge_talk],
+            self.STATE_CHOOSE_TALK: [self.update_choose_talk, self.draw_choose_talk],
+            self.STATE_TALK: [self.update_talk, self.draw_talk],
         }
 
         # 状態
@@ -489,11 +489,11 @@ class StateBattle(BaseState):
             # 戦闘終了
             self.popState()
 
-    def render(self):
+    def draw(self):
         '''
         各フレームの描画処理
         '''
-        super().render()
+        super().draw()
 
         # 敵の描画
         if self.state != self.STATE_ENCOUNT:
@@ -513,14 +513,14 @@ class StateBattle(BaseState):
         if _handler != None:
             _handler[self.HANDLER_RENDER]()
 
-    def render_encount(self):
+    def draw_encount(self):
         '''
         遭遇時の表示処理
         '''
         PyxelUtil.text(56, 148, ["NA", "NI", "KA", " ", "TI", "KA",
                                  "TU", "D", "I", "TE", "KI", "TA", "* !"], pyxel.COLOR_RED)
 
-    def render_choose_action(self):
+    def draw_choose_action(self):
         '''
         プレイヤーパーティーの行動決定表示処理
         '''
@@ -533,7 +533,7 @@ class StateBattle(BaseState):
         PyxelUtil.text(32, 172, ["*[T] ", "HA", "NA",
                                  "SU"], pyxel.COLOR_YELLOW)
 
-    def render_enemy_escape_judge(self):
+    def draw_enemy_escape_judge(self):
         '''
         敵逃走判定表示処理
         '''
@@ -543,7 +543,7 @@ class StateBattle(BaseState):
         else:
             PyxelUtil.text(90, 148, ["** * *  BATTLE  * * *"], pyxel.COLOR_RED)
 
-    def render_choose_target(self):
+    def draw_choose_target(self):
         '''
         プレイヤーパーティーの攻撃対象選択表示処理
         '''
@@ -558,14 +558,14 @@ class StateBattle(BaseState):
             PyxelUtil.text(40, 148 + _idx * 8, "*" +
                            enemyParty.memberList[_idx].name, pyxel.COLOR_LIGHTBLUE)
 
-    def render_start_battle(self):
+    def draw_start_battle(self):
         '''
         戦闘開始表示処理
         ※実際はここで表示をするものはない
         '''
         pass
 
-    def render_battle(self):
+    def draw_battle(self):
         '''
         戦闘表示処理
         '''
@@ -573,7 +573,7 @@ class StateBattle(BaseState):
             PyxelUtil.text(16, 148, self.message[0], pyxel.COLOR_WHITE)
             PyxelUtil.text(16, 164, self.message[1], pyxel.COLOR_WHITE)
 
-    def render_win_getexp(self):
+    def draw_win_getexp(self):
         '''
         経験値獲得表示処理
         '''
@@ -582,7 +582,7 @@ class StateBattle(BaseState):
             PyxelUtil.text(16, 164, self.message[1], pyxel.COLOR_WHITE)
             PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
-    def render_win_getgold(self):
+    def draw_win_getgold(self):
         '''
         ゴールド獲得表示処理
         '''
@@ -591,7 +591,7 @@ class StateBattle(BaseState):
                                      "NO", " ", "*gold", "WO", " ", "MI", "TU", "KE", "TA", "* !"], pyxel.COLOR_WHITE)
             PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
-    def render_lose(self):
+    def draw_lose(self):
         '''
         プレイヤーパーティー全滅表示処理
         '''
@@ -599,35 +599,35 @@ class StateBattle(BaseState):
                                  " ", "SI", "MA", "SI", "TA", "* + +"], pyxel.COLOR_RED)
         PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
-    def render_runaway_judge(self):
+    def draw_runaway_judge(self):
         '''
         逃走成功表示処理
         ※実際はここで表示をするものはない
         '''
         pass
 
-    def render_runaway_success(self):
+    def draw_runaway_success(self):
         '''
         逃走成功表示処理
         '''
         PyxelUtil.text(46, 148, ["I", "TU", "MO", " ", "U", "MA", "KU", "I", "KU", "TO", "HA",
                                  " ", "KA", "KI", "D", "RI", "MA", "SE", "NN", "YO", "*..."], pyxel.COLOR_WHITE)
 
-    def render_runaway_failed(self):
+    def draw_runaway_failed(self):
         '''
         逃走失敗表示処理
         '''
         PyxelUtil.text(56, 148, ["SI", "MA", "LTU", "TA", "* ! ", "NI",
                                  "KE", "D", "RA", "RE", "NA", "I", "* !"], pyxel.COLOR_RED)
 
-    def render_judge_talk(self):
+    def draw_judge_talk(self):
         '''
         会話判定表示処理
         ※実際はここで表示をするものはない
         '''
         pass
 
-    def render_choose_talk(self):
+    def draw_choose_talk(self):
         '''
         会話選択表示処理
         '''
@@ -639,7 +639,7 @@ class StateBattle(BaseState):
         PyxelUtil.text(
             32, 172, ["*[Y] YOUR MONEY OR YOUR LIFE."], pyxel.COLOR_YELLOW)
 
-    def render_talk(self):
+    def draw_talk(self):
         '''
         会話表示処理
         '''

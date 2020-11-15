@@ -31,7 +31,7 @@ class StateStack(object):
         現在先頭にあるStateのrenderメソッドを実行する
         '''
         if len(self.states) > 0 and self.states[0] != None:
-            self.states[0].render()
+            self.states[0].draw()
 
     def push(self, state):
         '''
