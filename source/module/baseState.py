@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from os import name
+
 import pyxel
-from .pyxelUtil import PyxelUtil
-from .abstractState import AbstractState
-from .character import playerParty
-from .character import Character
-from .character import Human
-from .character import Monster
+
+from module.abstractState import AbstractState
+from module.character import Character, Human, Monster, playerParty
+from module.messageQueue import messagequeue
+from module.pyxelUtil import PyxelUtil
 
 
 class BaseState(AbstractState):
@@ -33,6 +33,11 @@ class BaseState(AbstractState):
         '''
         各フレームの処理
         '''
+        # メッセージキューが登録されてる場合は、メッセージキューのupdateメソッドを呼んで終了する
+        if messagequeue.isEnqueued():
+            messagequeue.update()
+            return messagequeue.isEnqueued()
+
         self.tick += 1
 
     def render(self):
@@ -64,6 +69,10 @@ class BaseState(AbstractState):
             pyxel.rect(16, (_idx + 1) * 16 + 6, _member.life, 3,  pyxel.COLOR_DARKBLUE)
             pyxel.rect(16, (_idx + 1) * 16 + 9, 100, 1,  pyxel.COLOR_NAVY)
             pyxel.rect(16, (_idx + 1) * 16 + 9, _member.exp, 1,  pyxel.COLOR_LIGHTBLUE)
+
+        # メッセージキューが登録されてる場合は、メッセージキューのdrawメソッドを呼ぶ
+        if messagequeue.isEnqueued():
+            messagequeue.draw()
 
     def onEnter(self):
         '''

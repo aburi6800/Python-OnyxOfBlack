@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import pyxel
-
-from ..baseState import BaseState
+from module.baseState import BaseState
 
 
 class BaseSystemState(BaseState):

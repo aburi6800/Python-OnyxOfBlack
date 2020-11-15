@@ -2,24 +2,24 @@
 import random
 
 import pyxel
-
-from ..character import (EnemyPartyGenerator, HumanGenerator, enemyParty,
-                         playerParty)
-from ..facilityStates.stateArmorShop import StateArmorShop
-from ..facilityStates.stateBarbar import StateBarbar
-from ..facilityStates.stateDrugs import StateDrugs
-from ..facilityStates.stateExaminations import StateExaminations
-from ..facilityStates.stateHelmetShop import StateHelmetShop
-from ..facilityStates.stateShieldShop import StateShieldShop
-from ..facilityStates.stateSurgery import StateSurgery
-from ..facilityStates.stateWeaponShop import StateWeaponShop
-from ..map.uturotown import uturotown
-from ..params.monster import monsterParams
-from ..pyxelUtil import PyxelUtil
-from .baseFieldState import BaseFieldState
-from .stateCemetery import StateCemetery
-from .stateDungionB1 import StateDungionB1
-from .stateWellB1 import StateWellB1
+from module.character import (EnemyPartyGenerator, HumanGenerator, enemyParty,
+                              playerParty)
+from module.facilityStates.stateArmorShop import StateArmorShop
+from module.facilityStates.stateBarbar import StateBarbar
+from module.facilityStates.stateDrugs import StateDrugs
+from module.facilityStates.stateExaminations import StateExaminations
+from module.facilityStates.stateHelmetShop import StateHelmetShop
+from module.facilityStates.stateShieldShop import StateShieldShop
+from module.facilityStates.stateSurgery import StateSurgery
+from module.facilityStates.stateWeaponShop import StateWeaponShop
+from module.fieldStates.baseFieldState import BaseFieldState
+from module.fieldStates.stateCemetery import StateCemetery
+from module.fieldStates.stateDungionB1 import StateDungionB1
+from module.fieldStates.stateWellB1 import StateWellB1
+from module.map.uturotown import uturotown
+from module.messageQueue import message, messageCommand, messagequeue
+from module.params.monster import monsterParams
+from module.pyxelUtil import PyxelUtil
 
 
 class StateCity(BaseFieldState):
@@ -350,9 +350,12 @@ class StateCity(BaseFieldState):
         '''
         隠しメッセージ
         '''
-        PyxelUtil.text(16, 140, ["I", "RO", " ", "I", "LTU", "KA",
-                                 "I", " ", "TU", "D", "TU", "*..."], pyxel.COLOR_WHITE)
-        PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
+        m = messageCommand()
+        m.addMessage(message(["I", "RO", " ", "I", "LTU", "KA", "I", " ", "TU", "D", "TU", "*..."]))
+        messagequeue.enqueue(m)
+#        PyxelUtil.text(16, 140, ["I", "RO", " ", "I", "LTU", "KA",
+#                                 "I", " ", "TU", "D", "TU", "*..."], pyxel.COLOR_WHITE)
+#        PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
     def draw_directionmarket(self):
         '''

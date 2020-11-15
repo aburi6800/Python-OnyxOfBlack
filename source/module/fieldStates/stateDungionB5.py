@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 import pyxel
-
-from ..character import EnemyPartyGenerator, HumanGenerator, enemyParty
-from ..map.dungionB5 import dungionB5
-from ..params.monster import monsterParams
-from .baseFieldState import BaseFieldState
+from module.character import EnemyPartyGenerator, HumanGenerator, enemyParty
+from module.fieldStates.baseFieldState import BaseFieldState
+from module.map.dungionB5 import dungionB5
+from module.params.monster import monsterParams
 
 
 class StateDungionB5(BaseFieldState):

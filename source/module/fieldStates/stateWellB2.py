@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 import pyxel
-
-from ..character import HumanGenerator, playerParty
-from ..map.wellB2 import wellB2
-from ..params.monster import monsterParams
-from ..pyxelUtil import PyxelUtil
-from .baseFieldState import BaseFieldState
-from .stateWellB3 import StateWellB3
+from module.character import HumanGenerator, playerParty
+from module.fieldStates.baseFieldState import BaseFieldState
+from module.fieldStates.stateWellB3 import StateWellB3
+from module.map.wellB2 import wellB2
+from module.params.monster import monsterParams
+from module.pyxelUtil import PyxelUtil
 
 
 class StateWellB2(BaseFieldState):

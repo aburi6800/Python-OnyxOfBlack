@@ -2,10 +2,10 @@
 import random
 
 import pyxel
-
-from ..baseState import BaseState
-from ..character import Human, enemyParty, playerParty
-from ..pyxelUtil import PyxelUtil
+from module.baseState import BaseState
+from module.character import Human, enemyParty, playerParty
+from module.messageQueue import message, messageCommand, messagequeue
+from module.pyxelUtil import PyxelUtil
 
 
 class StateBattle(BaseState):
@@ -205,6 +205,7 @@ class StateBattle(BaseState):
 
         # イニシアチブ、攻撃値、防御値を設定
         for _member in self.turn_table:
+#            if isinstance(_member, Human):
             _member.initiative = _member.dexterity + random.randint(1, 12)
             _member.attack = _member.strength + random.randint(1, 12)
             _member.accept = _member.defend + random.randint(1, 12)
@@ -264,9 +265,13 @@ class StateBattle(BaseState):
             # 攻撃ヒット判定
             if _attacker.attack < _target.dexterity:
                 # 避けた
-                self.message.append(["*" + _target.name + " ", "KA", "D"])
-                self.message.append(
-                    ["*" + _attacker.name + " ", "WO", " ", "YO", "KE", "TA", "."])
+                m = messageCommand()
+                m.addMessage(message(["*" + _target.name + " ", "KA", "D"]))
+                m.addMessage(message(["*" + _attacker.name + " ", "WO", " ", "YO", "KE", "TA", "."]))
+                messagequeue.enqueue(m)
+#                self.message.append(["*" + _target.name + " ", "KA", "D"])
+#                self.message.append(
+#                    ["*" + _attacker.name + " ", "WO", " ", "YO", "KE", "TA", "."])
             else:
                 # ダメージ算出
                 _damage = _attacker.attack
@@ -275,7 +280,7 @@ class StateBattle(BaseState):
                 if isinstance(_attacker, Human) and _attacker.weapon != None:
                     _damage = _damage + _attacker.weapon.attack
 
-                # ダメージから防御値を減算
+                # 武器が刃物の場合、ダメージから防御値を減算
                 _damage = _damage - _target.accept
 
                 # 人間の場合は装備品の防御値をダメージから減算

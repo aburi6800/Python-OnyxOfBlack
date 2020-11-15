@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 import random
-from module.params.weapon import weaponParams
+
 from module.params.armor import armorParams
-#from module.item import ShieldParams
-#from module.item import HelmetParams
+from module.params.weapon import weaponParams
 
 
 class Character(object):
@@ -143,6 +142,8 @@ class PlayerParty(Party):
     直接このクラスを使用せず、インスタンスを格納したplayerPartyをimportして使用すること
     '''
 
+    eventFlg = []
+
     def __init__(self):
         '''
         クラス初期化
@@ -161,6 +162,7 @@ class PlayerParty(Party):
 
         # 状況のフラグ
         self.isEscape = False
+        self.eventFlg = [False] * 64
 
         if __debug__:
             print("PlayerParty : Initialized.")

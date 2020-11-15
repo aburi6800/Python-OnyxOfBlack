@@ -2,12 +2,11 @@
 import random
 
 import pyxel
-
-from ..character import HumanGenerator, playerParty
-from ..fieldStates.stateCity import StateCity
-from ..input import Input
-from ..pyxelUtil import PyxelUtil
-from .baseSystemState import BaseSystemState
+from module.character import HumanGenerator, playerParty
+from module.fieldStates.stateCity import StateCity
+from module.input import Input
+from module.pyxelUtil import PyxelUtil
+from module.systemStates.baseSystemState import BaseSystemState
 
 
 class StateMakeCharacter(BaseSystemState):

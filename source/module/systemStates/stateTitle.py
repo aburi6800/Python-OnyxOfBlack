@@ -3,11 +3,10 @@ import os
 import pickle
 
 import pyxel
-
-from ..character import playerParty
-from ..pyxelUtil import PyxelUtil
-from .baseSystemState import BaseSystemState
-from .stateMakeChracter import StateMakeCharacter
+from module.character import playerParty
+from module.pyxelUtil import PyxelUtil
+from module.systemStates.baseSystemState import BaseSystemState
+from module.systemStates.stateMakeChracter import StateMakeCharacter
 
 
 class StateTitle(BaseSystemState):

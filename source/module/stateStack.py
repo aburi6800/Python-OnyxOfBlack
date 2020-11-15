@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from .baseState import BaseState
-from .fieldStates.baseFieldState import BaseFieldState
+from module.baseState import BaseState
+from module.fieldStates.baseFieldState import BaseFieldState
 
 
 class StateStack(object):

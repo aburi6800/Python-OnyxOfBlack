@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 import pyxel
-
-from ..character import HumanGenerator, playerParty
-from ..map.dungionB1 import dungionB1
-from ..params.monster import monsterParams
-from ..pyxelUtil import PyxelUtil
-from .baseFieldState import BaseFieldState
-from .stateDungionB2 import StateDungionB2
+from module.character import HumanGenerator, playerParty
+from module.fieldStates.baseFieldState import BaseFieldState
+from module.fieldStates.stateDungionB2 import StateDungionB2
+from module.map.dungionB1 import dungionB1
+from module.params.monster import monsterParams
+from module.pyxelUtil import PyxelUtil
 
 
 class StateDungionB1(BaseFieldState):

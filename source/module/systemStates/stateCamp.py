@@ -2,11 +2,10 @@
 import pickle
 
 import pyxel
-
-from ..character import playerParty
-from ..facilityStates.baseFacilityState import BaseFacilityState
-from ..pyxelUtil import PyxelUtil
-from ..savedata import SaveData
+from module.character import playerParty
+from module.facilityStates.baseFacilityState import BaseFacilityState
+from module.pyxelUtil import PyxelUtil
+from module.savedata import SaveData
 
 
 class StateCamp(BaseFacilityState):

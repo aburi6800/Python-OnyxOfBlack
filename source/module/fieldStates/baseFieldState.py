@@ -2,12 +2,11 @@
 import random
 
 import pyxel
-
-from ..baseState import BaseState
-from ..battleStates.stateBattle import StateBattle
-from ..character import EnemyPartyGenerator, enemyParty, playerParty
-from ..pyxelUtil import PyxelUtil
-from ..systemStates.stateCamp import StateCamp
+from module.baseState import BaseState
+from module.battleStates.stateBattle import StateBattle
+from module.character import EnemyPartyGenerator, enemyParty, playerParty
+from module.pyxelUtil import PyxelUtil
+from module.systemStates.stateCamp import StateCamp
 
 
 class BaseFieldState(BaseState):
@@ -92,7 +91,8 @@ class BaseFieldState(BaseState):
         '''
         各フレームの処理
         '''
-        super().update()
+        if super().update():
+            return
 
         # パーティーは逃げてきたか？
         if playerParty.isEscape:
