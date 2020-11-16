@@ -119,6 +119,7 @@ class messageCommand(baseCommand):
         # メッセージ表示状態の場合は、以下を処理する。
         #   idx～idx+4までを画面に表示し、キー入力待ち状態にする
         if self.status == 0:
+
             # 次のカラムへ
             self.messageCol += 1
 
@@ -127,16 +128,16 @@ class messageCommand(baseCommand):
                 self.messageCol = 1
                 self.messageRow += 1
 
+            # 現在行が0行目以外の時は、表示済の行を描画する
+            if self.messageRow > 0:
+                for _messageRow in range(0, self.messageRow):
+                    _tempIdx = self.idx + _messageRow
+                    PyxelUtil.text(16, 140 + (_messageRow * 8), self.messageList[_tempIdx].message, self.messageList[_tempIdx].color)
+
             _tempIdx = self.idx + self.messageRow
             if self.messageRow < 5 and _tempIdx < len(self.messageList):
                 # 現在行は１文字ずつ送り表示する
                 PyxelUtil.text(16, 140 + (self.messageRow * 8), self.messageList[_tempIdx].message[:self.messageCol], self.messageList[_tempIdx].color)
-
-                # 現在行が0行目以外の時は、表示済の行を描画する
-                if self.messageRow != 0:
-                    for _messageRow in range(0, self.messageRow - 1):
-                        _tempIdx = self.idx + _messageRow
-                        PyxelUtil.text(16, 140 + (_messageRow * 8), self.messageList[_tempIdx].message, self.messageList[_tempIdx].color)
 
             else:
                 # キー入力待ち状態にする
