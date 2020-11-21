@@ -1,32 +1,32 @@
 # -*- coding: utf-8 -*-
 import pyxel
-from module.character import HumanGenerator
+from module.character import HumanGenerator, playerParty
 from module.fieldStates.baseFieldState import BaseFieldState
-from module.fieldStates.stateDungionB3 import StateDungionB3
-from module.map.dungionB2 import dungionB2
+from module.fieldStates.stateDungeonB2 import StateDungeonB2
+from module.map.dungeonB1 import dungeonB1
 from module.params.monster import monsterParams
 from module.pyxelUtil import PyxelUtil
 
 
-class StateDungionB2(BaseFieldState):
+class StateDungeonB1(BaseFieldState):
     '''
-    地下迷宮B2のクラス
+    地下迷宮B1のクラス
 
     BaseFieldStateを継承
     遭遇する敵リストとイベント処理を持つ
     '''
 
     # マップ
-    _map = dungionB2.map
+    _map = dungeonB1.map
 
     # 出現するモンスターリスト
     enemy_set = (
-        HumanGenerator.generate(4),
-        monsterParams["COBOLD_LV2"],
-        monsterParams["SKELTON_LV2"],
-        monsterParams["ZOMBIE_LV2"],
-        monsterParams["AZTEC_LV1"],
-        monsterParams["GOBLIN_LV1"],
+        HumanGenerator.generate(2),
+        monsterParams["BAT_LV1"],
+        monsterParams["BAT_LV2"],
+        monsterParams["COBOLD_LV1"],
+        monsterParams["SKELTON_LV1"],
+        monsterParams["ZOMBIE_LV1"],
     )
 
     def __init__(self):
@@ -39,14 +39,10 @@ class StateDungionB2(BaseFieldState):
         # マップ上の座標に対応するイベントの関数の辞書
         # 座標は"01013U"のようにX座標とY座標を2桁にした値と方向の値を結合し、"U"(update用)か"D"(draw用)を付与したものとする
         self.event = {
-            "18219U": self.update_to_up,
-            "18219D": self.draw_to_up,
-            "16279U": self.update_to_down,
-            "16279D": self.draw_to_down,
-            "29199U": self.update_to_down,
-            "29199D": self.draw_to_down,
-            "26129U": self.update_to_down,
-            "26129D": self.draw_to_down,
+            "03069U": self.update_to_up,
+            "03069D": self.draw_to_up,
+            "18219U": self.update_to_down,
+            "18219D": self.draw_to_down,
         }
 
     def update_to_up(self):
@@ -54,7 +50,9 @@ class StateDungionB2(BaseFieldState):
         上に上がる階段のイベント
         '''
         if pyxel.btnp(pyxel.KEY_U):
-            # B1へ戻る
+            playerParty.x = 11
+            playerParty.y = 7
+            # 町へ戻る
             self.popState()
 
     def update_to_down(self):
@@ -62,7 +60,7 @@ class StateDungionB2(BaseFieldState):
         下に降りる階段のイベント
         '''
         if pyxel.btnp(pyxel.KEY_D):
-            self.pushState(StateDungionB3)
+            self.pushState(StateDungenB2)
 
     def draw_to_up(self):
         '''

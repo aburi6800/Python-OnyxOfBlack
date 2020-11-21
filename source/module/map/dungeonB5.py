@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-class dungionB5:
+class dungeonB5:
     '''
-    dungionB5
+    dungeonB5
      30 x  30
     '''
     map = (

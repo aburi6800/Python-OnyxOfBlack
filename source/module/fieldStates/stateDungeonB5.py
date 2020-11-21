@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 import pyxel
-from module.character import EnemyPartyGenerator, HumanGenerator, enemyParty
 from module.fieldStates.baseFieldState import BaseFieldState
-from module.map.dungionB5 import dungionB5
+from module.map.dungeonB5 import dungeonB5
 from module.params.monster import monsterParams
 
 
-class StateDungionB5(BaseFieldState):
+class StateDungeonB5(BaseFieldState):
     '''
     地下迷宮B5のクラス
 
@@ -15,7 +14,7 @@ class StateDungionB5(BaseFieldState):
     '''
 
     # マップ
-    _map = dungionB5.map
+    _map = dungeonB5.map
 
     # 出現するモンスターリスト
     enemy_set = (

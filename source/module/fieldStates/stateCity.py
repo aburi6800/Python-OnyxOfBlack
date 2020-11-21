@@ -103,8 +103,8 @@ class StateCity(BaseFieldState):
             "19182U": self.update_temple,
             "15149D": self.draw_to_well,
             "15149U": self.update_to_well,
-            "11079D": self.draw_to_dungion,
-            "11079U": self.update_to_dungion,
+            "11079D": self.draw_to_dungeon,
+            "11079U": self.update_to_dungeon,
         }
 
     def encount_enemy(self):
@@ -224,7 +224,7 @@ class StateCity(BaseFieldState):
             # 井戸の中へ
             self.pushState(StateWellB1)
 
-    def update_to_dungion(self):
+    def update_to_dungeon(self):
         '''
         地下迷宮の入口のイベント
         '''
@@ -234,7 +234,7 @@ class StateCity(BaseFieldState):
             # カウントタイマーを初期化しておく
             self.tick = 0
             # 地下迷宮へ
-            self.pushState(StateDungionB1)
+            self.pushState(StateDungeonB1)
 
     def update_temple(self):
         '''
@@ -404,7 +404,7 @@ class StateCity(BaseFieldState):
         PyxelUtil.text(16, 148, ["SI", "TA", "NI", " ", "O", "RI",
                                  "RA", "RE", "SO", "U", "TA", "D", "."], pyxel.COLOR_WHITE)
 
-    def draw_to_dungion(self):
+    def draw_to_dungeon(self):
         '''
         地下迷宮の入口の表示
         '''
