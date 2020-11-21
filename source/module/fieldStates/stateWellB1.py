@@ -4,8 +4,8 @@ from module.character import HumanGenerator, playerParty
 from module.fieldStates.baseFieldState import BaseFieldState
 from module.fieldStates.stateWellB2 import StateWellB2
 from module.map.wellB1 import wellB1
+from module.messageQueue import chooseCommand, choosevalue, messagequeue
 from module.params.monster import monsterParams
-from module.pyxelUtil import PyxelUtil
 
 
 class StateWellB1(BaseFieldState):
@@ -40,31 +40,35 @@ class StateWellB1(BaseFieldState):
         # 座標は"01013U"のようにX座標とY座標を2桁にした値と方向の値を結合し、"U"(update用)か"D"(draw用)を付与したものとする
         self.event = {
             "10109U": self.update_to_upanddown,
-            "10109D": self.draw_to_upanddown,
         }
 
     def update_to_upanddown(self):
         '''
         抜け穴のイベント
         '''
-        if pyxel.btnp(pyxel.KEY_U):
+        if self.tick == 1:
+            c = chooseCommand()
+            c.addMessage(["U", "E", "TO", "SI", "TA", "NI", " ", "NU", "KE", "A", "NA", "KA", "D", " ", "A", "RU", "."])
+            c.addMessage([""])
+            c.addChoose(["*[U] ","U", "E", " ", "NI", " ", "NO", "HO", "D", "RU"], pyxel.KEY_U, 1)
+            c.addChoose(["*[D] ","SI", "TA", " ", "NI", " ", "O", "RI", "RU"], pyxel.KEY_D, 2)
+            c.addChoose(["*[L] ","KO", "NO", "HA", "D", "WO", " ", "TA", "TI", "SA", "RU"], pyxel.KEY_L, 3)
+            messagequeue.enqueue(c)
+            return
+
+        if choosevalue.value == 1:
+            choosevalue.value = 0
             playerParty.x = 15
             playerParty.y = 14
             # 町へ戻る
             self.popState()
 
-        if pyxel.btnp(pyxel.KEY_D):
+        if choosevalue.value == 2:
+            choosevalue.value = 0
             playerParty.x = 10
             playerParty.y = 10
             # 井戸B2へ
             self.pushState(StateWellB2)
-
-    def draw_to_upanddown(self):
-        '''
-        天井の抜け穴の表示
-        '''
-        PyxelUtil.text(16, 140, ["U", "E", "TO", "SI", "TA", "NI", " ", "NU",
-                                 "KE", "A", "NA", "KA", "D", " ", "A", "RU", "* !!"], pyxel.COLOR_WHITE)
 
     def onEnter(self):
         '''

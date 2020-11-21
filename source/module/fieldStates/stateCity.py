@@ -17,7 +17,7 @@ from module.fieldStates.stateCemetery import StateCemetery
 from module.fieldStates.stateDungionB1 import StateDungionB1
 from module.fieldStates.stateWellB1 import StateWellB1
 from module.map.uturotown import uturotown
-from module.messageQueue import message, messageCommand, messagequeue
+from module.messageQueue import messageCommand, chooseCommand, messagequeue, choosevalue
 from module.params.monster import monsterParams
 from module.pyxelUtil import PyxelUtil
 
@@ -181,11 +181,12 @@ class StateCity(BaseFieldState):
         '''
         if self.tick == 1:
             m = messageCommand()
-            m.addMessage(message(["I", "RO", " ", "I", "LTU", "KA", "I", " ", "TU", "D", "TU", "*..."]))
+            m.addMessage(["TO", "D", "KO", "KA", "RA", "TO", "MO", "NA", "KU", " ", "KO", "E", "KA", "D", " ", "KI", "KO","E", "TE", "KI", "TA", "."])
+            m.addMessage([""])
+            m.addMessage(["I", "RO", " ", "I", "LTU", "KA", "I", " ", "TU", "D", "TU", "*..."], pyxel.COLOR_PEACH)
             messagequeue.enqueue(m)
         
         else:
-#            if pyxel.btn(pyxel.KEY_SPACE):
             playerParty.x = 11
             playerParty.y = 8
             playerParty.direction = self.DIRECTION_NORTH
@@ -216,11 +217,22 @@ class StateCity(BaseFieldState):
         '''
         井戸のイベント
         '''
-        if pyxel.btn(pyxel.KEY_D):
+        if self.tick == 1:
+            c = chooseCommand()
+            c.addMessage(["KA", "RE", "TA", " ", "I", "TO", "D", "KA", "D", "A", "RU", "."])
+            c.addMessage(["SI", "TA", "NI", " ", "O", "RI", "RA", "RE", "SO", "U", "TA", "D", "."])
+            c.addMessage([""])
+            c.addChoose(["*[D] ","O", "RI", "TE", "MI", "RU"], pyxel.KEY_D, 1)
+            c.addChoose(["*[L] ","KO", "NO", "HA", "D", "WO", " ", "TA", "TI", "SA", "RU"], pyxel.KEY_L, 2)
+            messagequeue.enqueue(c)
+            return
+
+        if choosevalue.value == 1:
+            choosevalue.value = 0
             playerParty.x = 10
             playerParty.y = 10
             # カウントタイマーを初期化しておく
-            self.tick = 0
+#            self.tick = 0
             # 井戸の中へ
             self.pushState(StateWellB1)
 
@@ -357,9 +369,6 @@ class StateCity(BaseFieldState):
         隠しメッセージ
         '''
         pass
-#        PyxelUtil.text(16, 140, ["I", "RO", " ", "I", "LTU", "KA",
-#                                 "I", " ", "TU", "D", "TU", "*..."], pyxel.COLOR_WHITE)
-#        PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
     def draw_directionmarket(self):
         '''
@@ -399,10 +408,10 @@ class StateCity(BaseFieldState):
             pyxel.image(0).load(0, 205, "well.png")
         pyxel.blt(self.OFFSET_X + 15, self.OFFSET_Y + 15, 0, 0, 205, 50, 50)
 
-        PyxelUtil.text(16, 140, ["KA", "RE", "TA", " ", "I", "TO",
-                                 "D", "KA", "D", "A", "RU", "."], pyxel.COLOR_WHITE)
-        PyxelUtil.text(16, 148, ["SI", "TA", "NI", " ", "O", "RI",
-                                 "RA", "RE", "SO", "U", "TA", "D", "."], pyxel.COLOR_WHITE)
+#        PyxelUtil.text(16, 140, ["KA", "RE", "TA", " ", "I", "TO",
+#                                 "D", "KA", "D", "A", "RU", "."], pyxel.COLOR_WHITE)
+#        PyxelUtil.text(16, 148, ["SI", "TA", "NI", " ", "O", "RI",
+#                                 "RA", "RE", "SO", "U", "TA", "D", "."], pyxel.COLOR_WHITE)
 
     def draw_to_dungeon(self):
         '''

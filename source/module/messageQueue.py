@@ -47,9 +47,28 @@ class message():
     '''
     メッセージクラス
     '''
-    def __init__(self, message, color:int = 7):
+    def __init__(self, message, color:int = pyxel.COLOR_WHITE):
         self.message = message
         self.color = color
+
+
+class choose(message):
+    '''
+    選択肢クラス
+    '''
+    def __init__(self, message, color:int = pyxel.COLOR_YELLOW, key:int = pyxel.KEY_NONE, value:int = 0):
+        super().__init__(message, color)
+        self.key = key
+
+
+class chooseValue():
+    '''
+    選択結果保存クラス
+    '''
+    value = None
+
+
+choosevalue = chooseValue()
 
 
 class baseCommand():
@@ -93,8 +112,17 @@ class messageCommand(baseCommand):
         # メッセージ表示桁
         self.messageCol = 0
 
-    def addMessage(self, message:message):
-        self.messageList.append(message)
+    def addMessage(self, _message, color:int = pyxel.COLOR_WHITE):
+        _messageList = []
+
+        # 引数の型を調べて変換する
+        if type(_message) == str:
+            _messageList.append(_message)
+        else:
+            _messageList = list(_message)
+
+        m = message(_messageList, color)
+        self.messageList.append(m)
 
     def update(self):
         super().update()
@@ -140,20 +168,66 @@ class messageCommand(baseCommand):
                 PyxelUtil.text(16, 140 + (self.messageRow * 8), self.messageList[_tempIdx].message[:self.messageCol], self.messageList[_tempIdx].color)
 
             else:
-                # キー入力待ち状態にする
-                self.status = 1
+                # 状態を変更する
+                self.changeStatus()
 
         # キー入力待ち状態の時は、キー入力待ちメッセージを表示する
-        if self.status == 1:
-            for _messageRow in range(0, 4):
+        if self.status == 1 or self.status == 2:
+            for _messageRow in range(0, self.messageRow):
                 _tempIdx = self.idx + _messageRow
-                if _tempIdx < len(self.messageList): 
-                    PyxelUtil.text(16, 140 + (_messageRow * 8), self.messageList[_tempIdx].message, self.messageList[_tempIdx].color)
-            PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
+                PyxelUtil.text(16, 140 + (_messageRow * 8), self.messageList[_tempIdx].message, self.messageList[_tempIdx].color)
+
+            if self.status == 1:
+                PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
+
+    def changeStatus(self):
+        # キー入力待ち状態にする
+        self.status = 1
 
 
-class chooseCommand():
+class chooseCommand(messageCommand):
     '''
-    選択クラス
+    選択肢コマンドクラス
     '''
+    def __init__(self):
+        super().__init__()
+
+        # 選択肢の辞書
+        self.chooseDict = {}
+
+    def addChoose(self, _message, key:int = pyxel.KEY_NONE, value = 0):
+        _messageList = []
+
+        # 引数の型を調べて変換する
+        if type(_message) == str:
+            _messageList.append(_message)
+        else:
+            _messageList = list(_message)
+
+        c = choose(_messageList, pyxel.COLOR_YELLOW)
+        # 親クラスが持つメッセージリストにメッセージとして登録
+        self.messageList.append(c)
+
+        # キーと値を選択肢の辞書に追加
+        self.chooseDict[key] = value
+
+    def update(self):
+        super().update()
+
+        # 選択肢入力待ち状態の時に定義されたいずれかのキーを押されたらchoosevalueを設定し、終了する。
+        if self.status == 2:
+            for _key, _value in self.chooseDict.items():
+                if pyxel.btnp(_key):
+                    choosevalue.value = _value
+                    self.complete()
+
+    def changeStatus(self):
+        # 次ページのメッセージがあるか
+        if self.idx + 5 < len(self.messageList) - 1:
+            # 次ページのメッセージがある場合は、SPACEキーの入力待ちとする
+            self.status = 1
+        else:
+            # 次ページのメッセージがない場合は、選択肢の入力待ちとする
+            choosevalue.value = None
+            self.status = 2
     
