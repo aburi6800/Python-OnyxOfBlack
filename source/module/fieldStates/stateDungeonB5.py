@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import pyxel
+from module.character import EnemyPartyGenerator, enemyParty
 from module.fieldStates.baseFieldState import BaseFieldState
 from module.map.dungeonB5 import dungeonB5
 from module.params.monster import monsterParams
