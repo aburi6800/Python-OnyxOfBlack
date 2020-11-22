@@ -2,10 +2,10 @@
 import pyxel
 from module.character import HumanGenerator, playerParty
 from module.fieldStates.baseFieldState import BaseFieldState
-from module.fieldStates.stateWellB2 import StateWellB2
 from module.map.wellB1 import wellB1
 from module.messageQueue import chooseCommand, choosevalue, messagequeue
 from module.params.monster import monsterParams
+from module.state import State
 
 
 class StateWellB1(BaseFieldState):
@@ -68,7 +68,7 @@ class StateWellB1(BaseFieldState):
             playerParty.x = 10
             playerParty.y = 10
             # 井戸B2へ
-            self.pushState(StateWellB2)
+            self.pushState(State.WELLB2)
 
     def onEnter(self):
         '''

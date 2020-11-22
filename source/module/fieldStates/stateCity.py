@@ -4,22 +4,13 @@ import random
 import pyxel
 from module.character import (EnemyPartyGenerator, HumanGenerator, enemyParty,
                               playerParty)
-from module.facilityStates.stateArmorShop import StateArmorShop
-from module.facilityStates.stateBarbar import StateBarbar
-from module.facilityStates.stateDrugs import StateDrugs
-from module.facilityStates.stateExaminations import StateExaminations
-from module.facilityStates.stateHelmetShop import StateHelmetShop
-from module.facilityStates.stateShieldShop import StateShieldShop
-from module.facilityStates.stateSurgery import StateSurgery
-from module.facilityStates.stateWeaponShop import StateWeaponShop
 from module.fieldStates.baseFieldState import BaseFieldState
-from module.fieldStates.stateCemetery import StateCemetery
-from module.fieldStates.stateDungionB1 import StateDungionB1
-from module.fieldStates.stateWellB1 import StateWellB1
 from module.map.uturotown import uturotown
-from module.messageQueue import messageCommand, chooseCommand, messagequeue, choosevalue
+from module.messageQueue import (chooseCommand, choosevalue, messageCommand,
+                                 messagequeue)
 from module.params.monster import monsterParams
 from module.pyxelUtil import PyxelUtil
+from module.state import State
 
 
 class StateCity(BaseFieldState):
@@ -131,49 +122,49 @@ class StateCity(BaseFieldState):
         '''
         盾屋に入るイベント
         '''
-        self.pushState(StateShieldShop)
+        self.pushState(State.SHIELDSHOP)
 
     def update_armorshop(self):
         '''
         鎧屋に入るイベント
         '''
-        self.pushState(StateArmorShop)
+        self.pushState(State.ARMORSHOP)
 
     def update_helmetshop(self):
         '''
         兜屋に入るイベント
         '''
-        self.pushState(StateHelmetShop)
+        self.pushState(State.HELMETSHOP)
 
     def update_weaponshop(self):
         '''
         武器屋に入るイベント
         '''
-        self.pushState(StateWeaponShop)
+        self.pushState(State.WEAPONSHOP)
 
     def update_barbar(self):
         '''
         床屋に入るイベント
         '''
-        self.pushState(StateBarbar)
+        self.pushState(State.BARBAR)
 
     def update_drugs(self):
         '''
         薬屋に入るイベント
         '''
-        self.pushState(StateDrugs)
+        self.pushState(State.DRUGS)
 
     def update_surgery(self):
         '''
         緊急治療に入るイベント
         '''
-        self.pushState(StateSurgery)
+        self.pushState(State.SURGERY)
 
     def update_examinations(self):
         '''
         身体検査に入るイベント
         '''
-        self.pushState(StateExaminations)
+        self.pushState(State.EXAMINATIONS)
 
     def update_secretmessage(self):
         '''
@@ -211,7 +202,7 @@ class StateCity(BaseFieldState):
             # カウントタイマーを初期化しておく
             self.tick = 0
             # 墓地の地下へ
-            self.pushState(StateCemetery)
+            self.pushState(State.CEMETERY)
 
     def update_to_well(self):
         '''
@@ -234,7 +225,7 @@ class StateCity(BaseFieldState):
             # カウントタイマーを初期化しておく
 #            self.tick = 0
             # 井戸の中へ
-            self.pushState(StateWellB1)
+            self.pushState(State.WELLB1)
 
     def update_to_dungeon(self):
         '''
@@ -246,7 +237,7 @@ class StateCity(BaseFieldState):
             # カウントタイマーを初期化しておく
             self.tick = 0
             # 地下迷宮へ
-            self.pushState(StateDungeonB1)
+            self.pushState(State.DUNGEONB1)
 
     def update_temple(self):
         '''

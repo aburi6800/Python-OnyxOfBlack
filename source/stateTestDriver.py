@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pyxel
 from module.stateStack import stateStack
-from module.systemStates.stateTitle import StateTitle
+from module.state import State
 
 class App:
     '''
@@ -15,7 +15,7 @@ class App:
         クラス初期化
         '''
         # StateStackの初期化
-        stateStack.clear()
+        stateStack.clear("")
 
         # Pyxel初期化～実行
         pyxel.init(256, 192)
@@ -27,7 +27,7 @@ class App:
         各フレームの処理
         '''
         if stateStack.states[0] == None:
-            stateStack.push(StateTitle)
+            stateStack.push(State.TITLE)
 
         stateStack.update()
 

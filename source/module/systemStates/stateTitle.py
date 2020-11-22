@@ -5,8 +5,8 @@ import pickle
 import pyxel
 from module.character import playerParty
 from module.pyxelUtil import PyxelUtil
+from module.state import State
 from module.systemStates.baseSystemState import BaseSystemState
-from module.systemStates.stateMakeChracter import StateMakeCharacter
 
 
 class StateTitle(BaseSystemState):
@@ -70,7 +70,7 @@ class StateTitle(BaseSystemState):
             if self.tick > 21:
                 if self.selected == 1:
                     self.selected = 0
-                    self.pushState(StateMakeCharacter)
+                    self.pushState(State.MAKECHARACTER)
                 if self.selected == 2:
                     # セーブデータをロード
                     with open("savedata.dat", mode="rb") as f:

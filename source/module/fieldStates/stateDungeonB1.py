@@ -2,10 +2,10 @@
 import pyxel
 from module.character import HumanGenerator, playerParty
 from module.fieldStates.baseFieldState import BaseFieldState
-from module.fieldStates.stateDungeonB2 import StateDungeonB2
 from module.map.dungeonB1 import dungeonB1
 from module.params.monster import monsterParams
 from module.pyxelUtil import PyxelUtil
+from module.state import State
 
 
 class StateDungeonB1(BaseFieldState):
@@ -60,7 +60,7 @@ class StateDungeonB1(BaseFieldState):
         下に降りる階段のイベント
         '''
         if pyxel.btnp(pyxel.KEY_D):
-            self.pushState(StateDungenB2)
+            self.pushState(State.DUNGEONB2)
 
     def draw_to_up(self):
         '''

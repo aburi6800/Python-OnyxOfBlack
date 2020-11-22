@@ -26,7 +26,7 @@ class BaseState(AbstractState):
         '''
         クラス初期化
         '''
-        self.stateName = name
+        self.stateName = ""
         self.tick = 0
 
     def update(self):

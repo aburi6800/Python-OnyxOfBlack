@@ -2,10 +2,10 @@
 import pyxel
 from module.character import HumanGenerator, playerParty
 from module.fieldStates.baseFieldState import BaseFieldState
-from module.fieldStates.stateWellB3 import StateWellB3
 from module.map.wellB2 import wellB2
 from module.params.monster import monsterParams
 from module.pyxelUtil import PyxelUtil
+from module.state import State
 
 
 class StateWellB2(BaseFieldState):
@@ -57,7 +57,7 @@ class StateWellB2(BaseFieldState):
             playerParty.x = 10
             playerParty.y = 10
             # 井戸B3へ
-            self.pushState(StateWellB3)
+            self.pushState(State.WELLB3)
 
     def draw_to_upanddown(self):
         '''

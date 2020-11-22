@@ -3,9 +3,9 @@ import random
 
 import pyxel
 from module.baseState import BaseState
-from module.battleStates.stateBattle import StateBattle
 from module.character import EnemyPartyGenerator, enemyParty, playerParty
 from module.pyxelUtil import PyxelUtil
+from module.state import State
 from module.systemStates.stateCamp import StateCamp
 
 
@@ -103,7 +103,7 @@ class BaseFieldState(BaseState):
             _dirlist = random.sample(_dirlist, len(_dirlist))
             # 各方向について移動可能か調べる
             for _direction in _dirlist:
-                if self.__can_move_forward(self._map, playerParty.x, playerParty.y, _direction):
+                if self.can_move_forward(self._map, playerParty.x, playerParty.y, _direction):
                     # 移動可能の場合はその方向に移動
                     playerParty.x = playerParty.x + self.VX[_direction]
                     playerParty.y = playerParty.y + self.VX[_direction]
@@ -117,25 +117,25 @@ class BaseFieldState(BaseState):
             if self.tick > 30:
                 self.isEncount = False
                 self.tick = 0
-                self.pushState(StateBattle)
+                self.pushState(State.BATTLE)
                 return
             else:
                 return
 
         # イベントハンドラ
-        if self.__eventhandler("U") == False:
-            # イベントが何もない場合、エンカウントするか？
+        if self.eventhandler("U") == False:
+        # イベントが何もない場合、エンカウントするか？
             if self.tick == 1 and random.randint(0, 20) == 0:
                 self.encount_enemy()
                 return
 
         # キャンプ
         if pyxel.btnp(pyxel.KEY_SPACE):
-            self.pushState(StateCamp)
+            self.pushState(State.CAMP)
 
         # キー入力（右）
         if pyxel.btnp(pyxel.KEY_RIGHT):
-            self.tick = 0
+#            self.tick = 0
             playerParty.saveCondition()
             playerParty.direction += 1
             if playerParty.direction > self.DIRECTION_WEST:
@@ -144,7 +144,7 @@ class BaseFieldState(BaseState):
 
         # キー入力（左）
         if pyxel.btnp(pyxel.KEY_LEFT):
-            self.tick = 0
+#            self.tick = 0
             playerParty.saveCondition()
             playerParty.direction -= 1
             if playerParty.direction < self.DIRECTION_NORTH:
@@ -153,18 +153,14 @@ class BaseFieldState(BaseState):
 
         # キー入力（下）
         if pyxel.btnp(pyxel.KEY_DOWN):
-            self.tick = 0
+#            self.tick = 0
             playerParty.saveCondition()
             playerParty.direction = (playerParty.direction + 2) % 4
             return
 
         # キー入力（上）
-        if pyxel.btnp(pyxel.KEY_UP) and self.__can_move_forward(self._map, playerParty.x, playerParty.y, playerParty.direction):
+        if pyxel.btnp(pyxel.KEY_UP) and self.can_move_forward(self._map, playerParty.x, playerParty.y, playerParty.direction):
             self.tick = 0
-#            if random.randint(0, 20) == 0:
-#                self.__encount_enemy()
-#                pass
-#            else:
             playerParty.saveCondition()
             playerParty.x = playerParty.x + self.VX[playerParty.direction]
             playerParty.y = playerParty.y + self.VY[playerParty.direction]
@@ -209,13 +205,13 @@ class BaseFieldState(BaseState):
             pass
         self.isFixedEncount = False
 
-    def __can_move_forward(self, _map, _x: int, _y: int, _direction: int) -> bool:
+    def can_move_forward(self, _map, _x: int, _y: int, _direction: int) -> bool:
         '''
         前進できるかを判定する
 
         マップデータを方向によりシフトした結果の下位1ビットが立っている（＝目の前の壁情報が通行不可）場合は、前進不可と判定する
         '''
-        _value = self.__get_mapinfo(_map, _x, _y, _direction)
+        _value = self.get_mapinfo(_map, _x, _y, _direction)
 
         if _value & 0b000000000001 == 0b000000000001:
             return False
@@ -272,7 +268,7 @@ class BaseFieldState(BaseState):
                            self.OFFSET_X, 0 + self.OFFSET_Y, pyxel.COLOR_DARKBLUE)
 
             # 迷路
-            self.__draw_maze(playerParty.x, playerParty.y,
+            self.draw_maze(playerParty.x, playerParty.y,
                             playerParty.direction, self._map)
 
         # エンカウント時のメッセージ
@@ -282,17 +278,16 @@ class BaseFieldState(BaseState):
             return
 
         # イベントハンドラ
-        self.__eventhandler("D")
+        self.eventhandler("D")
 
     def onEnter(self):
         '''
         状態開始時の処理
         '''
+        super().onEnter()
+
         # 壁の色を初期化する
         self.set_wall_color()
-
-        # タイマーカウンタ初期化
-        self.tick = 0
 
         # エンカウントフラグ初期化
         self.isEncount = False
@@ -304,6 +299,8 @@ class BaseFieldState(BaseState):
         '''
         状態終了時の処理
         '''
+        super().onExit()
+
         # 壁の色を初期化する
         self.set_wall_color()
 
@@ -318,7 +315,7 @@ class BaseFieldState(BaseState):
         '''
         return False
 
-    def __eventhandler(self, _mode) -> bool:
+    def eventhandler(self, _mode) -> bool:
         '''
         プレイヤーパーティーの現在の座標に登録されているイベントがあれば、そのイベントの関数を呼び出す
 
@@ -349,7 +346,7 @@ class BaseFieldState(BaseState):
         # ここに到達している場合はイベントが発生していないため、Falseを返却する
         return False
 
-    def __draw_maze(self, _x, _y, _direction, _map):
+    def draw_maze(self, _x, _y, _direction, _map):
         '''
         迷路を表示する
 
@@ -363,8 +360,8 @@ class BaseFieldState(BaseState):
             if _get_x < 0 or _get_x > len(_map[_y]) - 1 or _get_y < 0 or _get_y > len(_map) - 1:
                 _data = 0
             else:
-                _data = self.__get_mapinfo(_map, _get_x, _get_y, _direction)
-            self.__draw_wall(i, _data)
+                _data = self.get_mapinfo(_map, _get_x, _get_y, _direction)
+            self.draw_wall(i, _data)
 
     def __right_3bit_rotate(self, n) -> int:
         '''
@@ -378,7 +375,7 @@ class BaseFieldState(BaseState):
         '''
         return ((n << 3) & 0b111111111111) | (n >> 9)
 
-    def __get_mapinfo(self, _map, _x, _y, _direction) -> int:
+    def get_mapinfo(self, _map, _x, _y, _direction) -> int:
         '''
         指定した座標のマップ情報を取得する。
 
@@ -391,7 +388,7 @@ class BaseFieldState(BaseState):
                 _data = self.__right_3bit_rotate(_data)
         return _data
 
-    def __draw_wall(self, _idx, _data):
+    def draw_wall(self, _idx, _data):
         '''
         迷路を表示する
 

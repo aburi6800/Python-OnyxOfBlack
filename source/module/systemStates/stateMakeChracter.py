@@ -3,9 +3,9 @@ import random
 
 import pyxel
 from module.character import HumanGenerator, playerParty
-from module.fieldStates.stateCity import StateCity
 from module.input import Input
 from module.pyxelUtil import PyxelUtil
+from module.state import State
 from module.systemStates.baseSystemState import BaseSystemState
 
 
@@ -213,7 +213,7 @@ class StateMakeCharacter(BaseSystemState):
             # 自分自身をpopする
             self.popState()
             # ゲーム開始
-            self.pushState(StateCity)
+            self.pushState(State.CITY)
 
     def draw(self):
         '''
