@@ -6,5 +6,6 @@ source/module/facilityStates/__pycache__/*
 source/module/systemStates/__pycache__/*
 source/module/map/__pycache__/*
 source/module/params/__pycache__/*
+source/module/fieldStates/city/__pycache__/*
 savedata.dat
 
