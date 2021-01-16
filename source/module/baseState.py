@@ -2,25 +2,23 @@
 from os import name
 
 import pyxel
-
-from module.abstractState import AbstractState
+from overrides import EnforceOverrides
 from module.character import Character, Human, Monster, playerParty
 from module.messageQueue import messagequeue
 from module.pyxelUtil import PyxelUtil
 
 
-class BaseState(AbstractState):
+class BaseState(EnforceOverrides):
     '''
-    各Stateクラス全ての基底クラス
-
-    AbstractStateを継承
-    renderメソッドでは画面の枠線とプレイヤーキャラクターの描画を行う
+    各Stateクラス全ての基底クラス\n
+    EnforceOverridesを継承
     '''
+    # 経過時間
     tick = 0
 
-    # 迷路描画の座標オフセット
-    OFFSET_X = 150
-    OFFSET_Y = 14
+    # 描画の座標オフセット
+    DRAW_OFFSET_X = 150
+    DRAW_OFFSET_Y = 14
 
     def __init__(self):
         '''
@@ -44,16 +42,14 @@ class BaseState(AbstractState):
 
     def update_execute(self):
         '''
-        各フレームの個別処理
-
+        各フレームの個別処理\n
         子クラスで個別の処理があれば、このメソッドに実装する
         '''
         pass
 
     def draw(self):
         '''
-        各フレームの描画処理
-
+        各フレームの描画処理\n
         各Stateで必ず必要な、画面の枠線とプレイヤーキャラクタ、ステータスの描画を行う
         '''
         pyxel.cls(pyxel.COLOR_BLACK)
@@ -93,8 +89,7 @@ class BaseState(AbstractState):
 
     def onExit(self):
         '''
-        状態終了時の処理
-
+        状態終了時の処理\n
         実装なし
         '''
         pass
@@ -102,11 +97,10 @@ class BaseState(AbstractState):
     @staticmethod
     def drawCharacter(_chr: Character, _x: int, _y: int):
         '''
-        キャラクターグラフィックの描画を行う
-
-        Characterクラスのインスタンスと、表示位置を渡すと装備等に合わせて描画する
-        Humanクラスの場合は装備を組み合わせたパターンを表示する
-        Monsterクラスの場合はパターンをそのまま表示する
+        キャラクターグラフィックの描画を行う。\n
+        Characterクラスのインスタンスと、表示位置を渡すと装備等に合わせて描画する。\n
+        Humanクラスの場合は装備を組み合わせたパターンを表示する。\n
+        Monsterクラスの場合はパターンをそのまま表示する。
         '''
         if isinstance(_chr, Human):
             # 頭

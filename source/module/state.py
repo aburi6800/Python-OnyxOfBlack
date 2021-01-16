@@ -28,3 +28,5 @@ class State(IntEnum):
     SURGERY = auto()
     WEAPONSHOP = auto()
     BATTLE = auto()
+    EVENTWELL = auto()
+    

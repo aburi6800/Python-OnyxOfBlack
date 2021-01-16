@@ -3,12 +3,11 @@ import pyxel
 from module.baseState import BaseState
 from module.character import playerParty
 from module.pyxelUtil import PyxelUtil
-
+from overrides import overrides
 
 class BaseFacilityState(BaseState):
     '''
-    施設の基底クラス
-
+    施設の基底クラス\n
     各施設で共通の処理を持つ
     '''
 
@@ -18,12 +17,14 @@ class BaseFacilityState(BaseState):
         '''
         super().__init__()
 
+    @overrides
     def update_execute(self):
         '''
         各フレームの個別処理
         '''
         super().update_execute()
 
+    @overrides
     def draw(self):
         '''
         各フレームの描画処理
@@ -35,14 +36,16 @@ class BaseFacilityState(BaseState):
             PyxelUtil.text(
                 67, 14 + idx * 16, ["*{:1d} : {:5d} G.P.".format(idx + 1, member.gold)], pyxel.COLOR_WHITE)
 
-        pyxel.blt(self.OFFSET_X + 15, self.OFFSET_Y + 15, 0, 0, 205, 50, 50)
+        pyxel.blt(self.DRAW_OFFSET_X + 15, self.DRAW_OFFSET_Y + 15, 0, 0, 205, 50, 50)
 
+    @overrides
     def onEnter(self):
         '''
         状態開始時の処理
         '''
         pass
 
+    @overrides
     def onExit(self):
         '''
         状態終了時の処理

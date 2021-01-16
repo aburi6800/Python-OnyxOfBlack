@@ -5,14 +5,14 @@ from module.fieldStates.baseFieldState import BaseFieldState
 from module.map.cemeteryB1 import cemeteryB1
 from module.params.monster import monsterParams
 from module.pyxelUtil import PyxelUtil
+from overrides import overrides
 
 
 class StateCemetery(BaseFieldState):
     '''
-    墓地の地下のクラス
-
-    BaseFieldStateを継承
-    遭遇する敵リストとイベント処理を持つ
+    墓地の地下のクラス\n
+    BaseFieldStateを継承。\n
+    遭遇する敵リストとイベント処理を持つ。
     '''
 
     # マップ
@@ -88,6 +88,7 @@ class StateCemetery(BaseFieldState):
         PyxelUtil.text(16, 140, ["TE", "NN", "SI", "D", "LYO", "U", "NI", " ", "NU",
                                  "KE", "A", "NA", "KA", "D", " ", "A", "RU", "* !!"], pyxel.COLOR_WHITE)
 
+    @overrides
     def onEnter(self):
         '''
         状態開始時の処理
@@ -97,6 +98,7 @@ class StateCemetery(BaseFieldState):
         # 壁の色を初期化する
         self.set_wall_color(pyxel.COLOR_RED, pyxel.COLOR_PURPLE)
 
+    @overrides
     def onExit(self):
         '''
         状態終了時の処理

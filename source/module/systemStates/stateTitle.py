@@ -7,14 +7,14 @@ from module.character import playerParty
 from module.pyxelUtil import PyxelUtil
 from module.state import State
 from module.systemStates.baseSystemState import BaseSystemState
+from overrides import overrides
 
 
 class StateTitle(BaseSystemState):
     '''
-    タイトル画面クラス
-
-    BaseSystemStateを継承
-    タイトル画面の表示と各Stateへの遷移を行う
+    タイトル画面クラス\n
+    BaseSystemStateを継承。\n
+    タイトル画面の表示と各Stateへの遷移を行う。
     '''
     # 状態の定数
     STATE_RESPECT = 1
@@ -35,6 +35,7 @@ class StateTitle(BaseSystemState):
         '''
         super().__init__()
 
+    @overrides
     def update_execute(self):
         '''
         各フレームの個別処理
@@ -82,6 +83,7 @@ class StateTitle(BaseSystemState):
                     # プレイヤーパーティーの復元
                     playerParty.resotreSaveData(SaveData.playerParty)
 
+    @overrides
     def draw(self):
         '''
         各フレームの描画処理
@@ -122,6 +124,7 @@ class StateTitle(BaseSystemState):
         PyxelUtil.text(68, 160, ["*COPYRIGHT BY ABURI6800 2020"], 2)
         PyxelUtil.text(68, 168, ["*ORIGINAL GAME BY B.P.S. 1984"], 2)
 
+    @overrides
     def onEnter(self):
         '''
         状態開始時の処理
@@ -140,6 +143,7 @@ class StateTitle(BaseSystemState):
         else:
             self.doContinue = False
 
+    @overrides
     def onExit(self):
         '''
         状態終了時の処理

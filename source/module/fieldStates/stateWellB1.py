@@ -6,14 +6,14 @@ from module.map.wellB1 import wellB1
 from module.messageQueue import chooseCommand, choosevalue, messagequeue
 from module.params.monster import monsterParams
 from module.state import State
+from overrides import overrides
 
 
 class StateWellB1(BaseFieldState):
     '''
-    井戸B1のクラス
-
-    BaseFieldStateを継承
-    遭遇する敵リストとイベント処理を持つ
+    井戸B1のクラス\n
+    BaseFieldStateを継承。\n
+    遭遇する敵リストとイベント処理を持つ。
     '''
 
     # マップ
@@ -70,6 +70,7 @@ class StateWellB1(BaseFieldState):
             # 井戸B2へ
             self.pushState(State.WELLB2)
 
+    @overrides
     def onEnter(self):
         '''
         状態開始時の処理
@@ -79,6 +80,7 @@ class StateWellB1(BaseFieldState):
         # 壁の色を初期化する
         self.set_wall_color(pyxel.COLOR_LIGHTBLUE, pyxel.COLOR_DARKBLUE)
 
+    @overrides
     def onExit(self):
         '''
         状態終了時の処理

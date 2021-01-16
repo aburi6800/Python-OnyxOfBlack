@@ -3,14 +3,14 @@ import pyxel
 from module.character import Human, playerParty
 from module.facilityStates.baseFacilityState import BaseFacilityState
 from module.pyxelUtil import PyxelUtil
+from overrides import overrides
 
 
 class StateExaminations(BaseFacilityState):
     '''
-    身体検査のクラス
-
-    BaseFacilityStateクラスを継承
-    キャラクターのステータス調査を行う
+    身体検査のクラス\n
+    BaseFacilityStateクラスを継承。\n
+    キャラクターのステータス調査を行う。
     '''
     # 状態の定数
     STATE_ENTER = 0
@@ -42,6 +42,7 @@ class StateExaminations(BaseFacilityState):
         self.saleParson.head = 97
         self.saleParson.body = 9
 
+    @overrides
     def update_execute(self):
         '''
         各フレームの個別処理
@@ -95,6 +96,7 @@ class StateExaminations(BaseFacilityState):
             # 状態を終了する
             self.popState()
 
+    @overrides
     def draw(self):
         '''
         各フレームの描画処理
@@ -157,6 +159,7 @@ class StateExaminations(BaseFacilityState):
                                  "U", " ", "KO", "D", "SA", "D", "I", "MA", "SI", "TA", "."], pyxel.COLOR_WHITE)
         PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
+    @overrides
     def onEnter(self):
         '''
         状態開始時の処理
@@ -167,6 +170,7 @@ class StateExaminations(BaseFacilityState):
         # 最初の状態
         self.state = self.STATE_ENTER
 
+    @overrides
     def onExit(self):
         '''
         状態終了時の処理

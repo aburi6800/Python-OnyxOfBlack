@@ -4,14 +4,14 @@ from module.character import EnemyPartyGenerator, enemyParty
 from module.fieldStates.baseFieldState import BaseFieldState
 from module.map.dungeonB5 import dungeonB5
 from module.params.monster import monsterParams
+from overrides import overrides
 
 
 class StateDungeonB5(BaseFieldState):
     '''
-    地下迷宮B5のクラス
-
-    BaseFieldStateを継承
-    遭遇する敵リストとイベント処理を持つ
+    地下迷宮B5のクラス\n
+    BaseFieldStateを継承。\n
+    遭遇する敵リストとイベント処理を持つ。
     '''
 
     # マップ
@@ -59,6 +59,7 @@ class StateDungeonB5(BaseFieldState):
         '''
         pass
 
+    @overrides
     def onEnter(self):
         '''
         状態開始時の処理
@@ -68,6 +69,7 @@ class StateDungeonB5(BaseFieldState):
         # 壁の色を初期化する
         self.set_wall_color(pyxel.COLOR_LIGHTBLUE, pyxel.COLOR_DARKBLUE)
 
+    @overrides
     def onExit(self):
         '''
         状態終了時の処理

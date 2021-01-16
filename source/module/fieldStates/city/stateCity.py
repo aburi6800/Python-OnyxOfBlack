@@ -11,13 +11,14 @@ from module.messageQueue import (chooseCommand, choosevalue, messageCommand,
 from module.params.monster import monsterParams
 from module.pyxelUtil import PyxelUtil
 from module.state import State
+from module.fieldStates.city.stateEventWell import StateEventWell
+from overrides import overrides
 
 
 class StateCity(BaseFieldState):
     '''
-    街のクラス
-
-    BaseFieldStateを継承
+    街のクラス\n
+    BaseFieldStateを継承。\n
     遭遇する敵リストと街のイベント処理を持つ
     '''
 
@@ -98,11 +99,11 @@ class StateCity(BaseFieldState):
             "11079U": self.update_to_dungeon,
         }
 
+    @overrides
     def encount_enemy(self):
         '''
-        敵とエンカウントした時の処理
-
-        街の場合、南側に行くとモンスターも出現する
+        敵とエンカウントした時の処理\n
+        街の場合、南側に行くとモンスターも出現する。
         '''
         self.isEncount = True
         if playerParty.y < 12:
@@ -208,6 +209,8 @@ class StateCity(BaseFieldState):
         '''
         井戸のイベント
         '''
+        self.pushState(State.EVENTWELL)
+        '''
         if self.tick == 1:
             c = chooseCommand()
             c.addMessage(["KA", "RE", "TA", " ", "I", "TO", "D", "KA", "D", "A", "RU", "."])
@@ -222,10 +225,9 @@ class StateCity(BaseFieldState):
             choosevalue.value = 0
             playerParty.x = 10
             playerParty.y = 10
-            # カウントタイマーを初期化しておく
-#            self.tick = 0
             # 井戸の中へ
             self.pushState(State.WELLB1)
+        '''
 
     def update_to_dungeon(self):
         '''
@@ -250,46 +252,46 @@ class StateCity(BaseFieldState):
         ゲートの表示
         '''
         for _x in range(12, 66, 4):
-            pyxel.rect(_x + self.OFFSET_X, 12 + self.OFFSET_Y,
+            pyxel.rect(_x + self.DRAW_OFFSET_X, 12 + self.DRAW_OFFSET_Y,
                        2, 54, pyxel.COLOR_BLACK)
-        pyxel.rect(32 + self.OFFSET_X, 29 + self.OFFSET_Y,
+        pyxel.rect(32 + self.DRAW_OFFSET_X, 29 + self.DRAW_OFFSET_Y,
                    18, 9, pyxel.COLOR_YELLOW)
-        PyxelUtil.text(33 + self.OFFSET_X, 30 + self.OFFSET_Y,
+        PyxelUtil.text(33 + self.DRAW_OFFSET_X, 30 + self.DRAW_OFFSET_Y,
                        "*GATE", pyxel.COLOR_BLACK)
 
     def draw_shieldshop(self):
         '''
         盾屋の前に立った時の表示
         '''
-        PyxelUtil.text(30 + self.OFFSET_X, 22 + self.OFFSET_Y,
+        PyxelUtil.text(30 + self.DRAW_OFFSET_X, 22 + self.DRAW_OFFSET_Y,
                        "*SHIELD", pyxel.COLOR_BLACK)
 
     def draw_armorshop(self):
         '''
         鎧屋の前に立った時の表示
         '''
-        PyxelUtil.text(32 + self.OFFSET_X, 22 + self.OFFSET_Y,
+        PyxelUtil.text(32 + self.DRAW_OFFSET_X, 22 + self.DRAW_OFFSET_Y,
                        "*ARMOR", pyxel.COLOR_BLACK)
 
     def draw_weaponshop(self):
         '''
         武器屋の前に立った時の表示
         '''
-        PyxelUtil.text(30 + self.OFFSET_X, 22 + self.OFFSET_Y,
+        PyxelUtil.text(30 + self.DRAW_OFFSET_X, 22 + self.DRAW_OFFSET_Y,
                        "*WEAPON", pyxel.COLOR_BLACK)
 
     def draw_helmetshop(self):
         '''
         兜屋の前に立った時の表示
         '''
-        PyxelUtil.text(30 + self.OFFSET_X, 22 + self.OFFSET_Y,
+        PyxelUtil.text(30 + self.DRAW_OFFSET_X, 22 + self.DRAW_OFFSET_Y,
                        "*HELMET", pyxel.COLOR_BLACK)
 
     def draw_barbar(self):
         '''
         床屋の前に立った時の表示
         '''
-        PyxelUtil.text(30 + self.OFFSET_X, 22 + self.OFFSET_Y,
+        PyxelUtil.text(30 + self.DRAW_OFFSET_X, 22 + self.DRAW_OFFSET_Y,
                        "*BARBAR", pyxel.COLOR_BLACK)
 
     def draw_donotenter(self):
@@ -304,42 +306,42 @@ class StateCity(BaseFieldState):
         '''
         宿屋の前に立った時の表示
         '''
-        PyxelUtil.text(22 + self.OFFSET_X, 22 + self.OFFSET_Y,
+        PyxelUtil.text(22 + self.DRAW_OFFSET_X, 22 + self.DRAW_OFFSET_Y,
                        "*UTSURO INN", pyxel.COLOR_BLACK)
 
     def draw_physicker(self):
         '''
         研究所の前に立った時の表示
         '''
-        PyxelUtil.text(24 + self.OFFSET_X, 22 + self.OFFSET_Y,
+        PyxelUtil.text(24 + self.DRAW_OFFSET_X, 22 + self.DRAW_OFFSET_Y,
                        "*PHYSICKER", pyxel.COLOR_BLACK)
 
     def draw_physicker_exit(self):
         '''
         研究所の出口の前に立った時の表示
         '''
-        PyxelUtil.text(34 + self.OFFSET_X, 22 + self.OFFSET_Y,
+        PyxelUtil.text(34 + self.DRAW_OFFSET_X, 22 + self.DRAW_OFFSET_Y,
                        "*EXIT", pyxel.COLOR_BLACK)
 
     def draw_drugs(self):
         '''
         薬屋の前に立った時の表示
         '''
-        PyxelUtil.text(32 + self.OFFSET_X, 22 + self.OFFSET_Y,
+        PyxelUtil.text(32 + self.DRAW_OFFSET_X, 22 + self.DRAW_OFFSET_Y,
                        "*DRUGS", pyxel.COLOR_BLACK)
 
     def draw_surgery(self):
         '''
         緊急治療の前に立った時の表示
         '''
-        PyxelUtil.text(28 + self.OFFSET_X, 22 + self.OFFSET_Y,
+        PyxelUtil.text(28 + self.DRAW_OFFSET_X, 22 + self.DRAW_OFFSET_Y,
                        "*SURGERY", pyxel.COLOR_BLACK)
 
     def draw_examinations(self):
         '''
         身体検査の前に立った時の表示
         '''
-        PyxelUtil.text(18 + self.OFFSET_X, 22 + self.OFFSET_Y,
+        PyxelUtil.text(18 + self.DRAW_OFFSET_X, 22 + self.DRAW_OFFSET_Y,
                        "*EXAMINATIONS", pyxel.COLOR_BLACK)
 
     def draw_thewall(self):
@@ -352,7 +354,7 @@ class StateCity(BaseFieldState):
         '''
         牢屋の前に立った時の表示
         '''
-        PyxelUtil.text(32 + self.OFFSET_X, 22 + self.OFFSET_Y,
+        PyxelUtil.text(32 + self.DRAW_OFFSET_X, 22 + self.DRAW_OFFSET_Y,
                        "*JAIL", pyxel.COLOR_BLACK)
 
     def draw_secretmessage(self):
@@ -374,7 +376,7 @@ class StateCity(BaseFieldState):
         '''
         墓地への看板の表示
         '''
-        PyxelUtil.text(16 + self.OFFSET_X, 22 + self.OFFSET_Y,
+        PyxelUtil.text(16 + self.DRAW_OFFSET_X, 22 + self.DRAW_OFFSET_Y,
                        "*+ CEMETERY +", pyxel.COLOR_BLACK)
 
     def draw_to_cemetery(self):
@@ -388,21 +390,16 @@ class StateCity(BaseFieldState):
         '''
         寺院への看板の表示
         '''
-        PyxelUtil.text(30 + self.OFFSET_X, 22 + self.OFFSET_Y,
+        PyxelUtil.text(30 + self.DRAW_OFFSET_X, 22 + self.DRAW_OFFSET_Y,
                        "*TEMPLE", pyxel.COLOR_BLACK)
 
     def draw_to_well(self):
         '''
         井戸の穴の表示
         '''
-        if self.tick == 0:
-            pyxel.image(0).load(0, 205, "well.png")
-        pyxel.blt(self.OFFSET_X + 15, self.OFFSET_Y + 15, 0, 0, 205, 50, 50)
-
-#        PyxelUtil.text(16, 140, ["KA", "RE", "TA", " ", "I", "TO",
-#                                 "D", "KA", "D", "A", "RU", "."], pyxel.COLOR_WHITE)
-#        PyxelUtil.text(16, 148, ["SI", "TA", "NI", " ", "O", "RI",
-#                                 "RA", "RE", "SO", "U", "TA", "D", "."], pyxel.COLOR_WHITE)
+#        if self.tick == 0:
+#            pyxel.image(0).load(0, 205, "well.png")
+#        pyxel.blt(self.DRAW_OFFSET_X + 15, self.DRAW_OFFSET_Y + 15, 0, 0, 205, 50, 50)
 
     def draw_to_dungeon(self):
         '''
@@ -411,6 +408,7 @@ class StateCity(BaseFieldState):
         PyxelUtil.text(16, 140, ["SI", "TA", "NI", " ", "O", "RI", "RU", " ", "KA", "I",
                                  "TA", "D", "NN", " ", "KA", "D", " ", "A", "RU", "* !!"], pyxel.COLOR_WHITE)
 
+    @overrides
     def onEnter(self):
         '''
         状態開始時の処理
@@ -422,12 +420,14 @@ class StateCity(BaseFieldState):
         playerParty.y = 4
         playerParty.direction = self.DIRECTION_SOUTH
 
+    @overrides
     def onExit(self):
         '''
         状態終了時の処理
         '''
         super().onExit()
 
+    @overrides
     def isOuter(self) -> bool:
         '''
         屋外かどうかをboolで返却する

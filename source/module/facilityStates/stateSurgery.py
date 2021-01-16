@@ -3,14 +3,14 @@ import pyxel
 from module.character import Human, playerParty
 from module.facilityStates.baseFacilityState import BaseFacilityState
 from module.pyxelUtil import PyxelUtil
+from overrides import overrides
 
 
 class StateSurgery(BaseFacilityState):
     '''
-    緊急治療のクラス
-
-    BaseFacilityStateクラスを継承
-    キャラクターのLIFEの回復を行う
+    緊急治療のクラス\n
+    BaseFacilityStateクラスを継承。\n
+    キャラクターのLIFEの回復を行う。
     '''
     # 状態の定数
     STATE_ENTER = 0
@@ -42,6 +42,7 @@ class StateSurgery(BaseFacilityState):
         self.saleParson.head = 96
         self.saleParson.body = 9
 
+    @overrides
     def update_execute(self):
         '''
         各フレームの処理
@@ -144,6 +145,7 @@ class StateSurgery(BaseFacilityState):
         '''
         self.update_leave()
 
+    @overrides
     def draw(self):
         '''
         各フレームの描画処理
@@ -211,6 +213,7 @@ class StateSurgery(BaseFacilityState):
                                  "NN", "KO", "U", "TE", "D", "SU", "."], pyxel.COLOR_WHITE)
         PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
+    @overrides
     def onEnter(self):
         '''
         状態開始時の処理
@@ -224,6 +227,7 @@ class StateSurgery(BaseFacilityState):
         # 最初の状態
         self.state = self.STATE_ENTER
 
+    @overrides
     def onExit(self):
         '''
         状態終了時の処理

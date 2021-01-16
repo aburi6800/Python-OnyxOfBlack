@@ -7,15 +7,15 @@ from module.input import Input
 from module.pyxelUtil import PyxelUtil
 from module.state import State
 from module.systemStates.baseSystemState import BaseSystemState
+from overrides import overrides
 
 
 class StateMakeCharacter(BaseSystemState):
     '''
-    キャラクター作成画面クラス
-
-    BaseSystemStateを継承
-    キャラクターの作成を行う
-    作成したキャラクターはCharacterStockクラスに格納される
+    キャラクター作成画面クラス\n
+    BaseSystemStateを継承。\n
+    キャラクターの作成を行う。\n
+    作成したキャラクターはCharacterStockクラスに格納される。\n
     '''
     # 状態の定数
     STATE_INIT = 0
@@ -34,9 +34,8 @@ class StateMakeCharacter(BaseSystemState):
 
     def makeInitialHuman(self):
         '''
-        人間キャラクタを作成する
-
-        能力値以外は初期値とする
+        人間キャラクタを作成する。\n
+        能力値以外は初期値とする。
         '''
         self.character = HumanGenerator().generate(1)
         self.character.name = ""
@@ -47,6 +46,7 @@ class StateMakeCharacter(BaseSystemState):
         self.character.helmet = None
         self.character.body = 0
 
+    @overrides
     def update_execute(self):
         '''
         各フレームの個別処理
@@ -215,6 +215,7 @@ class StateMakeCharacter(BaseSystemState):
             # ゲーム開始
             self.pushState(State.CITY)
 
+    @overrides	
     def draw(self):
         '''
         各フレームの描画処理
@@ -289,6 +290,7 @@ class StateMakeCharacter(BaseSystemState):
             PyxelUtil.text(74, 170, ("MO", "U", "HI", "TO", "RI", " ", "TU", "KU", "RI", "MA", "SU", "KA", "* ? (Y/N)"),
                            pyxel.COLOR_YELLOW if self.state == self.STATE_MORE else pyxel.COLOR_WHITE)
 
+    @overrides
     def onEnter(self):
         '''
         状態開始時の処理
@@ -319,6 +321,7 @@ class StateMakeCharacter(BaseSystemState):
         # プレイヤーパーティーを初期化
         playerParty.initialize()
 
+    @overrides
     def onExit(self):
         '''
         状態終了時の処理

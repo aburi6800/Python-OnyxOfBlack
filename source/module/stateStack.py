@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#from functools import singledispatch
 from module.baseState import BaseState
 from module.battleStates.stateBattle import StateBattle
 from module.facilityStates.stateArmorShop import StateArmorShop
@@ -10,8 +11,9 @@ from module.facilityStates.stateShieldShop import StateShieldShop
 from module.facilityStates.stateSurgery import StateSurgery
 from module.facilityStates.stateWeaponShop import StateWeaponShop
 from module.fieldStates.baseFieldState import BaseFieldState
+from module.fieldStates.city.stateCity import StateCity
+from module.fieldStates.city.stateEventWell import StateEventWell
 from module.fieldStates.stateCemetery import StateCemetery
-from module.fieldStates.stateCity import StateCity
 from module.fieldStates.stateDungeonB1 import StateDungeonB1
 from module.fieldStates.stateDungeonB2 import StateDungeonB2
 from module.fieldStates.stateDungeonB3 import StateDungeonB3
@@ -31,6 +33,7 @@ class StateStack(object):
     '''
     Stateをスタックで保持するクラス
     '''
+
     def __init__(self):
         '''
         クラス初期化
@@ -47,22 +50,24 @@ class StateStack(object):
             State.WELLB2: StateWellB2,
             State.WELLB3: StateWellB3,
             State.WELLB4: StateWellB4,
-            State.DUNGEONB1 : StateDungeonB1,
-            State.DUNGEONB2 : StateDungeonB2,
-            State.DUNGEONB3 : StateDungeonB3,
-            State.DUNGEONB4 : StateDungeonB4,
-            State.DUNGEONB5 : StateDungeonB5,
-            State.ARMORSHOP : StateArmorShop,
-            State.BARBAR : StateBarbar,
-            State.DRUGS : StateDrugs,
-            State.EXAMINATIONS : StateExaminations,
-            State.HELMETSHOP : StateHelmetShop,
-            State.SHIELDSHOP : StateShieldShop,
-            State.SURGERY : StateSurgery,
-            State.WEAPONSHOP : StateWeaponShop,
-            State.BATTLE : StateBattle,
+            State.DUNGEONB1: StateDungeonB1,
+            State.DUNGEONB2: StateDungeonB2,
+            State.DUNGEONB3: StateDungeonB3,
+            State.DUNGEONB4: StateDungeonB4,
+            State.DUNGEONB5: StateDungeonB5,
+            State.ARMORSHOP: StateArmorShop,
+            State.BARBAR: StateBarbar,
+            State.DRUGS: StateDrugs,
+            State.EXAMINATIONS: StateExaminations,
+            State.HELMETSHOP: StateHelmetShop,
+            State.SHIELDSHOP: StateShieldShop,
+            State.SURGERY: StateSurgery,
+            State.WEAPONSHOP: StateWeaponShop,
+            State.BATTLE: StateBattle,
+            State.EVENTWELL: StateEventWell,
         }
 
+        # スタックを初期化する
         self.clear("")
 
         if __debug__:
@@ -82,25 +87,27 @@ class StateStack(object):
         if len(self.states) > 0 and self.states[0] != None:
             self.states[0].draw()
 
-    def push(self, stateName:str):
+    def push(self, stateEnum: int):
         '''
-        指定されたStateをスタックに追加する
+        stateEnumで指定されたStateクラスをスタックに追加する\n
+        追加されるStateクラスはbuildStateメソッドによりスタック操作メソッドが追加された後、onEnterメソッドが実行される。
+        '''
+        if __debug__:
+            print(f"StateStack : push({stateEnum}).")
 
-        追加されるStackはbuildStateメソッドによりスタック操作メソッドが追加され、onEnterメソッドが実行される
-        '''
-        state = self.__getInstance(stateName)
+        state = self.__getInstance(stateEnum)
 
         if state != None:
             st = self.__buildState(state)
             self.states.insert(0, st)
             if __debug__:
-                print("StateStack : push " + str(st))
+                print("StateStack : pushed -> " + str(st))
             # State開始時の処理を呼び出す
             self.states[0].onEnter()
         else:
             self.states.insert(0, None)
             if __debug__:
-                print("StateStack : push(None)")
+                print("StateStack : no push.")
 
     def pop(self):
         '''
@@ -111,7 +118,7 @@ class StateStack(object):
         # State終了時の処理を呼び出す
         if __debug__:
             print("StateStack : pop " + str(self.states[0]))
-        
+
         if self.states[0] != None:
             self.states[0].onExit()
         self.states.pop(0)
@@ -125,22 +132,22 @@ class StateStack(object):
         else:
             return False
 
-    def clear(self, stateName:str):
+    def clear(self, stateName: str):
         '''
-        スタックを初期化してstateを登録する
+        スタックを初期化し、stateNameに指定されたstateをスタックに登録する
         '''
-        self.states = []
         if __debug__:
-            print("StateStack : cleared")
+            print("StateStack : clear")
 
-        state = self.__getInstance(stateName)
+        # スタック初期化
+        self.states = []
 
-        self.push(state)
+        # stateNameで指定されたstateを取得し、スタックにpushする
+        self.push(self.__getInstance(stateName))
 
     def setStates(self, states):
         '''
-        スタックのstatesを設定する
-
+        スタックのstatesを設定する\n
         データロード時のみ使用すること。
         '''
         self.states = states
@@ -153,9 +160,8 @@ class StateStack(object):
 
     def __buildState(self, _class):
         '''
-        stateクラスのインスタンス生成処理
-
-        インスタンス生成時に、コールバックメソッドを登録する
+        stateクラスのビルダ\n
+        stateのインスタンス生成時に、コールバックメソッドを登録する
         '''
         _class = _class()
         _class.pushState = self.push
@@ -166,11 +172,16 @@ class StateStack(object):
         _class.getStates = self.getStates
         return _class
 
-    def __getInstance(self, stateName:str) -> BaseState:
-        if stateName == "":
+    def __getInstance(self, stateEnum: int) -> BaseState:
+        '''
+        StateのEnum値に該当するstateクラスを取得する
+        '''
+        # 引数がNoneの時はNoneを返す
+        if stateEnum == None:
             return None
 
-        state = self.__stateDict.get(stateName, None)
+        # stateの辞書からstateEnumに該当するstateクラスを取得する
+        state = self.__stateDict.get(stateEnum, None)
 
         return state
 

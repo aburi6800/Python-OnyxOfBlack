@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from os import name
+from overrides.overrides import overrides
 
 import pyxel
 from module.character import Human, playerParty
@@ -9,10 +10,9 @@ from module.pyxelUtil import PyxelUtil
 
 class BaseShopState(BaseFacilityState):
     '''
-    店の基底クラス
-
-    BaseFacilityStateクラスを継承
-    各店の共通の処理を持つ
+    店の基底クラス\n
+    BaseFacilityStateクラスを継承。\n
+    各店の共通の処理を持つ。
     '''
     # 状態の定数
     STATE_ENTER = 0
@@ -55,8 +55,7 @@ class BaseShopState(BaseFacilityState):
 
     def __init__(self):
         '''
-        クラス初期化
-
+        クラス初期化\n
         継承先のクラスでは、saleParsonとitemListの設定を行うこと。
         '''
         super().__init__()
@@ -67,6 +66,7 @@ class BaseShopState(BaseFacilityState):
         # エラーメッセージ
         self.errorMessage = []
 
+    @overrides
     def update_execute(self):
         '''
         各フレームの個別処理
@@ -133,8 +133,7 @@ class BaseShopState(BaseFacilityState):
 
     def update_done(self):
         '''
-        買った処理
-
+        買った処理\n
         継承先のクラスでは、memberに買ったitemを持たせること
         '''
         playerParty.memberList[self.buyMember].gold -= self.item.price
@@ -183,12 +182,12 @@ class BaseShopState(BaseFacilityState):
 
     def update_equip_saleParson(self, item):
         '''
-        店員の装備を変更する処理
-
+        店員の装備を変更する処理\n
         継承先のクラスでオーバーライドし、選択中のitemを持たせること
         '''
         pass
 
+    @overrides
     def draw(self):
         '''
         各フレームの描画処理
@@ -215,8 +214,7 @@ class BaseShopState(BaseFacilityState):
 
     def draw_initial(self):
         '''
-        店に入った時の表示
-
+        店に入った時の表示\n
         継承先のクラスでそれぞれ実装すること
         '''
         None
@@ -264,6 +262,7 @@ class BaseShopState(BaseFacilityState):
         PyxelUtil.text(16, 148, self.errorMessage, pyxel.COLOR_WHITE)
         PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
+    @overrides
     def onEnter(self):
         '''
         状態開始時の処理
@@ -271,6 +270,7 @@ class BaseShopState(BaseFacilityState):
         # 最初の状態
         self.state = self.STATE_ENTER
 
+    @overrides
     def onExit(self):
         '''
         状態終了時の処理

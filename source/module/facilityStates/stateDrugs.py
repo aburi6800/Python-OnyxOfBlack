@@ -4,14 +4,14 @@ from module.character import playerParty
 from module.facilityStates.baseShopState import BaseShopState
 from module.params.drug import drugParams
 from module.pyxelUtil import PyxelUtil
+from overrides import overrides
 
 
 class StateDrugs(BaseShopState):
     '''
-    薬屋のクラス
-
-    BaseFacilityStateクラスを継承
-    選択した商品の購入、キャラクターへの装備を行う
+    薬屋のクラス\n
+    BaseFacilityStateクラスを継承\n
+    選択した商品の購入、キャラクターへの装備を行う。
     '''
 
     # この店で使うアイテムリスト
@@ -28,10 +28,10 @@ class StateDrugs(BaseShopState):
         self.saleParson.head = 94
         self.saleParson.body = 9
 
+    @overrides
     def update_done(self):
         '''
-        買った処理
-
+        買った処理\n
         スーパークラスの処理で金額が減るので、その前に所持数のチェックを行う
         '''
         # 容器を購入した時
@@ -63,6 +63,7 @@ class StateDrugs(BaseShopState):
 
         super().update_done()
 
+    @overrides
     def draw_initial(self):
         '''
         店に入った時の表示

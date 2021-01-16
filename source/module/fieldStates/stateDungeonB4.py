@@ -6,14 +6,14 @@ from module.map.dungeonB4 import dungeonB4
 from module.params.monster import monsterParams
 from module.pyxelUtil import PyxelUtil
 from module.state import State
+from overrides import overrides
 
 
 class StateDungeonB4(BaseFieldState):
     '''
-    地下迷宮B4のクラス
-
-    BaseFieldStateを継承
-    遭遇する敵リストとイベント処理を持つ
+    地下迷宮B4のクラス\n
+    BaseFieldStateを継承。\n
+    遭遇する敵リストとイベント処理を持つ。
     '''
 
     # マップ
@@ -74,6 +74,7 @@ class StateDungeonB4(BaseFieldState):
         PyxelUtil.text(16, 140, ["SI", "TA", "NI", " ", "O", "RI", "RU", " ", "KA", "I",
                                  "TA", "D", "NN", " ", "KA", "D", " ", "A", "RU", "* !!"], pyxel.COLOR_WHITE)
 
+    @overrides
     def onEnter(self):
         '''
         状態開始時の処理
@@ -83,6 +84,7 @@ class StateDungeonB4(BaseFieldState):
         # 壁の色を初期化する
         self.set_wall_color(pyxel.COLOR_LIGHTBLUE, pyxel.COLOR_DARKBLUE)
 
+    @overrides
     def onExit(self):
         '''
         状態終了時の処理

@@ -4,14 +4,14 @@ from module.character import playerParty
 from module.facilityStates.baseShopState import BaseShopState
 from module.params.weapon import weaponParams
 from module.pyxelUtil import PyxelUtil
+from overrides import overrides
 
 
 class StateWeaponShop(BaseShopState):
     '''
-    武器屋のクラス
-
-    BaseShopStateクラスを継承
-    選択した商品の購入、キャラクターへの装備を行う
+    武器屋のクラス\n
+    BaseShopStateクラスを継承。\n
+    選択した商品の購入、キャラクターへの装備を行う。
     '''
 
     # この店で使うアイテムリスト
@@ -28,6 +28,7 @@ class StateWeaponShop(BaseShopState):
         self.saleParson.head = 123
         self.saleParson.body = 3
 
+    @overrides
     def update_done(self):
         '''
         買った処理
@@ -35,12 +36,14 @@ class StateWeaponShop(BaseShopState):
         super().update_done()
         playerParty.memberList[self.equipMember].weapon = self.item
 
+    @overrides
     def update_equip_saleParson(self, item):
         '''
         店員の装備を変更する処理
         '''
         self.saleParson.weapon = self.item
 
+    @overrides
     def draw_initial(self):
         '''
         店に入った時の表示

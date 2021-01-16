@@ -6,12 +6,12 @@ from module.baseState import BaseState
 from module.character import Human, enemyParty, playerParty
 from module.messageQueue import message, messageCommand, messagequeue
 from module.pyxelUtil import PyxelUtil
+from overrides import overrides
 
 
 class StateBattle(BaseState):
     '''
-    戦闘シーンのクラス
-
+    戦闘シーンのクラス/n
     BaseStateクラスを継承
     '''
     # 状態の定数
@@ -107,6 +107,7 @@ class StateBattle(BaseState):
         self.tick = 0
         self.message = []
 
+    @overrides
     def update_execute(self):
         '''
         各フレームの個別処理
@@ -488,6 +489,7 @@ class StateBattle(BaseState):
             # 戦闘終了
             self.popState()
 
+    @overrides
     def draw(self):
         '''
         各フレームの描画処理
@@ -559,7 +561,7 @@ class StateBattle(BaseState):
 
     def draw_start_battle(self):
         '''
-        戦闘開始表示処理
+        戦闘開始表示処理\n
         ※実際はここで表示をするものはない
         '''
         pass
@@ -600,7 +602,7 @@ class StateBattle(BaseState):
 
     def draw_runaway_judge(self):
         '''
-        逃走成功表示処理
+        逃走成功表示処理\n
         ※実際はここで表示をするものはない
         '''
         pass
@@ -621,7 +623,7 @@ class StateBattle(BaseState):
 
     def draw_judge_talk(self):
         '''
-        会話判定表示処理
+        会話判定表示処理\n
         ※実際はここで表示をするものはない
         '''
         pass
@@ -646,6 +648,7 @@ class StateBattle(BaseState):
                                  "D", "NN", "HA", "D", "RI", "MA", "SI", "LYO", "U", "* !"], pyxel.COLOR_WHITE)
         PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
+    @overrides
     def onEnter(self):
         '''
         状態開始時の処理
@@ -657,6 +660,7 @@ class StateBattle(BaseState):
         self.reward_exp = 0
         self.reward_gold = 0
 
+    @overrides
     def onExit(self):
         '''
         状態終了時の処理

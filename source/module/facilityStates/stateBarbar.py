@@ -6,14 +6,14 @@ from module.character import playerParty
 from module.facilityStates.baseShopState import BaseShopState
 from module.params.barbar import barbarParams
 from module.pyxelUtil import PyxelUtil
+from overrides import overrides
 
 
 class StateBarbar(BaseShopState):
     '''
-    床屋のクラス
-
-    BaseFacilityStateクラスを継承
-    選択したキャラクターの頭部変更を行う
+    床屋のクラス\n
+    BaseFacilityStateクラスを継承。\n
+    選択したキャラクターの頭部変更を行う。
     '''
 
     # この店で使うアイテムリスト
@@ -30,6 +30,7 @@ class StateBarbar(BaseShopState):
         self.saleParson.head = 114
         self.saleParson.body = 8
 
+    @overrides
     def update_equip(self):
         '''
         装備する人を選ぶ処理
@@ -40,6 +41,7 @@ class StateBarbar(BaseShopState):
         if self.tick > 129 and pyxel.btnp(pyxel.KEY_SPACE):
             self.state = self.STATE_DONE
 
+    @overrides
     def update_done(self):
         '''
         買った処理
@@ -51,6 +53,7 @@ class StateBarbar(BaseShopState):
             0, 31) * ((playerParty.memberList[self.buyMember].head // 32) * 32)
         playerParty.memberList[self.buyMember].head = head
 
+    @overrides
     def draw_initial(self):
         '''
         店に入った時の表示
@@ -61,10 +64,10 @@ class StateBarbar(BaseShopState):
                                  "he", "a", "-", "su", "ta", "i", "ru", " ", "NI", " ", "SI", "MA", "SE", "NN", "KA", "*?"], pyxel.COLOR_WHITE)
         PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
+    @overrides
     def draw_buy(self):
         '''
-        散髪する人を選ぶ表示
-
+        散髪する人を選ぶ表示する。\n
         スーパークラスのメソッドをオーバーライド
         '''
         PyxelUtil.text(16, 140, ["TA", "D", "RE", "NO", " ",
@@ -74,10 +77,10 @@ class StateBarbar(BaseShopState):
         PyxelUtil.text(56, 172, ["*[L] ", "MI", "SE",
                                  "WO", "TE", "D", "RU"], pyxel.COLOR_YELLOW)
 
+    @overrides
     def draw_equip(self):
         '''
-        装備する人を選ぶ表示
-
+        装備する人を選ぶ表示する。\n
         スーパークラスのメソッドをオーバーライド
         '''
         PyxelUtil.text(16, 140, ["TE", "D", "HA", " ", "KO", "TI", "RA", "NI", " ", "O",
