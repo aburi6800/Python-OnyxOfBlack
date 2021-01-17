@@ -2,14 +2,13 @@
 
 import pyxel
 from module.character import playerParty
-from module.fieldStates.baseFieldState import BaseFieldState
-#from module.fieldStates.city.stateCity import StateCity
+from module.baseState import BaseState
 from module.messageQueue import messageCommand2, messagequeue
 from module.state import State
 from overrides import overrides
 
 
-class StateEventWell(BaseFieldState):
+class StateEventWell(BaseState):
     '''
     井戸のイベント
     '''
@@ -53,6 +52,7 @@ class StateEventWell(BaseFieldState):
         '''
         c = messageCommand2()
         c.addMessage(["KI", "MI", "TA", "TI", "HA", " ", "KO", "KO", "KA", "RA", " ", "TA", "TI", "SA", "LTU", "TA", "."])
+        messagequeue.enqueue(c)
 
         # stateStackから自分を削除する
         self.popState()
