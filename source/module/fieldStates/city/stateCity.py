@@ -6,8 +6,7 @@ from module.character import (EnemyPartyGenerator, HumanGenerator, enemyParty,
                               playerParty)
 from module.fieldStates.baseFieldState import BaseFieldState
 from module.map.uturotown import uturotown
-from module.messageQueue import (chooseCommand, choosevalue, messageCommand,
-                                 messagequeue)
+from module.messageQueue import (messageCommand, messagequeue)
 from module.params.monster import monsterParams
 from module.pyxelUtil import PyxelUtil
 from module.state import State
