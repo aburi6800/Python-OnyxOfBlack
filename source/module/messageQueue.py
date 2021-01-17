@@ -327,12 +327,6 @@ class messageCommand2(baseCommand):
     def draw(self):
         super().draw()
 
-        # 現在行が0行目以外の時は、表示済の行を描画する
-        if self.messageRow > 0:
-            for _messageRow in range(0, self.messageRow):
-                _tempIdx = self.idx + _messageRow
-                PyxelUtil.text(16, 140 + (_messageRow * 8), self.messageList[_tempIdx].message, self.messageList[_tempIdx].color)
-
         # メッセージ表示状態の場合は、以下を処理する。
         #   idx～idx+4までを画面に表示し、キー入力待ち状態にする
         if self.status == 0:
@@ -359,6 +353,12 @@ class messageCommand2(baseCommand):
             else:
                 # 状態を変更する
                 self.changeStatus()
+
+        # 現在行が0行目以外の時は、表示済の行を描画する
+        if self.messageRow > 0:
+            for _messageRow in range(0, self.messageRow):
+                _tempIdx = self.idx + _messageRow
+                PyxelUtil.text(16, 140 + (_messageRow * 8), self.messageList[_tempIdx].message, self.messageList[_tempIdx].color)
 
         # キー入力待ち状態の時は、キー入力待ちメッセージを表示する
 #        if self.status == 1 or self.status == 2:

@@ -209,9 +209,9 @@ class StateCity(BaseFieldState):
         '''
         井戸のイベント
         '''
-        self.pushState(State.EVENTWELL)
-        '''
         if self.tick == 1:
+            self.pushState(State.EVENTWELL)
+        '''
             c = chooseCommand()
             c.addMessage(["KA", "RE", "TA", " ", "I", "TO", "D", "KA", "D", "A", "RU", "."])
             c.addMessage(["SI", "TA", "NI", " ", "O", "RI", "RA", "RE", "SO", "U", "TA", "D", "."])
