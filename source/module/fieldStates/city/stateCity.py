@@ -6,8 +6,7 @@ from module.character import (EnemyPartyGenerator, HumanGenerator, enemyParty,
                               playerParty)
 from module.fieldStates.baseFieldState import BaseFieldState
 from module.map.uturotown import uturotown
-from module.messageQueue import (chooseCommand, choosevalue, messageCommand,
-                                 messagequeue)
+from module.messageQueue import (messageCommand, messagequeue)
 from module.params.monster import monsterParams
 from module.pyxelUtil import PyxelUtil
 from module.state import State
@@ -209,9 +208,9 @@ class StateCity(BaseFieldState):
         '''
         井戸のイベント
         '''
-        self.pushState(State.EVENTWELL)
-        '''
         if self.tick == 1:
+            self.pushState(State.EVENTWELL)
+        '''
             c = chooseCommand()
             c.addMessage(["KA", "RE", "TA", " ", "I", "TO", "D", "KA", "D", "A", "RU", "."])
             c.addMessage(["SI", "TA", "NI", " ", "O", "RI", "RA", "RE", "SO", "U", "TA", "D", "."])
