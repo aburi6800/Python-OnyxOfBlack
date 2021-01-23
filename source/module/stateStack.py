@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#from functools import singledispatch
+from typing import List
 from module.baseState import BaseState
 from module.battleStates.stateBattle import StateBattle
 from module.facilityStates.stateArmorShop import StateArmorShop
@@ -33,12 +33,10 @@ class StateStack(object):
     '''
     Stateをスタックで保持するクラス
     '''
-
-    def __init__(self):
+    def __init__(self) -> None:
         '''
         クラス初期化
         '''
-
         # StateのEnumと対応するStateクラスの辞書
         self.__stateDict = {
             State.TITLE: StateTitle,
@@ -73,54 +71,55 @@ class StateStack(object):
         if __debug__:
             print("StateStack : Initialized.")
 
-    def update(self):
+    def update(self) -> None:
         '''
         現在先頭にあるStateのupdateメソッドを実行する
         '''
         if len(self.states) > 0 and self.states[0] != None:
             self.states[0].update()
 
-    def draw(self):
+    def draw(self) -> None:
         '''
         現在先頭にあるStateのrenderメソッドを実行する
         '''
         if len(self.states) > 0 and self.states[0] != None:
             self.states[0].draw()
 
-    def push(self, stateEnum: int):
+    def push(self, stateEnum: int, **kwargs) -> None:
         '''
-        stateEnumで指定されたStateクラスをスタックに追加する\n
+        stateEnumで指定されたStateクラスのインスタンスを生成し、スタックの先頭に追加する。\n
         追加されるStateクラスはbuildStateメソッドによりスタック操作メソッドが追加された後、onEnterメソッドが実行される。
         '''
         if __debug__:
             print(f"StateStack : push({stateEnum}).")
 
-        state = self.__getInstance(stateEnum)
+        # stateEnumで指定されたStateクラスのインスタンスを生成する
+        state = self.getInstance(stateEnum, **kwargs)
 
+        # スタックの先頭に追加する
+        self.states.insert(0, state)
+
+        # インスタンスの生成に成功した場合
         if state != None:
-            st = self.__buildState(state)
-            self.states.insert(0, st)
-            if __debug__:
-                print("StateStack : pushed -> " + str(st))
             # State開始時の処理を呼び出す
             self.states[0].onEnter()
-        else:
-            self.states.insert(0, None)
-            if __debug__:
-                print("StateStack : no push.")
 
-    def pop(self):
-        '''
-        スタックの先頭からStateを削除する
+        if __debug__:
+            print("StateStack : pushed -> " + str(state))
 
-        削除前にStackのonExitメソッドが実行される
+    def pop(self) -> None:
         '''
-        # State終了時の処理を呼び出す
+        スタックの先頭からStateを削除する。\n
+        削除前にStackのonExitメソッドが実行される。
+        '''
         if __debug__:
             print("StateStack : pop " + str(self.states[0]))
 
+        # State終了時の処理を呼び出す
         if self.states[0] != None:
             self.states[0].onExit()
+
+        # スタックの先頭からStateを削除する。
         self.states.pop(0)
 
     def isField(self) -> bool:
@@ -132,7 +131,7 @@ class StateStack(object):
         else:
             return False
 
-    def clear(self, stateName: str):
+    def clear(self, stateName: str) -> None:
         '''
         スタックを初期化し、stateNameに指定されたstateをスタックに登録する
         '''
@@ -143,45 +142,44 @@ class StateStack(object):
         self.states = []
 
         # stateNameで指定されたstateを取得し、スタックにpushする
-        self.push(self.__getInstance(stateName))
+        self.push(self.getInstance(stateName))
 
-    def setStates(self, states):
+    def setStates(self, states) -> None:
         '''
-        スタックのstatesを設定する\n
+        List型で指定されたスタックをすべて設定する。\n
         データロード時のみ使用すること。
         '''
         self.states = states
 
-    def getStates(self):
+    def getStates(self) -> List:
         '''
         stateのリストを取得する
         '''
         return self.states
 
-    def __buildState(self, _class):
-        '''
-        stateクラスのビルダ\n
-        stateのインスタンス生成時に、コールバックメソッドを登録する
-        '''
-        _class = _class()
-        _class.pushState = self.push
-        _class.popState = self.pop
-        _class.clearState = self.clear
-        _class.isField = self.isField
-        _class.setStates = self.setStates
-        _class.getStates = self.getStates
-        return _class
-
-    def __getInstance(self, stateEnum: int) -> BaseState:
+    def getInstance(self, stateEnum: int, **kwargs) -> BaseState:
         '''
         StateのEnum値に該当するstateクラスを取得する
         '''
+        # 戻り値の初期化
+        state = None
+
         # 引数がNoneの時はNoneを返す
         if stateEnum == None:
             return None
 
         # stateの辞書からstateEnumに該当するstateクラスを取得する
-        state = self.__stateDict.get(stateEnum, None)
+        c = self.__stateDict.get(stateEnum, None)
+
+        # stateクラスの取得に成功した場合、コールバックメソッドを登録し、インスタンスを生成する
+        if c != None:
+            c.pushState = self.push
+            c.popState = self.pop
+            c.clearState = self.clear
+            c.isField = self.isField
+            c.setStates = self.setStates
+            c.getStates = self.getStates
+            state = c(**kwargs)
 
         return state
 

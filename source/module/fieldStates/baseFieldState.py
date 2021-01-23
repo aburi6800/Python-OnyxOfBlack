@@ -64,11 +64,11 @@ class BaseFieldState(BaseState):
         pyxel.COLOR_DARKBLUE,
     ]
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         '''
         クラス初期化
         '''
-        super().__init__()
+        super().__init__(**kwargs)
 
     def set_wall_color(self, wallcolor_front=pyxel.COLOR_LIGHTBLUE, wallcolor_side=pyxel.COLOR_DARKBLUE):
         '''

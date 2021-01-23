@@ -53,12 +53,12 @@ class BaseShopState(BaseFacilityState):
         pyxel.KEY_5: 4,
     }
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         '''
         クラス初期化\n
         継承先のクラスでは、saleParsonとitemListの設定を行うこと。
         '''
-        super().__init__()
+        super().__init__(**kwargs)
 
         # 店員
         self.saleParson = Human()

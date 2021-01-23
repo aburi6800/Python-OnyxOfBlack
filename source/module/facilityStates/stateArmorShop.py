@@ -16,11 +16,11 @@ class StateArmorShop(BaseShopState):
     # この店で使うアイテムリスト
     itemList = armorParams
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         '''
         クラス初期化
         '''
-        super().__init__()
+        super().__init__(**kwargs)
 
         # 店員の初期データ
         self.saleParson.name = "Blick"

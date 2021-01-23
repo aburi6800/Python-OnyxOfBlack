@@ -12,9 +12,8 @@ class StateEventWell(BaseState):
     '''
     井戸のイベント
     '''
-
-    def __init__(self):
-        super().__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         # 画像読み込み
         pyxel.image(0).load(0, 205, "well.png")

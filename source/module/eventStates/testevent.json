@@ -1,0 +1,84 @@
+{
+    "init":{
+        "command":"judgeFlg",
+        "args":{
+            "flgNo":1,
+            "on":"section1-1",
+            "off":"section2-1"
+        }
+    },
+
+    "section1-1":{
+        "command":"loadPicture",
+        "args":{
+            "filename":"event001_1.png",
+            "next":"section1-2"
+        }
+    },
+
+    "section1-2":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                "既に箱は空いている。",
+                "中身は空のようだ。"
+            ],
+            "next":"end"
+        }
+    },
+
+    "section2-1":{
+        "command":"loadPicture",
+        "args":{
+            "filename":"event001_2.png",
+            "next":"section2-2"
+        }
+    },
+
+    "section2-2":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                "目の前に大きな箱がある。",
+                "鍵はかかっていないようだ。"
+            ],
+            "next":"section2-3"
+        }
+    },
+
+    "section2-3":{
+        "command":"chooseMessage",
+        "args":{
+            "choose":[
+                {"key":"1", "message":"箱を開ける", "next":"section2-4"},
+                {"key":"2", "message":"この場を立ち去る", "next":"end"}
+            ]
+        }
+    },
+
+    "section2-4":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                "箱の中には金の杯が入っていた。",
+                "君たちは金の杯を手に入れた。"
+            ],
+            "next":"section2-5"
+        }
+    },
+
+    "section2-5":{
+        "command":"setFlg",
+        "args":{
+            "flgNo": 1,
+            "value": 1,
+            "next":"end"
+        }
+    },
+
+    "end":{
+        "command":"end",
+        "args":{}
+    }
+
+}

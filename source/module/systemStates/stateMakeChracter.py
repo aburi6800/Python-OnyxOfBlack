@@ -26,11 +26,11 @@ class StateMakeCharacter(BaseSystemState):
     STATE_MORE = 5
     STATE_DONE = 6
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         '''
         クラス初期化
         '''
-        super().__init__()
+        super().__init__(**kwargs)
 
     def makeInitialHuman(self):
         '''

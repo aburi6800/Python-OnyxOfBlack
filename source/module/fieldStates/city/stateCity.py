@@ -35,11 +35,11 @@ class StateCity(BaseFieldState):
         monsterParams["ZOMBIE_LV1"],
     )
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         '''
         クラス初期化
         '''
-        super().__init__()
+        super().__init__(**kwargs)
 
         # イベント
         # マップ上の座標に対応するイベントの関数の辞書

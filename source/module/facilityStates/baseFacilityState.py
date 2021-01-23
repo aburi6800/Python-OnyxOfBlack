@@ -11,11 +11,11 @@ class BaseFacilityState(BaseState):
     各施設で共通の処理を持つ
     '''
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         '''
         クラス初期化
         '''
-        super().__init__()
+        super().__init__(**kwargs)
 
     @overrides
     def update_execute(self):
