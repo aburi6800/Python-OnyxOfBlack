@@ -69,7 +69,9 @@ class messageQueue():
         drawメソッド\n
         isEnwueued=trueの場合に、baseStateのdrawメソッドから呼ばれる。\n
         '''
-        self.commands[0].draw()
+        if self.isEnqueued:
+            if self.commands[0].isComplete == False:
+                self.commands[0].draw()
 
 
 messagequeue = messageQueue()
@@ -280,15 +282,16 @@ class messageCommand(baseCommand):
                 # すべて表示していない、かつ現画面の最大行まで表示していない場合は、現在行を１文字ずつ送り表示する
                 PyxelUtil.text(16, 140 + (self.messageRow * 8), self.messageList[_tempIdx].message[:self.messageCol], self.messageList[_tempIdx].color)
 
+        # 以下は無条件に処理する。
         # 現在行が0行目以外の時は、表示済の行を描画する
         if self.messageRow > 0:
             for _messageRow in range(0, self.messageRow):
                 _tempIdx = self.idx + _messageRow
                 PyxelUtil.text(16, 140 + (_messageRow * 8), self.messageList[_tempIdx].message, self.messageList[_tempIdx].color)
 
-            # キー入力待ち状態の時は、SPACEキー入力待ちメッセージを表示する
-            if self.status == statusEnum.WAIT_KEY:
-                PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
+        # キー入力待ち状態の時は、SPACEキー入力待ちメッセージを表示する
+        if self.status == statusEnum.WAIT_KEY:
+            PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
     def changeStatus(self):
         '''
