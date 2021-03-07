@@ -4,7 +4,7 @@ import random
 import pyxel
 from module.baseState import BaseState
 from module.character import Human, enemyParty, playerParty
-from module.messageQueue import message, messageCommand, messagequeue
+from module.messageHandler import message, messageCommand, messagehandler
 from module.pyxelUtil import PyxelUtil
 from overrides import overrides
 
@@ -268,7 +268,7 @@ class StateBattle(BaseState):
                 m = messageCommand()
                 m.addMessage(message(["*" + _target.name + " ", "KA", "D"]))
                 m.addMessage(message(["*" + _attacker.name + " ", "WO", " ", "YO", "KE", "TA", "."]))
-                messagequeue.enqueue(m)
+                messagehandler.enqueue(m)
 #                self.message.append(["*" + _target.name + " ", "KA", "D"])
 #                self.message.append(
 #                    ["*" + _attacker.name + " ", "WO", " ", "YO", "KE", "TA", "."])

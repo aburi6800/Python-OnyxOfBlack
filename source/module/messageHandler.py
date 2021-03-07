@@ -16,11 +16,11 @@ class statusEnum(IntEnum):
     WAIT_KEY = auto()
     WAIT_CHOOSE = auto()
 
-class messageQueue():
+class messageHandler():
     '''
-    メッセージキュークラス\n
-    登録された各コマンドクラスのupdate、drawメソッドを実行する。\n
-    コマンドキューへの登録は各コマンドクラスが自ら行う。
+    メッセージハンドラクラス\n
+    キューに登録された各コマンドクラスのupdate、drawメソッドを実行する。\n
+    キューへの登録は各コマンドクラスが自ら行う。
     '''
 
     # メッセージキューに登録されるコマンドリスト
@@ -59,10 +59,9 @@ class messageQueue():
         コマンドが終了した場合は、メッセージキューからdequeueする。
         '''
         command = self.commands[0]
+        command.update()
         if command.isComplete:
             self._dequeue()
-        else:
-            self.commands[0].update()
 
     def draw(self):
         '''
@@ -70,11 +69,10 @@ class messageQueue():
         isEnwueued=trueの場合に、baseStateのdrawメソッドから呼ばれる。\n
         '''
         if self.isEnqueued:
-            if self.commands[0].isComplete == False:
-                self.commands[0].draw()
+            self.commands[0].draw()
 
 
-messagequeue = messageQueue()
+messagehandler = messageHandler()
 
 
 class message():
@@ -95,7 +93,7 @@ class choose(message):
     '''
     選択肢クラス
     '''
-    def __init__(self, message, color:int = pyxel.COLOR_YELLOW, key:int = pyxel.KEY_NONE, value:int = 0):
+    def __init__(self, message, color:int = pyxel.COLOR_YELLOW, key:int = pyxel.KEY_NONE):
         super().__init__(message, color)
         self.key = key
 
@@ -249,12 +247,16 @@ class messageCommand(baseCommand):
             # 選択肢辞書の要素を走査
             for _key, _value in self.chooseDict.items():
 
-                # 定義されたいずれかのキーを押されたら登録されているコールバック関数を呼び出し、完了処理を行う。
+                # 定義されたいずれかのキーを押されたら、完了処理を行い登録されているコールバック関数を呼び出す。
                 if pyxel.btnp(_key):
+                    # 完了処理を行う
+                    self.complete()
                     # コールバック関数実行
                     if _value != None:
-                        _value()
-                    self.complete()
+                        if type(_value) is str:
+                            eval(_value)
+                        else:
+                            _value()
 
     def draw(self):
         '''

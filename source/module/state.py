@@ -29,4 +29,5 @@ class State(IntEnum):
     WEAPONSHOP = auto()
     BATTLE = auto()
     EVENTWELL = auto()
+    EVENT = auto()
     

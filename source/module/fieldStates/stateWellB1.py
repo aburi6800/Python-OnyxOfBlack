@@ -3,7 +3,7 @@ import pyxel
 from module.character import HumanGenerator, playerParty
 from module.fieldStates.baseFieldState import BaseFieldState
 from module.map.wellB1 import wellB1
-from module.messageQueue import messageCommand, messagequeue
+from module.messageHandler import messageCommand, messagehandler
 from module.params.monster import monsterParams
 from module.state import State
 from overrides import overrides
@@ -65,7 +65,7 @@ class StateWellB1(BaseFieldState):
             c.addChoose(["*[U] ","U", "E", " ", "NI", " ", "NO", "HO", "D", "RU"], pyxel.KEY_U, go_to_up)
             c.addChoose(["*[D] ","SI", "TA", " ", "NI", " ", "O", "RI", "RU"], pyxel.KEY_D, go_to_down)
             c.addChoose(["*[L] ","KO", "NO", "HA", "D", "WO", " ", "TA", "TI", "SA", "RU"], pyxel.KEY_L, None)
-            messagequeue.enqueue(c)
+            messagehandler.enqueue(c)
             return
 
     @overrides
