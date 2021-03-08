@@ -30,11 +30,11 @@ class StateExaminations(BaseFacilityState):
         pyxel.KEY_5: 4,
     }
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         '''
         クラス初期化
         '''
-        super().__init__()
+        super().__init__(**kwargs)
 
         # 医者の初期データ
         self.saleParson = Human()

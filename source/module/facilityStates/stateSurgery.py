@@ -30,11 +30,11 @@ class StateSurgery(BaseFacilityState):
     # 回復費用
     price = 0
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         '''
         クラス初期化
         '''
-        super().__init__()
+        super().__init__(**kwargs)
 
         # 医者の初期データ
         self.saleParson = Human()

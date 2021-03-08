@@ -9,11 +9,11 @@ class BaseSystemState(BaseState):
     タイトル画面やキャラクター作成等、特殊な画面を想定している。
     '''
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         '''
         クラス初期化
         '''
-        super().__init__()
+        super().__init__(**kwargs)
 
     @overrides
     def update_execute(self):

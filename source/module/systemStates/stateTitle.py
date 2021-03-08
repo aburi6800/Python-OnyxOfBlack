@@ -29,11 +29,11 @@ class StateTitle(BaseSystemState):
     TEXTCOLOR += [pyxel.COLOR_DARKBLUE] * 5
     TEXTCOLOR += [pyxel.COLOR_BLACK] * 10
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         '''
         クラス初期化
         '''
-        super().__init__()
+        super().__init__(**kwargs)
 
     @overrides
     def update_execute(self):

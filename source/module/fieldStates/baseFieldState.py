@@ -4,9 +4,12 @@ import random
 import pyxel
 from module.baseState import BaseState
 from module.character import EnemyPartyGenerator, enemyParty, playerParty
+from module.Decorator import DrawDecorator
 from module.pyxelUtil import PyxelUtil
 from module.state import State
 from overrides import overrides
+from module.eventHandler import eventhandler
+from module.messageHandler import messagehandler
 
 
 class BaseFieldState(BaseState):
@@ -64,11 +67,11 @@ class BaseFieldState(BaseState):
         pyxel.COLOR_DARKBLUE,
     ]
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         '''
         クラス初期化
         '''
-        super().__init__()
+        super().__init__(**kwargs)
 
     def set_wall_color(self, wallcolor_front=pyxel.COLOR_LIGHTBLUE, wallcolor_side=pyxel.COLOR_DARKBLUE):
         '''
@@ -214,6 +217,7 @@ class BaseFieldState(BaseState):
         else:
             return True
 
+#    @DrawDecorator
     @overrides
     def draw(self):
         '''
@@ -273,6 +277,14 @@ class BaseFieldState(BaseState):
             PyxelUtil.text(10, 146, ["NA", "NI", "KA", "TI", "KA", "TU",
                                      "D", "I", "TE", "KI", "TA", "*!"], pyxel.COLOR_RED)
             return
+
+        # イベントハンドラでイベントが実行中の場合は、イベントハンドラのdrawメソッドを呼ぶ
+        if eventhandler.isExecute:
+            eventhandler.draw()
+
+        # メッセージハンドラにキューが登録されてる場合は、メッセージハンドラのdrawメソッドを呼ぶ
+        if messagehandler.isEnqueued():
+            messagehandler.draw()
 
         # イベントハンドラ
         self.eventhandler("D")

@@ -6,13 +6,12 @@ from module.character import (EnemyPartyGenerator, HumanGenerator, enemyParty,
                               playerParty)
 from module.fieldStates.baseFieldState import BaseFieldState
 from module.map.uturotown import uturotown
-from module.messageQueue import (messageCommand, messagequeue)
+from module.messageHandler import (messageCommand, messagehandler)
+from module.eventHandler import eventhandler
 from module.params.monster import monsterParams
 from module.pyxelUtil import PyxelUtil
 from module.state import State
-from module.fieldStates.city.stateEventWell import StateEventWell
 from overrides import overrides
-
 
 class StateCity(BaseFieldState):
     '''
@@ -35,11 +34,11 @@ class StateCity(BaseFieldState):
         monsterParams["ZOMBIE_LV1"],
     )
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         '''
         クラス初期化
         '''
-        super().__init__()
+        super().__init__(**kwargs)
 
         # イベント
         # マップ上の座標に対応するイベントの関数の辞書
@@ -175,7 +174,7 @@ class StateCity(BaseFieldState):
             m.addMessage(["TO", "D", "KO", "KA", "RA", "TO", "MO", "NA", "KU", " ", "KO", "E", "KA", "D", " ", "KI", "KO","E", "TE", "KI", "TA", "."])
             m.addMessage([""])
             m.addMessage(["I", "RO", " ", "I", "LTU", "KA", "I", " ", "TU", "D", "TU", "*..."], pyxel.COLOR_PEACH)
-            messagequeue.enqueue(m)
+            messagehandler.enqueue(m)
         
         else:
             playerParty.x = 11
@@ -209,7 +208,9 @@ class StateCity(BaseFieldState):
         井戸のイベント
         '''
         if self.tick == 1:
-            self.pushState(State.EVENTWELL)
+#            self.pushState(State.EVENTWELL)
+#            self.pushState(State.EVENT, filename="city15149.json")
+            eventhandler.startEvent("city15149.json")
         '''
             c = chooseCommand()
             c.addMessage(["KA", "RE", "TA", " ", "I", "TO", "D", "KA", "D", "A", "RU", "."])

@@ -4,7 +4,8 @@ from os import name
 import pyxel
 from overrides import EnforceOverrides
 from module.character import Character, Human, Monster, playerParty
-from module.messageQueue import messagequeue
+from module.eventHandler import eventhandler
+from module.messageHandler import messagehandler
 from module.pyxelUtil import PyxelUtil
 
 
@@ -33,12 +34,17 @@ class BaseState(EnforceOverrides):
         '''
         self.tick += 1
 
-        # メッセージキューが登録されてる場合は、メッセージキューのupdateメソッドを呼んで終了する
-        # メッセージキューが登録されていない場合は、update_executeメソッドを呼ぶ。
-        if messagequeue.isEnqueued():
-            messagequeue.update()
-        else:
-            self.update_execute()
+        # メッセージハンドラにキューが登録されてる場合は、メッセージハンドラのupdateメソッドを呼んで終了する
+        if messagehandler.isEnqueued():
+            messagehandler.update()
+            return
+
+        # イベントハンドラでイベントが実行中の場合は、イベントハンドラのupdateメソッドを呼んで終了する
+        if eventhandler.isExecute:
+            eventhandler.update()
+            return
+
+        self.update_execute()
 
     def update_execute(self):
         '''
@@ -76,9 +82,13 @@ class BaseState(EnforceOverrides):
             pyxel.rect(16, (_idx + 1) * 16 + 9, 100, 1,  pyxel.COLOR_NAVY)
             pyxel.rect(16, (_idx + 1) * 16 + 9, _member.exp, 1,  pyxel.COLOR_LIGHTBLUE)
 
-        # メッセージキューが登録されてる場合は、メッセージキューのdrawメソッドを呼ぶ
-        if messagequeue.isEnqueued():
-            messagequeue.draw()
+        # イベントハンドラでイベントが実行中の場合は、イベントハンドラのdrawメソッドを呼ぶ
+#        if eventhandler.isExecute:
+#            eventhandler.draw()
+
+        # メッセージハンドラにキューが登録されてる場合は、メッセージハンドラのdrawメソッドを呼ぶ
+#        if messagehandler.isEnqueued():
+#            messagehandler.draw()
 
     def onEnter(self):
         '''

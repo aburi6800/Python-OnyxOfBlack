@@ -15,11 +15,11 @@ class StateCamp(BaseFacilityState):
     薬の使用／セーブ／ゲーム終了を行う。
     '''
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         '''
         クラス初期化
         '''
-        super().__init__()
+        super().__init__(**kwargs)
 
     @overrides
     def update_execute(self):

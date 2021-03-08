@@ -16,11 +16,11 @@ class statusEnum(IntEnum):
     WAIT_KEY = auto()
     WAIT_CHOOSE = auto()
 
-class messageQueue():
+class messageHandler():
     '''
-    メッセージキュークラス\n
-    登録された各コマンドクラスのupdate、drawメソッドを実行する。\n
-    コマンドキューへの登録は各コマンドクラスが自ら行う。
+    メッセージハンドラクラス\n
+    キューに登録された各コマンドクラスのupdate、drawメソッドを実行する。\n
+    キューへの登録は各コマンドクラスが自ら行う。
     '''
 
     # メッセージキューに登録されるコマンドリスト
@@ -59,20 +59,20 @@ class messageQueue():
         コマンドが終了した場合は、メッセージキューからdequeueする。
         '''
         command = self.commands[0]
+        command.update()
         if command.isComplete:
             self._dequeue()
-        else:
-            self.commands[0].update()
 
     def draw(self):
         '''
         drawメソッド\n
         isEnwueued=trueの場合に、baseStateのdrawメソッドから呼ばれる。\n
         '''
-        self.commands[0].draw()
+        if self.isEnqueued:
+            self.commands[0].draw()
 
 
-messagequeue = messageQueue()
+messagehandler = messageHandler()
 
 
 class message():
@@ -93,7 +93,7 @@ class choose(message):
     '''
     選択肢クラス
     '''
-    def __init__(self, message, color:int = pyxel.COLOR_YELLOW, key:int = pyxel.KEY_NONE, value:int = 0):
+    def __init__(self, message, color:int = pyxel.COLOR_YELLOW, key:int = pyxel.KEY_NONE):
         super().__init__(message, color)
         self.key = key
 
@@ -247,12 +247,16 @@ class messageCommand(baseCommand):
             # 選択肢辞書の要素を走査
             for _key, _value in self.chooseDict.items():
 
-                # 定義されたいずれかのキーを押されたら登録されているコールバック関数を呼び出し、完了処理を行う。
+                # 定義されたいずれかのキーを押されたら、完了処理を行い登録されているコールバック関数を呼び出す。
                 if pyxel.btnp(_key):
+                    # 完了処理を行う
+                    self.complete()
                     # コールバック関数実行
                     if _value != None:
-                        _value()
-                    self.complete()
+                        if type(_value) is str:
+                            eval(_value)
+                        else:
+                            _value()
 
     def draw(self):
         '''
@@ -280,15 +284,16 @@ class messageCommand(baseCommand):
                 # すべて表示していない、かつ現画面の最大行まで表示していない場合は、現在行を１文字ずつ送り表示する
                 PyxelUtil.text(16, 140 + (self.messageRow * 8), self.messageList[_tempIdx].message[:self.messageCol], self.messageList[_tempIdx].color)
 
+        # 以下は無条件に処理する。
         # 現在行が0行目以外の時は、表示済の行を描画する
         if self.messageRow > 0:
             for _messageRow in range(0, self.messageRow):
                 _tempIdx = self.idx + _messageRow
                 PyxelUtil.text(16, 140 + (_messageRow * 8), self.messageList[_tempIdx].message, self.messageList[_tempIdx].color)
 
-            # キー入力待ち状態の時は、SPACEキー入力待ちメッセージを表示する
-            if self.status == statusEnum.WAIT_KEY:
-                PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
+        # キー入力待ち状態の時は、SPACEキー入力待ちメッセージを表示する
+        if self.status == statusEnum.WAIT_KEY:
+            PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
     def changeStatus(self):
         '''
