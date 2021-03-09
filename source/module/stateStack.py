@@ -12,7 +12,6 @@ from module.facilityStates.stateSurgery import StateSurgery
 from module.facilityStates.stateWeaponShop import StateWeaponShop
 from module.fieldStates.baseFieldState import BaseFieldState
 from module.fieldStates.stateCity import StateCity
-#from module.fieldStates.city.stateEventWell import StateEventWell
 from module.fieldStates.stateCemetery import StateCemetery
 from module.fieldStates.stateDungeonB1 import StateDungeonB1
 from module.fieldStates.stateDungeonB2 import StateDungeonB2
@@ -27,7 +26,6 @@ from module.state import State
 from module.systemStates.stateCamp import StateCamp
 from module.systemStates.stateMakeChracter import StateMakeCharacter
 from module.systemStates.stateTitle import StateTitle
-#from module.eventStates.stateEvent import StateEvent
 
 
 class StateStack(object):

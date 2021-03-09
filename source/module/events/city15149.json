@@ -14,7 +14,7 @@
                 ["M", ["KA", "RE", "TA", " ", "I", "TO", "D", "KA", "D", "A", "RU", "."]],
                 ["M", ["SI", "TA", "NI", " ", "O", "RI", "RA", "RE", "SO", "U", "TA", "D", "."]],
                 ["M", ["TO", "D", "U", "SU", "RU", "* ?"]],
-                ["C", ["*[D]", "O", "RI", "TE", "MI", "RU"], "pyxel.KEY_D", "section3"],
+                ["C", ["*[D]", "O", "RI", "TE", "MI", "RU"], "pyxel.KEY_D", "section2"],
                 ["C", ["*[L]", "KO", "NO", "HA", "D", "WO", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_L", "end"]
             ]
         }
@@ -23,7 +23,7 @@
     "section2":{
         "command":"changeState",
         "args":{
-            "stateName":"stateWellB1",
+            "stateName":"WELLB1",
             "next":"section3"
         }
     },

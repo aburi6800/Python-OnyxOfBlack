@@ -253,8 +253,8 @@ class messageCommand(baseCommand):
                     self.complete()
                     # コールバック関数実行
                     if _value != None:
-                        if type(_value) is str:
-                            eval(_value)
+                        if type(_value) is tuple:
+                            _value[0](_value[1])
                         else:
                             _value()
 

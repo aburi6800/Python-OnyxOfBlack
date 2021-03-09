@@ -2,8 +2,10 @@ import json
 import os
 
 import pyxel
-from module.messageHandler import messageCommand, messagehandler
 
+from module.character import playerParty
+from module.messageHandler import messageCommand, messagehandler
+from module.state import State
 
 class eventHandler():
     '''
@@ -24,15 +26,19 @@ class eventHandler():
     # イベント実行中フラグ
     isExecute = False
 
+    # イベントが発生したStateへの参照
+    calledState = None
+
     def __init__(self) -> None:
         '''
         コンストラクタ\n
         '''
+        pass
 
-    def startEvent(self, eventFileName) -> None:
+    def startEvent(self, eventFileName, calledState) -> None:
         '''
         イベントを開始する。\n
-        引数にイベントのjsonファイル名を指定する。
+        引数にイベントのjsonファイル名と、呼び出し元のState自身を指定する。
         '''
 
         # ファイル名にパスを追加する
@@ -51,6 +57,9 @@ class eventHandler():
 
         # イベント発生中フラグをTrueにする
         self.isExecute = True
+
+        # 呼び出し元のStateへの参照
+        self.calledState = calledState
 
     def getEventSection(self, key: str) -> dict:
         '''
@@ -152,7 +161,8 @@ class eventHandler():
                 # 選択キー
                 _chooseKey = m[2]
                 # 遷移先のセクション名からコールバックを生成する
-                _next = self.setNextSection(m[3])
+                _next = (self.setNextSection, m[3])
+
                 cmd.addChoose(_message, eval(_chooseKey), _next)
 
         # メッセージキューに登録
@@ -167,8 +177,8 @@ class eventHandler():
         '''
         フラグ設定コマンド\n
         引数は以下の要素を設定した辞書型とする。\n
-        ・"flgNo"：設定対象のフラグNo
-        ・"value"：フラグ設定値
+        ・"flgNo"：設定対象のフラグNo\n
+        ・"value"：フラグ設定値\n
         ・"next"：次のイベントの識別子
         '''
         print(f"called:update_setFlg({args})")
@@ -176,6 +186,37 @@ class eventHandler():
         # フラグセット
         # 仮実装
         print(f"FlgNo:{args['flgNo']} value:{args['value']}")
+
+        # 次のエントリーデータをセット
+        self.eventSection = self.getEventSection(args.get("next"))
+
+    def update_changeState(self, args) -> None:
+        '''
+        state変更コマンド\n
+        引数は以下の要素を設定した辞書型とする。\n
+        ・"stateName"：変更するstateのENUM値。\n
+        ・"next"；次のイベントの識別子
+        '''
+        print(f"called:update_changeState({args})")
+
+        # state変更
+        self.calledState.pushState(eval("State." + args.get("stateName")))
+
+        # 次のエントリーデータをセット
+        self.eventSection = self.getEventSection(args.get("next"))
+
+    def update_setPartyPosition(self, args) -> None:
+        '''
+        パーティー座標設定コマンド\n
+        プレイヤーパーティーの座標を設定する。\n
+        引数は以下の要素を設定した辞書型とする。\n
+        ・"position"：変更する座標をリストで指定\n
+        ・"next"；次のイベントの識別子
+        '''
+        print(f"called:update_setPartyPosition({args})")
+
+        playerParty.x = args.get("position")[0]
+        playerParty.y = args.get("position")[1]
 
         # 次のエントリーデータをセット
         self.eventSection = self.getEventSection(args.get("next"))

@@ -210,7 +210,7 @@ class StateCity(BaseFieldState):
         if self.tick == 1:
 #            self.pushState(State.EVENTWELL)
 #            self.pushState(State.EVENT, filename="city15149.json")
-            eventhandler.startEvent("city15149.json")
+            eventhandler.startEvent("city15149.json", self)
         '''
             c = chooseCommand()
             c.addMessage(["KA", "RE", "TA", " ", "I", "TO", "D", "KA", "D", "A", "RU", "."])

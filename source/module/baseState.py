@@ -82,14 +82,6 @@ class BaseState(EnforceOverrides):
             pyxel.rect(16, (_idx + 1) * 16 + 9, 100, 1,  pyxel.COLOR_NAVY)
             pyxel.rect(16, (_idx + 1) * 16 + 9, _member.exp, 1,  pyxel.COLOR_LIGHTBLUE)
 
-        # イベントハンドラでイベントが実行中の場合は、イベントハンドラのdrawメソッドを呼ぶ
-#        if eventhandler.isExecute:
-#            eventhandler.draw()
-
-        # メッセージハンドラにキューが登録されてる場合は、メッセージハンドラのdrawメソッドを呼ぶ
-#        if messagehandler.isEnqueued():
-#            messagehandler.draw()
-
     def onEnter(self):
         '''
         状態開始時の処理
