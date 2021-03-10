@@ -17,15 +17,21 @@ class BaseState(EnforceOverrides):
     # 経過時間
     tick = 0
 
+    # stateStackへの参照
+    stateStack = None
+
     # 描画の座標オフセット
     DRAW_OFFSET_X = 150
     DRAW_OFFSET_Y = 14
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         '''
         クラス初期化
         '''
-        self.stateName = ""
+        # stateStackへの参照を設定
+        self.stateStack = kwargs.get("stateStack")
+
+        # 経過時間リセット
         self.tick = 0
 
     def update(self):

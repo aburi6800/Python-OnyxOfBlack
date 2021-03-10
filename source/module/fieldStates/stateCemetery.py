@@ -79,7 +79,7 @@ class StateCemetery(BaseFieldState):
                 playerParty.x = 26
                 playerParty.y = 20
             # 町へ戻る
-            self.popState()
+            self.stateStack.pop()
 
     def draw_to_city(self):
         '''

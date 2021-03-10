@@ -150,7 +150,7 @@ class BaseShopState(BaseFacilityState):
         '''
         店を出た処理
         '''
-        self.popState()
+        self.stateStack.pop()
 
     def update_error(self):
         '''

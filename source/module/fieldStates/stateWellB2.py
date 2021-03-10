@@ -51,13 +51,13 @@ class StateWellB2(BaseFieldState):
             playerParty.x = 10
             playerParty.y = 10
             # 井戸B1へ戻る
-            self.popState()
+            self.stateStack.pop()
 
         if pyxel.btnp(pyxel.KEY_D):
             playerParty.x = 10
             playerParty.y = 10
             # 井戸B3へ
-            self.pushState(State.WELLB3)
+            self.stateStack.push(State.WELLB3)
 
     def draw_to_upanddown(self):
         '''

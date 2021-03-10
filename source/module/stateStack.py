@@ -64,7 +64,7 @@ class StateStack(object):
         }
 
         # スタックを初期化する
-        self.clear("")
+        self.clear()
 
         if __debug__:
             print("StateStack : Initialized.")
@@ -129,7 +129,7 @@ class StateStack(object):
         else:
             return False
 
-    def clear(self, stateName: str) -> None:
+    def clear(self) -> None:
         '''
         スタックを初期化し、stateNameに指定されたstateをスタックに登録する
         '''
@@ -138,9 +138,6 @@ class StateStack(object):
 
         # スタック初期化
         self.states = []
-
-        # stateNameで指定されたstateを取得し、スタックにpushする
-        self.push(self.getInstance(stateName))
 
     def setStates(self, states) -> None:
         '''
@@ -171,12 +168,13 @@ class StateStack(object):
 
         # stateクラスの取得に成功した場合、コールバックメソッドを登録し、インスタンスを生成する
         if c != None:
-            c.pushState = self.push
-            c.popState = self.pop
-            c.clearState = self.clear
-            c.isField = self.isField
-            c.setStates = self.setStates
-            c.getStates = self.getStates
+            kwargs["stateStack"] = self
+#            c.pushState = self.push
+#            c.popState = self.pop
+#            c.clearState = self.clear
+#            c.isField = self.isField
+#            c.setStates = self.setStates
+#            c.getStates = self.getStates
             state = c(**kwargs)
 
         return state

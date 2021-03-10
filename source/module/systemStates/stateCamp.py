@@ -6,6 +6,7 @@ from module.character import playerParty
 from module.facilityStates.baseFacilityState import BaseFacilityState
 from module.pyxelUtil import PyxelUtil
 from module.savedata import SaveData
+from module.state import State
 from overrides import overrides
 
 
@@ -34,18 +35,21 @@ class StateCamp(BaseFacilityState):
 
         # セーブ
         if pyxel.btnp(pyxel.KEY_S):
-            s = SaveData(self.getStates(), playerParty)
+            s = SaveData(self.stateStack.getStates(), playerParty)
             with open('savedata.dat', 'wb') as f:
-                pickle.dump(s, f)
+#                pickle.dump(s, f)
+                pickle.dump(s, f, protocol=3)
 
         # ゲームを中断
         if pyxel.btnp(pyxel.KEY_Q):
-            # タイトルに戻る
-            self.clearState()
+            # stateのスタックをクリア
+            self.stateStack.clear()
+            # タイトルのstateをpush
+            self.stateStack.push(State.TITLE)
 
         # キャンプを終わる
         if pyxel.btnp(pyxel.KEY_SPACE):
-            self.popState()
+            self.stateStack.pop()
 
     @overrides
     def draw(self):

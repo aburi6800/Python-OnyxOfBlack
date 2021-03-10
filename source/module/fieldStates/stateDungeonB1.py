@@ -53,14 +53,14 @@ class StateDungeonB1(BaseFieldState):
             playerParty.x = 11
             playerParty.y = 7
             # 町へ戻る
-            self.popState()
+            self.stateStack.pop()
 
     def update_to_down(self):
         '''
         下に降りる階段のイベント
         '''
         if pyxel.btnp(pyxel.KEY_D):
-            self.pushState(State.DUNGEONB2)
+            self.stateStack.push(State.DUNGEONB2)
 
     def draw_to_up(self):
         '''

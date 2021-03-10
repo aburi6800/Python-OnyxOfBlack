@@ -14,8 +14,8 @@ class App:
         '''
         クラス初期化
         '''
-        # StateStackの初期化
-        stateStack.clear("")
+        # タイトルのstateをpush
+        stateStack.push(State.TITLE)
 
         # Pyxel初期化～実行
         pyxel.init(256, 192)
@@ -26,9 +26,6 @@ class App:
         '''
         各フレームの処理
         '''
-        if stateStack.states[0] == None:
-            stateStack.push(State.TITLE)
-
         stateStack.update()
 
     def draw(self):

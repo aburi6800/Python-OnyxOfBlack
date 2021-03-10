@@ -89,7 +89,8 @@ class Input():
         '''
         入力完了処理
         '''
-        self.isEnter = True
+        if self.value != "":
+            self.isEnter = True
 
     def backspace(self):
         '''

@@ -50,13 +50,13 @@ class StateWellB1(BaseFieldState):
             playerParty.x = 15
             playerParty.y = 14
             # 町へ戻る
-            self.popState()
+            self.stateStack.pop()
 
         def go_to_down(self):
             playerParty.x = 10
             playerParty.y = 10
             # 井戸B2へ
-            self.pushState(State.WELLB2)
+            self.stateStack.push(State.WELLB2)
 
         if self.tick == 1:
             c = messageCommand()

@@ -119,7 +119,7 @@ class BaseFieldState(BaseState):
             if self.tick > 30:
                 self.isEncount = False
                 self.tick = 0
-                self.pushState(State.BATTLE)
+                self.stateStack.push(State.BATTLE)
                 return
             else:
                 return
@@ -133,7 +133,7 @@ class BaseFieldState(BaseState):
 
         # キャンプ
         if pyxel.btnp(pyxel.KEY_SPACE):
-            self.pushState(State.CAMP)
+            self.stateStack.push(State.CAMP)
 
         # キー入力（右）
         if pyxel.btnp(pyxel.KEY_RIGHT):
@@ -227,7 +227,7 @@ class BaseFieldState(BaseState):
 
         # 開発用
         PyxelUtil.text(0, 0, "*X:" + str(playerParty.x) + " Y:" + str(playerParty.y) + " DIR:" +
-                       str(playerParty.direction) + " MAP:" + self.stateName + "-" + bin(self._map[playerParty.y][playerParty.x]))
+                       str(playerParty.direction) + "-" + bin(self._map[playerParty.y][playerParty.x]))
 
         # 迷路の枠線
         pyxel.rectb(self.DRAW_OFFSET_X - 1, self.DRAW_OFFSET_Y -

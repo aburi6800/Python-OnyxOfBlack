@@ -71,15 +71,15 @@ class StateTitle(BaseSystemState):
             if self.tick > 21:
                 if self.selected == 1:
                     self.selected = 0
-                    self.pushState(State.MAKECHARACTER)
+                    self.stateStack.push(State.MAKECHARACTER)
                 if self.selected == 2:
                     # セーブデータをロード
                     with open("savedata.dat", mode="rb") as f:
                         SaveData = pickle.load(f)
                     # stateStackのstatesを復元する
-                    self.setStates(SaveData.states)
+                    self.stateStack.setStates(SaveData.states)
                     # 先頭は必ずキャンプなので、popする
-                    self.popState()
+                    self.stateStack.pop()
                     # プレイヤーパーティーの復元
                     playerParty.resotreSaveData(SaveData.playerParty)
 

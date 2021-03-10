@@ -96,7 +96,7 @@ class StateMakeCharacter(BaseSystemState):
         self.nameInput.update()
 
         # 文字入力が完了したか
-        if self.nameInput.isEnter:
+        if self.nameInput.isEnter and self.nameInput.value != "":
             pyxel.play(3, 0, loop=False)
 
             # 人間キャラクタ作成
@@ -210,10 +210,10 @@ class StateMakeCharacter(BaseSystemState):
             pyxel.playm(0)
 
         if self.tick > 120:
-            # 自分自身をpopする
-            self.popState()
-            # ゲーム開始
-            self.pushState(State.CITY)
+            # 自分自身のstateをpopする
+            self.stateStack.pop()
+            # 街のStateをpushする
+            self.stateStack.push(State.CITY)
 
     @overrides	
     def draw(self):

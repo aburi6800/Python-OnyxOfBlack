@@ -86,16 +86,17 @@ class eventHandler():
         eval("self.update_" +
              self.eventSection["command"])(self.eventSection["args"])
 
-    def update_end(self, *args) -> None:
+    def update_end(self, *args: dict) -> None:
         '''
         イベント終了コマンド\n
+        特に引数は必要としない。
         '''
         print("called:update_end()")
 
         # イベント発生中フラグをFalseにする
         self.isExecute = False
 
-    def update_judgeFlg(self, args) -> None:
+    def update_judgeFlg(self, args: dict) -> None:
         '''
         フラグ判定コマンド\n
         引数は以下の要素を設定した辞書型とする。\n
@@ -106,14 +107,14 @@ class eventHandler():
         print(f"called:update_judgeFlg({args})")
 
         # プラグ判定
-        if self.flg[int(args["flgNo"])] == 1:
+        if self.flg[args.get("flgNo")] == 1:
             # 次のセクションデータをセット
             self.eventSection = self.setNextSection(args.get("on"))
         else:
             # 次のセクションデータをセット
             self.eventSection = self.setNextSection(args.get("off"))
 
-    def update_loadPicture(self, args) -> None:
+    def update_loadPicture(self, args: dict) -> None:
         '''
         画像ロードコマンド\n
         引数は以下の要素を設定した辞書型とする。\n
@@ -131,7 +132,7 @@ class eventHandler():
         # 次のエントリーデータをセット
         self.eventSection = self.getEventSection(args.get("next"))
 
-    def update_printMessage(self, args) -> None:
+    def update_printMessage(self, args: dict) -> None:
         '''
         メッセージ表示コマンド\n
         引数は以下の要素を設定した辞書型とする。\n
@@ -173,7 +174,7 @@ class eventHandler():
         # messagequeueの処理が終了した後、ここで設定されたentryDataの処理から再開される。
         self.eventSection = self.getEventSection(args.get("next", None))
 
-    def update_setFlg(self, args) -> None:
+    def update_setFlg(self, args: dict) -> None:
         '''
         フラグ設定コマンド\n
         引数は以下の要素を設定した辞書型とする。\n
@@ -185,12 +186,12 @@ class eventHandler():
 
         # フラグセット
         # 仮実装
-        print(f"FlgNo:{args['flgNo']} value:{args['value']}")
+        print("FlgNo:" + args.get("flgNo") + " value:" + args.get("value"))
 
         # 次のエントリーデータをセット
         self.eventSection = self.getEventSection(args.get("next"))
 
-    def update_changeState(self, args) -> None:
+    def update_changeState(self, args: dict) -> None:
         '''
         state変更コマンド\n
         引数は以下の要素を設定した辞書型とする。\n
@@ -200,17 +201,17 @@ class eventHandler():
         print(f"called:update_changeState({args})")
 
         # state変更
-        self.calledState.pushState(eval("State." + args.get("stateName")))
+        self.calledState.stateStack.push(eval("State." + args.get("stateName")))
 
         # 次のエントリーデータをセット
         self.eventSection = self.getEventSection(args.get("next"))
 
-    def update_setPartyPosition(self, args) -> None:
+    def update_setPartyPosition(self, args: dict) -> None:
         '''
         パーティー座標設定コマンド\n
         プレイヤーパーティーの座標を設定する。\n
         引数は以下の要素を設定した辞書型とする。\n
-        ・"position"：変更する座標をリストで指定\n
+        ・"position"：変更する座標をリストで指定（x座標、y座標の順）\n
         ・"next"；次のイベントの識別子
         '''
         print(f"called:update_setPartyPosition({args})")

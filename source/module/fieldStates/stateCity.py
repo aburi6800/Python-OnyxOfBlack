@@ -121,49 +121,49 @@ class StateCity(BaseFieldState):
         '''
         盾屋に入るイベント
         '''
-        self.pushState(State.SHIELDSHOP)
+        self.stateStack.push(State.SHIELDSHOP)
 
     def update_armorshop(self):
         '''
         鎧屋に入るイベント
         '''
-        self.pushState(State.ARMORSHOP)
+        self.stateStack.push(State.ARMORSHOP)
 
     def update_helmetshop(self):
         '''
         兜屋に入るイベント
         '''
-        self.pushState(State.HELMETSHOP)
+        self.stateStack.push(State.HELMETSHOP)
 
     def update_weaponshop(self):
         '''
         武器屋に入るイベント
         '''
-        self.pushState(State.WEAPONSHOP)
+        self.stateStack.push(State.WEAPONSHOP)
 
     def update_barbar(self):
         '''
         床屋に入るイベント
         '''
-        self.pushState(State.BARBAR)
+        self.stateStack.push(State.BARBAR)
 
     def update_drugs(self):
         '''
         薬屋に入るイベント
         '''
-        self.pushState(State.DRUGS)
+        self.stateStack.push(State.DRUGS)
 
     def update_surgery(self):
         '''
         緊急治療に入るイベント
         '''
-        self.pushState(State.SURGERY)
+        self.stateStack.push(State.SURGERY)
 
     def update_examinations(self):
         '''
         身体検査に入るイベント
         '''
-        self.pushState(State.EXAMINATIONS)
+        self.stateStack.push(State.EXAMINATIONS)
 
     def update_secretmessage(self):
         '''
@@ -201,7 +201,7 @@ class StateCity(BaseFieldState):
             # カウントタイマーを初期化しておく
             self.tick = 0
             # 墓地の地下へ
-            self.pushState(State.CEMETERY)
+            self.stateStack.push(State.CEMETERY)
 
     def update_to_well(self):
         '''
@@ -239,7 +239,7 @@ class StateCity(BaseFieldState):
             # カウントタイマーを初期化しておく
             self.tick = 0
             # 地下迷宮へ
-            self.pushState(State.DUNGEONB1)
+            self.stateStack.push(State.DUNGEONB1)
 
     def update_temple(self):
         '''
@@ -400,6 +400,7 @@ class StateCity(BaseFieldState):
 #        if self.tick == 0:
 #            pyxel.image(0).load(0, 205, "well.png")
 #        pyxel.blt(self.DRAW_OFFSET_X + 15, self.DRAW_OFFSET_Y + 15, 0, 0, 205, 50, 50)
+        pass
 
     def draw_to_dungeon(self):
         '''

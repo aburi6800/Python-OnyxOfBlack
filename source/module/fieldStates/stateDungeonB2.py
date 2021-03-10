@@ -55,14 +55,14 @@ class StateDungeonB2(BaseFieldState):
         '''
         if pyxel.btnp(pyxel.KEY_U):
             # B1へ戻る
-            self.popState()
+            self.stateStack.pop()
 
     def update_to_down(self):
         '''
         下に降りる階段のイベント
         '''
         if pyxel.btnp(pyxel.KEY_D):
-            self.pushState(State.DUNGEONB3)
+            self.stateStack.push(State.DUNGEONB3)
 
     def draw_to_up(self):
         '''
