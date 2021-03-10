@@ -7,7 +7,7 @@ from module.character import Human, enemyParty, playerParty
 from module.messageHandler import message, messageCommand, messagehandler
 from module.pyxelUtil import PyxelUtil
 from overrides import overrides
-
+from module.state import State
 
 class StateBattle(BaseState):
     '''
@@ -44,12 +44,11 @@ class StateBattle(BaseState):
         pyxel.KEY_5: 4,
     }
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         '''
         クラス初期化
         '''
-        super().__init__()
-        self.stateName = "Battle"
+        super().__init__(**kwargs)
 
         # 行動順リスト
         self.turn_table = []
@@ -372,7 +371,7 @@ class StateBattle(BaseState):
 
         if self.member_index > len(playerParty.memberList) - 1:
             if self.reward_gold == 0:
-                self.popState()
+                self.stateStack.pop()
             else:
                 self.change_state(self.STATE_WIN_GETGOLD)
 
@@ -385,21 +384,22 @@ class StateBattle(BaseState):
             self.reward_gold = self.reward_gold // len(playerParty.memberList)
             # 分配した結果、0ゴールドなら戦闘終了
             if self.reward_gold == 0:
-                self.popState()
+                self.stateStack.pop()
 
         if pyxel.btnp(pyxel.KEY_SPACE):
             # プレイヤーパーティーの各メンバーのゴールドを加算
             for _member in playerParty.memberList:
                 _member.gold = _member.gold + self.reward_gold
             # 戦闘終了
-            self.popState()
+            self.stateStack.pop()
 
     def update_lose(self):
         '''
         プレイヤーパーティー全滅処理
         '''
         if pyxel.btnp(pyxel.KEY_SPACE):
-            self.clearState()
+            self.stateStack.clear()
+            self.stateStack.push(State.TITLE)
 
     def update_runaway_judge(self):
         '''
@@ -427,7 +427,7 @@ class StateBattle(BaseState):
         if self.tick > 30:
             playerParty.isEscape = True
             self.tick = 0
-            self.popState()
+            self.stateStack.pop()
         else:
             self.tick += 1
 
@@ -471,11 +471,11 @@ class StateBattle(BaseState):
             for _member in enemyParty.memberList:
                 playerParty.memberList.append(_member)
             # 戦闘終了
-            self.popState()
+            self.stateStack.pop()
 
         if pyxel.btnp(pyxel.KEY_G):
             # 戦闘終了
-            self.popState()
+            self.stateStack.pop()
 
         if pyxel.btnp(pyxel.KEY_Y):
             # 戦闘へ
@@ -487,7 +487,7 @@ class StateBattle(BaseState):
         '''
         if pyxel.btnp(pyxel.KEY_SPACE):
             # 戦闘終了
-            self.popState()
+            self.stateStack.pop()
 
     @overrides
     def draw(self):
