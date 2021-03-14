@@ -76,10 +76,13 @@ class StateTitle(BaseSystemState):
                     # セーブデータをロード
                     with open("savedata.dat", mode="rb") as f:
                         SaveData = pickle.load(f)
-                    # stateStackのstatesを復元する
-                    self.stateStack.setStates(SaveData.states)
+                    # stateStackを復元する
+                    self.stateStack.states = SaveData.states
                     # 先頭は必ずキャンプなので、popする
                     self.stateStack.pop()
+                    # StateStackへの参照を設定し直す
+                    for state in self.stateStack.states:
+                        state.stateStack = self.stateStack
                     # プレイヤーパーティーの復元
                     playerParty.resotreSaveData(SaveData.playerParty)
 

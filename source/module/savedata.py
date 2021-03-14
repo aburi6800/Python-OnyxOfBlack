@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+from module.character import playerParty
+
+# Stateのリスト
+states = []
+
 class SaveData():
     '''
     セーブデータのクラス

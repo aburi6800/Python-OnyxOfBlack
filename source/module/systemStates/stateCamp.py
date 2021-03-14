@@ -35,7 +35,7 @@ class StateCamp(BaseFacilityState):
 
         # セーブ
         if pyxel.btnp(pyxel.KEY_S):
-            s = SaveData(self.stateStack.getStates(), playerParty)
+            s = SaveData(self.stateStack.states, playerParty)
             with open('savedata.dat', 'wb') as f:
 #                pickle.dump(s, f)
                 pickle.dump(s, f, protocol=3)
