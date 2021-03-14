@@ -9,6 +9,7 @@ from module.pyxelUtil import PyxelUtil
 from overrides import overrides
 from module.state import State
 
+
 class StateBattle(BaseState):
     '''
     戦闘シーンのクラス/n
@@ -264,13 +265,13 @@ class StateBattle(BaseState):
             # 攻撃ヒット判定
             if _attacker.attack < _target.dexterity:
                 # 避けた
-                m = messageCommand()
-                m.addMessage(message(["*" + _target.name + " ", "KA", "D"]))
-                m.addMessage(message(["*" + _attacker.name + " ", "WO", " ", "YO", "KE", "TA", "."]))
-                messagehandler.enqueue(m)
-#                self.message.append(["*" + _target.name + " ", "KA", "D"])
-#                self.message.append(
-#                    ["*" + _attacker.name + " ", "WO", " ", "YO", "KE", "TA", "."])
+#                m = messageCommand()
+#                m.addMessage(message(["*" + _target.name + " ", "KA", "D"]))
+#                m.addMessage(message(["*" + _attacker.name + " ", "WO", " ", "YO", "KE", "TA", "."]))
+#                messagehandler.enqueue(m)
+                self.message.append(["*" + _target.name + " ", "KA", "D"])
+                self.message.append(
+                    ["*" + _attacker.name + " ", "WO", " ", "YO", "KE", "TA", "."])
             else:
                 # ダメージ算出
                 _damage = _attacker.attack
