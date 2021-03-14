@@ -47,7 +47,7 @@ class StateSurgery(BaseFacilityState):
         '''
         各フレームの処理
         '''
-        super().__update_execute()
+        super().update_execute()
 
         if self.state == self.STATE_ENTER:
             self.update_enter()
@@ -124,7 +124,7 @@ class StateSurgery(BaseFacilityState):
         '''
         if pyxel.btnp(pyxel.KEY_SPACE):
             # 状態を終了する
-            self.popState()
+            self.stateStack.pop()
 
     def update_nomoney(self):
         '''

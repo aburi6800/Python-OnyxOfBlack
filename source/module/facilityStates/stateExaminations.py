@@ -94,7 +94,7 @@ class StateExaminations(BaseFacilityState):
         '''
         if pyxel.btnp(pyxel.KEY_SPACE):
             # 状態を終了する
-            self.popState()
+            self.stateStack.pop()
 
     @overrides
     def draw(self):
