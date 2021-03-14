@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import os
+
 import pyxel
 from module.character import playerParty
 from module.facilityStates.baseShopState import BaseShopState
@@ -27,6 +29,9 @@ class StateWeaponShop(BaseShopState):
         self.saleParson.name = "Darnoc"
         self.saleParson.head = 123
         self.saleParson.body = 3
+
+        # 画像をロード
+        pyxel.image(0).load(0, 205, os.path.normpath(os.path.join(os.path.dirname(__file__), "../../../assets/weaponshop.png")))
 
     @overrides
     def update_done(self):

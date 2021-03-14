@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import os
+
 import pyxel
 from module.character import playerParty
 from module.facilityStates.baseShopState import BaseShopState
@@ -28,7 +30,8 @@ class StateHelmetShop(BaseShopState):
         self.saleParson.head = 94
         self.saleParson.body = 8
 
-        pyxel.image(0).load(0, 205, "helmetshop.png")
+        # 画像をロード
+        pyxel.image(0).load(0, 205, os.path.normpath(os.path.join(os.path.dirname(__file__), "../../../assets/helmetshop.png")))
 
     @overrides
     def update_done(self):

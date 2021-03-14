@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import random
 
 import pyxel
@@ -29,6 +30,9 @@ class StateBarbar(BaseShopState):
         self.saleParson.name = "Sasaki"
         self.saleParson.head = 114
         self.saleParson.body = 8
+
+        # 画像をロード
+        pyxel.image(0).load(0, 205, os.path.normpath(os.path.join(os.path.dirname(__file__), "../../../assets/barbar.png")))
 
     @overrides
     def update_equip(self):
