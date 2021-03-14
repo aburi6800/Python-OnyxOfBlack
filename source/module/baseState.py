@@ -30,6 +30,8 @@ class BaseState(EnforceOverrides):
         '''
         # stateStackへの参照を設定
         self.stateStack = kwargs.get("stateStack")
+        if self.stateStack == None:
+            raise ValueError("kwargs `stateStack' is not defined.")
 
         # 経過時間リセット
         self.tick = 0
