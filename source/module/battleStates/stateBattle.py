@@ -7,6 +7,7 @@ from module.character import Human, enemyParty, playerParty
 from module.messageHandler import message, messageCommand, messagehandler
 from module.pyxelUtil import PyxelUtil
 from overrides import overrides
+from module.state import State
 
 
 class StateBattle(BaseState):
@@ -264,13 +265,13 @@ class StateBattle(BaseState):
             # 攻撃ヒット判定
             if _attacker.attack < _target.dexterity:
                 # 避けた
-                m = messageCommand()
-                m.addMessage(message(["*" + _target.name + " ", "KA", "D"]))
-                m.addMessage(message(["*" + _attacker.name + " ", "WO", " ", "YO", "KE", "TA", "."]))
-                messagehandler.enqueue(m)
-#                self.message.append(["*" + _target.name + " ", "KA", "D"])
-#                self.message.append(
-#                    ["*" + _attacker.name + " ", "WO", " ", "YO", "KE", "TA", "."])
+#                m = messageCommand()
+#                m.addMessage(message(["*" + _target.name + " ", "KA", "D"]))
+#                m.addMessage(message(["*" + _attacker.name + " ", "WO", " ", "YO", "KE", "TA", "."]))
+#                messagehandler.enqueue(m)
+                self.message.append(["*" + _target.name + " ", "KA", "D"])
+                self.message.append(
+                    ["*" + _attacker.name + " ", "WO", " ", "YO", "KE", "TA", "."])
             else:
                 # ダメージ算出
                 _damage = _attacker.attack
@@ -371,7 +372,7 @@ class StateBattle(BaseState):
 
         if self.member_index > len(playerParty.memberList) - 1:
             if self.reward_gold == 0:
-                self.popState()
+                self.stateStack.pop()
             else:
                 self.change_state(self.STATE_WIN_GETGOLD)
 
@@ -384,21 +385,22 @@ class StateBattle(BaseState):
             self.reward_gold = self.reward_gold // len(playerParty.memberList)
             # 分配した結果、0ゴールドなら戦闘終了
             if self.reward_gold == 0:
-                self.popState()
+                self.stateStack.pop()
 
         if pyxel.btnp(pyxel.KEY_SPACE):
             # プレイヤーパーティーの各メンバーのゴールドを加算
             for _member in playerParty.memberList:
                 _member.gold = _member.gold + self.reward_gold
             # 戦闘終了
-            self.popState()
+            self.stateStack.pop()
 
     def update_lose(self):
         '''
         プレイヤーパーティー全滅処理
         '''
         if pyxel.btnp(pyxel.KEY_SPACE):
-            self.clearState()
+            self.stateStack.clear()
+            self.stateStack.push(State.TITLE)
 
     def update_runaway_judge(self):
         '''
@@ -470,11 +472,11 @@ class StateBattle(BaseState):
             for _member in enemyParty.memberList:
                 playerParty.memberList.append(_member)
             # 戦闘終了
-            self.popState()
+            self.stateStack.pop()
 
         if pyxel.btnp(pyxel.KEY_G):
             # 戦闘終了
-            self.popState()
+            self.stateStack.pop()
 
         if pyxel.btnp(pyxel.KEY_Y):
             # 戦闘へ
@@ -486,7 +488,7 @@ class StateBattle(BaseState):
         '''
         if pyxel.btnp(pyxel.KEY_SPACE):
             # 戦闘終了
-            self.popState()
+            self.stateStack.pop()
 
     @overrides
     def draw(self):
