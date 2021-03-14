@@ -426,7 +426,7 @@ class StateBattle(BaseState):
         if self.tick > 30:
             playerParty.isEscape = True
             self.tick = 0
-            self.popState()
+            self.stateStack.pop()
         else:
             self.tick += 1
 
