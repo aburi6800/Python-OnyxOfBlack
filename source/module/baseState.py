@@ -84,7 +84,7 @@ class BaseState(EnforceOverrides):
             self.drawCharacter(_member, _x[_idx], _y[_idx])
             # ステータス
             PyxelUtil.text(16,  (_idx + 1) * 16 - 2,
-                           ["*" + _member.name], pyxel.COLOR_WHITE)  # 名前
+                           ["*" + f'{_idx + 1}:' + _member.name], pyxel.COLOR_WHITE)  # 名前
             pyxel.rect(16, (_idx + 1) * 16 + 6, _member.maxlife, 3,  pyxel.COLOR_RED)
             pyxel.rect(16, (_idx + 1) * 16 + 6, _member.life, 3,  pyxel.COLOR_DARKBLUE)
             pyxel.rect(16, (_idx + 1) * 16 + 9, 100, 1,  pyxel.COLOR_NAVY)

@@ -34,7 +34,7 @@ class BaseFacilityState(BaseState):
         # メンバーの所持金を表示
         for idx, member in enumerate(playerParty.memberList):
             PyxelUtil.text(
-                67, 14 + idx * 16, ["*{:1d} : {:5d} G.P.".format(idx + 1, member.gold)], pyxel.COLOR_WHITE)
+                77, 14 + idx * 16, ["*{:5d} G.P.".format(member.gold)], pyxel.COLOR_YELLOW)
 
         pyxel.blt(self.DRAW_OFFSET_X + 15, self.DRAW_OFFSET_Y + 15, 0, 0, 205, 50, 50)
 
