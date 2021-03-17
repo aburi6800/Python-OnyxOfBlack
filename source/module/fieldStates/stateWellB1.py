@@ -3,7 +3,8 @@ import pyxel
 from module.character import HumanGenerator, playerParty
 from module.fieldStates.baseFieldState import BaseFieldState
 from module.map.wellB1 import wellB1
-from module.messageHandler import messageCommand, messagehandler
+#from module.messageHandler import messageCommand, messagehandler
+from module.eventHandler import eventhandler
 from module.params.monster import monsterParams
 from module.state import State
 from overrides import overrides
@@ -46,6 +47,7 @@ class StateWellB1(BaseFieldState):
         '''
         抜け穴のイベント
         '''
+        '''
         def go_to_up(self):
             playerParty.x = 15
             playerParty.y = 14
@@ -57,8 +59,10 @@ class StateWellB1(BaseFieldState):
             playerParty.y = 10
             # 井戸B2へ
             self.stateStack.push(State.WELLB2)
-
-        if self.tick == 1:
+        '''
+        if self.isAfterMoved:
+            eventhandler.startEvent("wellb1_001.json", self)
+            '''
             c = messageCommand()
             c.addMessage(["U", "E", "TO", "SI", "TA", "NI", " ", "NU", "KE", "A", "NA", "KA", "D", " ", "A", "RU", "."])
             c.addMessage([""])
@@ -67,6 +71,7 @@ class StateWellB1(BaseFieldState):
             c.addChoose(["*[L] ","KO", "NO", "HA", "D", "WO", " ", "TA", "TI", "SA", "RU"], pyxel.KEY_L, None)
             messagehandler.enqueue(c)
             return
+            '''
 
     @overrides
     def onEnter(self):

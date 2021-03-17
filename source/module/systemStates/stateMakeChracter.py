@@ -215,6 +215,11 @@ class StateMakeCharacter(BaseSystemState):
             # 街のStateをpushする
             self.stateStack.push(State.CITY)
 
+            # プレイヤーパーティーの最初の位置と方向を設定
+            playerParty.x = 17
+            playerParty.y = 4
+            playerParty.direction = self.DIRECTION_SOUTH
+
     @overrides	
     def draw(self):
         '''

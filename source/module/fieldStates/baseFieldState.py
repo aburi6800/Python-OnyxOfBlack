@@ -67,6 +67,15 @@ class BaseFieldState(BaseState):
         pyxel.COLOR_DARKBLUE,
     ]
 
+    # 移動後判定フラグ
+    isAfterMoved = False
+
+    # エンカウントフラグ
+    isEncount = False
+
+    # 固定エンカウントフラグ
+    isFixedEncount = False
+
     def __init__(self, **kwargs):
         '''
         クラス初期化
@@ -127,7 +136,7 @@ class BaseFieldState(BaseState):
         # イベントハンドラ
         if self.eventhandler("U") == False:
         # イベントが何もない場合、エンカウントするか？
-            if self.tick == 1 and random.randint(0, 20) == 0:
+            if self.isAfterMoved and random.randint(0, 20) == 0:
                 self.encount_enemy()
                 return
 
@@ -137,7 +146,7 @@ class BaseFieldState(BaseState):
 
         # キー入力（右）
         if pyxel.btnp(pyxel.KEY_RIGHT):
-#            self.tick = 0
+            self.tick = 0
             playerParty.saveCondition()
             playerParty.direction += 1
             if playerParty.direction > self.DIRECTION_WEST:
@@ -146,7 +155,7 @@ class BaseFieldState(BaseState):
 
         # キー入力（左）
         if pyxel.btnp(pyxel.KEY_LEFT):
-#            self.tick = 0
+            self.tick = 0
             playerParty.saveCondition()
             playerParty.direction -= 1
             if playerParty.direction < self.DIRECTION_NORTH:
@@ -155,7 +164,7 @@ class BaseFieldState(BaseState):
 
         # キー入力（下）
         if pyxel.btnp(pyxel.KEY_DOWN):
-#            self.tick = 0
+            self.tick = 0
             playerParty.saveCondition()
             playerParty.direction = (playerParty.direction + 2) % 4
             return
@@ -166,7 +175,13 @@ class BaseFieldState(BaseState):
             playerParty.saveCondition()
             playerParty.x = playerParty.x + self.VX[playerParty.direction]
             playerParty.y = playerParty.y + self.VY[playerParty.direction]
+
+            # 移動後判定フラグをFalseに設定する
+            self.isAfterMoved = True
             return
+
+        # 移動後判定フラグをFalseに設定する
+        self.isAfterMoved = False
 
     def encount_enemy(self):
         '''
@@ -304,6 +319,9 @@ class BaseFieldState(BaseState):
 
         # 固定エンカウントフラグ初期化
         self.isFixedEncount = False
+
+        # 移動後判定フラグ初期化
+        self.isAfterMoved = True
 
     @overrides
     def onExit(self):

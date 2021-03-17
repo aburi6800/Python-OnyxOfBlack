@@ -21,7 +21,7 @@
     },
 
     "section2":{
-        "command":"changeState",
+        "command":"pushState",
         "args":{
             "stateName":"WELLB1",
             "next":"section3"

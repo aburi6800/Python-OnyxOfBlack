@@ -120,6 +120,10 @@ class StateStack(object):
         # スタックの先頭からStateを削除する。
         self.states.pop(0)
 
+        # スタックの戦闘になったStateのonEnterメソッドを実行する
+        if self.states[0] != None:
+            self.states[0].onEnter()
+
     def isField(self) -> bool:
         '''
         現在のStateがBaseFieldの派生クラスかを判定する

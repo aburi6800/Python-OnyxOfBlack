@@ -207,27 +207,8 @@ class StateCity(BaseFieldState):
         '''
         井戸のイベント
         '''
-        if self.tick == 1:
-#            self.pushState(State.EVENTWELL)
-#            self.pushState(State.EVENT, filename="city15149.json")
-            eventhandler.startEvent("city15149.json", self)
-        '''
-            c = chooseCommand()
-            c.addMessage(["KA", "RE", "TA", " ", "I", "TO", "D", "KA", "D", "A", "RU", "."])
-            c.addMessage(["SI", "TA", "NI", " ", "O", "RI", "RA", "RE", "SO", "U", "TA", "D", "."])
-            c.addMessage([""])
-            c.addChoose(["*[D] ","O", "RI", "TE", "MI", "RU"], pyxel.KEY_D, 1)
-            c.addChoose(["*[L] ","KO", "NO", "HA", "D", "WO", " ", "TA", "TI", "SA", "RU"], pyxel.KEY_L, 2)
-            messagequeue.enqueue(c)
-            return
-
-        if choosevalue.value == 1:
-            choosevalue.value = 0
-            playerParty.x = 10
-            playerParty.y = 10
-            # 井戸の中へ
-            self.pushState(State.WELLB1)
-        '''
+        if self.isAfterMoved:
+            eventhandler.startEvent("city_001.json", self)
 
     def update_to_dungeon(self):
         '''
@@ -415,11 +396,6 @@ class StateCity(BaseFieldState):
         状態開始時の処理
         '''
         super().onEnter()
-
-        # プレイヤーパーティーの最初の位置と方向
-        playerParty.x = 17
-        playerParty.y = 4
-        playerParty.direction = self.DIRECTION_SOUTH
 
     @overrides
     def onExit(self):

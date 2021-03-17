@@ -1,0 +1,45 @@
+{
+    "init":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["U", "E", "TO", "SI", "TA", "NI", " ", "NU", "KE", "A", "NA", "KA", "D", " ", "A", "RU", "."]],
+                ["M", ["TO", "D", "U", "SU", "RU", "* ?"]],
+                ["C", ["*[U] ","U", "E", " ", "NI", " ", "NO", "HO", "D", "RU"], "pyxel.KEY_U", "goto_up"],
+                ["C", ["*[D] ","SI", "TA", " ", "NI", " ", "O", "RI", "RU"], "pyxel.KEY_D", "goto_down"],
+                ["C", ["*[L] ","KO", "NO", "HA", "D", "WO", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_L", "end"]
+            ]
+        }
+    },
+
+    "goto_up":{
+        "command":"popState",
+        "args":{
+            "next":"setposition"
+        }
+    },
+
+    "setposition":{
+        "command":"setPartyPosition",
+        "args":{
+            "position":[15, 14],
+            "next":"end"
+        }
+    },
+
+    "goto_down":{
+        "command":"pushState",
+        "args":{
+            "stateName":"WELLB2",
+            "next":"end"
+        }
+    },
+
+    "end":{
+        "command":"end",
+        "args":{}
+    }
+
+}
+
+

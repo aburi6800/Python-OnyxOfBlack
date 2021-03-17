@@ -61,6 +61,9 @@ class eventHandler():
         # イベント発生中フラグをTrueにする
         self.isExecute = True
 
+        # 画像ロード済フラグをFalseにする
+        self.isPictureLoaded = False
+
         # 呼び出し元のStateへの参照
         self.calledState = calledState
 
@@ -92,7 +95,7 @@ class eventHandler():
     def update_end(self, *args: dict) -> None:
         '''
         イベント終了コマンド\n
-        特に引数は必要としない。
+        引数は不要。
         '''
         print("called:update_end()")
 
@@ -204,17 +207,31 @@ class eventHandler():
         # 次のエントリーデータをセット
         self.eventSection = self.getEventSection(args.get("next"))
 
-    def update_changeState(self, args: dict) -> None:
+    def update_pushState(self, args: dict) -> None:
         '''
-        state変更コマンド\n
+        state変更コマンド(push)\n
         引数は以下の要素を設定した辞書型とする。\n
         ・"stateName"：変更するstateのENUM値。\n
         ・"next"；次のイベントの識別子
         '''
-        print(f"called:update_changeState({args})")
+        print(f"called:update_pushState({args})")
 
-        # state変更
+        # stateのpush
         self.calledState.stateStack.push(eval("State." + args.get("stateName")))
+
+        # 次のエントリーデータをセット
+        self.eventSection = self.getEventSection(args.get("next"))
+
+    def update_popState(self, args: dict) -> None:
+        '''
+        state変更コマンド(pop)\n
+        引数は以下の要素を設定した辞書型とする。\n
+        ・"next"；次のイベントの識別子
+        '''
+        print(f"called:update_popState({args})")
+
+        # stateのpop
+        self.calledState.stateStack.pop()
 
         # 次のエントリーデータをセット
         self.eventSection = self.getEventSection(args.get("next"))
