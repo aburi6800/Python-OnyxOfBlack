@@ -29,6 +29,9 @@ class eventHandler():
     # イベントが発生したStateへの参照
     calledState = None
 
+    # 画像ロード済フラグ
+    isPictureLoaded = False
+
     def __init__(self) -> None:
         '''
         コンストラクタ\n
@@ -129,6 +132,9 @@ class eventHandler():
         print(f"loadPicture:{fileName}")
         pyxel.image(0).load(0, 205, fileName)
 
+        # 画像ロード済フラグをTrueに設定
+        self.isPictureLoaded = True
+
         # 次のエントリーデータをセット
         self.eventSection = self.getEventSection(args.get("next"))
 
@@ -150,21 +156,28 @@ class eventHandler():
         for m in args["message"]:
             # 種別
             _type = m[0]
+
             # メッセージ内容
             _message = m[1]
 
+            # メッセージ色、指定がない場合（=リストの長さ<2）の場合は白を指定する。
+            if len(m) < 3:
+                _color = pyxel.COLOR_WHITE
+            else:
+                _color = eval(m[2])
+
             # 通常のメッセージ
             if _type == "M":
-                cmd.addMessage(_message)
+                cmd.addMessage(_message, _color)
 
             # 選択メッセージ
             if _type == "C":
                 # 選択キー
-                _chooseKey = m[2]
+                _chooseKey = eval(m[2])
                 # 遷移先のセクション名からコールバックを生成する
                 _next = (self.setNextSection, m[3])
 
-                cmd.addChoose(_message, eval(_chooseKey), _next)
+                cmd.addChoose(_message, _chooseKey, _next)
 
         # メッセージキューに登録
         # このあと、messagequeueに制御が移る
@@ -226,9 +239,10 @@ class eventHandler():
         '''
         画面描画処理
         '''
-        # 画像表示
-        pyxel.blt(self.DRAW_OFFSET_X + 15,
-                  self.DRAW_OFFSET_Y + 15, 0, 0, 205, 50, 50)
+        # 画像ロード済の場合、画像を表示
+        if self.isPictureLoaded:
+            pyxel.blt(self.DRAW_OFFSET_X + 15,
+                    self.DRAW_OFFSET_Y + 15, 0, 0, 205, 50, 50)
 
 
 eventhandler = eventHandler()
