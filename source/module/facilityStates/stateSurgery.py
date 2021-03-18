@@ -104,7 +104,7 @@ class StateSurgery(BaseFacilityState):
 
     def update_done(self):
         '''
-        治療処理
+        治療完了処理
         '''
         if pyxel.btnp(pyxel.KEY_SPACE):
             # 次の対象メンバーを探す。いない場合は終了する。
@@ -113,7 +113,7 @@ class StateSurgery(BaseFacilityState):
                 self.price = round(
                     (self.member.maxlife - self.member.life) * (1 + self.member.level / 2))
                 # 治療確認へ
-                self.state = self.STATE_ISSERGERY
+                self.state = self.STATE_ISSURGERY
             else:
                 # 治療終了へ
                 self.state = self.STATE_LEAVE
