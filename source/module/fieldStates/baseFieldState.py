@@ -203,7 +203,6 @@ class BaseFieldState(BaseState):
         # 固定エンカウントしていない状態か？
         if self.isFixedEncount == False:
             self.isFixedEncount = True
-            self.isEncount = True
             self.encount_enemy()
             return
 
@@ -313,12 +312,6 @@ class BaseFieldState(BaseState):
 
         # 壁の色を初期化する
         self.set_wall_color()
-
-        # エンカウントフラグ初期化
-        self.isEncount = False
-
-        # 固定エンカウントフラグ初期化
-        self.isFixedEncount = False
 
         # 移動後判定フラグ初期化
         self.isAfterMoved = True
