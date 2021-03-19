@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+import os
+
 import pyxel
 from module.character import playerParty
 from module.facilityStates.baseShopState import BaseShopState
 from module.params.armor import armorParams
 from module.pyxelUtil import PyxelUtil
 from overrides import overrides
+
 
 class StateArmorShop(BaseShopState):
     '''
@@ -26,6 +29,9 @@ class StateArmorShop(BaseShopState):
         self.saleParson.name = "Blick"
         self.saleParson.head = 13
         self.saleParson.body = 4
+
+        # 画像をロード
+        pyxel.image(0).load(0, 205, os.path.normpath(os.path.join(os.path.dirname(__file__), "../../../assets/armorshop.png")))
 
     @overrides
     def update_done(self):
