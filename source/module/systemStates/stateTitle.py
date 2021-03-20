@@ -124,7 +124,7 @@ class StateTitle(BaseSystemState):
         if self.doContinue:
             PyxelUtil.text(104, 125, ["*[C]ONTINUE"], color[1])
 
-        PyxelUtil.text(68, 160, ["*COPYRIGHT BY ABURI6800 2020"], 2)
+        PyxelUtil.text(58, 160, ["*COPYRIGHT BY ABURI6800 2020, 2021"], 2)
         PyxelUtil.text(68, 168, ["*ORIGINAL GAME BY B.P.S. 1984"], 2)
 
     @overrides

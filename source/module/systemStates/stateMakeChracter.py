@@ -292,7 +292,7 @@ class StateMakeCharacter(BaseSystemState):
         if self.state >= self.STATE_MORE:
             pyxel.rect(70, 165, 134, 16, pyxel.COLOR_BLACK)
             pyxel.rectb(70, 165, 134, 16, pyxel.COLOR_NAVY)
-            PyxelUtil.text(74, 170, ("MO", "U", "HI", "TO", "RI", " ", "TU", "KU", "RI", "MA", "SU", "KA", "* ? (Y/N)"),
+            PyxelUtil.text(74, 170, ("MO", "U", "HI", "TO", "RI", " ", "I", "KI", "MA", "SU", "KA", "* ? (Y/N)"),
                            pyxel.COLOR_YELLOW if self.state == self.STATE_MORE else pyxel.COLOR_WHITE)
 
     @overrides
