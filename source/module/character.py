@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import random
 
+from module.direction import Direction
 from module.params.armor import armorParams
 from module.params.weapon import weaponParams
 
@@ -141,7 +142,6 @@ class PlayerParty(Party):
     リストに登録するHumanの上限は5とする
     直接このクラスを使用せず、インスタンスを格納したplayerPartyをimportして使用すること
     '''
-
     eventFlg = []
 
     def __init__(self):
@@ -149,6 +149,10 @@ class PlayerParty(Party):
         クラス初期化
         '''
         super().__init__()
+    
+        # 方向に対する増分
+        self.VX = (0, 1, 0, -1)
+        self.VY = (-1, 0, 1, 0)
 
         # プレイヤーパーティーの位置と方向
         self.x = 0
@@ -242,6 +246,47 @@ class PlayerParty(Party):
         if __debug__:
             print("PlayerParty : Condition restored. x={:02d}".format(
                 self.x) + ",y={:02d}".format(self.y) + ",direction={:01d}".format(self.direction))
+
+    def turnLeft(self):
+        '''
+        左を向く
+        '''
+        # 状態を保存
+        self.saveCondition()
+        # 方向を変える
+        self.direction -= 1
+        if self.direction < Direction.NORTH:
+            self.direction = Direction.WEST
+
+    def turnRight(self):
+        '''
+        右を向く
+        '''
+        # 状態を保存
+        self.saveCondition()
+        # 方向を変える
+        self.direction += 1
+        if self.direction > Direction.WEST:
+            self.direction = Direction.NORTH
+
+    def turnBack(self) -> None:
+        '''
+        後ろを向く
+        '''
+        # 状態を保存
+        self.saveCondition()
+        # 方向を変える
+        self.direction = (self.direction + 2) % 4
+
+    def moveForward(self) -> None:
+        '''
+        前に進む
+        '''
+        # 状態を保存
+        self.saveCondition()
+        # 座標を変更
+        self.x = self.x + self.VX[self.direction]
+        self.y = self.y + self.VY[self.direction]
 
 
 playerParty = PlayerParty()

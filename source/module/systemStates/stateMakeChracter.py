@@ -3,6 +3,7 @@ import random
 
 import pyxel
 from module.character import HumanGenerator, playerParty
+from module.direction import Direction
 from module.input import Input
 from module.pyxelUtil import PyxelUtil
 from module.state import State
@@ -218,7 +219,7 @@ class StateMakeCharacter(BaseSystemState):
             # プレイヤーパーティーの最初の位置と方向を設定
             playerParty.x = 17
             playerParty.y = 4
-            playerParty.direction = self.DIRECTION_SOUTH
+            playerParty.direction = Direction.SOUTH
 
     @overrides	
     def draw(self):

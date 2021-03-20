@@ -91,8 +91,7 @@ class StateCity(BaseFieldState):
             "17182U": self.update_temple,
             "18182U": self.update_temple,
             "19182U": self.update_temple,
-            "15149D": self.draw_to_well,
-            "15149U": self.update_to_well,
+            "15149U": 'self.startEvent("city_001.json")',
             "11079D": self.draw_to_dungeon,
             "11079U": self.update_to_dungeon,
         }
@@ -207,8 +206,9 @@ class StateCity(BaseFieldState):
         '''
         井戸のイベント
         '''
-        if self.isAfterMoved:
-            eventhandler.startEvent("city_001.json", self)
+#        if self.isAfterMoved:
+#            eventhandler.startEvent("city_001.json", self)
+        pass
 
     def update_to_dungeon(self):
         '''

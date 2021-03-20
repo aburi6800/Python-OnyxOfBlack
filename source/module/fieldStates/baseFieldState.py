@@ -4,12 +4,12 @@ import random
 import pyxel
 from module.baseState import BaseState
 from module.character import EnemyPartyGenerator, enemyParty, playerParty
-from module.Decorator import DrawDecorator
+from module.direction import Direction
+from module.eventHandler import eventhandler
+from module.messageHandler import messagehandler
 from module.pyxelUtil import PyxelUtil
 from module.state import State
 from overrides import overrides
-from module.eventHandler import eventhandler
-from module.messageHandler import messagehandler
 
 
 class BaseFieldState(BaseState):
@@ -19,16 +19,6 @@ class BaseFieldState(BaseState):
     迷路の描画処理に必要な情報を持つ。（他のクラスでは必要としない）\n
     迷路の描画処理を行う。
     '''
-
-    # 方向
-    DIRECTION_NORTH = 0
-    DIRECTION_EAST = 1
-    DIRECTION_SOUTH = 2
-    DIRECTION_WEST = 3
-
-    # 方向に対する増分
-    VX = (0, 1, 0, -1)
-    VY = (-1, 0, 1, 0)
 
     # 自分の位置と方向からマップのどこを参照するかを、参照順に定義
     # 参照順のイメージは以下（上向きである前提、自分の位置はDとする）
@@ -109,8 +99,8 @@ class BaseFieldState(BaseState):
             # フラグを降ろす
             playerParty.isEscape = False
             # 方向のリストを作ってシャッフル
-            _dirlist = [self.DIRECTION_NORTH, self.DIRECTION_EAST,
-                        self.DIRECTION_SOUTH, self.DIRECTION_WEST]
+            _dirlist = [Direction.NORTH, Direction.EAST,
+                        Direction.SOUTH, Direction.WEST]
             _dirlist = random.sample(_dirlist, len(_dirlist))
             # 各方向について移動可能か調べる
             for _direction in _dirlist:
@@ -134,7 +124,7 @@ class BaseFieldState(BaseState):
                 return
 
         # イベントハンドラ
-        if self.eventhandler("U") == False:
+        if self.checkEvent("U") == False:
         # イベントが何もない場合、エンカウントするか？
             if self.isAfterMoved and random.randint(0, 20) == 0:
                 self.encount_enemy()
@@ -147,34 +137,25 @@ class BaseFieldState(BaseState):
         # キー入力（右）
         if pyxel.btnp(pyxel.KEY_RIGHT):
             self.tick = 0
-            playerParty.saveCondition()
-            playerParty.direction += 1
-            if playerParty.direction > self.DIRECTION_WEST:
-                playerParty.direction = self.DIRECTION_NORTH
+            playerParty.turnRight()
             return
 
         # キー入力（左）
         if pyxel.btnp(pyxel.KEY_LEFT):
             self.tick = 0
-            playerParty.saveCondition()
-            playerParty.direction -= 1
-            if playerParty.direction < self.DIRECTION_NORTH:
-                playerParty.direction = self.DIRECTION_WEST
+            playerParty.turnLeft()
             return
 
         # キー入力（下）
         if pyxel.btnp(pyxel.KEY_DOWN):
             self.tick = 0
-            playerParty.saveCondition()
-            playerParty.direction = (playerParty.direction + 2) % 4
+            playerParty.turnBack()
             return
 
         # キー入力（上）
         if pyxel.btnp(pyxel.KEY_UP) and self.can_move_forward(self._map, playerParty.x, playerParty.y, playerParty.direction):
             self.tick = 0
-            playerParty.saveCondition()
-            playerParty.x = playerParty.x + self.VX[playerParty.direction]
-            playerParty.y = playerParty.y + self.VY[playerParty.direction]
+            playerParty.moveForward()
 
             # 移動後判定フラグをFalseに設定する
             self.isAfterMoved = True
@@ -231,7 +212,6 @@ class BaseFieldState(BaseState):
         else:
             return True
 
-#    @DrawDecorator
     @overrides
     def draw(self):
         '''
@@ -301,7 +281,7 @@ class BaseFieldState(BaseState):
             messagehandler.draw()
 
         # イベントハンドラ
-        self.eventhandler("D")
+        self.checkEvent("D")
 
     @overrides
     def onEnter(self):
@@ -336,7 +316,7 @@ class BaseFieldState(BaseState):
         '''
         return False
 
-    def eventhandler(self, _mode) -> bool:
+    def checkEvent(self, _mode) -> bool:
         '''
         プレイヤーパーティーの現在の座標に登録されているイベントがあれば、そのイベントの関数を呼び出す。\n
         引数の_modeには"U"(UPDATE)、または"D"(DRAW)のいづれかを指定する。（以外の場合は常にNoneを返却する）\n
@@ -347,24 +327,35 @@ class BaseFieldState(BaseState):
         if _mode != "U" and _mode != "D":
             return False
 
-        # 現在の座標＋方向でイベントが登録されている場合は、イベントの関数を呼び出す
+        # 現在の座標＋方向でイベントの関数を取得する
         _key = "{:02d}".format(playerParty.x) + "{:02d}".format(playerParty.y) + \
             "{:01d}".format(playerParty.direction) + _mode
         _event = self.event.get(_key, None)
-        if _event != None:
-            _event()
-            return True
 
-        # 現在の座標でイベントが登録されている場合は、イベントの関数を呼び出す
-        _key = "{:02d}".format(playerParty.x) + \
-            "{:02d}".format(playerParty.y) + "9" + _mode
-        _event = self.event.get(_key, None)
+        if _event == None:
+            # 取得できなかったときは、現在の座標でイベントの関数を取得する
+            _key = "{:02d}".format(playerParty.x) + \
+                "{:02d}".format(playerParty.y) + "9" + _mode
+            _event = self.event.get(_key, None)
+
+        # イベントの関数が取得できた場合は呼び出しを行う
         if _event != None:
-            _event()
+            if type(_event) is str:
+                eval(_event)
+            else:
+                _event()
             return True
 
         # ここに到達している場合はイベントが発生していないため、Falseを返却する
         return False
+
+    def startEvent(self, eventFileName:str) -> None:
+        '''
+        イベントを開始する\n
+        ただし、移動直後のみ開始する。
+        '''
+        if self.isAfterMoved:
+            eventhandler.startEvent(eventFileName, self)
 
     def draw_maze(self, _x, _y, _direction, _map):
         '''
@@ -401,7 +392,7 @@ class BaseFieldState(BaseState):
         返却される値は、方向によりデータをシフトした結果となる。
         '''
         _data = _map[_y][_x]
-        if _direction > self.DIRECTION_NORTH:
+        if _direction > Direction.NORTH:
             for _ in range(_direction):
                 _data = self.__right_3bit_rotate(_data)
         return _data
@@ -440,7 +431,6 @@ class BaseFieldState(BaseState):
         if _idx == 4:
             if _data & 0b000000000111 != 0:
                 _color = _data & 0b000000000111
-#                _y = self.DRAW_OFFSET_Y if (self.isOuter() and _color == 3) else 39 + self.DRAW_OFFSET_Y
                 _y = 0 if (self.isOuter() and _color == 3) else 39
                 _h = 38 if (self.isOuter() and _color == 3) else 1
                 pyxel.rect(38 + self.DRAW_OFFSET_X, _y + self.DRAW_OFFSET_Y,
@@ -448,7 +438,6 @@ class BaseFieldState(BaseState):
                            self.WALLCOLOR_FRONT[_color])
             if _data & 0b000000111000 != 0:
                 _color = (_data >> 3) & 0b000000000111
-#                _y = self.DRAW_OFFSET_Y if (self.isOuter() and _color == 3) else 39 + self.DRAW_OFFSET_Y
                 _y = 0 if (self.isOuter() and _color == 3) else 39
                 _h = 38 if (self.isOuter() and _color == 3) else 1
                 pyxel.tri(43 + self.DRAW_OFFSET_X, 36 + self.DRAW_OFFSET_Y,
@@ -464,7 +453,6 @@ class BaseFieldState(BaseState):
                            self.WALLCOLOR_SIDE[_color])
             if _data & 0b111000000000 != 0:
                 _color = (_data >> 9) & 0b000000000111
-#                _y = self.DRAW_OFFSET_Y if (self.isOuter() and _color == 3) else 39 + self.DRAW_OFFSET_Y
                 _y = 0 if (self.isOuter() and _color == 3) else 39
                 _h = 38 if (self.isOuter() and _color == 3) else 1
                 pyxel.tri(35 + self.DRAW_OFFSET_X, 36 + self.DRAW_OFFSET_Y,
@@ -482,7 +470,6 @@ class BaseFieldState(BaseState):
         if _idx == 5:
             if _data & 0b000000000111 != 0:
                 _color = _data & 0b000000000111
-#                _y = self.DRAW_OFFSET_Y if (self.isOuter() and _color == 3) else 36 + self.DRAW_OFFSET_Y
                 _y = 0 if (self.isOuter() and _color == 3) else 36
                 _h = 43 if (self.isOuter() and _color == 3) else 7
                 pyxel.rect(26 + self.DRAW_OFFSET_X, _y + self.DRAW_OFFSET_Y,
@@ -491,7 +478,6 @@ class BaseFieldState(BaseState):
         if _idx == 6:
             if _data & 0b000000000111 != 0:
                 _color = _data & 0b000000000111
-#                _y = self.DRAW_OFFSET_Y if (self.isOuter() and _color == 3) else 36 + self.DRAW_OFFSET_Y
                 _y = 0 if (self.isOuter() and _color == 3) else 36
                 _h = 43 if (self.isOuter() and _color == 3) else 7
                 pyxel.rect(44 + self.DRAW_OFFSET_X, _y + self.DRAW_OFFSET_Y,
@@ -500,7 +486,6 @@ class BaseFieldState(BaseState):
         if _idx == 7:
             if _data & 0b000000000111 != 0:
                 _color = _data & 0b000000000111
-#                _y = self.DRAW_OFFSET_Y if (self.isOuter() and _color == 3) else 36 + self.DRAW_OFFSET_Y
                 _y = 0 if (self.isOuter() and _color == 3) else 36
                 _h = 43 if (self.isOuter() and _color == 3) else 7
                 pyxel.rect(35 + self.DRAW_OFFSET_X, _y + self.DRAW_OFFSET_Y,
@@ -508,7 +493,6 @@ class BaseFieldState(BaseState):
                            self.WALLCOLOR_FRONT[_color])
             if _data & 0b000000111000 != 0:
                 _color = (_data >> 3) & 0b000000000111
-#                _y = self.DRAW_OFFSET_Y if (self.isOuter() and _color == 3) else 36 + self.DRAW_OFFSET_Y
                 _y = 0 if (self.isOuter() and _color == 3) else 36
                 _h = 43 if (self.isOuter() and _color == 3) else 7
                 pyxel.tri(50 + self.DRAW_OFFSET_X, 29 + self.DRAW_OFFSET_Y,
@@ -524,7 +508,6 @@ class BaseFieldState(BaseState):
                            self.WALLCOLOR_SIDE[_color])
             if _data & 0b111000000000 != 0:
                 _color = (_data >> 9) & 0b000000000111
-#                _y = self.DRAW_OFFSET_Y if (self.isOuter() and _color == 3) else 36 + self.DRAW_OFFSET_Y
                 _y = 0 if (self.isOuter() and _color == 3) else 36
                 _h = 43 if (self.isOuter() and _color == 3) else 7
                 pyxel.tri(28 + self.DRAW_OFFSET_X, 29 + self.DRAW_OFFSET_Y,
@@ -542,7 +525,6 @@ class BaseFieldState(BaseState):
         if _idx == 8:
             if _data & 0b000000000111 != 0:
                 _color = _data & 0b000000000111
-#                _y = self.DRAW_OFFSET_Y if (self.isOuter() and _color == 3) else 29 + self.DRAW_OFFSET_Y
                 _y = 0 if (self.isOuter() and _color == 3) else 29
                 _h = 50 if (self.isOuter() and _color == 3) else 21
                 pyxel.rect(5 + self.DRAW_OFFSET_X, _y + self.DRAW_OFFSET_Y,
@@ -551,7 +533,6 @@ class BaseFieldState(BaseState):
         if _idx == 9:
             if _data & 0b000000000111 != 0:
                 _color = _data & 0b000000000111
-#                _y = self.DRAW_OFFSET_Y if (self.isOuter() and _color == 3) else 29 + self.DRAW_OFFSET_Y
                 _y = 0 if (self.isOuter() and _color == 3) else 29
                 _h = 50 if (self.isOuter() and _color == 3) else 21
                 pyxel.rect(51 + self.DRAW_OFFSET_X, _y + self.DRAW_OFFSET_Y,
@@ -560,7 +541,6 @@ class BaseFieldState(BaseState):
         if _idx == 10:
             if _data & 0b000000000111 != 0:
                 _color = _data & 0b000000000111
-#                _y = self.DRAW_OFFSET_Y if (self.isOuter() and _color == 3) else 29 + self.DRAW_OFFSET_Y
                 _y = 0 if (self.isOuter() and _color == 3) else 29
                 _h = 50 if _color == 3 else 21
                 pyxel.rect(28 + self.DRAW_OFFSET_X, _y + self.DRAW_OFFSET_Y,
@@ -568,7 +548,6 @@ class BaseFieldState(BaseState):
                            self.WALLCOLOR_FRONT[_color])
             if _data & 0b000000111000 != 0:
                 _color = (_data >> 3) & 0b000000000111
-#                _y = self.DRAW_OFFSET_Y if (self.isOuter() and _color == 3) else 29 + self.DRAW_OFFSET_Y
                 _y = 0 if (self.isOuter() and _color == 3) else 29
                 _h = 50 if (self.isOuter() and _color == 3) else 21
                 pyxel.tri(69 + self.DRAW_OFFSET_X, 10 + self.DRAW_OFFSET_Y,
@@ -584,7 +563,6 @@ class BaseFieldState(BaseState):
                            self.WALLCOLOR_SIDE[_color])
             if _data & 0b111000000000 != 0:
                 _color = (_data >> 9) & 0b000000000111
-#                _y = self.DRAW_OFFSET_Y if (self.isOuter() and _color == 3) else 29 + self.DRAW_OFFSET_Y
                 _y = 0 if (self.isOuter() and _color == 3) else 29
                 _h = 50 if (self.isOuter() and _color == 3) else 21
                 pyxel.tri(9 + self.DRAW_OFFSET_X, 10 + self.DRAW_OFFSET_Y,
@@ -602,7 +580,6 @@ class BaseFieldState(BaseState):
         if _idx == 11:
             if _data & 0b000000000111 != 0:
                 _color = _data & 0b000000000111
-#                _y = self.DRAW_OFFSET_Y if (self.isOuter() and _color == 3) else 10 + self.DRAW_OFFSET_Y
                 _y = 0 if (self.isOuter() and _color == 3) else 10
                 _h = 69 if (self.isOuter() and _color == 3) else 59
                 pyxel.rect(0 + self.DRAW_OFFSET_X, _y + self.DRAW_OFFSET_Y,
@@ -611,7 +588,6 @@ class BaseFieldState(BaseState):
         if _idx == 12:
             if _data & 0b000000000111 != 0:
                 _color = _data & 0b000000000111
-#                _y = self.DRAW_OFFSET_Y if (self.isOuter() and _color == 3) else 10 + self.DRAW_OFFSET_Y
                 _y = 0 if (self.isOuter() and _color == 3) else 10
                 _h = 69 if (self.isOuter() and _color == 3) else 59
                 pyxel.rect(69 + self.DRAW_OFFSET_X, _y + self.DRAW_OFFSET_Y,
@@ -620,7 +596,6 @@ class BaseFieldState(BaseState):
         if _idx == 13:
             if _data & 0b000000000111 != 0:
                 _color = _data & 0b000000000111
-#                _y = self.DRAW_OFFSET_Y if (self.isOuter() and _color == 3) else 10 + self.DRAW_OFFSET_Y
                 _y = 0 if (self.isOuter() and _color == 3) else 10
                 _h = 69 if (self.isOuter() and _color == 3) else 59
                 pyxel.rect(10 + self.DRAW_OFFSET_X, _y + self.DRAW_OFFSET_Y,
@@ -631,7 +606,6 @@ class BaseFieldState(BaseState):
                                self.DRAW_OFFSET_Y, 2, pyxel.COLOR_BLACK)
             if _data & 0b000000111000 != 0:
                 _color = (_data >> 3) & 0b000000000111
-#                _y = self.DRAW_OFFSET_Y if (self.isOuter() and _color == 3) else 10 + self.DRAW_OFFSET_Y
                 _y = 0 if (self.isOuter() and _color == 3) else 10
                 _h = 69 if (self.isOuter() and _color == 3) else 59
                 pyxel.tri(78 + self.DRAW_OFFSET_X, 1 + self.DRAW_OFFSET_Y,
@@ -647,7 +621,6 @@ class BaseFieldState(BaseState):
                            self.WALLCOLOR_SIDE[_color])
             if _data & 0b111000000000 != 0:
                 _color = (_data >> 9) & 0b000000000111
-#                _y = self.DRAW_OFFSET_Y if (self.isOuter() and _color == 3) else 10 + self.DRAW_OFFSET_Y
                 _y = 0 if (self.isOuter() and _color == 3) else 10
                 _h = 69 if (self.isOuter() and _color == 3) else 59
                 pyxel.tri(0 + self.DRAW_OFFSET_X, 1 + self.DRAW_OFFSET_Y,
