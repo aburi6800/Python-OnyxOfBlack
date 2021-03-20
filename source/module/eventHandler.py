@@ -5,6 +5,7 @@ import pyxel
 
 from module.character import playerParty
 from module.messageHandler import messageCommand, messagehandler
+from module.direction import Direction
 from module.state import State
 
 class eventHandler():
@@ -242,12 +243,15 @@ class eventHandler():
         プレイヤーパーティーの座標を設定する。\n
         引数は以下の要素を設定した辞書型とする。\n
         ・"position"：変更する座標をリストで指定（x座標、y座標の順）\n
+        ・"direction"：省略可能。変更する方向をNORTH,SOUTH,WEST,EASTの文字列で指定\n
         ・"next"；次のイベントの識別子
         '''
         print(f"called:update_setPartyPosition({args})")
-
+        playerParty.saveCondition()
         playerParty.x = args.get("position")[0]
         playerParty.y = args.get("position")[1]
+        if args.get("direction") != None:
+            playerParty.direction = eval("Direction." + args.get("direction"))
 
         # 次のエントリーデータをセット
         self.eventSection = self.getEventSection(args.get("next"))

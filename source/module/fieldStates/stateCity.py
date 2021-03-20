@@ -4,14 +4,14 @@ import random
 import pyxel
 from module.character import (EnemyPartyGenerator, HumanGenerator, enemyParty,
                               playerParty)
+from module.direction import Direction
 from module.fieldStates.baseFieldState import BaseFieldState
 from module.map.uturotown import uturotown
-from module.messageHandler import (messageCommand, messagehandler)
-from module.eventHandler import eventhandler
 from module.params.monster import monsterParams
 from module.pyxelUtil import PyxelUtil
 from module.state import State
 from overrides import overrides
+
 
 class StateCity(BaseFieldState):
     '''
@@ -46,54 +46,48 @@ class StateCity(BaseFieldState):
         self.event = {
             "17040D": self.draw_gate,
             "18040D": self.draw_gate,
-            "17030U": self.update_gate,
-            "18030U": self.update_gate,
+            "17030U": "playerParty.restoreCondition()",
+            "18030U": "playerParty.restoreCondition()",
             "27073D": self.draw_shieldshop,
-            "26073U": self.update_shieldshop,
+            "26073U": "self.stateStack.push(State.SHIELDSHOP)",
             "27061D": self.draw_armorshop,
-            "28061U": self.update_armorshop,
+            "28061U": "self.stateStack.push(State.ARMORSHOP)",
             "27081D": self.draw_weaponshop,
-            "28081U": self.update_weaponshop,
+            "28081U": "self.stateStack.push(State.WEAPONSHOP)",
             "27101D": self.draw_helmetshop,
-            "28101U": self.update_helmetshop,
+            "28101U": "self.stateStack.push(State.HELMETSHOP)",
             "27113D": self.draw_barbar,
-            "26113U": self.update_barbar,
+            "26113U": "self.stateStack.push(State.BARBAR)",
             "16083D": self.draw_donotenter,
             "21052D": self.draw_inn,
             "23092D": self.draw_physicker,
             "23100D": self.draw_physicker_exit,
             "23103D": self.draw_drugs,
-            "22103U": self.update_drugs,
+            "22103U": "self.stateStack.push(State.DRUGS)",
             "23101D": self.draw_surgery,
-            "24101U": self.update_surgery,
+            "24101U": "self.stateStack.push(State.SURGERY)",
             "23111D": self.draw_examinations,
+            "24111U": "self.stateStack.push(State.EXAMINATIONS)",
             "17141D": self.draw_thewall,
-            "24111U": self.update_examinations,
             "18143D": self.draw_thewall,
             "14050D": self.draw_jail,
-            "02023D": self.draw_secretmessage,
-            "02023U": self.update_secretmessage,
+            "02023U": "self.startEvent('city_002.json')",
             "18090D": self.draw_directionmarket,
             "18092D": self.draw_directionmarket,
             "21151D": self.draw_cemetery,
             "22151D": self.draw_cemetery,
-            "25199D": self.draw_to_cemetery,
-            "26199D": self.draw_to_cemetery,
-            "25209D": self.draw_to_cemetery,
-            "26209D": self.draw_to_cemetery,
-            "25199U": self.update_to_cemetery,
-            "26199U": self.update_to_cemetery,
-            "25209U": self.update_to_cemetery,
-            "26209U": self.update_to_cemetery,
+            "25199U": "self.startEvent('city_003.json')",
+            "26199U": "self.startEvent('city_004.json')",
+            "25209U": "self.startEvent('city_005.json')",
+            "26209U": "self.startEvent('city_006.json')",
             "17172D": self.draw_temple,
             "18172D": self.draw_temple,
             "19172D": self.draw_temple,
-            "17182U": self.update_temple,
-            "18182U": self.update_temple,
-            "19182U": self.update_temple,
-            "15149U": 'self.startEvent("city_001.json")',
-            "11079D": self.draw_to_dungeon,
-            "11079U": self.update_to_dungeon,
+            "17182U": "playerParty.restoreCondition()",
+            "18182U": "playerParty.restoreCondition()",
+            "19182U": "playerParty.restoreCondition()",
+            "15149U": "self.startEvent('city_001.json')",
+            "11079U": "self.startEvent('city_007.json')",
         }
 
     @overrides
@@ -109,76 +103,6 @@ class StateCity(BaseFieldState):
         else:
             enemyParty.memberList = EnemyPartyGenerator.generate(
                 self.enemy_set[random.randint(0, len(self.enemy_set) - 1)])
-
-    def update_gate(self):
-        '''
-        ゲートのイベント
-        '''
-        playerParty.restoreCondition()
-
-    def update_shieldshop(self):
-        '''
-        盾屋に入るイベント
-        '''
-        self.stateStack.push(State.SHIELDSHOP)
-
-    def update_armorshop(self):
-        '''
-        鎧屋に入るイベント
-        '''
-        self.stateStack.push(State.ARMORSHOP)
-
-    def update_helmetshop(self):
-        '''
-        兜屋に入るイベント
-        '''
-        self.stateStack.push(State.HELMETSHOP)
-
-    def update_weaponshop(self):
-        '''
-        武器屋に入るイベント
-        '''
-        self.stateStack.push(State.WEAPONSHOP)
-
-    def update_barbar(self):
-        '''
-        床屋に入るイベント
-        '''
-        self.stateStack.push(State.BARBAR)
-
-    def update_drugs(self):
-        '''
-        薬屋に入るイベント
-        '''
-        self.stateStack.push(State.DRUGS)
-
-    def update_surgery(self):
-        '''
-        緊急治療に入るイベント
-        '''
-        self.stateStack.push(State.SURGERY)
-
-    def update_examinations(self):
-        '''
-        身体検査に入るイベント
-        '''
-        self.stateStack.push(State.EXAMINATIONS)
-
-    def update_secretmessage(self):
-        '''
-        隠しメッセージ
-        '''
-        if self.tick == 1:
-            m = messageCommand()
-            m.addMessage(["TO", "D", "KO", "KA", "RA", "TO", "MO", "NA", "KU", " ", "KO", "E", "KA", "D", " ", "KI", "KO","E", "TE", "KI", "TA", "."])
-            m.addMessage([""])
-            m.addMessage(["I", "RO", " ", "I", "LTU", "KA", "I", " ", "TU", "D", "TU", "*..."], pyxel.COLOR_PEACH)
-            messagehandler.enqueue(m)
-        
-        else:
-            playerParty.x = 11
-            playerParty.y = 8
-            playerParty.direction = self.DIRECTION_NORTH
 
     def update_to_cemetery(self):
         '''
@@ -202,31 +126,18 @@ class StateCity(BaseFieldState):
             # 墓地の地下へ
             self.stateStack.push(State.CEMETERY)
 
-    def update_to_well(self):
-        '''
-        井戸のイベント
-        '''
-#        if self.isAfterMoved:
-#            eventhandler.startEvent("city_001.json", self)
-        pass
-
     def update_to_dungeon(self):
         '''
         地下迷宮の入口のイベント
         '''
-        if pyxel.btn(pyxel.KEY_D):
-            playerParty.x = 3
-            playerParty.y = 6
-            # カウントタイマーを初期化しておく
-            self.tick = 0
-            # 地下迷宮へ
-            self.stateStack.push(State.DUNGEONB1)
-
-    def update_temple(self):
-        '''
-        寺院に入るイベント
-        '''
-        playerParty.restoreCondition()
+#        if pyxel.btn(pyxel.KEY_D):
+#            playerParty.x = 3
+#            playerParty.y = 6
+#            # カウントタイマーを初期化しておく
+#            self.tick = 0
+#            # 地下迷宮へ
+#            self.stateStack.push(State.DUNGEONB1)
+        pass
 
     def draw_gate(self):
         '''
@@ -338,17 +249,11 @@ class StateCity(BaseFieldState):
         PyxelUtil.text(32 + self.DRAW_OFFSET_X, 22 + self.DRAW_OFFSET_Y,
                        "*JAIL", pyxel.COLOR_BLACK)
 
-    def draw_secretmessage(self):
-        '''
-        隠しメッセージ
-        '''
-        pass
-
     def draw_directionmarket(self):
         '''
         MARKETへの看板の表示
         '''
-        if playerParty.direction == self.DIRECTION_NORTH:
+        if playerParty.direction == Direction.NORTH:
             PyxelUtil.text(166, 112, ["*   MARKET ->"], pyxel.COLOR_WHITE)
         else:
             PyxelUtil.text(166, 112, ["*<- MARKET"], pyxel.COLOR_WHITE)
@@ -360,13 +265,6 @@ class StateCity(BaseFieldState):
         PyxelUtil.text(16 + self.DRAW_OFFSET_X, 22 + self.DRAW_OFFSET_Y,
                        "*+ CEMETERY +", pyxel.COLOR_BLACK)
 
-    def draw_to_cemetery(self):
-        '''
-        墓地の穴の表示
-        '''
-        PyxelUtil.text(16, 140, ["SI", "D", "ME", "NN", "NI", " ", "NU", "KE",
-                                 "A", "NA", "KA", "D", " ", "A", "RU", "* !!"], pyxel.COLOR_WHITE)
-
     def draw_temple(self):
         '''
         寺院への看板の表示
@@ -374,21 +272,13 @@ class StateCity(BaseFieldState):
         PyxelUtil.text(30 + self.DRAW_OFFSET_X, 22 + self.DRAW_OFFSET_Y,
                        "*TEMPLE", pyxel.COLOR_BLACK)
 
-    def draw_to_well(self):
-        '''
-        井戸の穴の表示
-        '''
-#        if self.tick == 0:
-#            pyxel.image(0).load(0, 205, "well.png")
-#        pyxel.blt(self.DRAW_OFFSET_X + 15, self.DRAW_OFFSET_Y + 15, 0, 0, 205, 50, 50)
-        pass
-
     def draw_to_dungeon(self):
         '''
         地下迷宮の入口の表示
         '''
-        PyxelUtil.text(16, 140, ["SI", "TA", "NI", " ", "O", "RI", "RU", " ", "KA", "I",
-                                 "TA", "D", "NN", " ", "KA", "D", " ", "A", "RU", "* !!"], pyxel.COLOR_WHITE)
+#        PyxelUtil.text(16, 140, ["SI", "TA", "NI", " ", "O", "RI", "RU", " ", "KA", "I",
+#                                 "TA", "D", "NN", " ", "KA", "D", " ", "A", "RU", "* !!"], pyxel.COLOR_WHITE)
+        pass
 
     @overrides
     def onEnter(self):

@@ -11,11 +11,10 @@
         "command":"printMessage",
         "args":{
             "message":[
-                ["M", ["KA", "RE", "TA", " ", "I", "TO", "D", "KA", "D", "A", "RU", "."]],
-                ["M", ["SI", "TA", "NI", " ", "O", "RI", "RA", "RE", "SO", "U", "TA", "D", "."]],
+                ["M", ["SI", "D", "ME", "NN", "NI", " ", "NU", "KE", "A", "NA", "KA", "D", " ", "A", "RU", "."]],
                 ["M", ["TO", "D", "U", "SU", "RU", "* ?"]],
                 ["C", ["*[D]", "O", "RI", "TE", "MI", "RU"], "pyxel.KEY_D", "section2"],
-                ["C", ["*[L]", "KO", "NO", "HA", "D", "WO", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_L", "end"]
+                ["C", ["*[L]", "KO", "NO", "HA", "D", "WO", " ", "HA", "NA", "RE", "RU"], "pyxel.KEY_L", "end"]
             ]
         }
     },
@@ -23,7 +22,7 @@
     "section2":{
         "command":"setPartyPosition",
         "args":{
-            "position":[10, 10],
+            "position":[9, 7],
             "next":"section3"
         }
     },
@@ -31,7 +30,7 @@
     "section3":{
         "command":"pushState",
         "args":{
-            "stateName":"WELLB1",
+            "stateName":"CEMETERY",
             "next":"end"
         }
     },
@@ -40,5 +39,4 @@
         "command":"end",
         "args":{}
     }
-
 }

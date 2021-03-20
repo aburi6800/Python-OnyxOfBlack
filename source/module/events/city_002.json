@@ -1,0 +1,27 @@
+{
+    "init":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["TO", "D", "KO", "KA", "RA", "TO", "MO", "NA", "KU", " ", "KO", "E", "KA", "D", " ", "KI", "KO","E", "TE", "KI", "TA", "."]],
+                ["M", [""]],
+                ["M", ["i", "ro", " ", "i", "ltu", "ka", "i", " ", "tu", "d", "tu", "*..."], "pyxel.COLOR_PEACH"]
+            ],
+            "next":"section1"
+        }
+    },
+
+    "section1":{
+        "command":"setPartyPosition",
+        "args":{
+            "position":[11, 8],
+            "direction":"NORTH",
+            "next":"end"
+        }
+    },
+
+    "end":{
+        "command":"end",
+        "args":{}
+    }
+}
