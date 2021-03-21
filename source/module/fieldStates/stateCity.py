@@ -9,7 +9,6 @@ from module.fieldStates.baseFieldState import BaseFieldState
 from module.map.uturotown import uturotown
 from module.params.monster import monsterParams
 from module.pyxelUtil import PyxelUtil
-from module.state import State
 from overrides import overrides
 
 
@@ -103,41 +102,6 @@ class StateCity(BaseFieldState):
         else:
             enemyParty.memberList = EnemyPartyGenerator.generate(
                 self.enemy_set[random.randint(0, len(self.enemy_set) - 1)])
-
-    def update_to_cemetery(self):
-        '''
-        墓地の穴のイベント
-        '''
-        if pyxel.btn(pyxel.KEY_D):
-            if playerParty.x == 25 and playerParty.y == 19:
-                playerParty.x = 9
-                playerParty.y = 6
-            if playerParty.x == 26 and playerParty.y == 19:
-                playerParty.x = 10
-                playerParty.y = 6
-            if playerParty.x == 25 and playerParty.y == 20:
-                playerParty.x = 9
-                playerParty.y = 7
-            if playerParty.x == 26 and playerParty.y == 20:
-                playerParty.x = 10
-                playerParty.y = 7
-            # カウントタイマーを初期化しておく
-            self.tick = 0
-            # 墓地の地下へ
-            self.stateStack.push(State.CEMETERY)
-
-    def update_to_dungeon(self):
-        '''
-        地下迷宮の入口のイベント
-        '''
-#        if pyxel.btn(pyxel.KEY_D):
-#            playerParty.x = 3
-#            playerParty.y = 6
-#            # カウントタイマーを初期化しておく
-#            self.tick = 0
-#            # 地下迷宮へ
-#            self.stateStack.push(State.DUNGEONB1)
-        pass
 
     def draw_gate(self):
         '''
@@ -271,14 +235,6 @@ class StateCity(BaseFieldState):
         '''
         PyxelUtil.text(30 + self.DRAW_OFFSET_X, 22 + self.DRAW_OFFSET_Y,
                        "*TEMPLE", pyxel.COLOR_BLACK)
-
-    def draw_to_dungeon(self):
-        '''
-        地下迷宮の入口の表示
-        '''
-#        PyxelUtil.text(16, 140, ["SI", "TA", "NI", " ", "O", "RI", "RU", " ", "KA", "I",
-#                                 "TA", "D", "NN", " ", "KA", "D", " ", "A", "RU", "* !!"], pyxel.COLOR_WHITE)
-        pass
 
     @overrides
     def onEnter(self):

@@ -5,7 +5,7 @@
             "message":[
                 ["M", ["U", "E", "TO", "SI", "TA", "NI", " ", "NU", "KE", "A", "NA", "KA", "D", " ", "A", "RU", "."]],
                 ["M", ["TO", "D", "U", "SU", "RU", "* ?"]],
-                ["C", ["*[U] ","U", "E", " ", "NI", " ", "NO", "HO", "D", "RU"], "pyxel.KEY_U", "section1_1"],
+                ["C", ["*[U] ","U", "E", " ", "NI", " ", "NO", "HO", "D", "RU"], "pyxel.KEY_U", "sectiton1_1"],
                 ["C", ["*[D] ","SI", "TA", " ", "NI", " ", "O", "RI", "RU"], "pyxel.KEY_D", "section2_1"],
                 ["C", ["*[L] ","KO", "NO", "HA", "D", "WO", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_L", "end"]
             ]
@@ -15,7 +15,7 @@
     "section1_1":{
         "command":"setPartyPosition",
         "args":{
-            "position":[15, 14],
+            "position":[10, 10],
             "next":"section1_2"
         }
     },
@@ -38,7 +38,7 @@
     "section2_2":{
         "command":"pushState",
         "args":{
-            "stateName":"WELLB2",
+            "stateName":"WELLB4",
             "next":"end"
         }
     },

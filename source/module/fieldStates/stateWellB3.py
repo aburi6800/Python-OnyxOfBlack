@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 import pyxel
-from module.character import HumanGenerator, playerParty
+from module.character import HumanGenerator
 from module.fieldStates.baseFieldState import BaseFieldState
 from module.map.wellB3 import wellB3
 from module.params.monster import monsterParams
-from module.pyxelUtil import PyxelUtil
-from module.state import State
 from overrides import overrides
 
 
@@ -39,32 +37,8 @@ class StateWellB3(BaseFieldState):
         # マップ上の座標に対応するイベントの関数の辞書
         # 座標は"01013U"のようにX座標とY座標を2桁にした値と方向の値を結合し、"U"(update用)か"D"(draw用)を付与したものとする
         self.event = {
-            "10109U": self.update_to_upanddown,
-            "10109D": self.draw_to_upanddown,
+            "10109U": "self.startEvent('wellb3_001.json')",
         }
-
-    def update_to_upanddown(self):
-        '''
-        抜け穴のイベント
-        '''
-        if pyxel.btnp(pyxel.KEY_U):
-            playerParty.x = 10
-            playerParty.y = 10
-            # 井戸B2へ戻る
-            self.stateStack.pop()
-
-        if pyxel.btnp(pyxel.KEY_D):
-            playerParty.x = 10
-            playerParty.y = 10
-            # 井戸B4へ
-            self.stateStack.push(State.WELLB4)
-
-    def draw_to_upanddown(self):
-        '''
-        天井の抜け穴の表示
-        '''
-        PyxelUtil.text(16, 140, ["U", "E", "TO", "SI", "TA", "NI", " ", "NU",
-                                 "KE", "A", "NA", "KA", "D", " ", "A", "RU", "* !!"], pyxel.COLOR_WHITE)
 
     @overrides
     def onEnter(self):
