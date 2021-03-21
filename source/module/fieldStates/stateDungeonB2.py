@@ -4,8 +4,6 @@ from module.character import HumanGenerator
 from module.fieldStates.baseFieldState import BaseFieldState
 from module.map.dungeonB2 import dungeonB2
 from module.params.monster import monsterParams
-from module.pyxelUtil import PyxelUtil
-from module.state import State
 from overrides import overrides
 
 
@@ -39,44 +37,11 @@ class StateDungeonB2(BaseFieldState):
         # マップ上の座標に対応するイベントの関数の辞書
         # 座標は"01013U"のようにX座標とY座標を2桁にした値と方向の値を結合し、"U"(update用)か"D"(draw用)を付与したものとする
         self.event = {
-            "18219U": self.update_to_up,
-            "18219D": self.draw_to_up,
-            "16279U": self.update_to_down,
-            "16279D": self.draw_to_down,
-            "29199U": self.update_to_down,
-            "29199D": self.draw_to_down,
-            "26129U": self.update_to_down,
-            "26129D": self.draw_to_down,
+            "18219U": "self.startEvent('dungeonb2_001.json')",
+            "16279U": "self.startEvent('dungeonb1_002.json')",
+            "29199U": "self.startEvent('dungeonb1_002.json')",
+            "26129U": "self.startEvent('dungeonb1_002.json')",
         }
-
-    def update_to_up(self):
-        '''
-        上に上がる階段のイベント
-        '''
-        if pyxel.btnp(pyxel.KEY_U):
-            # B1へ戻る
-            self.stateStack.pop()
-
-    def update_to_down(self):
-        '''
-        下に降りる階段のイベント
-        '''
-        if pyxel.btnp(pyxel.KEY_D):
-            self.stateStack.push(State.DUNGEONB3)
-
-    def draw_to_up(self):
-        '''
-        上に上がる階段の表示
-        '''
-        PyxelUtil.text(16, 140, ["U", "E", "NI", " ", "A", "KA", "D", "RU", " ", "KA", "I",
-                                 "TA", "D", "NN", " ", "KA", "D", " ", "A", "RU", "* !!"], pyxel.COLOR_WHITE)
-
-    def draw_to_down(self):
-        '''
-        下に降りる階段の表示
-        '''
-        PyxelUtil.text(16, 140, ["SI", "TA", "NI", " ", "O", "RI", "RU", " ", "KA", "I",
-                                 "TA", "D", "NN", " ", "KA", "D", " ", "A", "RU", "* !!"], pyxel.COLOR_WHITE)
 
     @overrides
     def onEnter(self):
