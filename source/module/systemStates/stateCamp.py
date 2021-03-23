@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import pickle
 
 import pyxel
@@ -21,6 +22,9 @@ class StateCamp(BaseFacilityState):
         クラス初期化
         '''
         super().__init__(**kwargs)
+
+        # 画像をロード
+        pyxel.image(0).load(0, 205, os.path.normpath(os.path.join(os.path.dirname(__file__), "../../../assets/camp.png")))
 
     @overrides
     def update_execute(self):
