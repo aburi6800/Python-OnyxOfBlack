@@ -18,7 +18,10 @@ class StateTitle(BaseSystemState):
     '''
     # 状態の定数
     STATE_RESPECT = 1
-    STATE_TITLE = 2
+    STATE_STORY = 2
+    STATE_STORY_WAIT = 3
+    STATE_STORY_FADEOUT = 4
+    STATE_TITLE = 5
 
     # フェードイン／アウトの色
     TEXTCOLOR = [pyxel.COLOR_BLACK] * 5
@@ -29,11 +32,37 @@ class StateTitle(BaseSystemState):
     TEXTCOLOR += [pyxel.COLOR_DARKBLUE] * 5
     TEXTCOLOR += [pyxel.COLOR_BLACK] * 10
 
+    # ストーリー
+    # 秘宝「ブラックオニキス」。
+    # それを手にすれば、無限の力と富を授かるという。
+    # それはウツロの街のブラックタワーのどこかにあると伝えられていた。
+    # この話を耳にしたあなたは、この神秘の宝を求める事を決意する。
+    # そして、ブラックタワーに通じると言われている街の廃墟へと向かった。
+    STORY = (
+        ("HI", "HO", "U", " ", "hu", "d", "ra", "ltu", "ku", "o", "ni", "ki", "su", "."),
+        ("SO", "RE", "WO", " ", "TE", "NI", "SU", "RE", "HA", "D"),
+        ("MU", "KE", "D", "NN", "NO", "TI", "KA", "RA", "TO", " ", "TO", "MI", "WO", " ", "SA", "SU", "D", "KA", "RU", "TO", " ", "I", "U", "."),
+        ("SO", "RE", "HA", " ", "u", "tu", "ro", "NO", "MA", "TI", "NO", " ", "hu", "d", "ra", "ltu", "ku", "ta", "wa", "-", "NO"),
+        ("TO", "D", "KO", "KA", "NI", " ", "A", "RU", "TO", " ", "TU", "TA", "E", "RA", "RE", "TE", "I", "TA", "."),
+        (""),
+        ("KO", "NO", " ", "HA", "NA", "SI", "WO", " ", "MI", "MI", "NI", "SI", "TA", " ", "A", "NA", "TA", "HA"),
+        ("KO", "NO", " ", "SI", "NN", "HI", "HD", "NO", " ", "TA", "KA", "RA", "WO", " ", "MO", "TO", "ME", "RU", "KO", "TO", "WO"),
+        ("KE", "TU", "I", "SU", "RU", "."),
+        ("SO", "SI", "TE", " ", "hu", "d", "ra", "ltu", "ku", "ta", "wa", "-", "NI", " ", "TU", "U", "SI", "D", "RU", "TO", " ", "I", "WA", "RE", "RU"),
+        ("MA", "TI", "NO", " ", "HA", "I", "KI", "LYO", "HE", " ", "MU", "KA", "LTU", "TA", "*...")
+    )
+
     def __init__(self, **kwargs):
         '''
         クラス初期化
         '''
         super().__init__(**kwargs)
+
+        # ストーリー表示用インデックス
+        self.story_index = 0
+
+        # ストーリー表示用カウンタ
+        self.story_count = 0
 
     @overrides
     def update_execute(self):
@@ -42,6 +71,12 @@ class StateTitle(BaseSystemState):
         '''
         if self.state == self.STATE_RESPECT:
             self.update_respect()
+        elif self.state == self.STATE_STORY:
+            self.update_stoty()
+        elif self.state == self.STATE_STORY_WAIT:
+            self.update_story_wait()
+        elif self.state == self.STATE_STORY_FADEOUT:
+            self.update_story_fadeout()
         elif self.state == self.STATE_TITLE:
             self.update_title()
 
@@ -50,6 +85,46 @@ class StateTitle(BaseSystemState):
         ヘンク・B・ロジャースへの敬意
         '''
         if self.tick - 1 == len(self.TEXTCOLOR):
+            self.state = self.STATE_STORY
+
+    def update_stoty(self):
+        '''
+        ストーリー表示
+        '''
+        if self.story_count >= 45:
+            # 初期化
+            self.story_index += 1
+            self.story_count = 0
+
+            if self.story_index >= len(self.STORY):
+                self.state = self.STATE_STORY_WAIT
+        
+        if pyxel.btnp(pyxel.KEY_SPACE):
+            self.state = self.STATE_TITLE
+
+        self.story_count += 1
+
+    def update_story_wait(self):
+        '''
+        ストーリー全文表示
+        '''
+        self.story_count += 1
+        if self.story_count >= 30:
+            self.state = self.STATE_STORY_FADEOUT
+            self.story_count = 45
+        
+        if pyxel.btnp(pyxel.KEY_SPACE):
+            self.state = self.STATE_TITLE
+
+    def update_story_fadeout(self):
+        '''
+        ストーリー表示後フェードアウト
+        '''
+        self.story_count -= 1
+        if self.story_count == 0:
+            self.state = self.STATE_TITLE
+        
+        if pyxel.btnp(pyxel.KEY_SPACE):
             self.state = self.STATE_TITLE
 
     def update_title(self):
@@ -93,6 +168,12 @@ class StateTitle(BaseSystemState):
         '''
         if self.state == self.STATE_RESPECT:
             self.draw_respect()
+        if self.state == self.STATE_STORY:
+            self.draw_story()
+        if self.state == self.STATE_STORY_WAIT:
+            self.draw_story_wait()
+        if self.state == self.STATE_STORY_FADEOUT:
+            self.draw_story_fadeout()
         elif self.state == self.STATE_TITLE:
             self.draw_title()
 
@@ -102,6 +183,36 @@ class StateTitle(BaseSystemState):
         '''
         PyxelUtil.text(
             48, 95, ["*With all due respect to Henk B. Rogers."], self.TEXTCOLOR[self.tick - 1])
+
+    def draw_story(self):
+        '''
+        ストーリー表示
+        '''
+        pyxel.blt(119, 72, 0, 0, 16, 16, 24)
+
+        if self.story_index > 0:
+            for i in range(self.story_index):
+                PyxelUtil.text(20, i * 14 + 20, self.STORY[i])
+        
+        PyxelUtil.text(20, self.story_index * 14 + 20, self.STORY[self.story_index], self.TEXTCOLOR[self.story_count - 1])
+
+    def draw_story_wait(self):
+        '''
+        ストーリー全文表示
+        '''
+        pyxel.blt(119, 72, 0, 0, 16, 16, 24)
+
+        for i in range(len(self.STORY)):
+            PyxelUtil.text(20, i * 14 + 20, self.STORY[i])
+
+    def draw_story_fadeout(self):
+        '''
+        ストーリーフェードアウト
+        '''
+        pyxel.blt(119, 72, 0, 0, 16, 16, 24)
+
+        for i in range(len(self.STORY)):
+            PyxelUtil.text(20, i * 14 + 20, self.STORY[i], self.TEXTCOLOR[self.story_count - 1])
 
     def draw_title(self):
         '''
