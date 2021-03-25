@@ -38,6 +38,12 @@ class StateTitle(BaseSystemState):
     # それはウツロの街のブラックタワーのどこかにあると伝えられていた。
     # この話を耳にしたあなたは、この神秘の宝を求める事を決意する。
     # そして、ブラックタワーに通じると言われている街の廃墟へと向かった。
+
+    # The Black Onyx is a hidden treasure.
+    # They say that if you get it, it will give you unlimited power and wealth.
+    # It was said to be somewhere in the Black Tower in the city of Utsuro.
+    # Upon hearing this story, you decide to seek out this mysterious treasure.
+    # You head for the ruins of the city, which are said to lead to the Black Tower.
     STORY = (
         ("HI", "HO", "U", " ", "hu", "d", "ra", "ltu", "ku", "o", "ni", "ki", "su", "."),
         ("SO", "RE", "WO", " ", "TE", "NI", "SU", "RE", "HA", "D"),
@@ -188,7 +194,8 @@ class StateTitle(BaseSystemState):
         '''
         ストーリー表示
         '''
-        pyxel.blt(119, 72, 0, 0, 16, 16, 24)
+        if pyxel.frame_count % 2 == 0:
+            pyxel.blt(119, 72, 0, 0, 16, 16, 24)
 
         if self.story_index > 0:
             for i in range(self.story_index):
@@ -200,7 +207,8 @@ class StateTitle(BaseSystemState):
         '''
         ストーリー全文表示
         '''
-        pyxel.blt(119, 72, 0, 0, 16, 16, 24)
+        if pyxel.frame_count % 2 == 0:
+            pyxel.blt(119, 72, 0, 0, 16, 16, 24)
 
         for i in range(len(self.STORY)):
             PyxelUtil.text(20, i * 14 + 20, self.STORY[i])
@@ -209,7 +217,8 @@ class StateTitle(BaseSystemState):
         '''
         ストーリーフェードアウト
         '''
-        pyxel.blt(119, 72, 0, 0, 16, 16, 24)
+        if pyxel.frame_count % 2 == 0:
+            pyxel.blt(119, 72, 0, 0, 16, 16, 24)
 
         for i in range(len(self.STORY)):
             PyxelUtil.text(20, i * 14 + 20, self.STORY[i], self.TEXTCOLOR[self.story_count - 1])
