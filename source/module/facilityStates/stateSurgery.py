@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import os
+
 import pyxel
 from module.character import Human, playerParty
 from module.facilityStates.baseFacilityState import BaseFacilityState
@@ -41,6 +43,9 @@ class StateSurgery(BaseFacilityState):
         self.saleParson.name = "Slea"
         self.saleParson.head = 96
         self.saleParson.body = 9
+
+        # 画像をロード
+        pyxel.image(0).load(0, 205, os.path.normpath(os.path.join(os.path.dirname(__file__), "../../../assets/surgery.png")))
 
     @overrides
     def update_execute(self):
