@@ -54,7 +54,7 @@ class StateBarbar(BaseShopState):
 
         # 頭の種類をランダムで決定する。ただし、色は変えない。
         head = random.randint(
-            0, 31) * ((playerParty.memberList[self.buyMember].head // 32) * 32)
+            0, 31) + ((playerParty.memberList[self.buyMember].head // 32) * 32)
         playerParty.memberList[self.buyMember].head = head
 
     @overrides
