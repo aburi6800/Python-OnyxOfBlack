@@ -32,16 +32,14 @@ class BaseFacilityState(BaseState):
         super().draw()
 
         for idx, member in enumerate(playerParty.memberList):
-            # メンバーの所持金を表示
-#            PyxelUtil.text(
-#                83, 14 + idx * 16, ["*{:5d} G.P.".format(member.gold)], pyxel.COLOR_YELLOW)
-            PyxelUtil.text(
-                83, 14 + idx * 16, ["*{:5d} G.P.".format(12345)], pyxel.COLOR_YELLOW)
-
             # メンバーの薬の所持数を表示
             if member.potion != -1:
                 for cnt in range(4):
                     pyxel.blt(58 + cnt * 6, 15 + idx * 16, 1, (0 if cnt > (member.potion - 1) else 8), 32, 5, 5)
+
+            # メンバーの所持金を表示
+            PyxelUtil.text(
+                83, 14 + idx * 16, ["*{:5d} G.P.".format(member.gold)], pyxel.COLOR_YELLOW)
 
         pyxel.blt(self.DRAW_OFFSET_X + 15, self.DRAW_OFFSET_Y + 15, 0, 0, 205, 50, 50)
 
