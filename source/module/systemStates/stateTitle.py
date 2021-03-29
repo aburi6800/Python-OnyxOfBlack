@@ -8,7 +8,7 @@ from module.pyxelUtil import PyxelUtil
 from module.state import State
 from module.systemStates.baseSystemState import BaseSystemState
 from overrides import overrides
-
+from module.events.eventData import eventdata
 
 class StateTitle(BaseSystemState):
     '''
@@ -69,6 +69,9 @@ class StateTitle(BaseSystemState):
 
         # ストーリー表示用カウンタ
         self.story_count = 0
+
+        # イベントデータ初期化
+        eventdata.reset()
 
     @overrides
     def update_execute(self):

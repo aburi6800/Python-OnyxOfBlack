@@ -12,9 +12,10 @@ from overrides import overrides
 class StateDungeonB3(BaseFieldState):
     '''
     地下迷宮B3のクラス\n
-    BaseFieldStateを継承。\n
-    遭遇する敵リストとイベント処理を持つ。
+    BaseFieldStateを継承。
     '''
+    # State名
+    STATENAME = "DUNGEONB3"
 
     # マップ
     _map = dungeonB3.map
@@ -34,16 +35,6 @@ class StateDungeonB3(BaseFieldState):
         クラス初期化
         '''
         super().__init__(**kwargs)
-
-        # イベント
-        # マップ上の座標に対応するイベントの関数の辞書
-        # 座標は"01013U"のようにX座標とY座標を2桁にした値と方向の値を結合し、"U"(update用)か"D"(draw用)を付与したものとする
-        self.event = {
-            "16289U": "self.startEvent('dungeonb3_001.json')",
-            "28199U": "self.startEvent('dungeonb3_001.json')",
-            "26129U": "self.startEvent('dungeonb3_001.json')",
-            "06069U": "self.startEvent('dungeonb3_002.json')",
-        }
 
     @overrides
     def onEnter(self):

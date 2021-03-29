@@ -15,9 +15,10 @@ from overrides import overrides
 class StateCity(BaseFieldState):
     '''
     街のクラス\n
-    BaseFieldStateを継承。\n
-    遭遇する敵リストと街のイベント処理を持つ
+    BaseFieldStateを継承。
     '''
+    # State名
+    STATENAME = "CITY"
 
     # マップ
     _map = uturotown.map
@@ -38,56 +39,6 @@ class StateCity(BaseFieldState):
         クラス初期化
         '''
         super().__init__(**kwargs)
-
-        # イベント
-        # マップ上の座標に対応するイベントの関数の辞書
-        # 座標は"01013U"のようにX座標とY座標を2桁にした値と方向の値を結合し、"U"(update用)か"D"(draw用)を付与したものとする
-        self.event = {
-            "17040D": self.draw_gate,
-            "18040D": self.draw_gate,
-            "17030U": "playerParty.restoreCondition()",
-            "18030U": "playerParty.restoreCondition()",
-            "27073D": self.draw_shieldshop,
-            "26073U": "self.stateStack.push(State.SHIELDSHOP)",
-            "27061D": self.draw_armorshop,
-            "28061U": "self.stateStack.push(State.ARMORSHOP)",
-            "27081D": self.draw_weaponshop,
-            "28081U": "self.stateStack.push(State.WEAPONSHOP)",
-            "27101D": self.draw_helmetshop,
-            "28101U": "self.stateStack.push(State.HELMETSHOP)",
-            "27113D": self.draw_barbar,
-            "26113U": "self.stateStack.push(State.BARBAR)",
-            "16083D": self.draw_donotenter,
-            "21052D": self.draw_inn,
-            "23092D": self.draw_physicker,
-            "23100D": self.draw_physicker_exit,
-            "23103D": self.draw_drugs,
-            "22103U": "self.stateStack.push(State.DRUGS)",
-            "23101D": self.draw_surgery,
-            "24101U": "self.stateStack.push(State.SURGERY)",
-            "23111D": self.draw_examinations,
-            "24111U": "self.stateStack.push(State.EXAMINATIONS)",
-            "17141D": self.draw_thewall,
-            "18143D": self.draw_thewall,
-            "14050D": self.draw_jail,
-            "02023U": "self.startEvent('city_002.json')",
-            "18090D": self.draw_directionmarket,
-            "18092D": self.draw_directionmarket,
-            "21151D": self.draw_cemetery,
-            "22151D": self.draw_cemetery,
-            "25199U": "self.startEvent('city_003.json')",
-            "26199U": "self.startEvent('city_004.json')",
-            "25209U": "self.startEvent('city_005.json')",
-            "26209U": "self.startEvent('city_006.json')",
-            "17172D": self.draw_temple,
-            "18172D": self.draw_temple,
-            "19172D": self.draw_temple,
-            "17182U": "playerParty.restoreCondition()",
-            "18182U": "playerParty.restoreCondition()",
-            "19182U": "playerParty.restoreCondition()",
-            "15149U": "self.startEvent('city_001.json')",
-            "11079U": "self.startEvent('city_007.json')",
-        }
 
     @overrides
     def encount_enemy(self):

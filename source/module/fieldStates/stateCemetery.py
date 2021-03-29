@@ -2,7 +2,7 @@
 import pyxel
 from module.character import HumanGenerator, playerParty
 from module.fieldStates.baseFieldState import BaseFieldState
-from module.map.cemeteryB1 import cemeteryB1
+from module.map.cemetery import cemetery
 from module.params.monster import monsterParams
 from module.pyxelUtil import PyxelUtil
 from overrides import overrides
@@ -11,12 +11,13 @@ from overrides import overrides
 class StateCemetery(BaseFieldState):
     '''
     墓地の地下のクラス\n
-    BaseFieldStateを継承。\n
-    遭遇する敵リストとイベント処理を持つ。
+    BaseFieldStateを継承。
     '''
+    # State名
+    STATENAME = "CEMETERY"
 
     # マップ
-    _map = cemeteryB1.map
+    _map = cemetery.map
 
     # 出現するモンスターリスト
     enemy_set = (
@@ -33,33 +34,6 @@ class StateCemetery(BaseFieldState):
         クラス初期化
         '''
         super().__init__(**kwargs)
-
-        # イベント
-        # マップ上の座標に対応するイベントの関数の辞書
-        # 座標は"01013U"のようにX座標とY座標を2桁にした値と方向の値を結合し、"U"(update用)か"D"(draw用)を付与したものとする
-        self.event = {
-            "09069U": self.update_to_city,
-            "10069U": self.update_to_city,
-            "09079U": self.update_to_city,
-            "10079U": self.update_to_city,
-            "09069D": self.draw_to_city,
-            "10069D": self.draw_to_city,
-            "09079D": self.draw_to_city,
-            "10079D": self.draw_to_city,
-            "07129U": self.update_fixed_encount_enemy,
-            "09139U": self.update_fixed_encount_enemy,
-            "07149U": self.update_fixed_encount_enemy,
-            "09159U": self.update_fixed_encount_enemy,
-            "07109U": self.update_fixed_encount_enemy,
-            "16169U": self.update_fixed_encount_enemy,
-            "15159U": self.update_fixed_encount_enemy,
-            "18169U": self.update_fixed_encount_enemy,
-            "17159U": self.update_fixed_encount_enemy,
-            "15189U": self.update_fixed_encount_enemy,
-            "16199U": self.update_fixed_encount_enemy,
-            "17189U": self.update_fixed_encount_enemy,
-            "18199U": self.update_fixed_encount_enemy,
-        }
 
     def update_to_city(self):
         '''

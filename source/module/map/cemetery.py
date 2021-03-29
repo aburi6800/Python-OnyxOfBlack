@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-class cemeteryB1:
+class cemetery:
     '''
-    cemeteryB1
+    cemetery
      22 x  22
     '''
     map = (

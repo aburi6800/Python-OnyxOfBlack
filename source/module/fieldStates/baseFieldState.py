@@ -6,6 +6,7 @@ from module.baseState import BaseState
 from module.character import EnemyPartyGenerator, enemyParty, playerParty
 from module.direction import Direction
 from module.eventHandler import eventhandler
+from module.events.eventData import eventdata
 from module.messageHandler import messagehandler
 from module.pyxelUtil import PyxelUtil
 from module.state import State
@@ -106,8 +107,8 @@ class BaseFieldState(BaseState):
             for _direction in _dirlist:
                 if self.can_move_forward(self._map, playerParty.x, playerParty.y, _direction):
                     # 移動可能の場合はその方向に移動
-                    playerParty.x = playerParty.x + self.VX[_direction]
-                    playerParty.y = playerParty.y + self.VX[_direction]
+                    playerParty.x = playerParty.x + playerParty.VX[_direction]
+                    playerParty.y = playerParty.y + playerParty.VX[_direction]
                     playerParty.direction = _direction
                     break
             return
@@ -122,6 +123,18 @@ class BaseFieldState(BaseState):
                 return
             else:
                 return
+
+        # 固定エンカウントしていた場合は、イベント辞書からデータを削除する
+        # 戦闘から逃げて終了した場合は、ここに到達する前に座標が変更されているのでイベントは削除されない
+        if self.isFixedEncount:
+            print("delete fixed-encount data.")
+            try:
+                # イベント辞書から削除
+                del(eventdata.events[self.getEventKey(9, "U")])
+            except KeyError as ke:
+                # KeyErrorが発生しても無視する
+                pass
+            self.isFixedEncount = False
 
         # イベントハンドラ
         if self.checkEvent("U") == False:
@@ -186,19 +199,6 @@ class BaseFieldState(BaseState):
             self.isFixedEncount = True
             self.encount_enemy()
             return
-
-        # 上記の条件に合致しない場合は、固定エンカウントしている状態となる
-        # 戦闘から逃げて終了した場合は、ここに到達する前に座標が変更されているのでイベントは削除されない
-        # イベントのキー
-        _key = "{:02d}".format(playerParty.x) + \
-            "{:02d}".format(playerParty.y) + "9U"
-        try:
-            # イベント辞書から削除
-            del(self.event[_key])
-        except KeyError as ke:
-            # KeyErrorが発生しても無視する
-            pass
-        self.isFixedEncount = False
 
     def can_move_forward(self, _map, _x: int, _y: int, _direction: int) -> bool:
         '''
@@ -328,15 +328,11 @@ class BaseFieldState(BaseState):
             return False
 
         # 現在の座標＋方向でイベントの関数を取得する
-        _key = "{:02d}".format(playerParty.x) + "{:02d}".format(playerParty.y) + \
-            "{:01d}".format(playerParty.direction) + _mode
-        _event = self.event.get(_key, None)
+        _event = eventdata.events.get(self.getEventKey(playerParty.direction, _mode), None)
 
         if _event == None:
             # 取得できなかったときは、現在の座標でイベントの関数を取得する
-            _key = "{:02d}".format(playerParty.x) + \
-                "{:02d}".format(playerParty.y) + "9" + _mode
-            _event = self.event.get(_key, None)
+            _event = eventdata.events.get(self.getEventKey(9, _mode), None)
 
         # イベントの関数が取得できた場合は呼び出しを行う
         if _event != None:
@@ -348,6 +344,15 @@ class BaseFieldState(BaseState):
 
         # ここに到達している場合はイベントが発生していないため、Falseを返却する
         return False
+
+    def getEventKey(self, direction, mode) -> str:
+        '''
+        イベントデータのキーを生成して返却する\n
+        現在のStateの名称、プレイヤーパーティーの座標、引数の方向・モード（"U"(update)、"D"(draw))から
+        EventDataを検索するためのキー文字列を生成し、返却する。\n
+        '''
+        return self.STATENAME + "{:02d}".format(playerParty.x) + \
+            "{:02d}".format(playerParty.y) +  "{:01d}".format(direction) + mode
 
     def startEvent(self, eventFileName:str) -> None:
         '''

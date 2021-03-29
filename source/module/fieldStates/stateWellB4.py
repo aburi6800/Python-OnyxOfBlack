@@ -9,10 +9,11 @@ from overrides import overrides
 
 class StateWellB4(BaseFieldState):
     '''
-    井戸B2のクラス\n
-    BaseFieldStateを継承。\n
-    遭遇する敵リストとイベント処理を持つ。
+    井戸B4のクラス\n
+    BaseFieldStateを継承。
     '''
+    # State名
+    STATENAME = "WELLB4"
 
     # マップ
     _map = wellB4.map
@@ -32,13 +33,6 @@ class StateWellB4(BaseFieldState):
         クラス初期化
         '''
         super().__init__(**kwargs)
-
-        # イベント
-        # マップ上の座標に対応するイベントの関数の辞書
-        # 座標は"01013U"のようにX座標とY座標を2桁にした値と方向の値を結合し、"U"(update用)か"D"(draw用)を付与したものとする
-        self.event = {
-            "10109U": "self.startEvent('wellb4_001.json')",
-        }
 
     @overrides
     def onEnter(self):

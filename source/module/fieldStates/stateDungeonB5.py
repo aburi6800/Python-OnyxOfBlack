@@ -10,9 +10,10 @@ from overrides import overrides
 class StateDungeonB5(BaseFieldState):
     '''
     地下迷宮B5のクラス\n
-    BaseFieldStateを継承。\n
-    遭遇する敵リストとイベント処理を持つ。
+    BaseFieldStateを継承。
     '''
+    # State名
+    STATENAME = "DUNGEONB5"
 
     # マップ
     _map = dungeonB5.map
@@ -31,16 +32,6 @@ class StateDungeonB5(BaseFieldState):
         クラス初期化
         '''
         super().__init__(**kwargs)
-
-        # イベント
-        # マップ上の座標に対応するイベントの関数の辞書
-        # 座標は"01013U"のようにX座標とY座標を2桁にした値と方向の値を結合し、"U"(update用)か"D"(draw用)を付与したものとする
-        self.event = {
-            "10109U": self.update_encount_kraken,
-            "10109D": self.draw_encount_kraken,
-        }
-
-        self.onEnter()
 
     def update_encount_kraken(self):
         '''
