@@ -20,7 +20,6 @@ class StateDungeonB5(BaseFieldState):
 
     # 出現するモンスターリスト
     enemy_set = (
-        monsterParams["WOLF_LV2"],
         monsterParams["LION_LV2"],
         monsterParams["SLIME_LV2"],
         monsterParams["SPIDER_LV1"],

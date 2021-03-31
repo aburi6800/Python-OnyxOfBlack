@@ -21,8 +21,8 @@ class StateDungeonB2(BaseFieldState):
     # 出現するモンスターリスト
     enemy_set = (
         HumanGenerator.generate(4),
-        monsterParams["COBOLD_LV2"],
-        monsterParams["SKELTON_LV2"],
+        monsterParams["KOBOLD_LV2"],
+        monsterParams["SKELETON_LV2"],
         monsterParams["ZOMBIE_LV2"],
         monsterParams["AZTEC_LV1"],
         monsterParams["GOBLIN_LV1"],

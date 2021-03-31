@@ -3,14 +3,14 @@ import sys
 
 import pyxel
 
-from module.battleStates.stateBattle import StateBattle
-from module.character import (EnemyPartyGenerator, HumanGenerator,
-                              enemyParty, playerParty)
+from module.character import (EnemyPartyGenerator, HumanGenerator, enemyParty,
+                              playerParty)
 from module.params.armor import armorParams
 from module.params.helmet import helmetParams
 from module.params.monster import monsterParams
 from module.params.shield import shieldParams
 from module.params.weapon import weaponParams
+from module.state import State
 from module.stateStack import stateStack
 
 
@@ -73,7 +73,7 @@ class App:
             print(value)
 
         # BattleStateをstateStackに登録
-        stateStack.push(StateBattle)
+        stateStack.push(State.BATTLE)
 
         pyxel.run(self.update, self.draw)
 

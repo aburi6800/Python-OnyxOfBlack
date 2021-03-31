@@ -24,9 +24,9 @@ class StateCemetery(BaseFieldState):
         HumanGenerator.generate(1),
         HumanGenerator.generate(2),
         monsterParams["BAT_LV1"],
-        monsterParams["SKELTON_LV1"],
+        monsterParams["SKELETON_LV1"],
         monsterParams["ZOMBIE_LV1"],
-        monsterParams["COBOLD_LV1"],
+        monsterParams["KOBOLD_LV1"],
     )
 
     def __init__(self, **kwargs):
