@@ -1,16 +1,14 @@
-# Onix of Black
+# Onyx of Black
 
 [ [Engligh](README.md) | [日本語](README.ja.md) ]
 
 
 ## Overview
 
-<img src="Python-OnyxOfBlack/images/OnyxOfBlack_title" width="48%">
+<img src="images/OnyxOfBlack_logo.png">
 
 A retro style role-playing game made in Python.  
 Explore dungeons, fight monsters, and find the legendary black onyx.  
-
-------
 
 ## Requirements
 
@@ -18,13 +16,17 @@ Explore dungeons, fight monsters, and find the legendary black onyx.
 - Pyxel 1.4.3 leter.
 - Overrides 3.1.0 leter.
 
-------
+## Story
+
+The Black Onyx is a hidden treasure.  
+They say that if you get it, it will give you unlimited power and wealth.  
+It was said to be somewhere in the Black Tower in the city of Utsuro.  
+Upon hearing this story, you decide to seek out this mysterious treasure.  
+You head for the ruins of the city, which are said to lead to the Black Tower.  
 
 ## How to Install
 
 This chapter is a work in progress.  
-
------
 
 ## How to Play
 
