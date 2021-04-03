@@ -1,5 +1,7 @@
-import pyxel
+import os
 import sys
+
+import pyxel
 
 class App:
 
@@ -9,51 +11,52 @@ class App:
         # Key : フレーム数
         # Value : 横位置、種別("text", "img")、値の辞書データ("text"={"value", "col"}, "blt"={"img", "u", "v", "w", "h"})
         self.roll_objects = {
-            10 : [130, "img", {"img":0, "u":0, "v":16, "w":63, "h":24}],
-
             60 : [80, "text", {"value":"PRODUCER", "color":pyxel.COLOR_CYAN}],
-            100 : [130, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            100 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
             160 : [80, "text", {"value":"MUSIC PRODUCER", "color":pyxel.COLOR_CYAN}],
-            200 : [130, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            200 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
 
             360 : [80, "text", {"value":"PROGRAM", "color":pyxel.COLOR_CYAN}],
             460 : [80, "text", {"value":"MAIN PROGRAM", "color":pyxel.COLOR_CYAN}],
-            500 : [130, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            500 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
             560 : [80, "text", {"value":"BATTLE PROGRAM", "color":pyxel.COLOR_CYAN}],
-            600 : [130, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            600 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
             660 : [80, "text", {"value":"UTILITIES", "color":pyxel.COLOR_CYAN}],
-            700 : [130, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            700 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
 
             860 : [80, "text", {"value":"DIRECTOR", "color":pyxel.COLOR_CYAN}],
-            900 : [130, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            900 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
             960 : [80, "text", {"value":"MUSIC DIRECTOR", "color":pyxel.COLOR_CYAN}],
-            1000 : [130, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            1000 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
             1060 : [80, "text", {"value":"SOUND DIRECTOR", "color":pyxel.COLOR_CYAN}],
-            1100 : [130, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            1100 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
 
             1260 : [80, "text", {"value":"DESIGN", "color":pyxel.COLOR_CYAN}],
             1360 : [80, "text", {"value":"CHARACTER DESIGN", "color":pyxel.COLOR_CYAN}],
-            1400 : [130, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            1400 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
             1460 : [80, "text", {"value":"GRAPHIC DESIGN", "color":pyxel.COLOR_CYAN}],
-            1500 : [130, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            1500 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
             1560 : [80, "text", {"value":"SYSTEM DESIGN", "color":pyxel.COLOR_CYAN}],
-            1600 : [130, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            1600 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
             1660 : [80, "text", {"value":"MAP DESIGN", "color":pyxel.COLOR_CYAN}],
-            1700 : [130, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            1700 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
 
             1860 : [80, "text", {"value":"STORY", "color":pyxel.COLOR_CYAN}],
-            1900 : [130, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            1900 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
             1960 : [80, "text", {"value":"SCRIPT", "color":pyxel.COLOR_CYAN}],
-            2000 : [130, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            2000 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
 
             2160 : [80, "text", {"value":"MUSIC COMPOSED BY", "color":pyxel.COLOR_CYAN}],
-            2200 : [130, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            2200 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
 
             2360 : [80, "text", {"value":"DEBUGGER", "color":pyxel.COLOR_CYAN}],
-            2400 : [130, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            2400 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
 
-            2760 : [80, "text", {"value":"PRESENTED BY", "color":pyxel.COLOR_CYAN}],
-            2800 : [130, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            2600 : [51, "img", {"img":0, "u":0, "v":72, "w":152, "h":42}],
+            2680 : [52, "img", {"img":0, "u":0, "v":120, "w":150, "h":62}],
+
+            2960 : [80, "text", {"value":"PRESENTED BY", "color":pyxel.COLOR_CYAN}],
+            3000 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
         }
 
         # 表示中オブジェクトリスト
@@ -70,7 +73,13 @@ class App:
         # Pyxel初期化
         pyxel.init(256, 192)
         pyxel.load("../assets/onyxofblack.pyxres")
+#        pyxel.image(0).load(0, 72, os.path.normpath(os.path.join(os.path.dirname(__file__), "../../../images/python.png")))
+#        pyxel.image(0).load(0, 120, os.path.normpath(os.path.join(os.path.dirname(__file__), "../../../images/pyxel.png")))
+        pyxel.image(0).load(0, 72, os.path.normpath(os.path.join(os.path.dirname(__file__), "../images/python.png")))
+        pyxel.image(0).load(0, 120, os.path.normpath(os.path.join(os.path.dirname(__file__), "../images/pyxel.png")))
         pyxel.run(self.update, self.draw)
+
+        # 画像をロード
 
     def update(self):
 
