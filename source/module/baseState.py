@@ -78,17 +78,23 @@ class BaseState(EnforceOverrides):
         _y = [104, 108, 104, 108, 104]
 
         # プレイヤーキャラクタ描画
-        for _idx in range(len(playerParty.memberList)):
+        for _idx, _member in enumerate(playerParty.memberList):
             _member = playerParty.memberList[_idx]
-            # キャラクタグラフィック表示
+            # キャラクタグラフィック
             self.drawCharacter(_member, _x[_idx], _y[_idx])
-            # ステータス
+            # 名前
             PyxelUtil.text(16,  (_idx + 1) * 16 - 2,
-                           ["*" + f'{_idx + 1}:' + _member.name], pyxel.COLOR_WHITE)  # 名前
-            pyxel.rect(16, (_idx + 1) * 16 + 6, _member.maxlife, 3,  pyxel.COLOR_RED)
-            pyxel.rect(16, (_idx + 1) * 16 + 6, _member.life, 3,  pyxel.COLOR_DARKBLUE)
+                           ["*" + f'{_idx + 1}:' + _member.name], pyxel.COLOR_WHITE)  
+            # 体力最大値
+            _maxlife_x = _member.maxlife if _member.maxlife <= 100 else 100
+            pyxel.rect(16, (_idx + 1) * 16 + 6, _maxlife_x, 3,  pyxel.COLOR_RED)
+            # 体力
+            _life_x = _member.life if _member.life <= 100 else 100
+            pyxel.rect(16, (_idx + 1) * 16 + 6, _life_x, 3,  pyxel.COLOR_DARKBLUE)
+            # 経験値
+            _exp_x = _member.exp // 2 if _member.exp <= 200 else 100
             pyxel.rect(16, (_idx + 1) * 16 + 9, 100, 1,  pyxel.COLOR_NAVY)
-            pyxel.rect(16, (_idx + 1) * 16 + 9, _member.exp, 1,  pyxel.COLOR_LIGHTBLUE)
+            pyxel.rect(16, (_idx + 1) * 16 + 9, _exp_x, 1,  pyxel.COLOR_LIGHTBLUE)
 
     def onEnter(self):
         '''

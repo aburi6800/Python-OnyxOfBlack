@@ -205,10 +205,9 @@ class StateBattle(BaseState):
 
         # イニシアチブ、攻撃値、防御値を設定
         for _member in self.turn_table:
-#            if isinstance(_member, Human):
-            _member.initiative = _member.dexterity + random.randint(1, 12)
-            _member.attack = _member.strength + random.randint(1, 12)
-            _member.accept = _member.defend + random.randint(1, 12)
+            _member.initiative = _member.dexterity + random.randint(1, 6)
+            _member.attack = _member.strength + random.randint(1, 6)
+            _member.accept = _member.defend + random.randint(1, 6)
 
         # イニシアチブ値で降順でソート
         self.turn_table = sorted(
@@ -346,19 +345,19 @@ class StateBattle(BaseState):
         _member = playerParty.memberList[self.member_index]
         if self.tick == 1:
             # 経験値加算
-            _member.exp = _member.exp + self.reward_exp
-            if _member.exp > 100:
-                _member.exp = 100
+            _member.exp = _member.exp + (self.reward_exp // _member.level)
+            if _member.exp > 200:
+                _member.exp = 200
 
             # 経験値は100か？
-            if _member.exp == 100:
+            if _member.exp == 200:
                 # メッセージをセット
                 self.message = []
                 self.message.append(["**** CONGRATULATIONS ***"])
                 self.message.append(["*" + playerParty.memberList[self.member_index].name + " ", "HA", " ", "re", "he", "d", "ru", "* " + str(
                     playerParty.memberList[self.member_index].level + 1) + " ", "NI", " ", "NA", "RI", "MA", "SI", "TA", "."])
 
-        if _member.exp == 100:
+        if _member.exp == 200:
             if pyxel.btnp(pyxel.KEY_SPACE):
                 # レベルアップ
                 _member.levelup()
@@ -504,12 +503,15 @@ class StateBattle(BaseState):
 
             for _idx in range(5 if len(enemyParty.memberList) > 5 else len(enemyParty.memberList)):
                 # ステータス
-                PyxelUtil.text(136,  (_idx + 1) * 16 - 2,
-                               ["*" + enemyParty.memberList[_idx].name], pyxel.COLOR_WHITE)  # 名前
-                pyxel.rect(136, (_idx + 1) * 16 + 6,
-                           enemyParty.memberList[_idx].maxlife, 3,  pyxel.COLOR_RED)
-                pyxel.rect(136, (_idx + 1) * 16 + 6,
-                           enemyParty.memberList[_idx].life, 3,  pyxel.COLOR_DARKBLUE)
+                _member = enemyParty.memberList[_idx]
+                # 名前
+                PyxelUtil.text(136,  (_idx + 1) * 16 - 2, ["*" + _member.name], pyxel.COLOR_WHITE)
+                # 体力最大値
+                _maxlife_x = _member.maxlife if _member.maxlife <= 100 else 100
+                pyxel.rect(136, (_idx + 1) * 16 + 6, _maxlife_x, 3,  pyxel.COLOR_RED)
+                # 体力
+                _life_x = _member.life if _member.life <= 100 else 100
+                pyxel.rect(136, (_idx + 1) * 16 + 6, _life_x, 3,  pyxel.COLOR_DARKBLUE)
 
         _handler = self.handler.get(self.state, None)
         if _handler != None:
