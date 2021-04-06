@@ -245,7 +245,7 @@ class BaseFieldState(BaseState):
         if self.tick > 0:
             if self.isOuter():
                 # 満天の星空
-                pyxel.blt(self.DRAW_OFFSET_X, self.DRAW_OFFSET_Y, 0, 0, 40, 80, 32, 0)
+                pyxel.blt(self.DRAW_OFFSET_X, self.DRAW_OFFSET_Y, 0, playerParty.direction * 32, 40, 80, 32, 0)
             else:
                 # 天井部のグリッド
                 pyxel.line(0 + self.DRAW_OFFSET_X, 38 + self.DRAW_OFFSET_Y, 78 +
