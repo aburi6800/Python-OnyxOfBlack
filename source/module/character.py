@@ -26,33 +26,6 @@ class Character(object):
         self.exp = 0
         self.gold = 0
 
-    def levelup(self):
-        '''
-        レベルアップ処理
-        '''
-        # 増分値
-        addPoint = 10
-        # ライフの増分
-        addLife = random.randint(2, addPoint - 3)
-        addPoint = addPoint - addLife
-        # 強さの増分
-        addStrength = random.randint(1, addPoint - 2)
-        addPoint = addPoint - addStrength
-        # 防御力の増分
-        addDefend = random.randint(1, addPoint - 1)
-        addPoint = addPoint - addDefend
-        # 素早さの増分
-        addDexterity = addPoint
-
-        # パラメータ増加
-        self.level += 1
-        self.maxlife += addLife
-        self.life += addLife
-        self.strength += addStrength
-        self.defend += addDefend
-        self.dexterity += addDexterity
-        self.exp = 0
-
 
 class Human(Character):
     '''
@@ -75,6 +48,33 @@ class Human(Character):
         self.potion = -1
         self.x = 0
         self.y = 0
+
+    def levelup(self):
+        '''
+        レベルアップ処理
+        '''
+        # 増分値
+        addPoint = 10
+        # ライフの増分
+        addLife = random.randint(2, addPoint - 5)
+        addPoint = addPoint - addLife
+        # 強さの増分
+        addStrength = random.randint(1, addPoint - 3)
+        addPoint = addPoint - addStrength
+        # 防御力の増分
+        addDefend = random.randint(1, addPoint - 2)
+        addPoint = addPoint - addDefend
+        # 素早さの増分
+        addDexterity = addPoint
+
+        # パラメータ増加
+        self.level += 1
+        self.maxlife += addLife + 5
+        self.life += addLife + 5
+        self.strength += addStrength
+        self.defend += addDefend
+        self.dexterity += addDexterity
+        self.exp = 0
 
 
 class Monster(Character):
@@ -352,32 +352,32 @@ class HumanGenerator(object):
         名前を生成する
         '''
         _name1 = [
-            "ANNA", "ARES", "ALEY", "ADAL",
-            "BEBY", "BORD", "BEAN", "BOYO",
-            "CHRY", "CHAC", "CIEL", "CALM",
-            "DALD", "DORY", "DEOL", "DWAF",
-            "ENNE", "ELAC", "EYAR", "ERAC",
-            "FARD", "FISH", "FEEN", "FOYA",
-            "GEAR", "GINN", "GORY", "GANG",
-            "HEAR", "HACK", "HIYA", "HIRO",
-            "INO", "IYAN", "IELA", "IONC",
-            "JOE", "JACK", "JOHN", "JEIB",
-            "KARL", "KIM", "KALK", "KORE",
-            "LARY", "LESY", "LOKA", "LYCK",
-            "MICH", "MARY", "MOMO", "MEAR",
-            "NU", "NOE", "NACK", "NICK",
-            "OTTO", "ORA", "OMNY", "OWAR",
-            "PYCKY", "PACK", "PARY", "PONY",
-            "QUER", "QUCK", "QUA", "QUNE",
-            "ROBY", "RABI", "RENY", "ROSA",
-            "SHERY", "SACK", "SOYA", "SEAN",
-            "TERL", "TONY", "TORA", "TANY",
-            "UAE", "UNO", "UNIY", "UES",
-            "VARY", "VOCK", "VELY", "VYLO",
-            "WICK", "WOOD", "WAGO", "WENN",
-            "XECK", "XALY", "XYAS", "XORA",
-            "YEAN", "YONA", "YOHA", "YACK",
-            "ZALY", "ZOE", "ZEE", "ZERA"]
+            "ANNA", "ARES", "ALEY", "ADAL", "AR",
+            "BEBY", "BORD", "BEAN", "BOYO", "BO",
+            "CHRY", "CHAC", "CIEL", "CALM", "CAN",
+            "DALD", "DORY", "DEOL", "DWAF", "DON",
+            "ENNE", "ELAC", "EYAR", "ERAC", "EMY",
+            "FARD", "FISH", "FEEN", "FOYA", "FORT",
+            "GEAR", "GINN", "GORY", "GANG", "GON",
+            "HEAR", "HACK", "HIYA", "HIRO", "HELL",
+            "INO", "IYAN", "IELA", "IONC", "IN",
+            "JOE", "JACK", "JOHN", "JEIB", "JAY",
+            "KARL", "KIM", "KALK", "KORE", "KAN",
+            "LARY", "LESY", "LOKA", "LYCK", "LA",
+            "MICH", "MARY", "MOMO", "MEAR", "MEGA",
+            "NU", "NOE", "NACK", "NICK", "NEL",
+            "OTTO", "ORA", "OMNY", "OWAR", "OL",
+            "PYCKY", "PACK", "PARY", "PONY", "PU",
+            "QUER", "QUCK", "QUA", "QUNE", "QEL",
+            "ROBY", "RABI", "RENY", "ROSA", "REI",
+            "SHERY", "SACK", "SOYA", "SEAN", "SOL",
+            "TERL", "TONY", "TORA", "TANY", "TOM",
+            "UAE", "UNO", "UNIY", "UES", "US",
+            "VARY", "VOCK", "VELY", "VYLO", "VON",
+            "WICK", "WOOD", "WAGO", "WENN", "WARE", 
+            "XECK", "XALY", "XYAS", "XORA", "XAN",
+            "YEAN", "YONA", "YOHA", "YACK", "YRE",
+            "ZALY", "ZOE", "ZEE", "ZERA", "ZOL"]
         _name2 = ["", "SON", "A", "RY", "N", "NA", "NIA", "PU", "PO", "ON", "Y",
                   "K", "S", "EL", "ER", "CS", "FA", "PI", "C", "CK", "DA", "ON", "B"]
 
@@ -443,15 +443,16 @@ class EnemyPartyGenerator(object):
                 _monster.blt_y = enemyClass.blt_y
                 _monster.blt_w = enemyClass.blt_w
                 _monster.blt_h = enemyClass.blt_h
+                _monster.level = enemyClass.level
                 _monster.life = enemyClass.life + \
-                    random.randint(0, enemyClass.life // 10 + 1)
+                    random.randint(0, enemyClass.life // 5 + 1)
                 _monster.maxlife = _monster.life
                 _monster.strength = enemyClass.strength + \
-                    random.randint(0, enemyClass.strength // 10 + 1)
+                    random.randint(0, enemyClass.strength // 5 + 1)
                 _monster.defend = enemyClass.defend + \
-                    random.randint(0, enemyClass.defend // 10 + 1)
+                    random.randint(0, enemyClass.defend // 5 + 1)
                 _monster.dexterity = enemyClass.dexterity + \
-                    random.randint(0, enemyClass.dexterity // 10 + 1)
+                    random.randint(0, enemyClass.dexterity // 5 + 1)
                 _monster.exp = enemyClass.exp
                 _monster.gold = enemyClass.gold
                 _monster.escape = enemyClass.escape
