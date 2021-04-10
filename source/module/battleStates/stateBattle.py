@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
+import math
 import random
 
 import pyxel
 from module.baseState import BaseState
 from module.character import Human, enemyParty, playerParty
-from module.messageHandler import message, messageCommand, messagehandler
 from module.pyxelUtil import PyxelUtil
-from overrides import overrides
 from module.state import State
+from overrides import overrides
 
 
 class StateBattle(BaseState):
@@ -150,14 +150,43 @@ class StateBattle(BaseState):
         if self.tick == 1:
             # 敵パーティーは逃げるか？
             if enemyParty.isEscape():
+
+                _playerMaxLevel = 0
                 _playerStrength = 0
+                _playerDamage = 0
+                _playerSumLife = 0
+                _playerSumMaxlife = 0
                 for _member in playerParty.memberList:
+                    if _member.level > _playerMaxLevel:
+                        _playerMaxLevel = _member.level
                     _playerStrength += _member.strength
+                    _playerSumLife += _member.life
+                    _playerSumMaxlife += _member.maxlife
+                _playerDamage = 1 - (_playerSumLife / _playerSumMaxlife)
+                _playerRate = (_playerStrength * math.sqrt(_playerMaxLevel)) * _playerDamage + random.randint(1, 6)
+                print("player:Level=" + str(_playerMaxLevel) + " Damage=" + str(_playerDamage) + " Rate:" + str(_playerRate))
+
+                _enemyMaxLevel = 0
                 _enemyStrength = 0
+                _enemyDamage = 0
+                _enemySumLife = 0
+                _enemySumMaxlife = 0
                 for _member in enemyParty.memberList:
+                    if _member.level > _enemyMaxLevel:
+                        _enemyMaxLevel = _member.level
                     _enemyStrength += _member.strength
-                if (_playerStrength + random.randint(0, 12)) > (_enemyStrength + random.randint(0, 12)):
-                    self.isEnemyEscpaed = True
+                    _enemySumLife += _member.life
+                    _enemySumMaxlife += _member.maxlife
+                _enemyDamage = 1- (_enemySumLife / _enemySumMaxlife)
+                _enemyRate = (_enemyStrength * math.sqrt(_enemyMaxLevel)) * _enemyDamage + random.randint(1, 6)
+                print("enemy :Level=" + str(_enemyMaxLevel) + " Damage=" + str(_enemyDamage) + " Rate:" + str(_enemyRate))
+                
+                if _enemyMaxLevel >= _playerMaxLevel:
+                    if _enemyDamage > 0.7 and _playerRate > _enemyRate:
+                        self.isEnemyEscpaed = True
+                else:
+                    if _playerRate > _enemyRate:
+                        self.isEnemyEscpaed = True
 
     def update_choose_target(self):
         '''
@@ -205,9 +234,9 @@ class StateBattle(BaseState):
 
         # イニシアチブ、攻撃値、防御値を設定
         for _member in self.turn_table:
-            _member.initiative = _member.dexterity + random.randint(1, 6)
-            _member.attack = _member.strength + random.randint(1, 6)
-            _member.accept = _member.defend + random.randint(1, 6)
+            _member.initiative = _member.dexterity + random.randint(1, 12)
+#            _member.attack = _member.strength + random.randint(1, 6)
+#            _member.accept = _member.defend + random.randint(1, 6)
 
         # イニシアチブ値で降順でソート
         self.turn_table = sorted(
@@ -262,7 +291,8 @@ class StateBattle(BaseState):
             self.message = []
 
             # 攻撃ヒット判定
-            if _attacker.attack < _target.dexterity:
+            _d = random.randint(1, 100)
+            if _d == 100 or _d > 100 - (_target.dexterity / _attacker.dexterity) * 10:
                 # 避けた
 #                m = messageCommand()
 #                m.addMessage(message(["*" + _target.name + " ", "KA", "D"]))
@@ -272,35 +302,37 @@ class StateBattle(BaseState):
                 self.message.append(
                     ["*" + _attacker.name + " ", "WO", " ", "YO", "KE", "TA", "."])
             else:
-                # ダメージ算出
-                _damage = _attacker.attack
+                # 攻撃値算出
+                _attack = _attacker.strength + random.randint(1, 6)
 
                 # 人間のキャラクタで武器を持っている場合は補正
                 if isinstance(_attacker, Human) and _attacker.weapon != None:
-                    _damage = _damage + _attacker.weapon.attack
+                    _attack = _attack + _attacker.weapon.attack
 
                 # 武器が刃物の場合、ダメージから防御値を減算
-                _damage = _damage - _target.accept
+#                _attack = _attack - _target.accept
 
-                # 人間の場合は装備品の防御値をダメージから減算
+                # 防御値算出
+                _defend = _target.defend + random.randint(1, 6)
                 if isinstance(_target, Human):
                     # 鎧
                     if _target.armor != None:
-                        _damage = _damage - _target.armor.armor
+                        _defend = _defend + _target.armor.armor
                     # 盾
                     if _target.shield != None:
-                        _damage = _damage - _target.shield.armor
+                        _defend = _defend + _target.shield.armor
                     # 兜
                     if _target.helmet != None:
-                        _damage = _damage - _target.helmet.armor
+                        _defend = _defend + _target.helmet.armor
 
+                # ダメージ計算
+                _damage = int(_attack / (_defend // 2))
                 if _damage < 1:
                     # 受け止めた
                     self.message.append(["*" + _target.name + " ", "KA", "D"])
                     self.message.append(
                         ["*" + _attacker.name + " ", "WO", " ", "U", "KE", "TO", "ME", "TA", "."])
                 else:
-
                     _target.life = _target.life - _damage
                     if _target.life < 1:
                         # しとめた
