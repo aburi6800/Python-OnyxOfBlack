@@ -21,14 +21,6 @@
     },
 
     "section2_1":{
-        "command":"setPartyPosition",
-        "args":{
-            "position":[10, 10],
-            "next":"section2_2"
-        }
-    },
-
-    "section2_2":{
         "command":"pushState",
         "args":{
             "stateName":"WELLB1",

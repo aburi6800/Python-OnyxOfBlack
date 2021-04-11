@@ -20,14 +20,6 @@
     },
 
     "section2_1":{
-        "command":"setPartyPosition",
-        "args":{
-            "position":[3, 6],
-            "next":"section2_2"
-        }
-    },
-
-    "section2_2":{
         "command":"pushState",
         "args":{
             "stateName":"DUNGEONB1",

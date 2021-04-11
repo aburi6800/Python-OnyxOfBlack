@@ -14,7 +14,7 @@
     "section1_1":{
         "command":"setPartyPosition",
         "args":{
-            "position":[11, 8],
+            "position":[3, 7],
             "direction":"NORTH",
             "next":"end"
         }

@@ -20,10 +20,15 @@ class StateDungeonB5(BaseFieldState):
 
     # 出現するモンスターリスト
     enemy_set = (
-        monsterParams["LION_LV2"],
-        monsterParams["SLIME_LV2"],
-        monsterParams["SPIDER_LV1"],
-        monsterParams["GHOUL_LV1"],
+        monsterParams["SPIDER_LV3"],
+        monsterParams["BLAAB_LV2"],
+        monsterParams["VAMPIRE_LV3"],
+        monsterParams["OGRE_LV2"],
+        monsterParams["HOBGOBLIN_LV1"],
+        monsterParams["WIRKAT_LV1"],
+        monsterParams["HIDER_LV1"],
+        monsterParams["DEMON_LV1"],
+        monsterParams["GHOST_LV1"],
     )
 
     def __init__(self, **kwargs):

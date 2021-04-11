@@ -22,12 +22,15 @@ class StateDungeonB3(BaseFieldState):
 
     # 出現するモンスターリスト
     enemy_set = (
-        HumanGenerator.generate(6),
-        monsterParams["AZTEC_LV2"],
-        monsterParams["GOBLIN_LV2"],
-        monsterParams["WOLF_LV1"],
-        monsterParams["LION_LV1"],
+        HumanGenerator.generate(4),
+        HumanGenerator.generate(5),
+        monsterParams["MUMMY_LV2"],
+        monsterParams["ORC_LV2"],
         monsterParams["SLIME_LV1"],
+        monsterParams["SPIDER_LV1"],
+        monsterParams["GHOUL_LV1"],
+        monsterParams["COBRA_LV1"],
+        monsterParams["VAMPIRE_LV1"],
     )
 
     def __init__(self, **kwargs):

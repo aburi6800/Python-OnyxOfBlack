@@ -60,6 +60,9 @@ class StateSurgery(BaseFacilityState):
         elif self.state == self.STATE_ISSURGERY:
             self.update_issurgery()
 
+        elif self.state == self.STATE_NOMONEY:
+            self.update_nomoney()
+
         elif self.state == self.STATE_DONE:
             self.update_done()
 

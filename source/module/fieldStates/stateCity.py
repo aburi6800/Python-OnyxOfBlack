@@ -52,8 +52,8 @@ class StateCity(BaseFieldState):
         HumanGenerator.generate(1),
         HumanGenerator.generate(1),
         HumanGenerator.generate(2),
-        monsterParams["BAT_LV1"],
-        monsterParams["SKELETON_LV1"],
+        monsterParams["WOLF_LV1"],
+        monsterParams["WOLF_LV1"],
         monsterParams["ZOMBIE_LV1"],
     )
 
@@ -70,9 +70,9 @@ class StateCity(BaseFieldState):
         街の場合、南側に行くとモンスターも出現する。
         '''
         self.isEncount = True
-        if playerParty.y < 12:
+        if playerParty.y < 16:
             enemyParty.memberList = EnemyPartyGenerator.generate(
-                self.enemy_set[random.randint(0, 2)])
+                self.enemy_set[random.randint(0, 3)])
         else:
             enemyParty.memberList = EnemyPartyGenerator.generate(
                 self.enemy_set[random.randint(0, len(self.enemy_set) - 1)])

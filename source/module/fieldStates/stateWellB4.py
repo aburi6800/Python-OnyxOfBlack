@@ -20,11 +20,14 @@ class StateWellB4(BaseFieldState):
 
     # 出現するモンスターリスト
     enemy_set = (
-        HumanGenerator.generate(8),
-        monsterParams["LION_LV2"],
-        monsterParams["SLIME_LV2"],
-        monsterParams["SPIDER_LV1"],
-        monsterParams["GHOUL_LV1"],
+        HumanGenerator.generate(1),
+        HumanGenerator.generate(2),
+        monsterParams["WOLF_LV1"],
+        monsterParams["BAT_LV1"],
+        monsterParams["KOBOLD_LV1"],
+        monsterParams["ZOMBIE_LV1"],
+        monsterParams["SKELETON_LV1"],
+        monsterParams["GOBLIN_LV1"],
     )
 
     def __init__(self, **kwargs):
