@@ -54,7 +54,11 @@ class App:
             _log += " level=" + str(member.level)
             _log += " life=" + str(member.life)
             _log += " str=" + str(member.strength)
+            _log += "+" + str(member.weapon.attack if member.weapon != None else 0)
             _log += " def=" + str(member.defend)
+            _log += "+" + str(member.armor.armor if member.armor != None else 0)
+            _log += "+" + str(member.shield.armor if member.shield != None else 0)
+            _log += "+" + str(member.helmet.armor if member.helmet != None else 0)
             _log += " dex=" + str(member.dexterity)
             _log += " weapon=" 
             _log += member.weapon.name if member.weapon != None else "None"
