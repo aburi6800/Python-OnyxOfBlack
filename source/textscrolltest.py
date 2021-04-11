@@ -11,52 +11,83 @@ class App:
         # Key : フレーム数
         # Value : 横位置、種別("text", "img")、値の辞書データ("text"={"value", "col"}, "blt"={"img", "u", "v", "w", "h"})
         self.roll_objects = {
-            60 : [80, "text", {"value":"PRODUCER", "color":pyxel.COLOR_CYAN}],
-            100 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
-            160 : [80, "text", {"value":"MUSIC PRODUCER", "color":pyxel.COLOR_CYAN}],
-            200 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            10 : [80, "text", {"value":"THE ONYX OF BLACK", "color":pyxel.COLOR_RED}],
+            110 : [80, "text", {"value":"STAFF", "color":pyxel.COLOR_ORANGE}],
+            210 : [80, "text", {"value":"PRODUCER", "color":pyxel.COLOR_YELLOW}],
+            240 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            310 : [80, "text", {"value":"MUSIC PRODUCER", "color":pyxel.COLOR_YELLOW}],
+            340 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
 
-            360 : [80, "text", {"value":"PROGRAM", "color":pyxel.COLOR_CYAN}],
-            460 : [80, "text", {"value":"MAIN PROGRAM", "color":pyxel.COLOR_CYAN}],
-            500 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
-            560 : [80, "text", {"value":"BATTLE PROGRAM", "color":pyxel.COLOR_CYAN}],
-            600 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
-            660 : [80, "text", {"value":"UTILITIES", "color":pyxel.COLOR_CYAN}],
-            700 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            440 : [80, "text", {"value":"PROGRAM", "color":pyxel.COLOR_ORANGE}],
+            540 : [80, "text", {"value":"MAIN PROGRAM", "color":pyxel.COLOR_YELLOW}],
+            570 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            640 : [80, "text", {"value":"BATTLE PROGRAM", "color":pyxel.COLOR_YELLOW}],
+            670 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            740 : [80, "text", {"value":"UTILITIES", "color":pyxel.COLOR_YELLOW}],
+            770 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
 
-            860 : [80, "text", {"value":"DIRECTOR", "color":pyxel.COLOR_CYAN}],
+            870 : [80, "text", {"value":"DIRECTOR", "color":pyxel.COLOR_YELLOW}],
             900 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
-            960 : [80, "text", {"value":"MUSIC DIRECTOR", "color":pyxel.COLOR_CYAN}],
+            970 : [80, "text", {"value":"MUSIC DIRECTOR", "color":pyxel.COLOR_YELLOW}],
             1000 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
-            1060 : [80, "text", {"value":"SOUND DIRECTOR", "color":pyxel.COLOR_CYAN}],
+            1070 : [80, "text", {"value":"SOUND DIRECTOR", "color":pyxel.COLOR_YELLOW}],
             1100 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
 
-            1260 : [80, "text", {"value":"DESIGN", "color":pyxel.COLOR_CYAN}],
-            1360 : [80, "text", {"value":"CHARACTER DESIGN", "color":pyxel.COLOR_CYAN}],
-            1400 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
-            1460 : [80, "text", {"value":"GRAPHIC DESIGN", "color":pyxel.COLOR_CYAN}],
-            1500 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
-            1560 : [80, "text", {"value":"SYSTEM DESIGN", "color":pyxel.COLOR_CYAN}],
-            1600 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
-            1660 : [80, "text", {"value":"MAP DESIGN", "color":pyxel.COLOR_CYAN}],
-            1700 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            1200 : [80, "text", {"value":"DESIGN", "color":pyxel.COLOR_ORANGE}],
+            1300 : [80, "text", {"value":"CHARACTER DESIGN", "color":pyxel.COLOR_YELLOW}],
+            1330 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            1400 : [80, "text", {"value":"GRAPHIC DESIGN", "color":pyxel.COLOR_YELLOW}],
+            1430 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            1500 : [80, "text", {"value":"SYSTEM DESIGN", "color":pyxel.COLOR_YELLOW}],
+            1530 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            1600 : [80, "text", {"value":"MAP DESIGN", "color":pyxel.COLOR_YELLOW}],
+            1630 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
 
-            1860 : [80, "text", {"value":"STORY", "color":pyxel.COLOR_CYAN}],
-            1900 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
-            1960 : [80, "text", {"value":"SCRIPT", "color":pyxel.COLOR_CYAN}],
-            2000 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            1730 : [80, "text", {"value":"STORY", "color":pyxel.COLOR_YELLOW}],
+            1760 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            1830 : [80, "text", {"value":"SCRIPT", "color":pyxel.COLOR_YELLOW}],
+            1860 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
 
-            2160 : [80, "text", {"value":"MUSIC COMPOSED BY", "color":pyxel.COLOR_CYAN}],
-            2200 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            1960 : [80, "text", {"value":"MUSIC COMPOSED BY", "color":pyxel.COLOR_YELLOW}],
+            1990 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
 
-            2360 : [80, "text", {"value":"DEBUGGER", "color":pyxel.COLOR_CYAN}],
-            2400 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            2060 : [80, "text", {"value":"DEBUGGER", "color":pyxel.COLOR_YELLOW}],
+            2090 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
 
-            2600 : [51, "img", {"img":0, "u":0, "v":72, "w":152, "h":42}],
-            2680 : [52, "img", {"img":0, "u":0, "v":120, "w":150, "h":62}],
+            2160 : [80, "text", {"value":"SPECIAL THANKS", "color":pyxel.COLOR_YELLOW}],
+            2190 : [124, "text", {"value":"@info_ymcat", "color":pyxel.COLOR_WHITE}],
 
-            2960 : [80, "text", {"value":"PRESENTED BY", "color":pyxel.COLOR_CYAN}],
-            3000 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_WHITE}],
+            2390 : [80, "text", {"value":"CAST", "color":pyxel.COLOR_ORANGE}],
+            2490 : [80, "img", {"img":2, "u":96, "v":0, "w":16, "h":16}],
+            2498 : [148, "text", {"value":"WOLF", "color":pyxel.COLOR_WHITE}],
+            2540 : [80, "img", {"img":2, "u":0, "v":0, "w":16, "h":8}],
+            2548 : [152, "text", {"value":"BAT", "color":pyxel.COLOR_WHITE}],
+            2590 : [80, "img", {"img":2, "u":16, "v":0, "w":16, "h":16}],
+            2598 : [140, "text", {"value":"KOBOLD", "color":pyxel.COLOR_WHITE}],
+            2640 : [80, "img", {"img":2, "u":48, "v":0, "w":16, "h":16}],
+            2648 : [140, "text", {"value":"ZOMBIE", "color":pyxel.COLOR_WHITE}],
+            2690 : [80, "img", {"img":2, "u":32, "v":0, "w":16, "h":16}],
+            2698 : [136, "text", {"value":"SKELTON", "color":pyxel.COLOR_WHITE}],
+            2740 : [80, "img", {"img":2, "u":80, "v":0, "w":16, "h":16}],
+            2748 : [140, "text", {"value":"GOBLIN", "color":pyxel.COLOR_WHITE}],
+            2790 : [80, "img", {"img":2, "u":64, "v":0, "w":16, "h":16}],
+            2798 : [144, "text", {"value":"AZTEC", "color":pyxel.COLOR_WHITE}],
+            2840 : [80, "img", {"img":2, "u":112, "v":0, "w":16, "h":16}],
+            2848 : [148, "text", {"value":"LION", "color":pyxel.COLOR_WHITE}],
+            2890 : [80, "img", {"img":2, "u":192, "v":0, "w":16, "h":16}],
+            2898 : [144, "text", {"value":"MUMMY", "color":pyxel.COLOR_WHITE}],
+            2940 : [80, "img", {"img":2, "u":176, "v":0, "w":16, "h":16}],
+            2948 : [152, "text", {"value":"ORC", "color":pyxel.COLOR_WHITE}],
+            2990 : [80, "img", {"img":2, "u":128, "v":0, "w":16, "h":16}],
+            2998 : [144, "text", {"value":"SLIME", "color":pyxel.COLOR_WHITE}],
+            3040 : [80, "img", {"img":2, "u":144, "v":0, "w":16, "h":16}],
+            3048 : [140, "text", {"value":"SPIDER", "color":pyxel.COLOR_WHITE}],
+
+            3400 : [89, "img", {"img":0, "u":0, "v":72, "w":76, "h":21}],
+            3460 : [89, "img", {"img":0, "u":0, "v":120, "w":75, "h":31}],
+
+            3700 : [80, "text", {"value":"PRESENTED BY", "color":pyxel.COLOR_ORANGE}],
+            3730 : [132, "text", {"value":"ABURI6800", "color":pyxel.COLOR_YELLOW}],
         }
 
         # 表示中オブジェクトリスト
@@ -73,10 +104,10 @@ class App:
         # Pyxel初期化
         pyxel.init(256, 192)
         pyxel.load("../assets/onyxofblack.pyxres")
-#        pyxel.image(0).load(0, 72, os.path.normpath(os.path.join(os.path.dirname(__file__), "../../../images/python.png")))
-#        pyxel.image(0).load(0, 120, os.path.normpath(os.path.join(os.path.dirname(__file__), "../../../images/pyxel.png")))
-        pyxel.image(0).load(0, 72, os.path.normpath(os.path.join(os.path.dirname(__file__), "../images/python.png")))
-        pyxel.image(0).load(0, 120, os.path.normpath(os.path.join(os.path.dirname(__file__), "../images/pyxel.png")))
+#        pyxel.image(0).load(0, 72, os.path.normpath(os.path.join(os.path.dirname(__file__), "../../../assets/python.png")))
+#        pyxel.image(0).load(0, 120, os.path.normpath(os.path.join(os.path.dirname(__file__), "../../../assets/pyxel.png")))
+        pyxel.image(0).load(0, 72, os.path.normpath(os.path.join(os.path.dirname(__file__), "../assets/python.png")))
+        pyxel.image(0).load(0, 120, os.path.normpath(os.path.join(os.path.dirname(__file__), "../assets/pyxel.png")))
         pyxel.run(self.update, self.draw)
 
         # 画像をロード
@@ -104,8 +135,8 @@ class App:
                 # y座標をデクリメント
                 _item[0] -= 1
 
-                # y座標 < -20 の場合、リストから除去
-                if _item[0] < -20:
+                # y座標 < -100 の場合、リストから除去
+                if _item[0] < -100:
                     del self.disp_objects[_idx]
 
     def draw(self):
