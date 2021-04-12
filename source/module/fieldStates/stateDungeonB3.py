@@ -15,7 +15,7 @@ class StateDungeonB3(BaseFieldState):
     BaseFieldStateを継承。
     '''
     # State名
-    STATENAME = "DUNGEONB3"
+    stateName = "DUNGEONB3"
 
     # マップ
     _map = dungeonB3.map

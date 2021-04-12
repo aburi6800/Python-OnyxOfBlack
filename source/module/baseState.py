@@ -14,6 +14,9 @@ class BaseState(EnforceOverrides):
     各Stateクラス全ての基底クラス\n
     EnforceOverridesを継承
     '''
+    # State名
+    stateName = ""
+    
     # 経過時間
     tick = 0
 
@@ -110,8 +113,7 @@ class BaseState(EnforceOverrides):
         '''
         pass
 
-    @staticmethod
-    def drawCharacter(_chr: Character, _x: int, _y: int):
+    def drawCharacter(self, _chr: Character, _x: int, _y: int):
         '''
         キャラクターグラフィックの描画を行う。\n
         Characterクラスのインスタンスと、表示位置を渡すと装備等に合わせて描画する。\n
@@ -120,7 +122,7 @@ class BaseState(EnforceOverrides):
         '''
         if isinstance(_chr, Human):
             # 頭
-            if _chr.helmet == None:
+            if _chr.helmet == None or self.stateName == "CITY" :
                 _head_x = (_chr.head % 32) * 8
                 _head_y = (_chr.head // 32) * 8
                 _head_w = 8

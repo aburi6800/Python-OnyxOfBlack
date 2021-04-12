@@ -13,7 +13,7 @@ class StateWellB2(BaseFieldState):
     BaseFieldStateを継承。
     '''
     # State名
-    STATENAME = "WELLB2"
+    stateName = "WELLB2"
 
     # マップ
     _map = wellB2.map

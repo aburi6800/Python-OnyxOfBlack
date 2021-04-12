@@ -18,7 +18,7 @@ class StateCity(BaseFieldState):
     BaseFieldStateを継承。
     '''
     # State名
-    STATENAME = "CITY"
+    stateName = "CITY"
 
     # マップ
     _map = uturotown.map

@@ -351,7 +351,7 @@ class BaseFieldState(BaseState):
         現在のStateの名称、プレイヤーパーティーの座標、引数の方向・モード（"U"(update)、"D"(draw))から
         EventDataを検索するためのキー文字列を生成し、返却する。\n
         '''
-        return self.STATENAME + "{:02d}".format(playerParty.x) + \
+        return self.stateName + "{:02d}".format(playerParty.x) + \
             "{:02d}".format(playerParty.y) +  "{:01d}".format(direction) + mode
 
     def startEvent(self, eventFileName:str) -> None:

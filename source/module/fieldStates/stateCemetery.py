@@ -13,7 +13,7 @@ class StateCemetery(BaseFieldState):
     BaseFieldStateを継承。
     '''
     # State名
-    STATENAME = "CEMETERY"
+    stateName = "CEMETERY"
 
     # マップ
     _map = cemetery.map
