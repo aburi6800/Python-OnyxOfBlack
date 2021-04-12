@@ -8,4 +8,4 @@ source/module/map/__pycache__/*
 source/module/params/__pycache__/*
 source/module/events/__pycache__/*
 savedata.dat
-
+source/dist/*

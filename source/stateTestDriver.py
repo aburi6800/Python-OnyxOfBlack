@@ -19,7 +19,7 @@ class App:
 
         # Pyxel初期化～実行
         pyxel.init(256, 192)
-        pyxel.load("../assets/onyxofblack.pyxres")
+        pyxel.load("assets/onyxofblack.pyxres")
         pyxel.run(self.update, self.draw)
 
     def update(self):
