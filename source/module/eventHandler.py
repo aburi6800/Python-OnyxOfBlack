@@ -46,8 +46,7 @@ class eventHandler():
         '''
 
         # ファイル名にパスを追加する
-        filePath = os.path.dirname(os.path.abspath(
-            __file__)) + "/events/" + eventFileName
+        filePath = os.path.normpath(os.path.join(os.path.dirname(__file__), "../assets/json/" + eventFileName))
         print(f"load json file:{filePath}")
 
         # イベントのjsonファイルオープン
@@ -132,7 +131,7 @@ class eventHandler():
 
         # 画像ロード
         # ここではロードするファイル名を表示するのみとする
-        fileName = os.path.normpath(os.path.join(os.path.dirname(__file__), "../../assets/" + args.get("fileName")))
+        fileName = os.path.normpath(os.path.join(os.path.dirname(__file__), "../assets/png/" + args.get("fileName")))
         print(f"loadPicture:{fileName}")
         pyxel.image(0).load(0, 205, fileName)
 

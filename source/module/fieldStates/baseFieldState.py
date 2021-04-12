@@ -6,7 +6,7 @@ from module.baseState import BaseState
 from module.character import EnemyPartyGenerator, enemyParty, playerParty
 from module.direction import Direction
 from module.eventHandler import eventhandler
-from module.events.eventData import eventdata
+from module.eventData import eventdata
 from module.messageHandler import messagehandler
 from module.pyxelUtil import PyxelUtil
 from module.state import State

@@ -4,7 +4,7 @@ import pickle
 
 import pyxel
 from module.character import playerParty
-from module.events.eventData import eventdata
+from module.eventData import eventdata
 from module.pyxelUtil import PyxelUtil
 from module.state import State
 from module.systemStates.baseSystemState import BaseSystemState

@@ -24,7 +24,7 @@ class StateCamp(BaseFacilityState):
         super().__init__(**kwargs)
 
         # 画像をロード
-        pyxel.image(0).load(0, 205, os.path.normpath(os.path.join(os.path.dirname(__file__), "../../../assets/camp.png")))
+        pyxel.image(0).load(0, 205, os.path.normpath(os.path.join(os.path.dirname(__file__), "../../assets/png/camp.png")))
 
     @overrides
     def update_execute(self):

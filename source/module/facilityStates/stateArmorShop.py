@@ -31,7 +31,7 @@ class StateArmorShop(BaseShopState):
         self.saleParson.body = 4
 
         # 画像をロード
-        pyxel.image(0).load(0, 205, os.path.normpath(os.path.join(os.path.dirname(__file__), "../../../assets/armorshop.png")))
+        pyxel.image(0).load(0, 205, os.path.normpath(os.path.join(os.path.dirname(__file__), "../../assets/png/armorshop.png")))
 
     @overrides
     def update_done(self):

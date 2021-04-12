@@ -45,7 +45,7 @@ class StateSurgery(BaseFacilityState):
         self.saleParson.body = 9
 
         # 画像をロード
-        pyxel.image(0).load(0, 205, os.path.normpath(os.path.join(os.path.dirname(__file__), "../../../assets/surgery.png")))
+        pyxel.image(0).load(0, 205, os.path.normpath(os.path.join(os.path.dirname(__file__), "../../assets/png/surgery.png")))
 
     @overrides
     def update_execute(self):
