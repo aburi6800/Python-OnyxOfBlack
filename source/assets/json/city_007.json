@@ -2,7 +2,7 @@
     "init":{
         "command":"loadPicture",
         "args":{
-            "fileName":"well.png",
+            "fileName":"down.png",
             "next":"section1_1"
         }
     },

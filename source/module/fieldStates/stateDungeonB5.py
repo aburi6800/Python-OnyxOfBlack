@@ -45,14 +45,7 @@ class StateDungeonB5(BaseFieldState):
         self.isEncount = True
 
         # 敵パーティー生成
-        enemyParty.memberList = EnemyPartyGenerator.generate(
-            monsterParams.monsterList[monsterParams.KRAKEN])
-
-    def draw_encount_kraken(self):
-        '''
-        クラーケン出現イベントの表示
-        '''
-        pass
+        enemyParty.memberList = EnemyPartyGenerator.generate(monsterParams["KRAKEN_LV1"])
 
     @overrides
     def onEnter(self):

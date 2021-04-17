@@ -1,17 +1,25 @@
 {
     "init":{
+        "command":"loadPicture",
+        "args":{
+            "fileName":"down.png",
+            "next":"section1_1"
+        }
+    },
+
+    "section1_1":{
         "command":"printMessage",
         "args":{
             "message":[
                 ["M", ["SI", "TA", "NI", " ", "O", "RI", "RU", " ", "KA", "I", "TA", "D", "NN", " ", "KA", "D", " ", "A", "RU", "."]],
                 ["M", ["TO", "D", "U", "SU", "RU", "* ?"]],
-                ["C", ["*[D] ","SI", "TA", " ", "NI", " ", "O", "RI", "RU"], "pyxel.KEY_D", "section1_1"],
+                ["C", ["*[D] ","SI", "TA", " ", "NI", " ", "O", "RI", "RU"], "pyxel.KEY_D", "section2_1"],
                 ["C", ["*[L] ","KO", "NO", "HA", "D", "WO", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_L", "end"]
             ]
         }
     },
 
-    "section1_1":{
+    "section2_1":{
         "command":"pushState",
         "args":{
             "stateName":"DUNGEONB3",

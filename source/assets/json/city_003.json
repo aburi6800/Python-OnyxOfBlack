@@ -2,7 +2,7 @@
     "init":{
         "command":"loadPicture",
         "args":{
-            "fileName":"well.png",
+            "fileName":"cemetery.png",
             "next":"section1_1"
         }
     },
@@ -12,8 +12,9 @@
         "args":{
             "message":[
                 ["M", ["SI", "D", "ME", "NN", "NI", " ", "NU", "KE", "A", "NA", "KA", "D", " ", "A", "RU", "."]],
+                ["M", ["MA", "WA", "RI", "NI", "HA", " ", "NA", "NI", "KA", "NO", " ", "A", "SI", "A", "TO", "NO", "YO", "U", "NA", "MO", "NO", "KA", "D", "TU", "I", "TE", "I", "RU", "."]],
                 ["M", ["TO", "D", "U", "SU", "RU", "* ?"]],
-                ["C", ["*[D]", "O", "RI", "TE", "MI", "RU"], "pyxel.KEY_D", "section2_1"],
+                ["C", ["*[D]", "A", "NA", "NI", " ", "O", "RI", "TE", "MI", "RU"], "pyxel.KEY_D", "section2_1"],
                 ["C", ["*[L]", "KO", "NO", "HA", "D", "WO", " ", "HA", "NA", "RE", "RU"], "pyxel.KEY_L", "end"]
             ]
         }

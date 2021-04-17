@@ -88,9 +88,9 @@ class eventData(object):
 
             "WELLB215149U": "self.startEvent('wellb2_001.json')",
 
-            "WELLB310109U": "self.startEvent('wellb3_001.json')",
+            "WELLB315149U": "self.startEvent('wellb3_001.json')",
 
-            "WELLB410109U": "self.startEvent('wellb4_001.json')",
+            "WELLB415149U": "self.startEvent('wellb4_001.json')",
 
             "DUNGEONB103069U": "self.startEvent('dungeonb1_001.json')",
             "DUNGEONB118219U": "self.startEvent('dungeonb1_002.json')",
@@ -171,8 +171,7 @@ class eventData(object):
             "DUNGEONB428299U": "self.update_fixed_encount_enemy()",
             "DUNGEONB428309U": "self.update_fixed_encount_enemy()",
 
-            "DUNGEONB510109U": "self.update_encount_kraken()",
-            "DUNGEONB510109D": "self.draw_encount_kraken()",
+            "DUNGEONB515149U": "self.update_encount_kraken()",
             "DUNGEONB524249U": "self.startEvent('dungeonb5_001.json')",
             "DUNGEONB518269U": "self.startEvent('dungeonb5_002.json')",
             "DUNGEONB508159U": "self.startEvent('dungeonb5_001.json')",
