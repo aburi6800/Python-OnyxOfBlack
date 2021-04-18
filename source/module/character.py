@@ -431,7 +431,6 @@ class EnemyPartyGenerator(object):
             enemyClass.occr_max = 5
 
         _count = random.randint(enemyClass.occr_min, enemyClass.occr_max)
-        _x_step = 94 // _count if _count < 12 else 7
         for idx in range(_count):
             if isinstance(enemyClass, Human):
                 _monster = HumanGenerator.generate(enemyClass.level)
@@ -458,13 +457,21 @@ class EnemyPartyGenerator(object):
                 _monster.escape = enemyClass.escape
 
             # 表示位置
-            _monster.x = (idx * _x_step if idx < 12 else (idx - 12) * _x_step) + (
-                188 - (_count * _x_step) / 2 if _count < 12 else 188 - (12 * _x_step) / 2)
-            if isinstance(_monster, Monster) and _monster.blt_h == 32:
-                _monster.y = 96
+            if _count < 12:
+                _x_step = (104 - _monster.blt_w) / (_count + 1)
+                _monster.x = 132 + ((idx + 1) * _x_step)
             else:
-                _monster.y = random.randint(100, 112) if _count < 12 else (
-                    random.randint(102, 106) if idx < 12 else random.randint(116, 120))
+                if idx < 12:
+                    _x_step = (104 - _monster.blt_w) / 11
+                    _monster.x = 132 + ((idx + 1) * _x_step)
+                else:
+                    _x_step = (104 - _monster.blt_w) / ((_count - 12) + 1)
+                    _monster.x = 132 + (((idx - 12) + 1) * _x_step)
+            if isinstance(_monster, Monster) and _monster.blt_h == 32:
+                _monster.y = 98
+            else:
+                _monster.y = random.randint(100, (128 - _monster.blt_h)) if _count < 12 else (
+                    random.randint(100, (128 - _monster.blt_h)) if idx < 12 else random.randint(110, (132 - _monster.blt_h)))
 
             _memberList.append(_monster)
 

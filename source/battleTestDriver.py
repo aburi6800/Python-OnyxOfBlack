@@ -35,7 +35,7 @@ class App:
 
         # Pyxel初期化
         pyxel.init(256, 192)
-        pyxel.load("../assets/onyxofblack.pyxres")
+        pyxel.load("../source/assets/onyxofblack.pyxres")
 
         # プレイヤーパーティ生成
         playerParty.initialize()
