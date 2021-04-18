@@ -103,11 +103,11 @@ class App:
 
         # Pyxel初期化
         pyxel.init(256, 192)
-        pyxel.load("../assets/onyxofblack.pyxres")
+        pyxel.load("assets/onyxofblack.pyxres")
 #        pyxel.image(0).load(0, 72, os.path.normpath(os.path.join(os.path.dirname(__file__), "../../../assets/python.png")))
 #        pyxel.image(0).load(0, 120, os.path.normpath(os.path.join(os.path.dirname(__file__), "../../../assets/pyxel.png")))
-        pyxel.image(0).load(0, 72, os.path.normpath(os.path.join(os.path.dirname(__file__), "../assets/python.png")))
-        pyxel.image(0).load(0, 120, os.path.normpath(os.path.join(os.path.dirname(__file__), "../assets/pyxel.png")))
+        pyxel.image(0).load(0, 72, os.path.normpath(os.path.join(os.path.dirname(__file__), "assets/png/python.png")))
+        pyxel.image(0).load(0, 120, os.path.normpath(os.path.join(os.path.dirname(__file__), "assets/png/pyxel.png")))
         pyxel.run(self.update, self.draw)
 
         # 画像をロード
