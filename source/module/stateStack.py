@@ -18,6 +18,13 @@ from module.fieldStates.stateDungeonB2 import StateDungeonB2
 from module.fieldStates.stateDungeonB3 import StateDungeonB3
 from module.fieldStates.stateDungeonB4 import StateDungeonB4
 from module.fieldStates.stateDungeonB5 import StateDungeonB5
+from module.fieldStates.stateColordYellow import StateColordYellow
+from module.fieldStates.stateColordRed import StateColordRed
+from module.fieldStates.stateColordPurple import StateColordPurple
+from module.fieldStates.stateColordGreen import StateColordGreen
+from module.fieldStates.stateColordBlue import StateColordBlue
+from module.fieldStates.stateColordWhite import StateColordWhite
+from module.fieldStates.stateColordBlack import StateColordBlack
 from module.fieldStates.stateWellB1 import StateWellB1
 from module.fieldStates.stateWellB2 import StateWellB2
 from module.fieldStates.stateWellB3 import StateWellB3
@@ -52,6 +59,13 @@ class StateStack(object):
             State.DUNGEONB3: StateDungeonB3,
             State.DUNGEONB4: StateDungeonB4,
             State.DUNGEONB5: StateDungeonB5,
+            State.COLORD_YELLOW: StateColordYellow,
+            State.COLORD_RED: StateColordRed,
+            State.COLORD_PURPLE: StateColordPurple,
+            State.COLORD_GREEN: StateColordGreen,
+            State.COLORD_BLUE: StateColordBlue,
+            State.COLORD_WHITE: StateColordWhite,
+            State.COLORD_BLACK: StateColordBlack,
             State.ARMORSHOP: StateArmorShop,
             State.BARBAR: StateBarbar,
             State.DRUGS: StateDrugs,
@@ -173,12 +187,6 @@ class StateStack(object):
         # stateクラスの取得に成功した場合、コールバックメソッドを登録し、インスタンスを生成する
         if c != None:
             kwargs["stateStack"] = self
-#            c.pushState = self.push
-#            c.popState = self.pop
-#            c.clearState = self.clear
-#            c.isField = self.isField
-#            c.setStates = self.setStates
-#            c.getStates = self.getStates
             state = c(**kwargs)
 
         return state

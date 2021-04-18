@@ -1,0 +1,31 @@
+{
+    "init":{
+        "command":"popState",
+        "args":{
+            "next":"section1_1"
+        }
+    },
+
+    "section1_1":{
+        "command":"pushState",
+        "args":{
+            "stateName":"COLORD_YELLOW",
+            "next":"section1_2"
+        }
+    },
+
+    "section1_2":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["KA", "HE", "D", "NO", "I", "RO", "HA", " ", "KI", "I", "RO", "."]]
+            ],
+            "next":"end"
+        }
+    },
+
+    "end":{
+        "command":"end",
+        "args":{}
+    }
+}

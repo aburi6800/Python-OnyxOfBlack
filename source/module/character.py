@@ -142,7 +142,7 @@ class PlayerParty(Party):
     リストに登録するHumanの上限は5とする
     直接このクラスを使用せず、インスタンスを格納したplayerPartyをimportして使用すること
     '''
-    eventFlg = []
+    eventFlg = [0] * 256
 
     def __init__(self):
         '''

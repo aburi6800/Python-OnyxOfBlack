@@ -113,12 +113,12 @@ class eventHandler():
         print(f"called:update_judgeFlg({args})")
 
         # プラグ判定
-        if self.flg[args.get("flgNo")] == 1:
+        if playerParty.eventFlg[args.get("flgNo")] == 1:
             # 次のセクションデータをセット
-            self.eventSection = self.setNextSection(args.get("on"))
+            self.eventSection = self.getEventSection(args.get("on"))
         else:
             # 次のセクションデータをセット
-            self.eventSection = self.setNextSection(args.get("off"))
+            self.eventSection = self.getEventSection(args.get("off"))
 
     def update_loadPicture(self, args: dict) -> None:
         '''
@@ -201,8 +201,8 @@ class eventHandler():
         print(f"called:update_setFlg({args})")
 
         # フラグセット
-        # 仮実装
-        print("FlgNo:" + args.get("flgNo") + " value:" + args.get("value"))
+        print("FlgNo:" + str(args.get("flgNo")) + " value:" + str(args.get("value")))
+        playerParty.eventFlg[args.get("flgNo")] = args.get("value")
 
         # 次のエントリーデータをセット
         self.eventSection = self.getEventSection(args.get("next"))

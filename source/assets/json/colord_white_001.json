@@ -1,0 +1,67 @@
+{
+    "init":{
+        "command":"judgeFlg",
+        "args":{
+            "flgNo":1,
+            "on":"section3_1",
+            "off":"section4_1"
+        }
+    },
+
+    "section2_1":{
+        "command":"judgeFlg",
+        "args":{
+            "flgNo":2,
+            "on":"section3_2",
+            "off":"section4_1"
+        }
+    },
+
+    "section3_1":{
+        "command":"setFlg",
+        "args":{
+            "flgNo":2,
+            "value":1,
+            "next":"section1_2"
+        }
+    },
+
+    "section3_2":{
+        "command":"popState",
+        "args":{
+            "next":"section3_3"
+        }
+    },
+
+    "section3_3":{
+        "command":"pushState",
+        "args":{
+            "stateName":"COLORD_BLACK",
+            "next":"end"
+        }
+    },
+
+    "section4_1":{
+        "command":"setPartyPosition",
+        "args":{
+            "position":[17, 16],
+            "next":"section4_2"
+        }
+    },
+
+    "section4_2":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["NA", "NI", "KA", "NO", " ", "TI", "KA", "RA", "TE", "D"]],
+                ["M", ["SA", "KI", "NI", " ", "SU", "SU", "MU", "KO", "TO", "KA", "D", " ", "TE", "D", "KI", "NA", "I", "."]]
+            ],
+            "next":"end"
+        }
+    },
+
+    "end":{
+        "command":"end",
+        "args":{}
+    }
+}

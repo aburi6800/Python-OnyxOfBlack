@@ -187,6 +187,46 @@ class eventData(object):
             "DUNGEONB531259D": "self.update_fixed_encount_enemy()",
             "DUNGEONB531309D": "self.update_fixed_encount_enemy()",
             "DUNGEONB533289D": "self.update_fixed_encount_enemy()",
+
+            "COLORD_YELLOW18269U": "self.startEvent('colord_yellow_001.json')",
+            "COLORD_YELLOW22219U": "self.startEvent('colord_yellow_002.json')",
+            "COLORD_YELLOW17239U": "self.startEvent('colord_yellow_003.json')",
+            "COLORD_YELLOW23309U": "self.startEvent('colord_yellow_004.json')",
+            "COLORD_YELLOW13229U": "self.startEvent('colord_yellow_005.json')",
+            "COLORD_YELLOW14179U": "self.startEvent('colord_yellow_006.json')",
+
+            "COLORD_RED20179U": "self.startEvent('colord_red_001.json')",
+            "COLORD_RED21219U": "self.startEvent('colord_red_002.json')",
+            "COLORD_RED26219U": "self.startEvent('colord_red_003.json')",
+            "COLORD_RED26259U": "self.startEvent('colord_red_004.json')",
+            "COLORD_RED26319U": "self.startEvent('colord_red_005.json')",
+
+            "COLORD_PURPLE15099U": "self.startEvent('colord_purple_001.json')",
+            "COLORD_PURPLE20189U": "self.startEvent('colord_purple_002.json')",
+            "COLORD_PURPLE23139U": "self.startEvent('colord_purple_003.json')",
+            "COLORD_PURPLE23099U": "self.startEvent('colord_purple_004.json')",
+            "COLORD_PURPLE14129U": "self.startEvent('colord_purple_005.json')",
+
+            "COLORD_GREEN13239U": "self.startEvent('colord_green_001.json')",
+            "COLORD_GREEN18239U": "self.startEvent('colord_green_002.json')",
+            "COLORD_GREEN09259U": "self.startEvent('colord_green_003.json')",
+            "COLORD_GREEN13309U": "self.startEvent('colord_green_004.json')",
+            "COLORD_GREEN15309U": "self.startEvent('colord_green_005.json')",
+
+            "COLORD_BLUE14229U": "self.startEvent('colord_blue_001.json')",
+            "COLORD_BLUE06129U": "self.startEvent('colord_blue_002.json')",
+            "COLORD_BLUE08139U": "self.startEvent('colord_blue_003.json')",
+            "COLORD_BLUE09219U": "self.startEvent('colord_blue_004.json')",
+            "COLORD_BLUE14239U": "self.startEvent('colord_blue_005.json')",
+
+            "COLORD_WHITE17179U": "self.startEvent('colord_white_001.json')",
+            "COLORD_WHITE14189U": "self.startEvent('colord_white_002.json')",
+            "COLORD_WHITE15129U": "self.startEvent('colord_white_003.json')",
+            "COLORD_WHITE07139U": "self.startEvent('colord_white_004.json')",
+            "COLORD_WHITE08099U": "self.startEvent('colord_white_005.json')",
+
+            "COLORD_BLACK17169U": "self.startEvent('colord_black_001.json')",
+            "COLORD_BLACK16189U": "self.startEvent('colord_black_002.json')",
         }
 
 # インスタンスを生成

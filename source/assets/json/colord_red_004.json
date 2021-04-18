@@ -1,0 +1,48 @@
+{
+    "init":{
+        "command":"popState",
+        "args":{
+            "next":"section1_1"
+        }
+    },
+
+    "section1_1":{
+        "command":"setPartyPosition",
+        "args":{
+            "position":[10, 25],
+            "next":"section1_2"
+        }
+    },
+
+    "section1_2":{
+        "command":"pushState",
+        "args":{
+            "stateName":"COLORD_BLUE",
+            "next":"section1_3"
+        }
+    },
+
+    "section1_3":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["KA", "HE", "D", "NO", "I", "RO", "HA", " ", "MI", "TO", "D", "RI", "."]]
+            ],
+            "next":"section1_4"
+        }
+    },
+
+    "section1_4":{
+        "command":"setFlg",
+        "args":{
+            "flgNo":1,
+            "value":0,
+            "next":"end"
+        }
+    },
+
+    "end":{
+        "command":"end",
+        "args":{}
+    }
+}

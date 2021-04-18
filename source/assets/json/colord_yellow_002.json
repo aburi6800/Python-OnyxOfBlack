@@ -1,0 +1,40 @@
+{
+    "init":{
+        "command":"popState",
+        "args":{
+            "next":"section1_1"
+        }
+    },
+
+    "section1_1":{
+        "command":"pushState",
+        "args":{
+            "stateName":"COLORD_RED",
+            "next":"section1_2"
+        }
+    },
+
+    "section1_2":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["KA", "HE", "D", "NO", "I", "RO", "HA", " ", "A", "KA", "."]]
+            ],
+            "next":"section1_3"
+        }
+    },
+
+    "section1_3":{
+        "command":"setFlg",
+        "args":{
+            "flgNo":1,
+            "value":1,
+            "next":"end"
+        }
+    },
+
+    "end":{
+        "command":"end",
+        "args":{}
+    }
+}

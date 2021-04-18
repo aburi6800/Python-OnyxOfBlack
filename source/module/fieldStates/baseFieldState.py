@@ -73,7 +73,7 @@ class BaseFieldState(BaseState):
         '''
         super().__init__(**kwargs)
 
-    def set_wall_color(self, wallcolor_front=pyxel.COLOR_LIGHTBLUE, wallcolor_side=pyxel.COLOR_DARKBLUE):
+    def set_wall_color(self, wallcolor_front=pyxel.COLOR_LIGHTBLUE, wallcolor_side=pyxel.COLOR_DARKBLUE, doorcolor=pyxel.COLOR_YELLOW):
         '''
         壁の色を設定する。\n
         途中で変更したい場合に使用する。\n
@@ -87,6 +87,10 @@ class BaseFieldState(BaseState):
         # 迷路描画の壁の色（側面）
         self.WALLCOLOR_SIDE[1] = wallcolor_side
         self.WALLCOLOR_SIDE[4] = wallcolor_side
+
+        # ドアの色
+        self.WALLCOLOR_FRONT[2] = doorcolor
+        self.WALLCOLOR_SIDE[2] = doorcolor
 
     @overrides
     def update_execute(self):
@@ -139,9 +143,10 @@ class BaseFieldState(BaseState):
         # イベントハンドラ
         if self.checkEvent("U") == False:
         # イベントが何もない場合、エンカウントするか？
-            if self.isAfterMoved and random.randint(0, 20) == 0:
-                self.encount_enemy()
-                return
+            pass
+#            if self.isAfterMoved and random.randint(0, 24) == 0:
+#                self.encount_enemy()
+#                return
 
         # キャンプ
         if pyxel.btnp(pyxel.KEY_SPACE):
