@@ -551,7 +551,7 @@ class BaseFieldState(BaseState):
             if _data & 0b000000000111 != 0:
                 _color = _data & 0b000000000111
                 _y = 0 if (self.isOuter() and _color == 3) else 29
-                _h = 50 if _color == 3 else 21
+                _h = 50 if (self.isOuter() and _color == 3) else 21
                 pyxel.rect(28 + self.DRAW_OFFSET_X, _y + self.DRAW_OFFSET_Y,
                            23, _h,
                            self.WALLCOLOR_FRONT[_color])
