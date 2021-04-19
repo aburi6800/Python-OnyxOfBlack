@@ -20,15 +20,6 @@
             "message":[
                 ["M", ["KA", "HE", "D", "NO", "I", "RO", "HA", " ", "SI", "RO", "."]]
             ],
-            "next":"section1_3"
-        }
-    },
-
-    "section1_3":{
-        "command":"setFlg",
-        "args":{
-            "flgNo":1,
-            "value":0,
             "next":"end"
         }
     },

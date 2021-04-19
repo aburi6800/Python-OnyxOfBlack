@@ -143,10 +143,9 @@ class BaseFieldState(BaseState):
         # イベントハンドラ
         if self.checkEvent("U") == False:
         # イベントが何もない場合、エンカウントするか？
-            pass
-#            if self.isAfterMoved and random.randint(0, 24) == 0:
-#                self.encount_enemy()
-#                return
+            if self.isAfterMoved and random.randint(0, 24) == 0:
+                self.encount_enemy()
+                return
 
         # キャンプ
         if pyxel.btnp(pyxel.KEY_SPACE):
