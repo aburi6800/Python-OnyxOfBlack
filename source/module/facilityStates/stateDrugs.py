@@ -57,7 +57,7 @@ class StateDrugs(BaseShopState):
                 self.errorMessage = ["*" + playerParty.memberList[self.equipMember].name, " ", "HA", " ", "YO", "U", "KI", "WO", " ", "MO", "LTU", "TE", "I", "MA", "SE", "NN", "."]
                 self.state = self.STATE_ERROR
                 return
-            elif playerParty.memberList[self.equipMember].potion == 4:
+            elif playerParty.memberList[self.equipMember].potion == 5:
                 # 既に最大数の薬を持っているときは、エラーとする
                 self.errorMessage = ["*" + playerParty.memberList[self.equipMember].name, " ", "NO", " ", "YO", "U", "KI", "NI", "HA", " ", "MO", "U", "HA", "I", "RI", "MA", "SE", "NN", "."]
                 self.state = self.STATE_ERROR
