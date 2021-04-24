@@ -435,6 +435,8 @@ class EnemyPartyGenerator(object):
             if isinstance(enemyClass, Human):
                 _monster = HumanGenerator.generate(enemyClass.level)
                 _monster.exp = enemyClass.level
+                _monster.blt_w = 8
+                _monster.blt_h = 19
             else:
                 _monster = Monster()
                 _monster.name = enemyClass.name + " " + chr(65 + idx)
