@@ -20,8 +20,9 @@
     },
 
     "section2_1":{
-        "command":"popState",
+        "command":"pushState",
         "args":{
+            "stateName":"BLACKTOWER",
             "next":"end"
         }
     },

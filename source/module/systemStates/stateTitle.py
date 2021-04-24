@@ -96,6 +96,7 @@ class StateTitle(BaseSystemState):
         '''
         if self.tick - 1 == len(self.TEXTCOLOR):
             self.state = self.STATE_STORY
+            pyxel.playm(1)
 
     def update_stoty(self):
         '''
@@ -143,11 +144,13 @@ class StateTitle(BaseSystemState):
         '''
         if self.selected == 0:
             if pyxel.btnp(pyxel.KEY_N):
+                pyxel.stop()
                 pyxel.play(3, 0, loop=False)
                 self.selected = 1
                 self.tick = 0
 
             if pyxel.btnp(pyxel.KEY_C) and self.doContinue:
+                pyxel.stop()
                 pyxel.play(3, 0, loop=False)
                 self.selected = 2
                 self.tick = 0
