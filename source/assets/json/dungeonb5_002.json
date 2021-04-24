@@ -22,7 +22,7 @@
     "section2_1":{
         "command":"pushState",
         "args":{
-            "stateName":"COLOR_YELLOW",
+            "stateName":"COLORD_YELLOW",
             "next":"end"
         }
     },
