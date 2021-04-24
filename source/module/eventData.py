@@ -63,6 +63,7 @@ class eventData(object):
             "CITY29151U": "playerParty.restoreCondition()",
             "CITY15149U": "self.startEvent('city_001.json')",
             "CITY03069U": "self.startEvent('city_007.json')",
+            "CITY21069U": "self.startEvent('city_test.json')",
 
             "CEMETERY23189U": "self.startEvent('cemetery_001.json')",
             "CEMETERY25179U": "self.startEvent('cemetery_001.json')",
@@ -224,6 +225,7 @@ class eventData(object):
             "COLORD_WHITE15129U": "self.startEvent('colord_white_003.json')",
             "COLORD_WHITE07139U": "self.startEvent('colord_white_004.json')",
             "COLORD_WHITE08099U": "self.startEvent('colord_white_005.json')",
+            "COLORD_WHITE12109U": "self.startEvent('colord_white_006.json')",
 
             "COLORD_BLACK17169U": "self.startEvent('colord_black_001.json')",
             "COLORD_BLACK16189U": "self.startEvent('colord_black_002.json')",
