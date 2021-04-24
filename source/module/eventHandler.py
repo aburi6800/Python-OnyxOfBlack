@@ -5,8 +5,8 @@ import pyxel
 
 from module.character import playerParty
 from module.messageHandler import messageCommand, messagehandler
-from module.direction import Direction
-from module.state import State
+from module.state import State # update_pushState で使用
+
 
 class eventHandler():
     '''
@@ -47,7 +47,8 @@ class eventHandler():
 
         # ファイル名にパスを追加する
         filePath = os.path.normpath(os.path.join(os.path.dirname(__file__), "../assets/json/" + eventFileName))
-        print(f"load json file:{filePath}")
+        if __debug__:
+            print(f"load json file:{filePath}")
 
         # イベントのjsonファイルオープン
         f = open(filePath, 'r')
@@ -88,6 +89,9 @@ class eventHandler():
         '''
         １ループごとの処理を行う\n
         '''
+        if __debug__:
+            print("called : eventHandler.update")
+        
         # イベントセクションデータのコマンドと引数から、各updateメソッドを呼び出す
         eval("self.update_" +
              self.eventSection["command"])(self.eventSection["args"])
@@ -97,7 +101,8 @@ class eventHandler():
         イベント終了コマンド\n
         引数は不要。
         '''
-        print("called:update_end()")
+        if __debug__:
+            print("called : update_end()")
 
         # イベント発生中フラグをFalseにする
         self.isExecute = False
@@ -110,7 +115,8 @@ class eventHandler():
         ・"on" : フラグがONのときに実行するセクション名\n
         ・"off" : フラグがOFFのときに実行するセクション名
         '''
-        print(f"called:update_judgeFlg({args})")
+        if __debug__:
+            print(f"called : update_judgeFlg({args})")
 
         # プラグ判定
         if playerParty.eventFlg[args.get("flgNo")] == 1:
@@ -127,7 +133,8 @@ class eventHandler():
         ・"fileName" : ロードするファイル名
         ・"next"：次のイベント識別子
         '''
-        print(f"called:update_loadPicture({args})")
+        if __debug__:
+            print(f"called : update_loadPicture({args})")
 
         # 画像ロード
         # ここではロードするファイル名を表示するのみとする
@@ -150,7 +157,8 @@ class eventHandler():
         　　　　　　　　　　　　　　　　種別"C"の場合：メッセージ（文字列 or リスト）と選択キー、イベント定義jsonファイルの遷移先セクション名を指定する。\n
         ・"next"：イベント定義jsonファイルの次のセクション名。選択肢があるメッセージの場合は設定不要。
         '''
-        print(f"called:update_printMessage({args})")
+        if __debug__:
+            print(f"called : update_printMessage({args})")
 
         # メッセージ表示コマンドクラスのインスタンス生成
         cmd = messageCommand()
@@ -198,7 +206,8 @@ class eventHandler():
         ・"value"：フラグ設定値\n
         ・"next"：次のイベントの識別子
         '''
-        print(f"called:update_setFlg({args})")
+        if __debug__:
+            print(f"called : update_setFlg({args})")
 
         # フラグセット
         print("FlgNo:" + str(args.get("flgNo")) + " value:" + str(args.get("value")))
@@ -214,7 +223,8 @@ class eventHandler():
         ・"stateName"：変更するstateのENUM値。\n
         ・"next"；次のイベントの識別子
         '''
-        print(f"called:update_pushState({args})")
+        if __debug__:
+            print(f"called : update_pushState({args})")
 
         # stateのpush
         self.calledState.stateStack.push(eval("State." + args.get("stateName")))
@@ -228,7 +238,8 @@ class eventHandler():
         引数は以下の要素を設定した辞書型とする。\n
         ・"next"；次のイベントの識別子
         '''
-        print(f"called:update_popState({args})")
+        if __debug__:
+            print(f"called : update_popState({args})")
 
         # stateのpop
         self.calledState.stateStack.pop()
@@ -245,12 +256,36 @@ class eventHandler():
         ・"direction"：省略可能。変更する方向をNORTH,SOUTH,WEST,EASTの文字列で指定\n
         ・"next"；次のイベントの識別子
         '''
-        print(f"called:update_setPartyPosition({args})")
+        if __debug__:
+            print(f"called : update_setPartyPosition({args})")
+
         playerParty.saveCondition()
         playerParty.x = args.get("position")[0]
         playerParty.y = args.get("position")[1]
         if args.get("direction") != None:
             playerParty.direction = eval("Direction." + args.get("direction"))
+
+        # 次のエントリーデータをセット
+        self.eventSection = self.getEventSection(args.get("next"))
+
+    def update_encountMonster(self, args: dict) -> None:
+        '''
+        モンスターと遭遇するコマンド\n
+        モンスターパーティーを生成し、呼び出し元のStateのisEncountをtrueに設定する。\n
+        呼び出し元のStateではstateBattleがpushされ、戦闘中はこのクラスのupdateメソッドは呼び出されなくなる。\n
+        戦闘が終了すると、呼び出し元StateのisEncountがFalseとなり、イベントハンドラでの処理が再開される。\n
+        引数は以下の要素を設定した辞書型とする。\n
+        ・"monsterName"：モンスターのEnum値、省略された場合はモンスターのリスト(各Stateのenemy_set)からランダムで指定される
+        ・"next"：次のイベントの識別子
+        '''
+        if __debug__:
+            print(f"called : update_encountMonster({args})")
+
+        _monsterName = args.get("monsterName")
+        if _monsterName == None or _monsterName == "":
+            self.calledState.encount_enemy()
+        else:
+            self.calledState.encount_enemy(_monsterName)
 
         # 次のエントリーデータをセット
         self.eventSection = self.getEventSection(args.get("next"))

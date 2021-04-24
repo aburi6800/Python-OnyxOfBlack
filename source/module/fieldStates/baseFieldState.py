@@ -5,15 +5,16 @@ import pyxel
 from module.baseState import BaseState
 from module.character import EnemyPartyGenerator, enemyParty, playerParty
 from module.direction import Direction
-from module.eventHandler import eventhandler
 from module.eventData import eventdata
+from module.eventHandler import eventhandler
 from module.messageHandler import messagehandler
+from module.params.monster import monsterParams
 from module.pyxelUtil import PyxelUtil
 from module.state import State
-from overrides import overrides
+from overrides import EnforceOverrides, overrides
 
 
-class BaseFieldState(BaseState):
+class BaseFieldState(BaseState, EnforceOverrides):
     '''
     フィールドのStateクラスの基底クラス\n
     各フィールドで共通の処理を持つ。\n
@@ -103,6 +104,8 @@ class BaseFieldState(BaseState):
         if playerParty.isEscape:
             # フラグを降ろす
             playerParty.isEscape = False
+            # イベントを強制的に終了
+            eventhandler.isExecute = False
             # 方向のリストを作ってシャッフル
             _dirlist = [Direction.NORTH, Direction.EAST,
                         Direction.SOUTH, Direction.WEST]
@@ -111,9 +114,9 @@ class BaseFieldState(BaseState):
             for _direction in _dirlist:
                 if self.can_move_forward(self._map, playerParty.x, playerParty.y, _direction):
                     # 移動可能の場合はその方向に移動
+                    playerParty.direction = _direction
                     playerParty.x = playerParty.x + playerParty.VX[_direction]
                     playerParty.y = playerParty.y + playerParty.VX[_direction]
-                    playerParty.direction = _direction
                     break
             return
             # どの方向にも移動できない（あり得ないが）場合はその場に留まるため、特に処理不要
@@ -128,6 +131,11 @@ class BaseFieldState(BaseState):
             else:
                 return
 
+        # イベントハンドラでイベントが実行中の場合は、イベントハンドラのupdateメソッドを呼んで終了する
+        if eventhandler.isExecute:
+            eventhandler.update()
+            return
+
         # 固定エンカウントしていた場合は、イベント辞書からデータを削除する
         # 戦闘から逃げて終了した場合は、ここに到達する前に座標が変更されているのでイベントは削除されない
         if self.isFixedEncount:
@@ -140,9 +148,9 @@ class BaseFieldState(BaseState):
                 pass
             self.isFixedEncount = False
 
-        # イベントハンドラ
+        # イベントチェック
         if self.checkEvent("U") == False:
-        # イベントが何もない場合、エンカウントするか？
+            # イベントが何もない場合、エンカウントするか？
             if self.isAfterMoved and random.randint(0, 24) == 0:
                 self.encount_enemy()
                 return
@@ -181,16 +189,21 @@ class BaseFieldState(BaseState):
         # 移動後判定フラグをFalseに設定する
         self.isAfterMoved = False
 
-    def encount_enemy(self):
+    def encount_enemy(self, monsterName: str = ""):
         '''
         敵とエンカウントした時の処理\n
-        enemyPartyを生成し、isEncountをTrueに変更する。\n
+        引数で指定されたモンスター（省略時はそのStateのenemy_setからランダムで指定）のenemyPartyを生成し、isEncountをTrueに変更する。\n
         マップにより特殊な条件でenemyPartyを生成する場合は、サブクラスでオーバーライドする。
         '''
         self.isEncount = True
-        enemyParty.memberList = EnemyPartyGenerator.generate(
-            self.enemy_set[random.randint(0, len(self.enemy_set) - 1)])
+        self.tick = 0
 
+        if monsterName == "":
+            enemyParty.memberList = EnemyPartyGenerator.generate(
+                self.enemy_set[random.randint(0, len(self.enemy_set) - 1)])
+        else:
+            enemyParty.memberList = EnemyPartyGenerator.generate(monsterParams[monsterName])
+            
     def update_fixed_encount_enemy(self):
         '''
         敵と固定エンカウントした時の処理\n
@@ -298,7 +311,7 @@ class BaseFieldState(BaseState):
         self.set_wall_color()
 
         # 移動後判定フラグ初期化
-        self.isAfterMoved = True
+        self.isAfterMoved = False
 
     @overrides
     def onExit(self):

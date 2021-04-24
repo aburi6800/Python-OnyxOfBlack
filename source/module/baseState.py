@@ -50,11 +50,6 @@ class BaseState(EnforceOverrides):
             messagehandler.update()
             return
 
-        # イベントハンドラでイベントが実行中の場合は、イベントハンドラのupdateメソッドを呼んで終了する
-        if eventhandler.isExecute:
-            eventhandler.update()
-            return
-
         self.update_execute()
 
     def update_execute(self):

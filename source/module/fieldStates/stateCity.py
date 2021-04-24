@@ -64,18 +64,23 @@ class StateCity(BaseFieldState):
         super().__init__(**kwargs)
 
     @overrides
-    def encount_enemy(self):
+    def encount_enemy(self, monsterName: str = ""):
         '''
         敵とエンカウントした時の処理\n
         街の場合、南側に行くとモンスターも出現する。
         '''
         self.isEncount = True
-        if playerParty.y < 16:
-            enemyParty.memberList = EnemyPartyGenerator.generate(
-                self.enemy_set[random.randint(0, 3)])
+        self.tick = 0
+        
+        if monsterName == "":
+            if playerParty.y < 16:
+                enemyParty.memberList = EnemyPartyGenerator.generate(
+                    self.enemy_set[random.randint(0, 3)])
+            else:
+                enemyParty.memberList = EnemyPartyGenerator.generate(
+                    self.enemy_set[random.randint(0, len(self.enemy_set) - 1)])
         else:
-            enemyParty.memberList = EnemyPartyGenerator.generate(
-                self.enemy_set[random.randint(0, len(self.enemy_set) - 1)])
+            enemyParty.memberList = EnemyPartyGenerator.generate(monsterParams[monsterName])
 
     def draw_gate(self):
         '''
