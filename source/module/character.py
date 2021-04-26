@@ -15,7 +15,6 @@ class Character(object):
         '''
         クラス初期化
         '''
-
         self.name = ""
         self.level = 0
         self.maxlife = 0
@@ -25,6 +24,7 @@ class Character(object):
         self.dexterity = 0
         self.exp = 0
         self.gold = 0
+        self.isPlayer = False
 
 
 class Human(Character):

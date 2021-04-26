@@ -166,6 +166,7 @@ class StateMakeCharacter(BaseSystemState):
             pyxel.play(3, 0, loop=False)
 
             # 作ったキャラクタをプレイヤーパーティーに追加
+            self.character.isPlayer = True
             playerParty.addMember(self.character)
 
             # プレイヤーパーティーの人数は5人未満か

@@ -28,7 +28,7 @@ class App:
         print(len(args))
         print(args)
         if len(args) != 7:
-            args = ["", "BAT_LV1", "1", "", "", "", ""]
+            args = ["", "WOLF_LV1", "1", "1", "", "", ""]
 
         # StateStackの初期化
         stateStack.clear()
@@ -44,6 +44,7 @@ class App:
 
         for idx in range(5):
             member = HumanGenerator.generate(level)
+            member.isPlayer = True
             # 装備の指定
             member.weapon = weaponParams[int(args[3])] if args[3] != "" else None
             member.armor = armorParams[int(args[4])] if args[4] != "" else None

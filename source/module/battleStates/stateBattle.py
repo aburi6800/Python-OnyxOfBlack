@@ -4,7 +4,7 @@ import random
 
 import pyxel
 from module.baseState import BaseState
-from module.character import Human, enemyParty, playerParty
+from module.character import Character, Human, enemyParty, playerParty
 from module.pyxelUtil import PyxelUtil
 from module.state import State
 from overrides import overrides
@@ -34,7 +34,7 @@ class StateBattle(BaseState):
 
     # ハンドラ用定数
     HANDLER_UPDATE = 0
-    HANDLER_RENDER = 1
+    HANDLER_DRAW = 1
 
     # キーとインデックスの辞書
     key_to_index = {
@@ -70,8 +70,8 @@ class StateBattle(BaseState):
         self.member_index = 0
 
         # メッセージリスト
+        # 各リスト要素の1つ目はメッセージリスト、2つ目は表示色
         self.message = []
-        self.memsage_color = pyxel.COLOR_WHITE
 
         # 報酬
         self.reward_exp = 0
@@ -164,7 +164,6 @@ class StateBattle(BaseState):
                     _playerSumMaxlife += _member.maxlife
                 _playerDamage = 1 - (_playerSumLife / _playerSumMaxlife)
                 _playerRate = (_playerStrength * math.sqrt(_playerMaxLevel)) * _playerDamage + random.randint(1, 6)
-                print("player:Level=" + str(_playerMaxLevel) + " Damage=" + str(_playerDamage) + " Rate:" + str(_playerRate))
 
                 _enemyMaxLevel = 0
                 _enemyStrength = 0
@@ -179,7 +178,6 @@ class StateBattle(BaseState):
                     _enemySumMaxlife += _member.maxlife
                 _enemyDamage = 1- (_enemySumLife / _enemySumMaxlife)
                 _enemyRate = (_enemyStrength * math.sqrt(_enemyMaxLevel)) * _enemyDamage + random.randint(1, 6)
-                print("enemy :Level=" + str(_enemyMaxLevel) + " Damage=" + str(_enemyDamage) + " Rate:" + str(_enemyRate))
                 
                 if _enemyMaxLevel >= _playerMaxLevel:
                     if _enemyDamage > 0.7 and _playerRate > _enemyRate:
@@ -235,8 +233,6 @@ class StateBattle(BaseState):
         # イニシアチブ、攻撃値、防御値を設定
         for _member in self.turn_table:
             _member.initiative = _member.dexterity + random.randint(1, 12)
-#            _member.attack = _member.strength + random.randint(1, 6)
-#            _member.accept = _member.defend + random.randint(1, 6)
 
         # イニシアチブ値で降順でソート
         self.turn_table = sorted(
@@ -244,9 +240,6 @@ class StateBattle(BaseState):
 
         # 行動順リストのインデックス初期化
         self.turn_index = 0
-
-        # メッセージ初期化
-        self.message = []
 
         # 戦闘処理へ
         self.change_state(self.STATE_BATTLE)
@@ -291,55 +284,58 @@ class StateBattle(BaseState):
             self.message = []
 
             # 攻撃ヒット判定
-            _d = random.randint(1, 100)
-            if _d == 100 or _d > 100 - (_target.dexterity / _attacker.dexterity) * 10:
+            _attacker_d = random.randint(2, 12)
+            _target_d = random.randint(2, 12)
+            if (_attacker.dexterity + _attacker_d < _target.dexterity + _target_d) or (_target_d == 12):
                 # 避けた
-#                m = messageCommand()
-#                m.addMessage(message(["*" + _target.name + " ", "KA", "D"]))
-#                m.addMessage(message(["*" + _attacker.name + " ", "WO", " ", "YO", "KE", "TA", "."]))
-#                messagehandler.enqueue(m)
-                self.message.append(["*" + _target.name + " ", "KA", "D"])
-                self.message.append(
-                    ["*" + _attacker.name + " ", "WO", " ", "YO", "KE", "TA", "."])
+                self.addMessage([""])
+                self.addMessage(["*" + _target.name + " ", "KA", "D"], self.getMessageColor(_attacker))
+                self.addMessage([""])
+                self.addMessage(["*" + _attacker.name + " ", "WO", " ", "YO", "KE", "TA", "."], self.getMessageColor(_attacker))
             else:
                 # 攻撃値算出
-                _attack = _attacker.strength + random.randint(1, 6)
+                _attack = _attacker.strength + random.randint(2, 12)
 
                 # 人間のキャラクタで武器を持っている場合は補正
                 if isinstance(_attacker, Human) and _attacker.weapon != None:
-                    _attack = _attack + _attacker.weapon.attack
-
-                # 武器が刃物の場合、ダメージから防御値を減算
-#                _attack = _attack - _target.accept
+                    _attack = _attack + random.randint(_attacker.weapon.attack // 2, _attacker.weapon.attack)
 
                 # 防御値算出
-                _defend = _target.defend + random.randint(1, 6)
+                _defend = _target.defend + random.randint(2, 12)
+
                 if isinstance(_target, Human):
                     # 鎧
                     if _target.armor != None:
-                        _defend = _defend + _target.armor.armor
+                        _defend = _defend + random.randint(_target.armor.armor // 2, _target.armor.armor)
                     # 盾
                     if _target.shield != None:
-                        _defend = _defend + _target.shield.armor
+                        _defend = _defend + random.randint(_target.shield.armor // 2, _target.shield.armor)
                     # 兜
                     if _target.helmet != None:
-                        _defend = _defend + _target.helmet.armor
+                        _defend = _defend + random.randint(_target.helmet.armor // 2, _target.helmet.armor)
 
                 # ダメージ計算
-                _damage = int(_attack / (_defend // 2))
+#                _damage = int(_attack / (_defend // 2))
+                if _attacker_d == 12:
+                    self.addMessage(["**** GOOD SHOT ***"], pyxel.COLOR_YELLOW)
+                    _damage = _attack
+                else:
+                    self.addMessage([""])
+                    _damage = _attack - _defend
+
                 if _damage < 1:
                     # 受け止めた
-                    self.message.append(["*" + _target.name + " ", "KA", "D"])
-                    self.message.append(
-                        ["*" + _attacker.name + " ", "WO", " ", "U", "KE", "TO", "ME", "TA", "."])
+                    self.addMessage(["*" + _target.name + " ", "KA", "D"], self.getMessageColor(_attacker))
+                    self.addMessage([""])
+                    self.addMessage(["*" + _attacker.name + " ", "WO", " ", "U", "KE", "TO", "ME", "TA", "."], self.getMessageColor(_attacker))
                 else:
                     _target.life = _target.life - _damage
+
                     if _target.life < 1:
                         # しとめた
-                        self.message.append(
-                            ["*" + _attacker.name + " ", "KA", "D"])
-                        self.message.append(
-                            ["*" + _target.name + " ", "WO", " ", "SI", "TO", "ME", "TA", "* !"])
+                        self.addMessage(["*" + _attacker.name + " ", "KA", "D"], self.getMessageColor(_attacker))
+                        self.addMessage([""])
+                        self.addMessage(["*" + _target.name + " ", "WO", " ", "SI", "TO", "ME", "TA", "* !"], self.getMessageColor(_attacker))
 
                         #  行動順リストから外す
                         for _idx, _value in enumerate(self.turn_table):
@@ -347,28 +343,26 @@ class StateBattle(BaseState):
                                 del self.turn_table[_idx]
                                 break
 
-                        # プレイヤーパーティーから外す
-                        for _idx, _value in enumerate(playerParty.memberList):
-                            if _value is _target:
-                                del playerParty.memberList[_idx]
-                                break
-
-                        # 敵パーティーから外す
-                        for _idx, _value in enumerate(enemyParty.memberList):
-                            if _value is _target:
-                                self.reward_exp = self.reward_exp + _target.exp
-                                self.reward_gold = self.reward_gold + _target.gold
-                                print("reward=" + str(self.reward_exp) +
-                                      "exp. " + str(self.reward_gold) + "gold.")
-                                del enemyParty.memberList[_idx]
-                                break
+                        if _target.isPlayer:
+                            # プレイヤーパーティーから外す
+                            for _idx, _value in enumerate(playerParty.memberList):
+                                if _value is _target:
+                                    del playerParty.memberList[_idx]
+                                    break
+                        else:
+                            # 敵パーティーから外す
+                            for _idx, _value in enumerate(enemyParty.memberList):
+                                if _value is _target:
+                                    self.reward_exp = self.reward_exp + _target.exp
+                                    self.reward_gold = self.reward_gold + _target.gold
+                                    del enemyParty.memberList[_idx]
+                                    break
 
                     else:
                         # ダメージをあたえた
-                        self.message.append(
-                            ["*" + _attacker.name + " ", "KA", "D", "* " + _target.name + " ", "NI"])
-                        self.message.append(["*" + str(_damage) + " ", "NO", " ", "ta", "d",
-                                             "me", "-", "si", "d", "WO", " ", "A", "TA", "E", "TA", "* !"])
+                        self.addMessage(["*" + _attacker.name + " ", "KA", "D", "* " + _target.name + " ", "NI"], self.getMessageColor(_attacker))
+                        self.addMessage([""])
+                        self.addMessage(["*" + str(_damage) + " ", "NO", " ", "ta", "d", "me", "-", "si", "d", "WO", " ", "A", "TA", "E", "TA", "* !"], self.getMessageColor(_attacker))
 
     def update_win_getexp(self):
         '''
@@ -381,12 +375,12 @@ class StateBattle(BaseState):
             if _member.exp > 200:
                 _member.exp = 200
 
-            # 経験値は100か？
+            # レベルアップするか？
             if _member.exp == 200:
                 # メッセージをセット
-                self.message = []
-                self.message.append(["**** CONGRATULATIONS ***"])
-                self.message.append(["*" + playerParty.memberList[self.member_index].name + " ", "HA", " ", "re", "he", "d", "ru", "* " + str(
+                self.addMessage(["**** CONGRATULATIONS ***"], pyxel.COLOR_CYAN)
+                self.addMessage([""])
+                self.addMessage(["*" + playerParty.memberList[self.member_index].name + " ", "HA", " ", "re", "he", "d", "ru", "* " + str(
                     playerParty.memberList[self.member_index].level + 1) + " ", "NI", " ", "NA", "RI", "MA", "SI", "TA", "."])
 
         if _member.exp == 200:
@@ -501,6 +495,7 @@ class StateBattle(BaseState):
         if pyxel.btnp(pyxel.KEY_J):
             # 敵パーティーをプレイヤーパーティーに加える
             for _member in enemyParty.memberList:
+                _member.isPlayer = True
                 playerParty.memberList.append(_member)
             # 戦闘終了
             self.stateStack.pop()
@@ -547,7 +542,7 @@ class StateBattle(BaseState):
 
         _handler = self.handler.get(self.state, None)
         if _handler != None:
-            _handler[self.HANDLER_RENDER]()
+            _handler[self.HANDLER_DRAW]()
 
     def draw_encount(self):
         '''
@@ -605,17 +600,17 @@ class StateBattle(BaseState):
         '''
         戦闘表示処理
         '''
-        if self.message != None and len(self.message) == 2:
-            PyxelUtil.text(16, 148, self.message[0], pyxel.COLOR_WHITE)
-            PyxelUtil.text(16, 164, self.message[1], pyxel.COLOR_WHITE)
+        if self.message != None and len(self.message) > 0:
+            for idx, value in enumerate(self.message):
+                PyxelUtil.text(16, 140 + idx * 8, value[0], value[1])
 
     def draw_win_getexp(self):
         '''
         経験値獲得表示処理
         '''
-        if self.message != None and len(self.message) == 2:
-            PyxelUtil.text(16, 148, self.message[0], pyxel.COLOR_WHITE)
-            PyxelUtil.text(16, 164, self.message[1], pyxel.COLOR_WHITE)
+        if self.message != None and len(self.message) > 0:
+            for idx, value in enumerate(self.message):
+                PyxelUtil.text(16, 140 + idx * 8, value[0], value[1])
             PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
     def draw_win_getgold(self):
@@ -701,3 +696,23 @@ class StateBattle(BaseState):
         状態終了時の処理
         '''
         pass
+
+    def clearMessage(self) -> None:
+        '''
+        メッセージクリア
+        '''
+        self.message = []
+
+    def addMessage(self, argMessage, argColor = pyxel.COLOR_WHITE) -> None:
+        '''
+        メッセージ追加処理\n
+        引数に追加するメッセージ（リスト）と表示色（省略時は白）を指定する。
+        '''
+        self.message.append([argMessage, argColor])
+
+    def getMessageColor(self, argCharacter : Character) -> int:
+        '''
+        メッセージ表示色を返却する。\n
+        引数に与えたCharacterクラスのインスタンスがプレイヤーだった場合は白、以外は赤を返却する。
+        '''
+        return pyxel.COLOR_WHITE if argCharacter.isPlayer else pyxel.COLOR_RED
