@@ -24,10 +24,10 @@ class ArmorParam():
 リストの要素はArmorParamクラスのインスタンス
 '''
 armorParams = (
-    ArmorParam("LEATHER", 24, 32, 8, 16, 4, 1, 40),
-    ArmorParam("HAUBERK", 32, 32, 8, 16, 8, 4, 160),
-    ArmorParam("HALF PLATE", 40, 32, 8, 16, 16, 8, 640),
-    ArmorParam("FULL PLATE", 48, 32, 8, 16, 32, 16, 2560),
-    ArmorParam("TABARD", 56, 32, 8, 16, 64, 32, 10240),
-    ArmorParam("MAGIC MANTLE", 72, 32, 8, 16, 128, 0, -1),
+    ArmorParam("LEATHER", 24, 40, 8, 16, 4, 1, 40),
+    ArmorParam("HAUBERK", 32, 40, 8, 16, 8, 4, 160),
+    ArmorParam("HALF PLATE", 40, 40, 8, 16, 16, 8, 640),
+    ArmorParam("FULL PLATE", 48, 40, 8, 16, 32, 16, 2560),
+    ArmorParam("TABARD", 56, 40, 8, 16, 64, 32, 10240),
+    ArmorParam("MAGIC MANTLE", 72, 40, 8, 16, 128, 0, -1),
 )

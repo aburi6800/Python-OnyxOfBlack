@@ -341,7 +341,7 @@ class HumanGenerator(object):
         else:
             human.armor = armorParams[random.randint(0, 1)]
         human.name = HumanGenerator()._generateName()
-        human.head = random.randint(0, 127)
+        human.head = random.randint(0, 159)
         human.body = random.randint(0, 2)
 
         return human

@@ -27,7 +27,7 @@ class StateHelmetShop(BaseShopState):
 
         # 店員の初期データ
         self.saleParson.name = "Niels"
-        self.saleParson.head = 94
+        self.saleParson.head = 107
         self.saleParson.body = 8
 
         # 画像をロード

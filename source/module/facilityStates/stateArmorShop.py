@@ -27,7 +27,7 @@ class StateArmorShop(BaseShopState):
 
         # 店員の初期データ
         self.saleParson.name = "Blick"
-        self.saleParson.head = 13
+        self.saleParson.head = 28
         self.saleParson.body = 4
 
         # 画像をロード

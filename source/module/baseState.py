@@ -132,7 +132,7 @@ class BaseState(EnforceOverrides):
             # 体
             if _chr.armor == None:
                 _armor_x = 160 + _chr.body * 8
-                _armor_y = 32
+                _armor_y = 40
                 _armor_w = 8
                 _armor_h = 16
             else:

@@ -41,7 +41,7 @@ class StateExaminations(BaseFacilityState):
         # 医者の初期データ
         self.saleParson = Human()
         self.saleParson.name = "Slea"
-        self.saleParson.head = 97
+        self.saleParson.head = 43
         self.saleParson.body = 9
 
         # 画像をロード

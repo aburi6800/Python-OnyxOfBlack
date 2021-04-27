@@ -26,6 +26,10 @@ class StateCamp(BaseFacilityState):
     STATE_SAVE_DONE = 7
     STATE_QUIT_DOQUIT = 8
 
+    # ハンドラ用定数
+    HANDLER_UPDATE = 0
+    HANDLER_DRAW = 1
+
     # キーとメンバーの辞書
     keyMap = {
         pyxel.KEY_1: 0,
@@ -50,6 +54,19 @@ class StateCamp(BaseFacilityState):
         '''
         super().__init__(**kwargs)
 
+        # 状態とメソッドの対応辞書
+        self.handler = {
+            self.STATE_MENU:[self.update_menu, self.draw_menu],
+            self.STATE_POTION_SELECTHAVE:[self.update_potion_selecthave, self.draw_potion_selecthave],
+            self.STATE_POTION_SELECTHAVEERROR:[self.update_potion_selecthaveerror, self.draw_potion_selecthaveerror],
+            self.STATE_POTION_SELECTUSE:[self.update_potion_selectuse, self.draw_potion_selectuse],
+            self.STATE_POTION_SELECTUSEERROR:[self.update_potion_selectuseerror, self.draw_potion_selectuseerror],
+            self.STATE_POTION_DONE:[self.update_potion_done, self.draw_potion_done],
+            self.STATE_SAVE_DOSAVE:[self.update_save_dosave, self.draw_save_dosave],
+            self.STATE_SAVE_DONE:[self.update_save_done, self.draw_save_done],
+            self.STATE_QUIT_DOQUIT:[self.update_quit_doquit, self.draw_quit_doquit],
+        }
+
         # 画像をロード
         pyxel.image(0).load(0, 205, os.path.normpath(os.path.join(os.path.dirname(__file__), "../../assets/png/camp.png")))
 
@@ -60,24 +77,9 @@ class StateCamp(BaseFacilityState):
         '''
         super().update_execute()
 
-        if self.state == self.STATE_MENU:
-            self.update_menu()
-        elif self.state == self.STATE_POTION_SELECTHAVE:
-            self.update_potion_selecthave()
-        elif self.state == self.STATE_POTION_SELECTHAVEERROR:
-            self.update_potion_selecthaveerror()
-        elif self.state == self.STATE_POTION_SELECTUSE:
-            self.update_potion_selectuse()
-        elif self.state == self.STATE_POTION_SELECTUSEERROR:
-            self.update_potion_selectuseerror()
-        elif self.state == self.STATE_POTION_DONE:
-            self.update_potion_done()
-        elif self.state == self.STATE_SAVE_DOSAVE:
-            self.update_save_dosave()
-        elif self.state == self.STATE_SAVE_DONE:
-            self.update_save_done()
-        elif self.state == self.STATE_QUIT_DOQUIT:
-            self.update_quit_doquit()
+        method = self.handler.get(self.state, None)
+        if method != None:
+            method[self.HANDLER_UPDATE]()
         
     def update_menu(self):
         '''
@@ -225,24 +227,9 @@ class StateCamp(BaseFacilityState):
         '''
         super().draw()
 
-        if self.state == self.STATE_MENU:
-            self.draw_menu()
-        elif self.state == self.STATE_POTION_SELECTHAVE:
-            self.draw_potion_selecthave()
-        elif self.state == self.STATE_POTION_SELECTHAVEERROR:
-            self.draw_potion_selecthaveerror()
-        elif self.state == self.STATE_POTION_SELECTUSE:
-            self.draw_potion_selectuse()
-        elif self.state == self.STATE_POTION_SELECTUSEERROR:
-            self.draw_potion_selectuseerror()
-        elif self.state == self.STATE_POTION_DONE:
-            self.draw_potion_done()
-        elif self.state == self.STATE_SAVE_DOSAVE:
-            self.draw_save_dosave()
-        elif self.state == self.STATE_SAVE_DONE:
-            self.draw_save_done()
-        elif self.state == self.STATE_QUIT_DOQUIT:
-            self.draw_quit_doquit()
+        method = self.handler.get(self.state, None)
+        if method != None:
+            method[self.HANDLER_DRAW]()
 
     def draw_menu(self):
         '''

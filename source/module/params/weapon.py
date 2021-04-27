@@ -26,13 +26,13 @@ class WeaponParam():
 リストの要素はWeaponParamクラスのインスタンス
 '''
 weaponParams = (
-    WeaponParam("KNIFE", 0, 64, 8, 16, 2, 1, False, True, 10),
-    WeaponParam("CLUB", 8, 64, 8, 16, 4, 3, False, False, 20),
-    WeaponParam("MACE", 16, 64, 8, 16, 8, 5, False, False, 40),
-    WeaponParam("SHORT SWORD", 24, 64, 8, 16, 16, 2, False, True, 80),
-    WeaponParam("AXE", 32, 64, 8, 16, 24, 5, False, True, 160),
-    WeaponParam("SPEAR", 48, 64, 8, 16, 32, 4, True, True, 320),
-    WeaponParam("BROAD SWORD", 64, 64, 8, 16, 40, 7, False, True, 640),
-    WeaponParam("CLAYMORE", 56, 64, 8, 16, 48, 6, True, True, 1280),
-    WeaponParam("BATTLE AXE", 80, 64, 8, 16, 60, 10, True, True, 2560),
+    WeaponParam("KNIFE", 0, 72, 8, 16, 2, 1, False, True, 10),
+    WeaponParam("CLUB", 8, 72, 8, 16, 4, 3, False, False, 20),
+    WeaponParam("MACE", 16, 72, 8, 16, 8, 5, False, False, 40),
+    WeaponParam("SHORT SWORD", 24, 72, 8, 16, 16, 2, False, True, 80),
+    WeaponParam("AXE", 32, 72, 8, 16, 24, 5, False, True, 160),
+    WeaponParam("SPEAR", 48, 72, 8, 16, 32, 4, True, True, 320),
+    WeaponParam("BROAD SWORD", 64, 72, 8, 16, 40, 7, False, True, 640),
+    WeaponParam("CLAYMORE", 56, 72, 8, 16, 48, 6, True, True, 1280),
+    WeaponParam("BATTLE AXE", 80, 72, 8, 16, 60, 10, True, True, 2560),
 )

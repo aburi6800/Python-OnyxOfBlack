@@ -35,7 +35,7 @@ class BaseFacilityState(BaseState):
             _y = 14 + idx * 16
             # メンバーの薬の所持数を表示
             if member.potion != -1:
-                pyxel.blt(63, _y + 1, 1, (0 if member.potion == 0 else 8), 32, 4, 5)
+                pyxel.blt(63, _y + 1, 1, (0 if member.potion == 0 else 8), 40, 4, 5)
                 PyxelUtil.text(68, _y, ["*x{:1d}".format(member.potion)], pyxel.COLOR_YELLOW)
 
             # メンバーの所持金を表示

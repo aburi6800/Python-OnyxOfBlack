@@ -28,8 +28,8 @@ class StateBarbar(BaseShopState):
 
         # 店員の初期データ
         self.saleParson.name = "Sasaki"
-        self.saleParson.head = 114
-        self.saleParson.body = 8
+        self.saleParson.head = 50
+        self.saleParson.body = 6
 
         # 画像をロード
         pyxel.image(0).load(0, 205, os.path.normpath(os.path.join(os.path.dirname(__file__), "../../assets/png/barbar.png")))

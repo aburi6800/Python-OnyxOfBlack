@@ -82,7 +82,7 @@ class StateMakeCharacter(BaseSystemState):
         # 頭のリストを初期化
         self.hairList = []
         while len(self.hairList) < 8:
-            n = random.randint(0, 127)
+            n = random.randint(0, 159)
             if not n in self.hairList:
                 self.hairList.append(n)
 
@@ -278,7 +278,7 @@ class StateMakeCharacter(BaseSystemState):
                            pyxel.COLOR_YELLOW if self.state == self.STATE_SELECT_CROTHES else pyxel.COLOR_WHITE)
             for _idx in range(0, 8):
                 pyxel.blt(110 + _idx * 16, 98, 1, 168 + _idx *
-                          8, 32, 8, 16, pyxel.COLOR_BLACK)
+                          8, 40, 8, 16, pyxel.COLOR_BLACK)
 
             # カーソルは髪型選択時のみ表示
             if self.state == self.STATE_SELECT_CROTHES and pyxel.frame_count % 4 == 0:

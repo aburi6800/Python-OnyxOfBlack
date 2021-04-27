@@ -27,7 +27,7 @@ class StateDrugs(BaseShopState):
 
         # 店員の初期データ
         self.saleParson.name = "Pandra"
-        self.saleParson.head = 94
+        self.saleParson.head = 76
         self.saleParson.body = 9
 
         # 画像をロード

@@ -41,7 +41,7 @@ class StateSurgery(BaseFacilityState):
         # 医者の初期データ
         self.saleParson = Human()
         self.saleParson.name = "Slea"
-        self.saleParson.head = 96
+        self.saleParson.head = 133
         self.saleParson.body = 9
 
         # 画像をロード
