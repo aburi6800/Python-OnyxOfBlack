@@ -50,7 +50,7 @@ class StateColordBlue(BaseFieldState):
         super().onEnter()
 
         # 壁の色を初期化する
-        self.set_wall_color(pyxel.COLOR_DARKBLUE, pyxel.COLOR_DARKBLUE, pyxel.COLOR_BLACK)
+        self.set_wall_color(pyxel.COLOR_LIGHTBLUE, pyxel.COLOR_LIGHTBLUE, pyxel.COLOR_BLACK)
 
     @overrides
     def onExit(self):
