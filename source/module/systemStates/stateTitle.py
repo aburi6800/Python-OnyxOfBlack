@@ -5,6 +5,8 @@ import pickle
 import pyxel
 from module.character import playerParty
 from module.eventData import eventdata
+from module.eventHandler import eventhandler
+from module.messageHandler import messagehandler
 from module.pyxelUtil import PyxelUtil
 from module.state import State
 from module.systemStates.baseSystemState import BaseSystemState
@@ -73,6 +75,12 @@ class StateTitle(BaseSystemState):
 
         # イベントデータ初期化
         eventdata.reset()
+
+        # イベントハンドラ初期化
+        eventhandler.isExecute = False
+
+        # メッセージハンドラ初期化
+        messagehandler.clear()
 
     @overrides
     def update_execute(self):

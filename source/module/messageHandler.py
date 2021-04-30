@@ -51,6 +51,12 @@ class messageHandler():
         '''
         self.commands.popleft()
 
+    def clear(self) -> None:
+        '''
+        メッセージキューをクリアする。
+        '''
+        self.commands.clear()
+
     def update(self):
         '''
         updateメソッド\n
