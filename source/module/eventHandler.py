@@ -76,6 +76,9 @@ class eventHandler():
         if key == None:
             return {"command": "end", "args": {}}
         else:
+            if self.eventData.get(key, None) == None:
+                if __debug__:
+                    print("section key " + key + " not found.")
             return self.eventData.get(key, {"command": "end", "args": {}})
 
     def setNextSection(self, sectionName: str) -> None:
