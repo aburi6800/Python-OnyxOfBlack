@@ -236,7 +236,8 @@ class messageCommand(baseCommand):
                 self.idx += 5
 
                 # メッセージリストのインデックスがメッセージリストの要素数を超えているか判定する
-                if self.idx < len(self.messageList) - 1:
+#                if self.idx < len(self.messageList) - 1:
+                if self.idx < len(self.messageList):
                     # 超えていない場合は、メッセージ表示を行う
                     self.status = statusEnum.SHOW_MESSAGE
                     self.messageRow = 0
