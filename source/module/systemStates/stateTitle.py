@@ -73,15 +73,6 @@ class StateTitle(BaseSystemState):
         # ストーリー表示用カウンタ
         self.story_count = 0
 
-        # イベントデータ初期化
-        eventdata.reset()
-
-        # イベントハンドラ初期化
-        eventhandler.isExecute = False
-
-        # メッセージハンドラ初期化
-        messagehandler.clear()
-
     @overrides
     def update_execute(self):
         '''
@@ -274,6 +265,15 @@ class StateTitle(BaseSystemState):
 
         # 選択番号
         self.selected = 0
+
+        # イベントデータ初期化
+        eventdata.reset()
+
+        # イベントハンドラ初期化
+        eventhandler.isExecute = False
+
+        # メッセージハンドラ初期化
+        messagehandler.clear()
 
         # セーブデータ存在チェック
         if os.path.exists("savedata.dat"):
