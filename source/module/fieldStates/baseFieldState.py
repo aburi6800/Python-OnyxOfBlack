@@ -103,7 +103,7 @@ class BaseFieldState(BaseState, EnforceOverrides):
         # パーティーは逃げてきたか？
         if playerParty.isEscaped:
             # フラグを降ろす
-            playerParty.isEscape = False
+            playerParty.isEscaped = False
             # イベントを強制的に終了
             eventhandler.isExecute = False
             # 方向のリストを作ってシャッフル
