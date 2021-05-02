@@ -1,0 +1,175 @@
+{
+    "init":{
+        "command":"judgeFlg",
+        "args":{
+            "flgNo":11,
+            "on":"end",
+            "off":"section1_1"
+        }
+    },
+
+    "section1_1":{
+        "command":"judgeFlg",
+        "args":{
+            "flgNo":10,
+            "on":"section1_2",
+            "off":"section5_1"
+        }
+    },
+
+    "section1_2":{
+        "command":"judgeFlg",
+        "args":{
+            "flgNo":12,
+            "on":"section1_3",
+            "off":"section4_1"
+        }
+    },
+
+    "section1_3":{
+        "command":"judgeFlg",
+        "args":{
+            "flgNo":13,
+            "on":"section3_1",
+            "off":"section2_1"
+        }
+    },
+
+    "section2_1":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["ka", "nn", "mu", "ri", " ", "ha", " ", "mi", "tu", "ka", "ltu", "ta", "ka", "* ?"], "pyxel.COLOR_LIGHTBLUE"]
+            ],
+            "next":"end"
+        }
+    },
+    
+    "section3_1":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["ko", "ho", "d", "ru", "to", "d", "NO", " ", "KO", "TO", "D", "MO", "NI"]],
+                ["M", ["KA", "NN", "MU", "RI", "WO", " ", "WA", "TA", "SI", "TA", "."]],
+                ["M", [""]],
+                ["M", [""]],
+                ["M", [""]],
+                ["M", ["a", "ri", "ka", "d", "to", "u", " ", "o", "re", "i", "ni", " ", "ko", "re", " ", "ya", "ru", "."], "pyxel.COLOR_LIGHTBLUE"],
+                ["M", [""]],
+                ["M", ["ko", "ho", "d", "ru", "to", "d", "NO", "KO", "TO", "D", "MO", "HA", " ", "SO", "U", "I", "U", "TO"]],
+                ["M", ["A", "KA", "I", " ", "HO", "U", "SE", "KI", "WO", " ", "KI", "MI", "TA", "TI", "NI", " ", "WA", "TA", "SI"]],
+                ["M", ["HA", "SI", "RI", "SA", "LTU", "TE", "I", "LTU", "TA", "."]],
+                ["M", ["hu", "la", "i", "a", "-", "ku", "ri", "su", "ta", "ru", "WO", " ", "TE", "NI", "I", "RE", "TA", "."], "pyxel.COLOR_RED"]
+            ],
+            "next":"section3_2"
+        }
+    },
+
+    "section3_2":{
+        "command":"setFlg",
+        "args":{
+            "flgNo":2,
+            "value":1,
+            "next":"section3_3"
+        }
+    },
+
+    "section3_3":{
+        "command":"setFlg",
+        "args":{
+            "flgNo":11,
+            "value":1,
+            "next":"end"
+        }
+    },
+
+    "section4_1":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["ko", "ho", "d", "ru", "to", "d", "NO", " ", "KO", "TO", "D", "MO", "KA", "D", " ", "I", "RU", "."]],
+                ["M", ["NA", "NI", "KA", " ", "I", "LTU", "TE", "I", "RU", "YO", "U", "TA", "D", "."]],
+                ["M", [""]],
+                ["M", [""]],
+                ["M", [""]],
+                ["M", ["TO", "D", "U", "SU", "RU", "* ?"]],
+                ["C", ["*[T] ", "HA", "NA", "SI", "WO", " ", "KI", "KU"], "pyxel.KEY_T", "section4_2"],
+                ["C", ["*[A] ", "TA", "TA", "KA", "U"], "pyxel.KEY_A", "section5_2"],
+                ["C", ["*[L] ", "KO", "NO", "HA", "D", "WO", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_L", "end"]
+            ]
+        }
+    },
+
+    "section4_2":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["ko", "ho", "d", "ru", "to", "d", "NO", " ", "KO", "TO", "D", "MO", "HA", " ", "I", "U", "* :"]],
+                ["M", ["ti", "ti", "no", " ", "o", "u", "ka", "nn", "wo", " ", "ko", "ltu", "so", "ri", " ", "mo", "ti", "ta", "d", "si", "te"], "pyxel.COLOR_LIGHTBLUE"],
+                ["M", ["a", "so", "nn", "te", "d", "i", "ta", "ra", " ", "si", "ta", "ni", " ", "o", "to", "si", "te", " ", "si", "ma", "ltu", "ta"], "pyxel.COLOR_LIGHTBLUE"],
+                ["M", ["sa", "ka", "d", "si", "te", "ki", "te", " ", "ku", "re", "."], "pyxel.COLOR_LIGHTBLUE"],
+                ["M", [""]]
+            ],
+            "next":"section4_3"
+        }
+    },
+
+    "section4_3":{
+        "command":"setFlg",
+        "args":{
+            "flgNo":12,
+            "value":1,
+            "next":"end"
+        }
+    },
+
+    "section5_1":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["ko", "ho", "d", "ru", "to", "d", "NO", " ", "KO", "TO", "D", "MO", "KA", "D", " ", "I", "RU", "."]],
+                ["M", [""]],
+                ["M", ["KI", "MI", "TA", "TI", "WO", " ", "MI", "TE", " ", "O", "HI", "D", "E", "TA", " ", "HI", "LYO", "U", "SI", "D", "LYO", "U", "TE", "D"]],
+                ["M", ["NA", "NI", "KA", "WO", "I", "LTU", "TE", "I", "RU", "KA", "D", " ", "KO", "TO", "HA", "D", "KA", "D", " ", "WA", "KA", "RA", "NA", "I", "."]],
+                ["M", [""]],
+                ["M", ["TO", "D", "U", "SU", "RU", "* ?"]],
+                ["C", ["*[A] ", "TA", "TA", "KA", "U"], "pyxel.KEY_A", "section5_2"],
+                ["C", ["*[L] ", "KO", "NO", "HA", "D", "WO", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_L", "end"]
+            ]
+        }
+    },
+
+    "section5_2":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["KI", "MI", "TA", "TI", "NO", " ", "HA", "I", "KO", "D", "KA", "RA"]],
+                ["M", ["ko", "ho", "d", "ru", "to", "d", "NO", " ", "SI", "LYU", "U", "TA", "D", "NN", "KA", "D", " ", "A", "RA", "WA", "RE", ","]],
+                ["M", ["O", "SO", "LTU", "TE", "KI", "TA", "* !!"]]
+            ],
+            "next":"section5_3"
+        }
+    },
+
+    "section5_3":{
+        "command":"encountMonster",
+        "args":{
+            "monsterName":"KOBOLD_LV2",
+            "next":"section5_4"
+        }
+    },
+
+    "section5_4":{
+        "command":"setFlg",
+        "args":{
+            "flgNo":11,
+            "value":1,
+            "next":"end"
+        }
+    },
+
+    "end":{
+        "command":"end",
+        "args":{}
+    }
+}

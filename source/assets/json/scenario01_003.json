@@ -1,0 +1,48 @@
+{
+    "init":{
+        "command":"judgeFlg",
+        "args":{
+            "flgNo":12,
+            "on":"section1_1",
+            "off":"end"
+        }
+    },
+
+    "section1_1":{
+        "command":"judgeFlg",
+        "args":{
+            "flgNo":13,
+            "on":"end",
+            "off":"section2_1"
+        }
+    },
+
+    "section2_1":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["A", "SI", "MO", "TO", "NI", " ", "NA", "NI", "KA", " ", "O", "TI", "TE", "I", "RU", "."]],
+                ["M", [""]],
+                ["M", [""]],
+                ["M", [""]],
+                ["M", [""]],
+                ["M", ["ko", "ho", "d", "ru", "to", "d", "NO", "O", "U", "KA", "NN", "WO", " ", "MI", "TU", "KE", "TA", "."], "pyxel.COLOR_RED"]
+            ],
+            "next":"section2_2"
+        }
+    },
+    
+    "section2_2":{
+        "command":"setFlg",
+        "args":{
+            "flgNo":13,
+            "value":1,
+            "next":"end"
+        }
+    },
+
+    "end":{
+        "command":"end",
+        "args":{}
+    }
+}

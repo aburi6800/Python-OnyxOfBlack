@@ -1,0 +1,62 @@
+{
+    "init":{
+        "command":"judgeFlg",
+        "args":{
+            "flgNo":10,
+            "on":"section3_1",
+            "off":"section2_1"
+        }
+    },
+
+    "section2_1":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["HU", "RU", "I", " ", "HO", "NN", "WO", " ", "MI", "TU", "KE", "TA", "."]],
+                ["M", ["HI", "LYO", "U", "SI", "HA", " ", "MO", "SI", "D", "KA", "D", "KA", "SU", "RE", "TE"]],
+                ["M", ["NA", "NI", "NI", "TU", "I", "TE", "NO", "HO", "NN", "NA", "NO", "KA", " ", "WA", "KA", "RA", "NA", "I", "."]],
+                ["M", [""]],
+                ["M", [""]],
+                ["M", ["YO", "NN", "TE", "D", " ", "MI", "RU", "KA", "* ?"]],
+                ["C", ["*[Y] ", "YO", "NN", "TE", "D", " ", "MI", "RU"], "pyxel.KEY_Y", "section2_2"],
+                ["C", ["*[N] ", "YO", "MA", "SU", "D", "NI", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_N", "end"]
+            ]
+        }
+    },
+
+    "section2_2":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["HO", "NN", "NI", "HA", " ", "ko", "ho", "d", "ru", "to", "d", "NO", " ", "KO", "TO", "HA", "D", "NI", "TU", "I", "TE", " ", "KA", "I", "TE", "A", "LTU", "TA", "."]],
+                ["M", ["ka", "ta", "ko", "to", "TA", "D", "KA", "D", ",", "ko", "ho", "d", "ru", "to", "d", "NO", " ", "KO", "TO", "HA", "D", "KA", "D"]],
+                ["M", ["WA", "KA", "RU", "YO", "U", "NI", " ", "NA", "LTU", "TA", "."]]
+            ],
+            "next":"section2_3"
+        }
+    },
+
+    "section2_3":{
+        "command":"setFlg",
+        "args":{
+            "flgNo":10,
+            "value":1,
+            "next":"end"
+        }
+    },
+
+    "section3_1":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["KO", "KO", "NI", "HA", " ", "MO", "U", " ", "KI", "LYO", "U", "MI", "WO", "HI", "KU", "MO", "NO", "HA", "NA", "SA", "SO", "U", "TA", "D", "."]]
+            ],
+            "next":"end"
+        }
+    },
+
+    "end":{
+        "command":"end",
+        "args":{}
+    }
+}

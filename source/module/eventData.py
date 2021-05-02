@@ -64,7 +64,7 @@ class eventData(object):
             "CITY15149U": "self.startEvent('city_001.json')",
             "CITY03069U": "self.startEvent('city_007.json')",
             "CITY16189U": "self.startEvent('city_004.json')",
-            "CITY21069U": "self.startEvent('city_test.json')",
+            "CITY08069U": "self.startEvent('scenario01_001.json')",
 
             "CEMETERY23189U": "self.startEvent('cemetery_001.json')",
             "CEMETERY25179U": "self.startEvent('cemetery_001.json')",
@@ -87,8 +87,10 @@ class eventData(object):
             "WELLB122099U": "self.update_fixed_encount_enemy()",
             "WELLB123139U": "self.update_fixed_encount_enemy()",
             "WELLB124119U": "self.update_fixed_encount_enemy()",
+            "WELLB120199U": "self.startEvent('scenario01_002.json')",
 
             "WELLB215149U": "self.startEvent('wellb2_001.json')",
+            "WELLB216149U": "self.startEvent('scenario01_003.json')",
 
             "WELLB315149U": "self.startEvent('wellb3_001.json')",
 
