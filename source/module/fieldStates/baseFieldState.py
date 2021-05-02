@@ -101,7 +101,7 @@ class BaseFieldState(BaseState, EnforceOverrides):
         super().update_execute()
 
         # パーティーは逃げてきたか？
-        if playerParty.isEscape:
+        if playerParty.isEscaped:
             # フラグを降ろす
             playerParty.isEscape = False
             # イベントを強制的に終了

@@ -4,7 +4,7 @@ class MonsterParam():
     '''
     モンスターの属性クラス
     '''
-    def __init__(self, name: str = "", blt_x: int = 0, blt_y: int = 0, blt_w: int = 0, blt_h: int=0, level: int = 0, life: int = 0, strength: int = 0, defend: int = 0, dexterity: int = 0, exp: int = 0, gold: int = 0, occr_min: int = 0, occr_max: int = 0, escape: bool = False):
+    def __init__(self, name: str = "", blt_x: int = 0, blt_y: int = 0, blt_w: int = 0, blt_h: int=0, level: int = 0, life: int = 0, strength: int = 0, defend: int = 0, dexterity: int = 0, exp: int = 0, gold: int = 0, occr_min: int = 0, occr_max: int = 0, isEscape: bool = False):
         '''
         クラス初期化
         '''
@@ -23,8 +23,7 @@ class MonsterParam():
         self.gold = gold
         self.occr_min = occr_min
         self.occr_max = occr_max
-        self.escape = escape
-
+        self.isEscape = isEscape
 
 '''
 モンスターの属性のディクショナリ

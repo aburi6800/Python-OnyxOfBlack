@@ -3,9 +3,10 @@ from os import name
 
 import pyxel
 from overrides import EnforceOverrides
+
 from module.character import Character, Human, Monster, playerParty
-from module.eventHandler import eventhandler
 from module.messageHandler import messagehandler
+from module.params.alignment import Alignment
 from module.pyxelUtil import PyxelUtil
 
 
@@ -16,7 +17,7 @@ class BaseState(EnforceOverrides):
     '''
     # State名
     stateName = ""
-    
+
     # 経過時間
     tick = 0
 
@@ -82,17 +83,20 @@ class BaseState(EnforceOverrides):
             self.drawCharacter(_member, _x[_idx], _y[_idx])
             # 名前
             PyxelUtil.text(16,  (_idx + 1) * 16 - 2,
-                           ["*" + f'{_idx + 1}:' + _member.name], pyxel.COLOR_WHITE)  
+                           ["*" + f'{_idx + 1}:' + _member.name], pyxel.COLOR_WHITE)
             # 体力最大値
             _maxlife_x = _member.maxlife if _member.maxlife <= 100 else 100
-            pyxel.rect(16, (_idx + 1) * 16 + 6, _maxlife_x, 3,  pyxel.COLOR_RED)
+            pyxel.rect(16, (_idx + 1) * 16 + 6,
+                       _maxlife_x, 3,  pyxel.COLOR_RED)
             # 体力
             _life_x = _member.life if _member.life <= 100 else 100
-            pyxel.rect(16, (_idx + 1) * 16 + 6, _life_x, 3,  pyxel.COLOR_DARKBLUE)
+            pyxel.rect(16, (_idx + 1) * 16 + 6, _life_x,
+                       3,  pyxel.COLOR_DARKBLUE)
             # 経験値
             _exp_x = _member.exp // 2 if _member.exp <= 200 else 100
             pyxel.rect(16, (_idx + 1) * 16 + 9, 100, 1,  pyxel.COLOR_NAVY)
-            pyxel.rect(16, (_idx + 1) * 16 + 9, _exp_x, 1,  pyxel.COLOR_LIGHTBLUE)
+            pyxel.rect(16, (_idx + 1) * 16 + 9, _exp_x,
+                       1,  pyxel.COLOR_LIGHTBLUE)
 
     def onEnter(self):
         '''
@@ -117,7 +121,7 @@ class BaseState(EnforceOverrides):
         '''
         if isinstance(_chr, Human):
             # 頭
-            if _chr.helmet == None or self.stateName == "CITY" :
+            if _chr.helmet == None or self.stateName == "CITY":
                 _head_x = (_chr.head % 32) * 8
                 _head_y = (_chr.head // 32) * 8
                 _head_w = 8
@@ -137,10 +141,11 @@ class BaseState(EnforceOverrides):
                 _armor_h = 16
             else:
                 _armor_x = _chr.armor.blt_x
-                _armor_y = _chr.armor.blt_y
+                _armor_y = _chr.armor.blt_y if _chr.alignment == Alignment.GOOD else _chr.armor.blt_y + 16
                 _armor_w = _chr.armor.blt_w
                 _armor_h = _chr.armor.blt_h
-            pyxel.blt(_x + 8, _y + 8, 1, _armor_x, _armor_y, _armor_w, _armor_h, 0)
+            pyxel.blt(_x + 8, _y + 8, 1, _armor_x,
+                      _armor_y, _armor_w, _armor_h, 0)
 
             # 武器
             if _chr.weapon != None:
@@ -148,7 +153,8 @@ class BaseState(EnforceOverrides):
                 _weapon_y = _chr.weapon.blt_y
                 _weapon_w = _chr.weapon.blt_w
                 _weapon_h = _chr.weapon.blt_h
-                pyxel.blt(_x, _y, 1, _weapon_x, _weapon_y, _weapon_w, _weapon_h, 0)
+                pyxel.blt(_x, _y, 1, _weapon_x, _weapon_y,
+                          _weapon_w, _weapon_h, 0)
 
             # 盾
             if _chr.shield != None:
@@ -156,7 +162,9 @@ class BaseState(EnforceOverrides):
                 _shield_y = _chr.shield.blt_y
                 _shield_w = _chr.shield.blt_w
                 _shield_h = _chr.shield.blt_h
-                pyxel.blt(_x + 8, _y + 8, 1, _shield_x, _shield_y, _shield_w, _shield_h, 0)
+                pyxel.blt(_x + 8, _y + 8, 1, _shield_x,
+                          _shield_y, _shield_w, _shield_h, 0)
 
         elif isinstance(_chr, Monster):
-            pyxel.blt(_x, _y, 2, _chr.blt_x, _chr.blt_y, _chr.blt_w, _chr.blt_h, 0)
+            pyxel.blt(_x, _y, 2, _chr.blt_x, _chr.blt_y,
+                      _chr.blt_w, _chr.blt_h, 0)

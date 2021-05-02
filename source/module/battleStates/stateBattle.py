@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 import math
 import random
+from typing import Tuple
 
 import pyxel
 from module.baseState import BaseState
 from module.character import Character, Human, enemyParty, playerParty
+from module.params.alignment import Alignment
 from module.pyxelUtil import PyxelUtil
 from module.state import State
 from overrides import overrides
@@ -31,6 +33,8 @@ class StateBattle(BaseState):
     STATE_JUDGE_TALK = 28
     STATE_CHOOSE_TALK = 29
     STATE_TALK = 30
+    STATE_TALK_FAILED = 31
+    STATE_TALK_KOBOLD = 32
 
     # ハンドラ用定数
     HANDLER_UPDATE = 0
@@ -59,6 +63,9 @@ class StateBattle(BaseState):
 
         # 時間カウント用
         self.tick = 0
+
+        # 戦闘に入ったか？
+        self.isBattled = False
 
         # 逃走に成功したか？
         self.isRunaway = False
@@ -94,6 +101,8 @@ class StateBattle(BaseState):
             self.STATE_JUDGE_TALK: [self.update_judge_talk, self.draw_judge_talk],
             self.STATE_CHOOSE_TALK: [self.update_choose_talk, self.draw_choose_talk],
             self.STATE_TALK: [self.update_talk, self.draw_talk],
+            self.STATE_TALK_FAILED: [self.update_talk_failed, self.draw_talk_failed],
+            self.STATE_TALK_KOBOLD: [self.update_talk_kobold, self.draw_talk_kobold],
         }
 
         # 状態
@@ -163,7 +172,8 @@ class StateBattle(BaseState):
                     _playerSumLife += _member.life
                     _playerSumMaxlife += _member.maxlife
                 _playerDamage = 1 - (_playerSumLife / _playerSumMaxlife)
-                _playerRate = (_playerStrength * math.sqrt(_playerMaxLevel)) * _playerDamage + random.randint(1, 6)
+                _playerRate = (_playerStrength * math.sqrt(_playerMaxLevel)
+                               ) * _playerDamage + random.randint(1, 6)
 
                 _enemyMaxLevel = 0
                 _enemyStrength = 0
@@ -176,9 +186,10 @@ class StateBattle(BaseState):
                     _enemyStrength += _member.strength
                     _enemySumLife += _member.life
                     _enemySumMaxlife += _member.maxlife
-                _enemyDamage = 1- (_enemySumLife / _enemySumMaxlife)
-                _enemyRate = (_enemyStrength * math.sqrt(_enemyMaxLevel)) * _enemyDamage + random.randint(1, 6)
-                
+                _enemyDamage = 1 - (_enemySumLife / _enemySumMaxlife)
+                _enemyRate = (_enemyStrength * math.sqrt(_enemyMaxLevel)
+                              ) * _enemyDamage + random.randint(1, 6)
+
                 if _enemyMaxLevel >= _playerMaxLevel:
                     if _enemyDamage > 0.7 and _playerRate > _enemyRate:
                         self.isEnemyEscpaed = True
@@ -241,6 +252,9 @@ class StateBattle(BaseState):
         # 行動順リストのインデックス初期化
         self.turn_index = 0
 
+        # 戦闘に入った
+        self.isBattled = True
+
         # 戦闘処理へ
         self.change_state(self.STATE_BATTLE)
 
@@ -289,16 +303,20 @@ class StateBattle(BaseState):
             if (_attacker.dexterity + _attacker_d < _target.dexterity + _target_d) or (_target_d == 12):
                 # 避けた
                 self.addMessage([""])
-                self.addMessage(["*" + _target.name + " ", "KA", "D"], self.getMessageColor(_attacker))
+                self.addMessage(["*" + _target.name + " ", "KA",
+                                 "D"], self.getMessageColor(_attacker))
                 self.addMessage([""])
-                self.addMessage(["*" + _attacker.name + " ", "WO", " ", "YO", "KE", "TA", "."], self.getMessageColor(_attacker))
+                self.addMessage(["*" + _attacker.name + " ", "WO", " ",
+                                 "YO", "KE", "TA", "."], self.getMessageColor(_attacker))
             else:
                 # 攻撃値算出
                 _attack = _attacker.strength + random.randint(2, 12)
 
                 # 人間のキャラクタで武器を持っている場合は補正
                 if isinstance(_attacker, Human) and _attacker.weapon != None:
-                    _attack = _attack + random.randint(_attacker.weapon.attack // 2, _attacker.weapon.attack)
+                    _attack = _attack + \
+                        random.randint(_attacker.weapon.attack //
+                                       2, _attacker.weapon.attack)
 
                 # 防御値算出
                 _defend = _target.defend + random.randint(2, 12)
@@ -306,16 +324,21 @@ class StateBattle(BaseState):
                 if isinstance(_target, Human):
                     # 鎧
                     if _target.armor != None:
-                        _defend = _defend + random.randint(_target.armor.armor // 2, _target.armor.armor)
+                        _defend = _defend + \
+                            random.randint(_target.armor.armor //
+                                           2, _target.armor.armor)
                     # 盾
                     if _target.shield != None:
-                        _defend = _defend + random.randint(_target.shield.armor // 2, _target.shield.armor)
+                        _defend = _defend + \
+                            random.randint(_target.shield.armor //
+                                           2, _target.shield.armor)
                     # 兜
                     if _target.helmet != None:
-                        _defend = _defend + random.randint(_target.helmet.armor // 2, _target.helmet.armor)
+                        _defend = _defend + \
+                            random.randint(_target.helmet.armor //
+                                           2, _target.helmet.armor)
 
                 # ダメージ計算
-#                _damage = int(_attack / (_defend // 2))
                 if _attacker_d == 12:
                     self.addMessage(["**** GOOD SHOT ***"], pyxel.COLOR_YELLOW)
                     _damage = _attack
@@ -325,17 +348,21 @@ class StateBattle(BaseState):
 
                 if _damage < 1:
                     # 受け止めた
-                    self.addMessage(["*" + _target.name + " ", "KA", "D"], self.getMessageColor(_attacker))
+                    self.addMessage(
+                        ["*" + _target.name + " ", "KA", "D"], self.getMessageColor(_attacker))
                     self.addMessage([""])
-                    self.addMessage(["*" + _attacker.name + " ", "WO", " ", "U", "KE", "TO", "ME", "TA", "."], self.getMessageColor(_attacker))
+                    self.addMessage(["*" + _attacker.name + " ", "WO", " ", "U",
+                                     "KE", "TO", "ME", "TA", "."], self.getMessageColor(_attacker))
                 else:
                     _target.life = _target.life - _damage
 
                     if _target.life < 1:
                         # しとめた
-                        self.addMessage(["*" + _attacker.name + " ", "KA", "D"], self.getMessageColor(_attacker))
+                        self.addMessage(
+                            ["*" + _attacker.name + " ", "KA", "D"], self.getMessageColor(_attacker))
                         self.addMessage([""])
-                        self.addMessage(["*" + _target.name + " ", "WO", " ", "SI", "TO", "ME", "TA", "* !"], self.getMessageColor(_attacker))
+                        self.addMessage(["*" + _target.name + " ", "WO", " ", "SI",
+                                         "TO", "ME", "TA", "* !"], self.getMessageColor(_attacker))
 
                         #  行動順リストから外す
                         for _idx, _value in enumerate(self.turn_table):
@@ -360,9 +387,11 @@ class StateBattle(BaseState):
 
                     else:
                         # ダメージをあたえた
-                        self.addMessage(["*" + _attacker.name + " ", "KA", "D", "* " + _target.name + " ", "NI"], self.getMessageColor(_attacker))
+                        self.addMessage(["*" + _attacker.name + " ", "KA", "D", "* " +
+                                         _target.name + " ", "NI"], self.getMessageColor(_attacker))
                         self.addMessage([""])
-                        self.addMessage(["*" + str(_damage) + " ", "NO", " ", "ta", "d", "me", "-", "si", "d", "WO", " ", "A", "TA", "E", "TA", "* !"], self.getMessageColor(_attacker))
+                        self.addMessage(["*" + str(_damage) + " ", "NO", " ", "ta", "d", "me", "-", "si",
+                                         "d", "WO", " ", "A", "TA", "E", "TA", "* !"], self.getMessageColor(_attacker))
 
     def update_win_getexp(self):
         '''
@@ -378,6 +407,7 @@ class StateBattle(BaseState):
             # レベルアップするか？
             if _member.exp == 200:
                 # メッセージをセット
+                self.message = []
                 self.addMessage(["**** CONGRATULATIONS ***"], pyxel.COLOR_CYAN)
                 self.addMessage([""])
                 self.addMessage(["*" + playerParty.memberList[self.member_index].name + " ", "HA", " ", "re", "he", "d", "ru", "* " + str(
@@ -451,7 +481,7 @@ class StateBattle(BaseState):
         逃走成功処理
         '''
         if self.tick > 30:
-            playerParty.isEscape = True
+            playerParty.isEscaped = True
             self.tick = 0
             self.stateStack.pop()
         else:
@@ -472,8 +502,8 @@ class StateBattle(BaseState):
         '''
         会話判定処理
         '''
-        # 敵のパーティーは人間か？
-        if isinstance(enemyParty.memberList[0], Human):
+        # 敵のパーティーは人間で性格がGOOD、かつ一度も戦闘していないか？
+        if isinstance(enemyParty.memberList[0], Human) and enemyParty.memberList[0].alignment == Alignment.GOOD and self.isBattled == False:
             # プレイヤーパーティーの人数 + 敵パーティーの人数 は 5以内か？
             if len(playerParty.memberList) + len(enemyParty.memberList) <= 5:
                 # 会話選択へ
@@ -482,11 +512,13 @@ class StateBattle(BaseState):
                 # 会話表示へ
                 self.change_state(self.STATE_TALK)
 
+        # 敵のパーティーはコボルドで、コボルド語を知っているか？
+        elif enemyParty.memberList[0].name[0:6] == "KOBOLD" and playerParty.eventFlg[10] == 1:
+            # 会話失敗（コボルド）へ
+            self.change_state(self.STATE_TALK_KOBOLD)
         else:
-            # 戦闘へ
-            self.change_state(self.STATE_START_BATTLE)
-            for _member in playerParty.memberList:
-                _member.target = None
+            # 会話失敗へ
+            self.change_state(self.STATE_TALK_FAILED)
 
     def update_choose_talk(self):
         '''
@@ -516,6 +548,26 @@ class StateBattle(BaseState):
             # 戦闘終了
             self.stateStack.pop()
 
+    def update_talk_failed(self):
+        '''
+        会話失敗処理
+        '''
+        if pyxel.btnp(pyxel.KEY_SPACE):
+            # 戦闘へ
+            self.change_state(self.STATE_START_BATTLE)
+            for _member in playerParty.memberList:
+                _member.target = None
+
+    def update_talk_kobold(self):
+        '''
+        会話失敗（コボルド）処理
+        '''
+        if pyxel.btnp(pyxel.KEY_SPACE):
+            # 戦闘へ
+            self.change_state(self.STATE_START_BATTLE)
+            for _member in playerParty.memberList:
+                _member.target = None
+
     @overrides
     def draw(self):
         '''
@@ -532,13 +584,16 @@ class StateBattle(BaseState):
                 # ステータス
                 _member = enemyParty.memberList[_idx]
                 # 名前
-                PyxelUtil.text(136,  (_idx + 1) * 16 - 2, ["*" + _member.name], pyxel.COLOR_WHITE)
+                PyxelUtil.text(136,  (_idx + 1) * 16 - 2,
+                               ["*" + _member.name], pyxel.COLOR_WHITE)
                 # 体力最大値
                 _maxlife_x = _member.maxlife if _member.maxlife <= 100 else 100
-                pyxel.rect(136, (_idx + 1) * 16 + 6, _maxlife_x, 3,  pyxel.COLOR_RED)
+                pyxel.rect(136, (_idx + 1) * 16 + 6,
+                           _maxlife_x, 3,  pyxel.COLOR_RED)
                 # 体力
                 _life_x = _member.life if _member.life <= 100 else 100
-                pyxel.rect(136, (_idx + 1) * 16 + 6, _life_x, 3,  pyxel.COLOR_DARKBLUE)
+                pyxel.rect(136, (_idx + 1) * 16 + 6,
+                           _life_x, 3,  pyxel.COLOR_DARKBLUE)
 
         _handler = self.handler.get(self.state, None)
         if _handler != None:
@@ -678,6 +733,22 @@ class StateBattle(BaseState):
                                  "D", "NN", "HA", "D", "RI", "MA", "SI", "LYO", "U", "* !"], pyxel.COLOR_WHITE)
         PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
 
+    def draw_talk_failed(self):
+        '''
+        会話失敗処理
+        '''
+        PyxelUtil.text(16, 148, ["HA", "NA", "SI", "NI", " ", "NA",
+                                 "RA", "NA", "KA", "LTU", "TA", "* !"], pyxel.COLOR_WHITE)
+        PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
+
+    def draw_talk_kobold(self):
+        '''
+        会話失敗（コボルド）処理
+        '''
+        PyxelUtil.text(16, 148, ["u", "ma", "so", "u", "na", " ", "ni",
+                                 "nn", "ke", "d", "nn", "ta", "d", "* !"], pyxel.COLOR_LIGHTBLUE)
+        PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
+
     @overrides
     def onEnter(self):
         '''
@@ -703,14 +774,14 @@ class StateBattle(BaseState):
         '''
         self.message = []
 
-    def addMessage(self, argMessage, argColor = pyxel.COLOR_WHITE) -> None:
+    def addMessage(self, argMessage, argColor=pyxel.COLOR_WHITE) -> None:
         '''
         メッセージ追加処理\n
         引数に追加するメッセージ（リスト）と表示色（省略時は白）を指定する。
         '''
         self.message.append([argMessage, argColor])
 
-    def getMessageColor(self, argCharacter : Character) -> int:
+    def getMessageColor(self, argCharacter: Character) -> int:
         '''
         メッセージ表示色を返却する。\n
         引数に与えたCharacterクラスのインスタンスがプレイヤーだった場合は白、以外は赤を返却する。

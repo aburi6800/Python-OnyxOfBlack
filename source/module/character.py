@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 import random
+from typing import List, Tuple
 
 from module.direction import Direction
+from module.params.alignment import Alignment
 from module.params.armor import armorParams
 from module.params.weapon import weaponParams
 
@@ -24,13 +26,38 @@ class Character(object):
         self.dexterity = 0
         self.exp = 0
         self.gold = 0
+        self.isEscape = False
         self.isPlayer = False
+        self.blt_w = 0
+        self.bly_h = 0
+        self.x = 0
+        self.y = 0
+
+    def setDisplayPosition(self, _count: int, _idx: int) -> None:
+        '''
+        敵キャラクターの表示位置を算出して設定する。\n
+        引数として、敵パーティーのメンバー総数と、対象キャラクターのインデックスを指定する。
+        '''
+        if _count < 12:
+            _x_step = (104 - self.blt_w) / (_count + 1)
+            self.x = 132 + ((_idx + 1) * _x_step)
+        else:
+            if _idx < 12:
+                _x_step = (104 - self.blt_w) / 11
+                self.x = 132 + ((_idx + 1) * _x_step)
+            else:
+                _x_step = (104 - self.blt_w) / ((_count - 12) + 1)
+                self.x = 132 + (((_idx - 12) + 1) * _x_step)
+        if isinstance(self, Monster) and self.blt_h == 32:
+            self.y = 98
+        else:
+            self.y = random.randint(100, (128 - self.blt_h)) if _count < 12 else (
+                random.randint(100, (128 - self.blt_h)) if _idx < 12 else random.randint(110, (132 - self.blt_h)))
 
 
 class Human(Character):
     '''
-    人間のクラス
-
+    人間のクラス\n
     Characterクラスを継承
     '''
 
@@ -46,10 +73,9 @@ class Human(Character):
         self.shield = None
         self.weapon = None
         self.potion = -1
-        self.x = 0
-        self.y = 0
+        self.alignment = Alignment.GOOD
 
-    def levelup(self):
+    def levelup(self) -> None:
         '''
         レベルアップ処理
         '''
@@ -89,9 +115,9 @@ class Monster(Character):
         クラス初期化
         '''
         super().__init__()
+
         self.item = None
-        self.x = 0
-        self.y = 0
+        self.alignment = Alignment.EVIL
 
 
 class Party(object):
@@ -113,13 +139,13 @@ class Party(object):
         # パーティーメンバーのリスト
         self.memberList = []
 
-    def addMember(self, chr: Character):
+    def addMember(self, chr: Character) -> None:
         '''
         パーティーメンバー追加
         '''
         self.memberList.append(chr)
 
-    def removeMember(self, idx: int):
+    def removeMember(self, idx: int) -> None:
         '''
         パーティーメンバー削除
 
@@ -149,7 +175,7 @@ class PlayerParty(Party):
         クラス初期化
         '''
         super().__init__()
-    
+
         # 方向に対する増分
         self.VX = (0, 1, 0, -1)
         self.VY = (-1, 0, 1, 0)
@@ -165,13 +191,15 @@ class PlayerParty(Party):
         self.direction_save = 0
 
         # 状況のフラグ
-        self.isEscape = False
-        self.eventFlg = [False] * 64
+        self.isEscaped = False
+
+        # イベントフラグ
+        self.eventFlg = [0] * 100
 
         if __debug__:
             print("PlayerParty : Initialized.")
 
-    def resotreSaveData(self, playerParty):
+    def resotreSaveData(self, playerParty) -> None:
         '''
         セーブデータの復元処理
         '''
@@ -191,18 +219,18 @@ class PlayerParty(Party):
         self.direction_save = playerParty.direction_save
 
         # 状況のフラグ
-        self.isEscape = playerParty.isEscape
+        self.isEscaped = playerParty.isEscaped
 
         if __debug__:
             print("PlayerParty : Restored.")
 
-    def initialize(self):
+    def initialize(self) -> None:
         '''
         初期化処理
         '''
         self.__init__()
 
-    def addMember(self, chr: Human):
+    def addMember(self, chr: Human) -> None:
         '''
         パーティーメンバー追加
         '''
@@ -211,7 +239,7 @@ class PlayerParty(Party):
         else:
             raise Exception("can't add a member.")
 
-    def getAvarageLevel(self):
+    def getAvarageLevel(self) -> int:
         '''
         平均レベルを算出
         '''
@@ -225,7 +253,7 @@ class PlayerParty(Party):
 
         return avr
 
-    def saveCondition(self):
+    def saveCondition(self) -> None:
         '''
         状態を保存する
         '''
@@ -236,7 +264,7 @@ class PlayerParty(Party):
             print("PlayerParty : Condition saved. x={:02d}".format(
                 self.x_save) + ",y={:02d}".format(self.y_save) + ",direction={:01d}".format(self.direction_save))
 
-    def restoreCondition(self):
+    def restoreCondition(self) -> None:
         '''
         状態を復元する
         '''
@@ -247,7 +275,7 @@ class PlayerParty(Party):
             print("PlayerParty : Condition restored. x={:02d}".format(
                 self.x) + ",y={:02d}".format(self.y) + ",direction={:01d}".format(self.direction))
 
-    def turnLeft(self):
+    def turnLeft(self) -> None:
         '''
         左を向く
         '''
@@ -258,7 +286,7 @@ class PlayerParty(Party):
         if self.direction < Direction.NORTH:
             self.direction = Direction.WEST
 
-    def turnRight(self):
+    def turnRight(self) -> None:
         '''
         右を向く
         '''
@@ -301,7 +329,7 @@ class HumanPartyGenerator(object):
     レベルを引数とし、Humanオブジェクトを格納したリストを返却する
     '''
     @staticmethod
-    def generate(level: int = 1):
+    def generate(level: int = 1, alignment: int = Alignment.GOOD) -> List:
         '''
         人間のパーティー生成
         '''
@@ -310,8 +338,10 @@ class HumanPartyGenerator(object):
 
         # パーティー生成
         _memberList = []
-        for _ in range(_count):
-            _memberList.append(HumanGenerator.generate(level))
+        for _idx in range(_count):
+            _human = HumanGenerator.generate(level, alignment)
+            _human.setDisplayPosition(_count, _idx)
+            _memberList.append(_human)
 
         return _memberList
 
@@ -322,7 +352,7 @@ class HumanGenerator(object):
     '''
 
     @staticmethod
-    def generate(_level: int) -> Human:
+    def generate(_level: int, _alignment: int = Alignment.GOOD) -> Human:
         '''
         生成する
 
@@ -333,7 +363,7 @@ class HumanGenerator(object):
         for _ in range(_level):
             human.levelup()
 
-        human.exp = random.randint(1, 50)
+        human.exp = random.randint(0, 10) + _level * 5
         human.gold = random.randint(1, _level * 100)
         human.weapon = weaponParams[random.randint(0, 3)]
         if random.randint(0, 2) == 0:
@@ -343,6 +373,10 @@ class HumanGenerator(object):
         human.name = HumanGenerator()._generateName()
         human.head = random.randint(0, 159)
         human.body = random.randint(0, 2)
+        human.alignment = _alignment
+        human.isEscape = True if _alignment == Alignment.GOOD else False
+        human.blt_w = 8
+        human.blt_h = 19
 
         return human
 
@@ -374,7 +408,7 @@ class HumanGenerator(object):
             "TERL", "TONY", "TORA", "TANY", "TOM",
             "UAE", "UNO", "UNIY", "UES", "US",
             "VARY", "VOCK", "VELY", "VYLO", "VON",
-            "WICK", "WOOD", "WAGO", "WENN", "WARE", 
+            "WICK", "WOOD", "WAGO", "WENN", "WARE",
             "XECK", "XALY", "XYAS", "XORA", "XAN",
             "YEAN", "YONA", "YOHA", "YACK", "YRE",
             "ZALY", "ZOE", "ZEE", "ZERA", "ZOL"]
@@ -399,12 +433,12 @@ class EnemyParty(Party):
     def __init__(self):
         super().__init__()
 
-    def initialize(self):
+    def initialize(self) -> None:
         self.memberList = []
 
     def isEscape(self) -> bool:
         if isinstance(self.memberList[0], Monster):
-            return self.memberList[0].escape
+            return self.memberList[0].isEscape
         else:
             True
 
@@ -418,63 +452,56 @@ class EnemyPartyGenerator(object):
     '''
 
     @staticmethod
-    def generate(enemyClass):
+    def generate(enemyClass) -> List:
         '''
         敵のパーティー生成
 
         enemyClassがHuman型の場合はPlayerPartyGeneratorの結果をそのまま返却する（使用するレベルはenemyClassが持っているレベル）
         以外の場合はenemyClassの持つ情報を元に新しくmemberListを生成して返却する
         '''
+        # パーティーのメンバーリスト初期化
         _memberList = []
+
         if isinstance(enemyClass, Human):
-            enemyClass.occr_min = 1
-            enemyClass.occr_max = 5
+            _memberList = HumanPartyGenerator.generate(
+                enemyClass.level, Alignment.GOOD if random.randint(0, 5) < 2 else Alignment.EVIL)
+            if __debug__:
+                print("enemy party generated.")
+                for v in _memberList:
+                    print(v)
+            return _memberList
 
         _count = random.randint(enemyClass.occr_min, enemyClass.occr_max)
+
         for idx in range(_count):
-            if isinstance(enemyClass, Human):
-                _monster = HumanGenerator.generate(enemyClass.level)
-                _monster.exp = enemyClass.level
-                _monster.blt_w = 8
-                _monster.blt_h = 19
-            else:
-                _monster = Monster()
-                _monster.name = enemyClass.name + " " + chr(65 + idx)
-                _monster.blt_x = enemyClass.blt_x
-                _monster.blt_y = enemyClass.blt_y
-                _monster.blt_w = enemyClass.blt_w
-                _monster.blt_h = enemyClass.blt_h
-                _monster.level = enemyClass.level
-                _monster.life = enemyClass.life + \
-                    random.randint(0, enemyClass.life // 5 + 1)
-                _monster.maxlife = _monster.life
-                _monster.strength = enemyClass.strength + \
-                    random.randint(0, enemyClass.strength // 5 + 1)
-                _monster.defend = enemyClass.defend + \
-                    random.randint(0, enemyClass.defend // 5 + 1)
-                _monster.dexterity = enemyClass.dexterity + \
-                    random.randint(0, enemyClass.dexterity // 5 + 1)
-                _monster.exp = enemyClass.exp
-                _monster.gold = enemyClass.gold
-                _monster.escape = enemyClass.escape
+            _monster = Monster()
+            _monster.name = enemyClass.name + " " + chr(65 + idx)
+            _monster.blt_x = enemyClass.blt_x
+            _monster.blt_y = enemyClass.blt_y
+            _monster.blt_w = enemyClass.blt_w
+            _monster.blt_h = enemyClass.blt_h
+            _monster.level = enemyClass.level
+            _monster.life = enemyClass.life + \
+                random.randint(0, enemyClass.life // 5 + 1)
+            _monster.maxlife = _monster.life
+            _monster.strength = enemyClass.strength + \
+                random.randint(0, enemyClass.strength // 5 + 1)
+            _monster.defend = enemyClass.defend + \
+                random.randint(0, enemyClass.defend // 5 + 1)
+            _monster.dexterity = enemyClass.dexterity + \
+                random.randint(0, enemyClass.dexterity // 5 + 1)
+            _monster.exp = enemyClass.exp
+            _monster.gold = enemyClass.gold
+            _monster.isEscape = enemyClass.isEscape
 
             # 表示位置
-            if _count < 12:
-                _x_step = (104 - _monster.blt_w) / (_count + 1)
-                _monster.x = 132 + ((idx + 1) * _x_step)
-            else:
-                if idx < 12:
-                    _x_step = (104 - _monster.blt_w) / 11
-                    _monster.x = 132 + ((idx + 1) * _x_step)
-                else:
-                    _x_step = (104 - _monster.blt_w) / ((_count - 12) + 1)
-                    _monster.x = 132 + (((idx - 12) + 1) * _x_step)
-            if isinstance(_monster, Monster) and _monster.blt_h == 32:
-                _monster.y = 98
-            else:
-                _monster.y = random.randint(100, (128 - _monster.blt_h)) if _count < 12 else (
-                    random.randint(100, (128 - _monster.blt_h)) if idx < 12 else random.randint(110, (132 - _monster.blt_h)))
+            _monster.setDisplayPosition(_count, idx)
 
             _memberList.append(_monster)
+
+            if __debug__:
+                print("enemy party generated.")
+                for v in _memberList:
+                    print(v)
 
         return _memberList
