@@ -144,12 +144,15 @@ class baseCommand(metaclass=ABCMeta):
 
 class messageCommand(baseCommand):
     '''
-    メッセージコマンドクラス２
+    メッセージコマンドクラス
     '''
     def __init__(self):
         super().__init__()
 
+        # メッセージリスト
         self.messageList = []
+
+        # メッセージリストのインデックス
         self.idx = 0
 
         # ステータス
@@ -158,7 +161,7 @@ class messageCommand(baseCommand):
         # 2:選択待ち状態
         self.status = statusEnum.SHOW_MESSAGE
 
-        # メッセージ表示行
+        # メッセージ画面表示行 (0～4)
         self.messageRow = 0
 
         # メッセージ表示桁
@@ -217,6 +220,14 @@ class messageCommand(baseCommand):
         # メッセージ表示中の場合
         if self.status == statusEnum.SHOW_MESSAGE:
 
+            # 次のカラムへ
+            self.messageCol += 1
+
+            # カラム数がその行の文字数を超えたら、カラムを戻して次の行へ
+            if self.messageCol > len(self.messageList[self.messageRow].message):
+                self.messageCol = 1
+                self.messageRow += 1
+
             # すべてのメッセージ、または現画面の最大行まで表示していなければ何もしない
             if self.messageRow < 5 and self.idx + self.messageRow < len(self.messageList):
                 pass
@@ -236,8 +247,7 @@ class messageCommand(baseCommand):
                 self.idx += 5
 
                 # メッセージリストのインデックスがメッセージリストの要素数を超えているか判定する
-#                if self.idx < len(self.messageList) - 1:
-                if self.idx < len(self.messageList):
+                if self.idx < len(self.messageList) - 1:
                     # 超えていない場合は、メッセージ表示を行う
                     self.status = statusEnum.SHOW_MESSAGE
                     self.messageRow = 0
@@ -271,29 +281,23 @@ class messageCommand(baseCommand):
         '''
         super().draw()
 
-        # メッセージ表示状態の場合は、以下を処理する。
-        # ・idx～idx+4までを画面に表示し、キー入力待ち状態にする
+        # メッセージ表示状態の場合は、idx～idx+4までを画面に表示し、キー入力待ち状態にする
         if self.status == statusEnum.SHOW_MESSAGE:
-
-            # 次のカラムへ
-            self.messageCol += 1
-
-            # カラム数がその行の文字数を超えたら、カラムを戻して次の行へ
-            if self.messageCol > len(self.messageList[self.messageRow].message):
-                self.messageCol = 1
-                self.messageRow += 1
 
             # 現在表示中のメッセージリストのインデックスを取得
             _tempIdx = self.idx + self.messageRow
 
-            # メッセージをすべて表示したか、または現画面で最大行まで表示したかを判定する
-            if self.messageRow < 5 and _tempIdx < len(self.messageList):
-                # すべて表示していない、かつ現画面の最大行まで表示していない場合は、現在行を１文字ずつ送り表示する
-                PyxelUtil.text(16, 140 + (self.messageRow * 8), self.messageList[_tempIdx].message[:self.messageCol], self.messageList[_tempIdx].color)
+            # すべて表示していない、かつ現画面の最大行まで表示していない場合は、現在行を１文字ずつ送り表示する
+            PyxelUtil.text(16, 140 + (self.messageRow * 8), self.messageList[_tempIdx].message[:self.messageCol], self.messageList[_tempIdx].color)
 
-        # 以下は無条件に処理する。
-        # 現在行が0行目以外の時は、表示済の行を描画する
-        if self.messageRow > 0:
+            # 現在行が0行目以外の時は、表示済の行を描画する
+            if self.messageRow > 0:
+                for _messageRow in range(0, self.messageRow):
+                    _tempIdx = self.idx + _messageRow
+                    PyxelUtil.text(16, 140 + (_messageRow * 8), self.messageList[_tempIdx].message, self.messageList[_tempIdx].color)
+
+        # キー入力待ち状態の時は、メッセージを表示する
+        if self.status == statusEnum.WAIT_KEY or self.status == statusEnum.WAIT_CHOOSE:
             for _messageRow in range(0, self.messageRow):
                 _tempIdx = self.idx + _messageRow
                 PyxelUtil.text(16, 140 + (_messageRow * 8), self.messageList[_tempIdx].message, self.messageList[_tempIdx].color)
