@@ -221,6 +221,9 @@ class PlayerParty(Party):
         # 状況のフラグ
         self.isEscaped = playerParty.isEscaped
 
+        # イベントフラグ
+        self.eventFlg = playerParty.eventFlg
+
         if __debug__:
             print("PlayerParty : Restored.")
 
