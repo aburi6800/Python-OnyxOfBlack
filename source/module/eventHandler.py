@@ -6,6 +6,7 @@ import pyxel
 from module.character import playerParty
 from module.messageHandler import messageCommand, messagehandler
 from module.state import State # update_pushState で使用
+from module.direction import Direction # update_setPartyPosition で使用
 
 
 class eventHandler():
