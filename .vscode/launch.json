@@ -8,7 +8,7 @@
             "name": "Python: Application",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/source/stateTestDriver.py",
+            "program": "${workspaceFolder}/source/onyxofblack.py",
             "console": "integratedTerminal"
         },
         {
