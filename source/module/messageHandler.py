@@ -224,8 +224,8 @@ class messageCommand(baseCommand):
             self.messageCol += 1
 
             # カラム数がその行の文字数を超えたら、カラムを戻して次の行へ
-            if self.messageCol > len(self.messageList[self.messageRow].message):
-                self.messageCol = 1
+            if self.messageCol > len(self.messageList[self.idx + self.messageRow].message):
+                self.messageCol = 0
                 self.messageRow += 1
 
             # すべてのメッセージ、または現画面の最大行まで表示していなければ何もしない
@@ -247,7 +247,7 @@ class messageCommand(baseCommand):
                 self.idx += 5
 
                 # メッセージリストのインデックスがメッセージリストの要素数を超えているか判定する
-                if self.idx < len(self.messageList) - 1:
+                if self.idx < len(self.messageList):
                     # 超えていない場合は、メッセージ表示を行う
                     self.status = statusEnum.SHOW_MESSAGE
                     self.messageRow = 0
