@@ -1,0 +1,114 @@
+{
+    "init":{
+        "command":"judgeFlg",
+        "args":{
+            "flgNo":20,
+            "on":"section1_1",
+            "off":"section2_1"
+        }
+    },
+
+    "section1_1":{
+        "command":"judgeFlg",
+        "args":{
+            "flgNo":22,
+            "on":"section1_2",
+            "off":"section3_1"
+        }
+    },
+
+    "section1_2":{
+        "command":"judgeFlg",
+        "args":{
+            "flgNo":23,
+            "on":"end",
+            "off":"section4_1"
+        }
+    },
+
+    "section2_1":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["TO", "SI", "O", "I", "TA", " ", "RO", "U", "SI", "D", "NN", "KA", "D", " ", "I", "RU", "."]],
+                ["M", [""]],
+                ["M", [""]],
+                ["M", [""]],
+                ["M", [""]],
+                ["M", ["WA", "TA", "SI", "HA", " ", "*ORSER ", "MA", "HO", "U", "TU", "KA", "I", " ", "SI", "D", "LYA", "."], "pyxel.COLOR_LIGHTBLUE"],
+                ["M", ["A", "TA", "RA", "SI", "I", " ", "ka", "ki", "d", "NO", "MA", "HO", "U", "WO", " ", "TA", "ME", "SI", "TE", "I", "TA", "NO", "SI", "D", "LYA", "KA", "D"], "pyxel.COLOR_LIGHTBLUE"],
+                ["M", ["MA", "TI", "KA", "D", "E", "TE", " ", "wa", "si", "KA", "D", "TE", "D", "RA", "RE", "NA", "KU", "NA", "LTU", "TE", "SI", "MA", "LTU", "TA", "NO", "SI", "D", "LYA" ], "pyxel.COLOR_LIGHTBLUE"],
+                ["M", [""]],
+                ["M", [""]],
+                ["M", ["KO", "NO", " ", "MA", "HO", "U", "NO", "ka", "ki", "d", "NO", " ", "A", "KE", "KA", "TA", "HA"], "pyxel.COLOR_LIGHTBLUE"],
+                ["M", ["TE", "D", "SI", "NO", " ", "*ARCANE", " ", "KA", "D", " ", "SI", "LTU", "TE", "I", "RU", "."], "pyxel.COLOR_LIGHTBLUE"],
+                ["M", ["ka", "re", "WO", " ", "SA", "KA", "D", "SI", "TE", "KI", "TE", " ", "KU", "RE", "NN", "SI", "D", "LYA", "RO", "U", "KA", "."], "pyxel.COLOR_LIGHTBLUE"]
+            ],
+            "next":"section2_2"
+        }
+    },
+
+    "section2_2":{
+        "command":"setFlg",
+        "args":{
+            "flgNo":20,
+            "value":1,
+            "next":"end"
+        }
+    },
+
+    "section3_1":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["NA", "NI", "WO", "SI", "TE", "O", "RU", " ", "HA", "YA", "KU", " ", "*ARCANE", "WO", " ", "TU", "RE", "TE", "KI", "TE", "KU", "RE", "."], "pyxel.COLOR_LIGHTBLUE"],
+                ["M", ["a", "i", "tu", "HA", " ", "YO", "KU", " ", "HO", "D", "TI", "NI", " ", "I", "LTU", "TE", "O", "RU", ","], "pyxel.COLOR_LIGHTBLUE"],
+                ["M", ["KI", "LTU", "TO", " ", "SO", "KO", "NI", " ", "I", "RU", "HA", "SU", "D", "SI", "D", "LYA", "."], "pyxel.COLOR_LIGHTBLUE"]
+            ],
+            "next":"end"
+        }
+    },
+
+    "section4_1":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["SI", "SI", "LYO", "U", ",", "I", "MA", "TA", "SU", "KE", "MA", "SU", "KA", "RA", "NE", "."], "pyxel.COLOR_LIME"],
+                ["M", [""]],
+                ["M", ["SO", "U", "I", "U", "TO", " ", "*ARCANE ", "HA", " ", "SI", "D", "LYU", "MO", "NN", "WO", " ", "TO", "NA", "E", "TA", "."]],
+                ["M", ["A", "TA", "RI", "KA", "D", " ", "NI", "HU", "D", "I", "hi", "ka", "ri", "NI", " ", "TU", "TU", "MA", "RE", "TA", "."]],
+                ["M", [""]],
+                ["M", ["O", "O", ",", "KO", "RE", "TE", "D", " ", "YA", "LTU", "TO", " ", "KO", "KO", "KA", "RA", " ", "TE", "D", "RA", "RE", "RU", "*!"], "pyxel.COLOR_LIGHTBLUE"],
+                ["M", ["A", "RI", "KA", "D", "TO", "U", " ", "TA", "SU", "KA", "LTU", "TA", "."], "pyxel.COLOR_LIGHTBLUE"],
+                ["M", [""]],
+                ["M", ["SO", "U", "TA", "D", ",", "O", "RE", "I", "NI", " ", "KO", "RE", "WO", "YA", "RO", "U", "."], "pyxel.COLOR_LIGHTBLUE"],
+                ["M", [""]],
+                ["M", ["a", "me", "si", "d", "su", "to", "NO", " ", "YU", "HI", "D", "WA", "WO", " ", "TE", "NI", "I", "RE", "TA", "*!"], "pyxel.COLOR_RED"]
+            ],
+            "next":"section4_2"
+        }
+    },
+
+    "section4_2":{
+        "command":"setFlg",
+        "args":{
+            "flgNo":3,
+            "value":1,
+            "next":"section4_3"
+        }
+    },
+
+    "section4_3":{
+        "command":"setFlg",
+        "args":{
+            "flgNo":23,
+            "value":1,
+            "next":"end"
+        }
+    },
+
+    "end":{
+        "command":"end",
+        "args":{}
+    }
+}

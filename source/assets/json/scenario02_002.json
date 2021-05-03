@@ -1,0 +1,112 @@
+{
+    "init":{
+        "command":"judgeFlg",
+        "args":{
+            "flgNo":20,
+            "on":"section1_1",
+            "off":"end"
+        }
+    },
+
+    "section1_1":{
+        "command":"judgeFlg",
+        "args":{
+            "flgNo":22,
+            "on":"section1_3",
+            "off":"section1_2"
+        }
+    },
+
+    "section1_2":{
+        "command":"judgeFlg",
+        "args":{
+            "flgNo":21,
+            "on":"section3_1",
+            "off":"section2_1"
+        }
+    },
+
+    "section1_3":{
+        "command":"judgeFlg",
+        "args":{
+            "flgNo":24,
+            "on":"end",
+            "off":"section4_1"
+        }
+    },
+
+    "section2_1":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["KI", "SU", "D", "TU", "I", "TA", " ", "WA", "KA", "I", "O", "TO", "KO", "KA", "D", " ", "I", "RU", "."]],
+                ["M", ["KO", "E", "WO", "KA", "KE", "RU", "TO", " ", "KA", "RE", "HA", "* ARCANE ", "TO", " ", "NA", "NO", "LTU", "TA", "."]],
+                ["M", ["KI", "MI", "TA", "TI", "HA", " ", "*ORSER ", "NO", "KO", "TO", "WO", " ", "TU", "TA", "E", "TA", "."]],
+                ["M", [""]],
+                ["M", [""]],
+                ["M", ["SO", "U", "KA", ",", "O", "SI", "E", "TE", "KU", "RE", "TE", " ", "A", "RI", "KA", "D", "TO", "U", "."], "pyxel.COLOR_LIME"],
+                ["M", ["SI", "KA", "SI", ",", "SU", "KU", "D", "NI", "HA", " ", "I", "KE", "NA", "I", "NN", "TA", "D", "."], "pyxel.COLOR_LIME"],
+                ["M", [""]],
+                ["M", [""]],
+                ["M", [""]],
+                ["M", ["SI", "D", "TU", "HA", ",", "HE", "D", "TU", "NO", " ", "HE", "YA", "TE", "D", " ", "mo", "nn", "su", "ta", "-", "NI", " ", "O", "SO", "WA", "RE", ","], "pyxel.COLOR_LIME"],
+                ["M", ["TA", "D", "I", "SI", "D", "NA", " ", "a", "mi", "lyu", "re", "ltu", "to", "WO", " ", "O", "TO", "SI", "TE", "SI", "MA", "LTU", "TA", "NO", "TA", "D", "." ], "pyxel.COLOR_LIME"],
+                ["M", ["A", "RE", "KA", "D", "NA", "I", "TO", " ", "MA", "HO", "U", "KA", "D", " ", "TU", "KA", "E", "NA", "I", "NN", "TA", "D", "." ], "pyxel.COLOR_LIME"],
+                ["M", [""]],
+                ["M", [""]],
+                ["M", ["WA", "RU", "I", "KA", "D", ",", "KI", "MI", "TA", "TI", "NI"], "pyxel.COLOR_LIME"],
+                ["M", ["WA", "TA", "SI", "NO", "a", "mi", "lyu", "re", "ltu", "to", "WO", " ", "SA", "KA", "SI", "TE", "KI", "TE", "HO", "SI", "I", "."], "pyxel.COLOR_LIME"],
+                ["M", ["A", "SI", "TE", "D", "MA", "TO", "I", "NI", "NA", "RU", "NO", "TE", "D", ","], "pyxel.COLOR_LIME"],
+                ["M", ["WA", "TA", "SI", "HA", " ", "KO", "KO", "TE", "D", " ", "MA", "LTU", "TE", "I", "RU", "YO", "."], "pyxel.COLOR_LIME"]
+            ],
+            "next":"section2_2"
+        }
+    },
+
+    "section2_2":{
+        "command":"setFlg",
+        "args":{
+            "flgNo":21,
+            "value":1,
+            "next":"end"
+        }
+    },
+
+    "section3_1":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["a", "mi", "lyu", "re", "ltu", "to", "KA", "D", "NA", "I", "TO", " ", "MA", "HO", "U", "KA", "D", " ", "TU", "KA", "E", "NA", "I", "NN", "TA", "D", "."], "pyxel.COLOR_LIME"],
+                ["M", ["SA", "KA", "D", "SI", "TE", "KI", "TE", "KU", "RE", "."], "pyxel.COLOR_LIME"]
+            ],
+            "next":"end"
+        }
+    },
+
+    "section4_1":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["SO", "RE", "KO", "SO", "KA", "D", " ", "WA", "TA", "SI", "NO", "a", "mi", "lyu", "re", "ltu", "to", "TA", "D", "*!"], "pyxel.COLOR_LIME"],
+                ["M", ["SA", "KA", "D", "SI", "TE", "KI", "TE", "KI", "RE", "TE", " ", "A", "RI", "KA", "D", "TO", "U", "."], "pyxel.COLOR_LIME"],
+                ["M", [""]],
+                ["M", ["SA", "A", ",", "SI", "SI", "LYO", "U", "NO", "TO", "KO", "RO", "HE", " ", "MU", "KA", "O", "U", "."], "pyxel.COLOR_LIME"]
+            ],
+            "next":"section4_2"
+        }
+    },
+
+    "section4_2":{
+        "command":"setFlg",
+        "args":{
+            "flgNo":24,
+            "value":1,
+            "next":"end"
+        }
+    },
+
+    "end":{
+        "command":"end",
+        "args":{}
+    }
+}

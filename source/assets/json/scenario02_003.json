@@ -1,0 +1,56 @@
+{
+    "init":{
+        "command":"judgeFlg",
+        "args":{
+            "flgNo":21,
+            "on":"section1_1",
+            "off":"end"
+        }
+    },
+
+    "section1_1":{
+        "command":"judgeFlg",
+        "args":{
+            "flgNo":22,
+            "on":"end",
+            "off":"section2_1"
+        }
+    },
+
+    "section2_1":{
+        "command":"encountMonster",
+        "args":{
+            "monsterName":"",
+            "next":"section2_2"
+        }
+    },
+
+    "section2_2":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["YU", "KA", "NI", " ", "NA", "NI", "KA", " ", "O", "TI", "TE", "I", "RU", "."]],
+                ["M", [""]],
+                ["M", [""]],
+                ["M", [""]],
+                ["M", [""]],
+                ["M", ["a", "mi", "lyu", "re", "ltu", "to", "WO", " ", "TE", "NI", "I", "RE", "TA", "*!"], "pyxel.COLOR_RED"]
+            ],
+            "next":"section2_3"
+        }
+    },
+
+    "section2_3":{
+        "command":"setFlg",
+        "args":{
+            "flgNo":22,
+            "value":1,
+            "next":"end"
+        }
+    },
+
+    "end":{
+        "command":"end",
+        "args":{}
+    }
+}
