@@ -1,0 +1,108 @@
+{
+    "init":{
+        "command":"judgeFlg",
+        "args":{
+            "flgNo":32,
+            "on":"section1_1",
+            "off":"section2_1"
+        }
+    },
+
+    "section1_1":{
+        "command":"judgeFlg",
+        "args":{
+            "flgNo":33,
+            "on":"section5_1",
+            "off":"section3_1"
+        }
+    },
+
+    "section2_1":{
+        "command":"setPartyPosition",
+        "args":{
+            "position":[22, 7],
+            "next":"end"
+        }
+    },
+
+    "section2_2":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["TO", "HI", "D", "RA", "HA", " ", "KA", "TA", "KU", "TO", "SA", "D", "SA", "RE", "TE", "I", "TU", "."]],
+                ["M", ["KA", "D", "NN", "SI", "D", "LYO", "U", "TE", "D", " ", "U", "TI", "YA", "HU", "D", "RU", "NO", "HA", " ", "HU", "KA", "NO", "U", "TA", "D", "."]],
+                ["M", ["YO", "KU", "MI", "RU", "TO", ",", "TO", "HI", "D", "RA", "NI", "HA"]],
+                ["M", ["TA", "I", "YO", "U", "NO", " ", "KO", "KU", "I", "NN", "KA", "D", "SA", "RE", "TE", "I", "RU", "."]]
+            ],
+            "next":"end"
+        }
+    },
+
+    "section3_1":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["TA", "I", "YO", "U", "NO", "ka", "ki", "d", "TE", "D", " ", "TO", "HI", "RA", "KA", "WO", "A", "KE"]],
+                ["M", ["KI", "MI", "TA", "TI", "HA", " ", "HE", "YA", "NI", "HA", "I", "LTU", "TA", "."]],
+                ["M", [""]],
+                ["M", [""]],
+                ["M", [""]],
+                ["M", ["HE", "YA", "NO", "NA", "KA", "NI", "HA", " ", "TI", "I", "SA", "NA", " ", "KI", "NO", "HA", "KO", "KA", "D"]],
+                ["M", ["TA", "D", "I", "SA", "D", "NO", "U", "E", "NI", " ", "O", "KA", "RE", "TE", "I", "TA", "."]],
+                ["M", ["A", "KE", "TE", "MI", "RU", "KA", "*?"]],
+                ["C", ["*[Y] ", "A", "KE", "RU"], "pyxel.KEY_Y", "section4_1"],
+                ["C", ["*[N] ", "A", "KE", "NA", "I"], "pyxel.KEY_N", "end"]
+            ]
+        }
+    },
+
+    "section4_1":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["NA", "KA", "NI", "HA", " ", "KI", "I", "RO", "I", "HO", "U", "SE", "KI", "KA", "D", "TU", "I", "TA"]],
+                ["M", ["YU", "HI", "D", "WA", "KA", "D", " ", "HA", "I", "LTU", "TE", "I", "TA", "."]],
+                ["M", [""]],
+                ["M", [""]],
+                ["M", [""]],
+                ["M", ["to", "ha", "hd", "-", "su", "d", "NO", "YU", "HI", "D", "WA", "WO", " ", "TE", "NI", "I", "RE", "TA", "."], "pyxel.COLOR_RED"]
+            ],
+            "next":"section4_2"
+        }
+    },
+
+    "section4_2":{
+        "command":"setFlg",
+        "args":{
+            "flgNo":33,
+            "value":1,
+            "next":"section4_3"
+        }
+    },
+
+    "section4_3":{
+        "command":"setFlg",
+        "args":{
+            "flgNo":4,
+            "value":1,
+            "next":"end"
+        }
+    },
+
+    "section5_1":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["HE", "YA", "NO", "NA", "KA", "NI", "HA", " ", "TI", "I", "SA", "NA", " ", "KI", "NO", "HA", "KO", "KA", "D"]],
+                ["M", ["TA", "D", "I", "SA", "D", "NO", "U", "E", "NI", " ", "O", "KA", "RE", "TE", "I", "TA", "."]],
+                ["M", ["HA", "KO", "NO", "NA", "KA", "NI", "HA", " ", "MO", "U", "NA", "MI", "MO", "NA", "I", "."]]
+            ],
+            "next":"end"
+        }
+    },
+
+    "end":{
+        "command":"end",
+        "args":{}
+    }
+}
