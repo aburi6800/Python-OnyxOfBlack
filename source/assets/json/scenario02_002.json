@@ -87,7 +87,7 @@
         "command":"printMessage",
         "args":{
             "message":[
-                ["M", ["SO", "RE", "KO", "SO", "KA", "D", " ", "WA", "TA", "SI", "NO", "a", "mi", "lyu", "re", "ltu", "to", "TA", "D", "*!"], "pyxel.COLOR_LIME"],
+                ["M", ["SO", "RE", "KO", "SO", "KA", "D", " ", "WA", "TA", "SI", "NO", "a", "mi", "lyu", "re", "ltu", "to", "TA", "D", "* !"], "pyxel.COLOR_LIME"],
                 ["M", ["SA", "KA", "D", "SI", "TE", "KI", "TE", "KI", "RE", "TE", " ", "A", "RI", "KA", "D", "TO", "U", "."], "pyxel.COLOR_LIME"],
                 ["M", [""]],
                 ["M", ["SA", "A", ",", "SI", "SI", "LYO", "U", "NO", "TO", "KO", "RO", "HE", " ", "MU", "KA", "O", "U", "."], "pyxel.COLOR_LIME"]

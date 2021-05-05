@@ -26,7 +26,7 @@
                 ["M", ["KI", "MI", "TA", "TI", "NI", "HA", " ", "KI", "TU", "D", "I", "TE", "I", "NA", "I", "YO", "U", "TA", "D", "."]],
                 ["M", [""]],
                 ["M", [""]],
-                ["M", ["TO", "D", "U", "SU", "RU", "*?"]],
+                ["M", ["TO", "D", "U", "SU", "RU", "* ?"]],
                 ["C", ["*[A] ", "HA", "I", "KO", "D", "KA", "RA", " ", "O", "SO", "U"], "pyxel.KEY_A", "section3_1"],
                 ["C", ["*[L] ", "KO", "NO", "HA", "D", "WO", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_L", "section4_1"]
             ]
@@ -59,7 +59,7 @@
                 ["M", ["MO", "TI", "MO", "NO", "HA", " ", "I", "TA", "NN", "TE", "D", " ", "TU", "KA", "E", "SO", "U", "NA", "MO", "NO", "HA", "NA", "I", "KA", "D", ","]],
                 ["M", ["TI", "NI", "MA", "MI", "RE", "TA", " ", "NI", "LTU", "KI", "WO", " ", "MI", "TU", "KE", "TA", "."]],
                 ["M", [""]],
-                ["M", ["YO", "NN", "TE", "D", "MI", "RU", "KA", "*?"]],
+                ["M", ["YO", "NN", "TE", "D", "MI", "RU", "KA", "* ?"]],
                 ["C", ["*[Y] ", "YO", "MU"], "pyxel.KEY_Y", "section3_4"],
                 ["C", ["*[N] ", "YO", "MA", "SU", "D", "NI", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_N", "section4_1"]
             ]
@@ -70,7 +70,7 @@
         "command":"printMessage",
         "args":{
             "message":[
-                ["M", ["NI", "LTU", "KI", "HA", " ", "TI", "NI", "MA", "MI", "RE", " ", "HO", "TO", "NN", "TO", "D", " ", "YO", "ME", "NA", "KA", "LTU", "TA", "KA", "D", ","]],
+                ["M", ["NI", "LTU", "KI", "HA", " ", "HO", "TO", "NN", "TO", "D", " ", "YO", "ME", "NA", "KA", "LTU", "TA", "KA", "D", ","]],
                 ["M", ["SA", "I", "KO", "D", "NO", "he", "hd", "-", "si", "d", "NI", "HA", " ", "KO", "U", "KA", "KA", "RE", "TE", "I", "TA", "."]],
                 ["M", [""]],
                 ["M", [""]],
@@ -116,7 +116,7 @@
         "command":"printMessage",
         "args":{
             "message":[
-                ["M", ["MU", "SA", "D", "NN", "NA", " ", "HO", "D", "U", "KE", "NN", "SI", "LYA", "NO", "NA", "RE", "NO", "HA", "TE", "TA", "D", "."]],
+                ["M", ["MU", "SA", "D", "NN", "NA", " ", "HO", "D", "U", "KE", "NN", "SI", "LYA", "NO", " ", "NA", "RE", "NO", "HA", "TE", "TA", "D", "."]],
                 ["M", ["ME", "I", "HU", "KU", "WO", " ", "I", "NO", "RO", "U", "."]]
             ],
             "next":"end"

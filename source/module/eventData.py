@@ -129,11 +129,11 @@ class eventData(object):
             "DUNGEONB219279U": "self.update_fixed_encount_enemy()",
             "DUNGEONB220249U": "self.update_fixed_encount_enemy()",
             "DUNGEONB221279U": "self.update_fixed_encount_enemy()",
-            "DUNGEONB222069U": "self.update_fixed_encount_enemy()",
             "DUNGEONB222289U": "self.update_fixed_encount_enemy()",
             "DUNGEONB224189U": "self.update_fixed_encount_enemy()",
             "DUNGEONB226189U": "self.update_fixed_encount_enemy()",
             "DUNGEONB232299U": "self.startEvent('scenario03_002.json')",
+            "DUNGEONB222069U": "self.startEvent('scenario03_003.json')",
 
             "DUNGEONB316289U": "self.startEvent('dungeonb3_001.json')",
             "DUNGEONB306069U": "self.startEvent('dungeonb3_002.json')",

@@ -78,12 +78,12 @@
                 ["M", ["SO", "U", "I", "U", "TO", " ", "*ARCANE ", "HA", " ", "SI", "D", "LYU", "MO", "NN", "WO", " ", "TO", "NA", "E", "TA", "."]],
                 ["M", ["A", "TA", "RI", "KA", "D", " ", "NI", "HU", "D", "I", "hi", "ka", "ri", "NI", " ", "TU", "TU", "MA", "RE", "TA", "."]],
                 ["M", [""]],
-                ["M", ["O", "O", ",", "KO", "RE", "TE", "D", " ", "YA", "LTU", "TO", " ", "KO", "KO", "KA", "RA", " ", "TE", "D", "RA", "RE", "RU", "*!"], "pyxel.COLOR_LIGHTBLUE"],
+                ["M", ["O", "O", ",", "KO", "RE", "TE", "D", " ", "YA", "LTU", "TO", " ", "KO", "KO", "KA", "RA", " ", "TE", "D", "RA", "RE", "RU", "* !"], "pyxel.COLOR_LIGHTBLUE"],
                 ["M", ["A", "RI", "KA", "D", "TO", "U", " ", "TA", "SU", "KA", "LTU", "TA", "."], "pyxel.COLOR_LIGHTBLUE"],
                 ["M", [""]],
                 ["M", ["SO", "U", "TA", "D", ",", "O", "RE", "I", "NI", " ", "KO", "RE", "WO", "YA", "RO", "U", "."], "pyxel.COLOR_LIGHTBLUE"],
                 ["M", [""]],
-                ["M", ["a", "me", "si", "d", "su", "to", "NO", " ", "YU", "HI", "D", "WA", "WO", " ", "TE", "NI", "I", "RE", "TA", "*!"], "pyxel.COLOR_RED"]
+                ["M", ["a", "me", "si", "d", "su", "to", "NO", " ", "YU", "HI", "D", "WA", "WO", " ", "TE", "NI", "I", "RE", "TA", "* !"], "pyxel.COLOR_RED"]
             ],
             "next":"section4_2"
         }

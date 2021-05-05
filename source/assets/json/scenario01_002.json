@@ -104,11 +104,11 @@
         "command":"printMessage",
         "args":{
             "message":[
-                ["M", ["ko", "ho", "d", "ru", "to", "d", "NO", " ", "KO", "TO", "D", "MO", "HA", " ", "I", "U", "* :"]],
+                ["M", ["ko", "ho", "d", "ru", "to", "d", "NO", " ", "KO", "TO", "D", "MO", "HA", " ", "I", "LTU", "TA", "."]],
+                ["M", [""]],
                 ["M", ["ti", "ti", "no", " ", "o", "u", "ka", "nn", "wo", " ", "ko", "ltu", "so", "ri", " ", "mo", "ti", "ta", "d", "si", "te"], "pyxel.COLOR_LIGHTBLUE"],
                 ["M", ["a", "so", "nn", "te", "d", "i", "ta", "ra", " ", "si", "ta", "ni", " ", "o", "to", "si", "te", " ", "si", "ma", "ltu", "ta"], "pyxel.COLOR_LIGHTBLUE"],
-                ["M", ["sa", "ka", "d", "si", "te", "ki", "te", " ", "ku", "re", "."], "pyxel.COLOR_LIGHTBLUE"],
-                ["M", [""]]
+                ["M", ["sa", "ka", "d", "si", "te", "ki", "te", " ", "ku", "re", "."], "pyxel.COLOR_LIGHTBLUE"]
             ],
             "next":"section4_3"
         }

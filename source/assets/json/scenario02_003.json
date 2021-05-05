@@ -34,7 +34,7 @@
                 ["M", [""]],
                 ["M", [""]],
                 ["M", [""]],
-                ["M", ["a", "mi", "lyu", "re", "ltu", "to", "WO", " ", "TE", "NI", "I", "RE", "TA", "*!"], "pyxel.COLOR_RED"]
+                ["M", ["a", "mi", "lyu", "re", "ltu", "to", "WO", " ", "TE", "NI", "I", "RE", "TA", "* !"], "pyxel.COLOR_RED"]
             ],
             "next":"section2_3"
         }

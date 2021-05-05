@@ -50,7 +50,7 @@
         "command":"printMessage",
         "args":{
             "message":[
-                ["M", ["A", "KU", "SU", "U", "NI", " ", "TA", "E", "KI", "RE", "SU", "D"]],
+                ["M", ["A", "KU", "SI", "LYU", "U", "NI", " ", "TA", "E", "KI", "RE", "SU", "D"]],
                 ["M", ["KI", "MI", "TA", "TI", "HA", " ", "HE", "YA", "WO", "TE", "D", "TA", "."]]
             ],
             "next":"section4_3"
