@@ -467,7 +467,7 @@ class EnemyPartyGenerator(object):
 
         if isinstance(enemyClass, Human):
             _memberList = HumanPartyGenerator.generate(
-                enemyClass.level, Alignment.GOOD if random.randint(0, 5) < 2 else Alignment.EVIL)
+                enemyClass.level, Alignment.GOOD if random.randint(1, 6) < 5 else Alignment.EVIL)
             if __debug__:
                 print("enemy party generated.")
                 for v in _memberList:
