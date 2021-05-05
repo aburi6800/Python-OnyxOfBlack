@@ -18,7 +18,8 @@ class App:
         stateStack.push(State.TITLE)
 
         # Pyxel初期化～実行
-        pyxel.init(256, 192)
+#        pyxel.init(256, 192)
+        pyxel.init(256, 192, fullscreen=True, quit_key=pyxel.KEY_NONE)
         pyxel.load("assets/onyxofblack.pyxres")
         pyxel.run(self.update, self.draw)
 

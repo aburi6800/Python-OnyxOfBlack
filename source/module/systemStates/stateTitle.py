@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import pickle
+import sys
 
 import pyxel
 from module.character import playerParty
@@ -154,12 +155,18 @@ class StateTitle(BaseSystemState):
                 self.selected = 2
                 self.tick = 0
 
+            if pyxel.btnp(pyxel.KEY_Q):
+                pyxel.stop()
+                pyxel.play(3, 0, loop=False)
+                self.selected = 3
+                self.tick = 0
+
         else:
             if self.tick > 21:
                 if self.selected == 1:
                     self.selected = 0
                     self.stateStack.push(State.MAKECHARACTER)
-                if self.selected == 2:
+                elif self.selected == 2:
                     # セーブデータをロード
                     with open("savedata.dat", mode="rb") as f:
                         SaveData = pickle.load(f)
@@ -172,6 +179,8 @@ class StateTitle(BaseSystemState):
                         state.stateStack = self.stateStack
                     # プレイヤーパーティーの復元
                     playerParty.resotreSaveData(SaveData.playerParty)
+                elif self.selected == 3:
+                    sys.exit()
 
     @overrides
     def draw(self):
@@ -246,12 +255,13 @@ class StateTitle(BaseSystemState):
             else:
                 color[self.selected - 1] = 7
 
-        PyxelUtil.text(104, 110, ["*[N]EW GAME"], color[0])
+        PyxelUtil.text(108, 110, ["*[N]EW GAME"], color[0])
         if self.doContinue:
-            PyxelUtil.text(104, 125, ["*[C]ONTINUE"], color[1])
+            PyxelUtil.text(108, 120, ["*[C]ONTINUE"], color[1])
+        PyxelUtil.text(108, 130, ["*[Q]UIT GAME"], color[2])
 
-        PyxelUtil.text(58, 160, ["*COPYRIGHT BY ABURI6800 2020, 2021"], 2)
-        PyxelUtil.text(68, 168, ["*ORIGINAL GAME BY B.P.S. 1984"], 2)
+        PyxelUtil.text(64, 160, ["*COPYRIGHT BY ABURI6800 2020, 2021"], 2)
+        PyxelUtil.text(74, 168, ["*ORIGINAL GAME BY B.P.S. 1984"], 2)
 
     @overrides
     def onEnter(self):
