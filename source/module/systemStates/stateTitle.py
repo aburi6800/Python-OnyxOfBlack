@@ -180,7 +180,7 @@ class StateTitle(BaseSystemState):
                     # プレイヤーパーティーの復元
                     playerParty.resotreSaveData(SaveData.playerParty)
                 elif self.selected == 3:
-                    sys.exit()
+                    pyxel.quit()
 
     @overrides
     def draw(self):
