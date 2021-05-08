@@ -9,7 +9,7 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/source/onyxofblack.py",
-            "console": "integratedTerminal"
+            "console": "internalConsole"
         },
         {
             "name": "Python: Current File",
