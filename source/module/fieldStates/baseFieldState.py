@@ -104,22 +104,10 @@ class BaseFieldState(BaseState, EnforceOverrides):
         if playerParty.isEscaped:
             # フラグを降ろす
             playerParty.isEscaped = False
+            # 以前の場所に戻す
+            playerParty.restoreCondition()
             # イベントを強制的に終了
             eventhandler.isExecute = False
-            # 方向のリストを作ってシャッフル
-            _dirlist = [Direction.NORTH, Direction.EAST,
-                        Direction.SOUTH, Direction.WEST]
-            _dirlist = random.sample(_dirlist, len(_dirlist))
-            # 各方向について移動可能か調べる
-            for _direction in _dirlist:
-                if self.can_move_forward(self._map, playerParty.x, playerParty.y, _direction):
-                    # 移動可能の場合はその方向に移動
-                    playerParty.direction = _direction
-                    playerParty.x = playerParty.x + playerParty.VX[_direction]
-                    playerParty.y = playerParty.y + playerParty.VX[_direction]
-                    break
-            return
-            # どの方向にも移動できない（あり得ないが）場合はその場に留まるため、特に処理不要
 
         # エンカウントしているか？
         if self.isEncount:
