@@ -461,11 +461,16 @@ class StateBattle(BaseState):
         '''
         逃走判定処理
         '''
+        # クラーケンは絶対逃げられない
+        if enemyParty.memberList[0].name[0:6] == "KRAKEN":
+            self.change_state(self.STATE_RUNAWAY_FAILED)
+            return
+
         _enemyDexterity = 0
         for _member in enemyParty.memberList:
             _enemyDexterity += _member.dexterity
         _enemyDexterity = (_enemyDexterity //
-                           len(enemyParty.memberList)) + random.randint(0, 12)
+                           len(enemyParty.memberList)) + random.randint(0, 6)
         _playerDexterity = 0
         for _member in playerParty.memberList:
             _playerDexterity += _member.dexterity
