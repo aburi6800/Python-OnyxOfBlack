@@ -118,7 +118,7 @@ class eventData(object):
             "DUNGEONB104059U": "self.startEvent('scenario03_001.json')",
 
             "DUNGEONB218219U": "self.startEvent('dungeonb2_001.json')",
-            "DUNGEONB216279U": "self.startEvent('dungeonb2_002.json')",
+            "DUNGEONB216289U": "self.startEvent('dungeonb2_002.json')",
             "DUNGEONB229199U": "self.startEvent('dungeonb2_002.json')",
             "DUNGEONB226129U": "self.startEvent('dungeonb2_002.json')",
             "DUNGEONB212159U": "self.startEvent('dungeonb2_001.json')",
