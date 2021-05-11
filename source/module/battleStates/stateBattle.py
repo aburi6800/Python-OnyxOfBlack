@@ -26,7 +26,8 @@ class StateBattle(BaseState):
     STATE_BATTLE = 5
     STATE_WIN_GETEXP = 6
     STATE_WIN_GETGOLD = 7
-    STATE_LOSE = 8
+    STATE_JUDGE_GETITEM = 8
+    STATE_LOSE = 9
     STATE_RUNAWAY_JUDGE = 10
     STATE_RUNAWAY_SUCCESS = 11
     STATE_RUNAWAY_FAILED = 12
@@ -94,6 +95,7 @@ class StateBattle(BaseState):
             self.STATE_BATTLE: [self.update_battle, self.draw_battle],
             self.STATE_WIN_GETEXP: [self.update_win_getexp, self.draw_win_getexp],
             self.STATE_WIN_GETGOLD: [self.update_win_getgold, self.draw_win_getgold],
+            self.STATE_JUDGE_GETITEM: [self.update_judge_getitem, self.draw_judge_getitem],
             self.STATE_LOSE: [self.update_lose, self.draw_lose],
             self.STATE_RUNAWAY_JUDGE: [self.update_runaway_judge, self.draw_runaway_judge],
             self.STATE_RUNAWAY_FAILED: [self.update_runaway_failed, self.draw_runaway_failed],
@@ -427,7 +429,7 @@ class StateBattle(BaseState):
 
         if self.member_index > len(playerParty.memberList) - 1:
             if self.reward_gold == 0:
-                self.stateStack.pop()
+                self.change_state(self.STATE_JUDGE_GETITEM)
             else:
                 self.change_state(self.STATE_WIN_GETGOLD)
 
@@ -446,8 +448,19 @@ class StateBattle(BaseState):
             # プレイヤーパーティーの各メンバーのゴールドを加算
             for _member in playerParty.memberList:
                 _member.gold = _member.gold + self.reward_gold
-            # 戦闘終了
-            self.stateStack.pop()
+
+            self.change_state(self.STATE_JUDGE_GETITEM)
+
+    def update_judge_getitem(self):
+        '''
+        アイテム取得判定処理
+        '''
+        # 戦闘終了
+        self.stateStack.pop()
+
+        # 一定確率でアイテム入手
+        if random.randint(0, 128) == 0:
+            self.stateStack.push(State.GETITEM)
 
     def update_lose(self):
         '''
@@ -681,6 +694,13 @@ class StateBattle(BaseState):
             PyxelUtil.text(16, 148, ["*" + str(self.reward_gold) + " G.P. ", "TU", "D", "TU",
                                      "NO", " ", "*gold", "WO", " ", "MI", "TU", "KE", "TA", "* !"], pyxel.COLOR_WHITE)
             PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
+
+    def draw_judge_getitem(self):
+        '''
+        アイテム取得判定表示処理\n
+        ※実際はここで表示をするものはない
+        '''
+        pass
 
     def draw_lose(self):
         '''

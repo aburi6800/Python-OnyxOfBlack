@@ -2,6 +2,7 @@
 from typing import List
 from module.baseState import BaseState
 from module.battleStates.stateBattle import StateBattle
+from module.battleStates.stateGetItem import StateGetItem
 from module.facilityStates.stateArmorShop import StateArmorShop
 from module.facilityStates.stateBarbar import StateBarbar
 from module.facilityStates.stateDrugs import StateDrugs
@@ -75,6 +76,7 @@ class StateStack(object):
             State.SURGERY: StateSurgery,
             State.WEAPONSHOP: StateWeaponShop,
             State.BATTLE: StateBattle,
+            State.GETITEM: StateGetItem,
         }
 
         # スタックを初期化する

@@ -426,18 +426,28 @@ class HumanGenerator(object):
 
 class EnemyParty(Party):
     '''
-    敵パーティー
-
-    Partyクラスを継承
-    HumanクラスまたはMonsterクラスを格納したListを管理する
-    直接このクラスを使用せず、インスタンスを格納したenemyPartyをimportして使用すること
+    敵パーティークラス\n
+    Partyクラスを継承。\n
+    HumanクラスまたはMonsterクラスを格納したListを管理する。\n
+    利用するクラスでは、直接このクラスを使用せず、インスタンスを格納したenemyPartyをimportして使用すること。\n
     '''
 
     def __init__(self):
         super().__init__()
 
+        # レベル
+        self.level = 0
+
     def initialize(self) -> None:
         self.memberList = []
+
+    def generate(self, enemyClass) -> None:
+        '''
+        敵パーティーを設定する\n
+        パーティーの生成はEnemyPartyGeneratorメソッドで行い、生成したパーティーのレベルを保存する
+        '''
+        self.memberList = EnemyPartyGenerator.generate(enemyClass)
+        self.level = self.memberList[0].level
 
     def isEscape(self) -> bool:
         if isinstance(self.memberList[0], Monster):
