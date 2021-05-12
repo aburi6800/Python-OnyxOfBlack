@@ -3,7 +3,7 @@ import random
 
 import pyxel
 from module.baseState import BaseState
-from module.character import EnemyPartyGenerator, enemyParty, playerParty
+from module.character import enemyParty, playerParty
 from module.direction import Direction
 from module.eventData import eventdata
 from module.eventHandler import eventhandler
@@ -187,10 +187,9 @@ class BaseFieldState(BaseState, EnforceOverrides):
         self.tick = 0
 
         if monsterName == "":
-            enemyParty.memberList = EnemyPartyGenerator.generate(
-                self.enemy_set[random.randint(0, len(self.enemy_set) - 1)])
+            enemyParty.generate(self.enemy_set[random.randint(0, len(self.enemy_set) - 1)])
         else:
-            enemyParty.memberList = EnemyPartyGenerator.generate(monsterParams[monsterName])
+            enemyParty.generate(monsterParams[monsterName])
             
     def update_fixed_encount_enemy(self):
         '''
