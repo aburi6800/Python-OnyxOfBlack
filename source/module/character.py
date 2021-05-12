@@ -438,6 +438,9 @@ class EnemyParty(Party):
         # レベル
         self.level = 0
 
+        # アイテム所持
+        self.hasItem = False
+
     def initialize(self) -> None:
         self.memberList = []
 
@@ -448,6 +451,7 @@ class EnemyParty(Party):
         '''
         self.memberList = EnemyPartyGenerator.generate(enemyClass)
         self.level = self.memberList[0].level
+        self.hasItem = self.memberList[0].hasItem
 
     def isEscape(self) -> bool:
         if isinstance(self.memberList[0], Monster):
