@@ -32,6 +32,7 @@ class Character(object):
         self.bly_h = 0
         self.x = 0
         self.y = 0
+        self.hasItem = False
 
     def setDisplayPosition(self, _count: int, _idx: int) -> None:
         '''
@@ -116,7 +117,6 @@ class Monster(Character):
         '''
         super().__init__()
 
-        self.item = None
         self.alignment = Alignment.EVIL
 
 
