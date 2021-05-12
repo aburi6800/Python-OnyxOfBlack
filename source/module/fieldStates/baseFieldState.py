@@ -185,6 +185,7 @@ class BaseFieldState(BaseState, EnforceOverrides):
         '''
         self.isEncount = True
         self.tick = 0
+        pyxel.play(3, 1, loop=False)
 
         if monsterName == "":
             enemyParty.generate(self.enemy_set[random.randint(0, len(self.enemy_set) - 1)])
@@ -271,6 +272,7 @@ class BaseFieldState(BaseState, EnforceOverrides):
                             playerParty.direction, self._map)
 
         # エンカウント時のメッセージ
+        # 迷路の表示を残したいので、stateBattleでは表示しない。
         if self.isEncount:
             PyxelUtil.text(10, 146, ["NA", "NI", "KA", "TI", "KA", "TU",
                                      "D", "I", "TE", "KI", "TA", "*!"], pyxel.COLOR_RED)

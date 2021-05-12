@@ -108,7 +108,7 @@ class StateBattle(BaseState):
         }
 
         # 状態
-        self.state = 0
+        self.state = None
 
     def change_state(self, _state):
         '''
@@ -130,7 +130,10 @@ class StateBattle(BaseState):
     def update_encount(self):
         '''
         遭遇時の処理
+        ※未使用メソッド
         '''
+        if self.tick == 1:
+            pyxel.play(3, 1, loop=False)
         if self.tick > 80:
             self.change_state(self.STATE_CHOOSE_ACTION)
 
@@ -620,6 +623,7 @@ class StateBattle(BaseState):
     def draw_encount(self):
         '''
         遭遇時の表示処理
+        ※未使用メソッド
         '''
         PyxelUtil.text(56, 148, ["NA", "NI", "KA", " ", "TI", "KA",
                                  "TU", "D", "I", "TE", "KI", "TA", "* !"], pyxel.COLOR_RED)
