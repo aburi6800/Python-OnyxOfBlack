@@ -34,6 +34,27 @@ class StateArmorShop(BaseShopState):
         pyxel.image(0).load(0, 205, os.path.normpath(os.path.join(os.path.dirname(__file__), "../../assets/png/armorshop.png")))
 
     @overrides
+    def update_equip(self):
+        '''
+        装備する人を選ぶ処理\n
+        既に同じ鎧を装備している場合はエラー処理に遷移する。
+        '''
+        self.update_common()
+
+        for _key, _value in self.keyMap.items():
+            if pyxel.btnp(_key) and len(playerParty.memberList) > _value:
+                # 選択した人の装備の名称と購入する装備の名称を比較
+                if playerParty.memberList[_value].armor != None and playerParty.memberList[_value].armor.name == self.item.name:
+                    # 同じ場合はエラー
+                    self.errorMessage = [
+                        "MO", "U", " ", "MO", "LTU", "TE", "MA", "SU", "YO", "."]
+                    self.retuenState = self.state
+                    self.state = self.STATE_ERROR
+                else:
+                    self.equipMember = _value
+                    self.state = self.STATE_DONE
+
+    @overrides
     def update_done(self):
         '''
         買った処理
@@ -46,7 +67,7 @@ class StateArmorShop(BaseShopState):
         '''
         店員の装備を変更する処理
         '''
-        self.saleParson.armor = self.item
+        self.saleParson.armor = item
 
     @overrides
     def draw_initial(self):

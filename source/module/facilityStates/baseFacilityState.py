@@ -3,9 +3,10 @@ import pyxel
 from module.baseState import BaseState
 from module.character import playerParty
 from module.pyxelUtil import PyxelUtil
-from overrides import overrides
+from overrides import EnforceOverrides, overrides
 
-class BaseFacilityState(BaseState):
+
+class BaseFacilityState(BaseState, EnforceOverrides):
     '''
     施設の基底クラス\n
     各施設で共通の処理を持つ

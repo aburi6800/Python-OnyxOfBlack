@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
-from os import name
-from overrides.overrides import overrides
-
+#from os import name
 import pyxel
 from module.character import Human, playerParty
 from module.facilityStates.baseFacilityState import BaseFacilityState
 from module.pyxelUtil import PyxelUtil
+from overrides import EnforceOverrides, overrides
 
 
-class BaseShopState(BaseFacilityState):
+class BaseShopState(BaseFacilityState, EnforceOverrides):
     '''
     店の基底クラス\n
     BaseFacilityStateクラスを継承。\n
@@ -66,6 +65,9 @@ class BaseShopState(BaseFacilityState):
         # エラーメッセージ
         self.errorMessage = []
 
+        # エラー時の復帰先State
+        self.retuenState = None
+
     @overrides
     def update_execute(self):
         '''
@@ -118,6 +120,7 @@ class BaseShopState(BaseFacilityState):
                 else:
                     self.errorMessage = [
                         "O", "KA", "NE", " ", "KA", "D", " ", "TA", "RI", "MA", "SE", "NN", "YO", "."]
+                    self.retuenState = self.state
                     self.state = self.STATE_ERROR
 
     def update_equip(self):
@@ -157,7 +160,7 @@ class BaseShopState(BaseFacilityState):
         エラー（購入できないとき）の処理
         '''
         if pyxel.btnp(pyxel.KEY_SPACE):
-            self.state = self.STATE_BUY
+            self.state = self.retuenState
 
     def update_common(self):
         '''

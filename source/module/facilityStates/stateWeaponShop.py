@@ -50,16 +50,25 @@ class StateWeaponShop(BaseShopState):
         '''
         装備する人を選ぶ処理\n
         盾を持っているときに両手持ち武器を装備しようとすると、確認処理に遷移する。\n
-        武器屋独自の処理となる
+        また、既に同じ武器を装備している場合はエラー処理に遷移する。
         '''
         self.update_common()
 
         for _key, _value in self.keyMap.items():
             if pyxel.btnp(_key) and len(playerParty.memberList) > _value:
-                self.equipMember = _value
-                if playerParty.memberList[_value].shield != None and self.item.isDoubleHand:
+                # 選択した人の装備の名称と購入する装備の名称を比較
+                if playerParty.memberList[_value].weapon != None and playerParty.memberList[_value].weapon.name == self.item.name:
+                    # 同じ場合はエラー
+                    self.errorMessage = [
+                        "MO", "U", " ", "MO", "LTU", "TE", "MA", "SU", "YO", "."]
+                    self.retuenState = self.state
+                    self.state = self.STATE_ERROR
+                # 盾を持っており両手持ち武器を装備しようとしているか判定する
+                elif playerParty.memberList[_value].shield != None and self.item.isDoubleHand:
+                    self.equipMember = _value
                     self.state = self.STATE_CONFIRM
                 else:
+                    self.equipMember = _value
                     self.state = self.STATE_DONE
 
     def update_confirm(self):
@@ -88,7 +97,7 @@ class StateWeaponShop(BaseShopState):
         '''
         店員の装備を変更する処理
         '''
-        self.saleParson.weapon = self.item
+        self.saleParson.weapon = item
 
     @overrides
     def draw(self):
