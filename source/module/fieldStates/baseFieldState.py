@@ -233,19 +233,23 @@ class BaseFieldState(BaseState, EnforceOverrides):
                     1, 81, 81, pyxel.COLOR_DARKBLUE)
 
         # 地面部のグリッド
-        pyxel.line(0 + self.DRAW_OFFSET_X, 40 + self.DRAW_OFFSET_Y, 78 +
-                   self.DRAW_OFFSET_X, 40 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
-        pyxel.line(0 + self.DRAW_OFFSET_X, 43 + self.DRAW_OFFSET_Y, 78 +
-                   self.DRAW_OFFSET_X, 43 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
-        pyxel.line(0 + self.DRAW_OFFSET_X, 50 + self.DRAW_OFFSET_Y, 78 +
-                   self.DRAW_OFFSET_X, 50 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
-        pyxel.line(0 + self.DRAW_OFFSET_X, 69 + self.DRAW_OFFSET_Y, 78 +
-                   self.DRAW_OFFSET_X, 69 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
+        if self.isSky():
+            # 満天の星空
+            pyxel.blt(self.DRAW_OFFSET_X, self.DRAW_OFFSET_Y + 47, 0, playerParty.direction * 32, 40, 80, -32, 0)
+        else:
+            pyxel.line(0 + self.DRAW_OFFSET_X, 40 + self.DRAW_OFFSET_Y, 78 +
+                    self.DRAW_OFFSET_X, 40 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
+            pyxel.line(0 + self.DRAW_OFFSET_X, 43 + self.DRAW_OFFSET_Y, 78 +
+                    self.DRAW_OFFSET_X, 43 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
+            pyxel.line(0 + self.DRAW_OFFSET_X, 50 + self.DRAW_OFFSET_Y, 78 +
+                    self.DRAW_OFFSET_X, 50 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
+            pyxel.line(0 + self.DRAW_OFFSET_X, 69 + self.DRAW_OFFSET_Y, 78 +
+                    self.DRAW_OFFSET_X, 69 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
 
-        pyxel.line(39 + self.DRAW_OFFSET_X, 39 + self.DRAW_OFFSET_Y, 0 +
-                   self.DRAW_OFFSET_X, 78 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
-        pyxel.line(39 + self.DRAW_OFFSET_X, 39 + self.DRAW_OFFSET_Y, 78 +
-                   self.DRAW_OFFSET_X, 78 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
+            pyxel.line(39 + self.DRAW_OFFSET_X, 39 + self.DRAW_OFFSET_Y, 0 +
+                    self.DRAW_OFFSET_X, 78 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
+            pyxel.line(39 + self.DRAW_OFFSET_X, 39 + self.DRAW_OFFSET_Y, 78 +
+                    self.DRAW_OFFSET_X, 78 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
 
         if self.tick > 0:
             if self.isOuter():
@@ -318,6 +322,13 @@ class BaseFieldState(BaseState, EnforceOverrides):
     def isOuter(self) -> bool:
         '''
         屋外かどうかをboolで返却する。\n
+        Falseが初期値。Trueとしたければ子クラスでこのメソッドをオーバーライドする。\n
+        '''
+        return False
+
+    def isSky(self) -> bool:
+        '''
+        ブラックタワー内かどうかをboolで返却する。\n
         Falseが初期値。Trueとしたければ子クラスでこのメソッドをオーバーライドする。\n
         '''
         return False
