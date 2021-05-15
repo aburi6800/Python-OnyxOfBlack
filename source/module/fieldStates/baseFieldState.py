@@ -234,6 +234,7 @@ class BaseFieldState(BaseState, EnforceOverrides):
 
         # 地面部のグリッド
         if self.isSky():
+            pyxel.rect(self.DRAW_OFFSET_X, self.DRAW_OFFSET_Y, 79, 79, pyxel.COLOR_DARKBLUE)
             # 満天の星空
             pyxel.blt(self.DRAW_OFFSET_X, self.DRAW_OFFSET_Y + 47, 0, playerParty.direction * 32, 40, 80, -32, 0)
         else:
