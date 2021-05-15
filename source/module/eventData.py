@@ -241,7 +241,7 @@ class eventData(object):
             "COLORD_BLACK17169U": "self.startEvent('colord_black_001.json')",
             "COLORD_BLACK16189U": "self.startEvent('colord_black_002.json')",
 
-            "BLACKTOWER17159U": "self.startEvent('blacktower_001.json')",
+            "BLACKTOWER16189U": "self.startEvent('blacktower_001.json')",
             "BLACKTOWER23249U": "self.startEvent('blacktower_002.json')",
         }
 
