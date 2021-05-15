@@ -30,6 +30,7 @@ from module.fieldStates.stateWellB1 import StateWellB1
 from module.fieldStates.stateWellB2 import StateWellB2
 from module.fieldStates.stateWellB3 import StateWellB3
 from module.fieldStates.stateWellB4 import StateWellB4
+from module.fieldStates.stateBlacktower import StateBlackTower
 from module.state import State
 from module.systemStates.stateCamp import StateCamp
 from module.systemStates.stateMakeChracter import StateMakeCharacter
@@ -67,6 +68,7 @@ class StateStack(object):
             State.COLORD_BLUE: StateColordBlue,
             State.COLORD_WHITE: StateColordWhite,
             State.COLORD_BLACK: StateColordBlack,
+            State.BLACKTOWER: StateBlackTower,
             State.ARMORSHOP: StateArmorShop,
             State.BARBAR: StateBarbar,
             State.DRUGS: StateDrugs,

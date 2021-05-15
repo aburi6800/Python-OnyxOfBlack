@@ -170,7 +170,7 @@ class BaseFieldState(BaseState, EnforceOverrides):
             self.tick = 0
             playerParty.moveForward()
 
-            # 移動後判定フラグをFalseに設定する
+            # 移動後判定フラグをTrueに設定する
             self.isAfterMoved = True
             return
 

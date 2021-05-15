@@ -26,6 +26,7 @@ class State(IntEnum):
     COLORD_BLUE = auto()
     COLORD_WHITE = auto()
     COLORD_BLACK = auto()
+    BLACKTOWER = auto()
     ARMORSHOP = auto()
     BARBAR = auto()
     DRUGS = auto()
