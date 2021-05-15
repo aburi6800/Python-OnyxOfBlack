@@ -35,12 +35,6 @@ class StateGetItem(BaseState):
         pyxel.KEY_5: 4,
     }
 
-    # アイテムの種別
-    ITEMTYPE_WEAPON = 1
-    ITEMTYPE_ARMOR = 2
-    ITEMTYPE_SHIELD = 3 # 未実装だが定数としては定義しておく
-    ITEMTYPE_HELMET = 4 # 未実装だが定数としては定義しておく
-
     def __init__(self, **kwargs):
         '''
         クラス初期化
@@ -95,21 +89,10 @@ class StateGetItem(BaseState):
     def update_itemSelect(self):
         '''
         アイテム選出時の処理
+        ※未使用メソッド
         '''
-        _r = random.randint(0, 4)
-        if _r == 0 or _r == 1:
-            # 武器を選出
-            self.item = weaponParams[random.randint(enemyParty.level - 1, enemyParty.level + 2)]
-            self.item.attack = int(self.item.attack * 1.5)
-            self.itemType = self.ITEMTYPE_WEAPON
-        elif _r == 2 or _r == 3:
-            # 鎧を選出
-            self.item = armorParams[random.randint((enemyParty.level - 1) // 2, (enemyParty.level - 1) // 2 + 1)]
-            self.item.armor = int(self.item.armor * 1.5)
-            self.itemType = self.ITEMTYPE_ARMOR
-
-        self.change_state(self.STATE_CHOOSE_EQUIP)
-
+        pass
+        
     def update_choose_equip(self):
         '''
         装備するメンバーの選択処理
@@ -189,8 +172,11 @@ class StateGetItem(BaseState):
         '''
         装備するメンバーの選択表示処理
         '''
-        PyxelUtil.text(16, 140, ["SU", "HA", "D", "RA", "SI", "I",
-                                "* " + self.item.name + " ", "WO", " ", "MI", "TU", "KE", "TA", "* !"], pyxel.COLOR_WHITE)
+        if enemyParty.iten.name == "MAGIC MANTLE":
+            PyxelUtil.text(16, 140, ["MA", "HO", "U", "NO", "ma", "nn", "to", "WO", " ", "MI", "TU", "KE", "TA", "* !"], pyxel.COLOR_WHITE)
+        else:
+            PyxelUtil.text(16, 140, ["SU", "HA", "D", "RA", "SI", "I",
+                                    "* " + self.item.name + " ", "WO", " ", "MI", "TU", "KE", "TA", "* !"], pyxel.COLOR_WHITE)
         PyxelUtil.text(16, 148, ["TA", "D", "RE", "KA", "D", " ", "TU", "KA", "I", "MA", "SU", "KA", "* ?"], pyxel.COLOR_WHITE)
         PyxelUtil.text(56, 172, ["*[L] ", "TU", "KA",
                                  "WA", "NA", "I"], pyxel.COLOR_YELLOW)
@@ -223,7 +209,7 @@ class StateGetItem(BaseState):
         状態開始時の処理
         '''
         # 状態を最初に設定する
-        self.state = self.STATE_ITEMSELECT
+        self.state = self.STATE_CHOOSE_EQUIP
 
     @overrides
     def onExit(self):

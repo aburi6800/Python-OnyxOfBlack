@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from os import name
+#from os import name
 
 import pyxel
 from overrides import EnforceOverrides
@@ -121,17 +121,18 @@ class BaseState(EnforceOverrides):
         '''
         if isinstance(_chr, Human):
             # 頭
-            if _chr.helmet == None or self.stateName == "CITY":
-                _head_x = (_chr.head % 32) * 8
-                _head_y = (_chr.head // 32) * 8
-                _head_w = 8
-                _head_h = 8
-            else:
-                _head_x = _chr.helmet.blt_x
-                _head_y = _chr.helmet.blt_y
-                _head_w = _chr.helmet.blt_w
-                _head_h = _chr.helmet.blt_h
-            pyxel.blt(_x + 8, _y, 1, _head_x, _head_y, _head_w, _head_h, 0)
+            if _chr.armor == None or _chr.armor.name != "MAGIC MANTLE":
+                if _chr.helmet == None or self.stateName == "CITY":
+                    _head_x = (_chr.head % 32) * 8
+                    _head_y = (_chr.head // 32) * 8
+                    _head_w = 8
+                    _head_h = 8
+                else:
+                    _head_x = _chr.helmet.blt_x
+                    _head_y = _chr.helmet.blt_y
+                    _head_w = _chr.helmet.blt_w
+                    _head_h = _chr.helmet.blt_h
+                pyxel.blt(_x + 8, _y, 1, _head_x, _head_y, _head_w, _head_h, 0)
 
             # 体
             if _chr.armor == None:

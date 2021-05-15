@@ -462,7 +462,7 @@ class StateBattle(BaseState):
         self.stateStack.pop()
 
         # 一定確率でアイテム入手
-        if enemyParty.hasItem and random.randint(0, 32) == 0:
+        if enemyParty.item != None:
             self.stateStack.push(State.GETITEM)
 
     def update_lose(self):

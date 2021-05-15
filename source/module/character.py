@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import random
-from typing import List, Tuple
+from typing import List
 
 from module.direction import Direction
 from module.params.alignment import Alignment
@@ -431,6 +431,11 @@ class EnemyParty(Party):
     HumanクラスまたはMonsterクラスを格納したListを管理する。\n
     利用するクラスでは、直接このクラスを使用せず、インスタンスを格納したenemyPartyをimportして使用すること。\n
     '''
+    # アイテムの種別
+    ITEMTYPE_WEAPON = 1
+    ITEMTYPE_ARMOR = 2
+    ITEMTYPE_SHIELD = 3 # 未実装だが定数としては定義しておく
+    ITEMTYPE_HELMET = 4 # 未実装だが定数としては定義しておく
 
     def __init__(self):
         super().__init__()
@@ -438,8 +443,11 @@ class EnemyParty(Party):
         # レベル
         self.level = 0
 
-        # アイテム所持
-        self.hasItem = False
+        # アイテム
+        self.item = None
+
+        # アイテム種別
+        self.itemType = 0
 
     def initialize(self) -> None:
         self.memberList = []
@@ -451,7 +459,24 @@ class EnemyParty(Party):
         '''
         self.memberList = EnemyPartyGenerator.generate(enemyClass)
         self.level = self.memberList[0].level
-        self.hasItem = self.memberList[0].hasItem
+
+        if self.memberList[0].hasItem and random.randint(0, 32) == 0:
+            # アイテムを持っている場合、ランダムで選出
+            if self.memberList[0].name[0:5] == "HIDER":
+                self.item = armorParams[5]
+                self.itemType = self.ITEMTYPE_ARMOR
+            else:
+                _r = random.randint(0, 4)
+                if _r == 0 or _r == 1:
+                    # 武器を選出
+                    self.item = weaponParams[random.randint(enemyParty.level - 1, enemyParty.level + 2)]
+                    self.item.attack = int(self.item.attack * 1.5)
+                    self.itemType = self.ITEMTYPE_WEAPON
+                elif _r == 2 or _r == 3:
+                    # 鎧を選出
+                    self.item = armorParams[random.randint((enemyParty.level - 1) // 2, (enemyParty.level - 1) // 2 + 1)]
+                    self.item.armor = int(self.item.armor * 1.5)
+                    self.itemType = self.ITEMTYPE_ARMOR
 
     def isEscape(self) -> bool:
         if isinstance(self.memberList[0], Monster):
