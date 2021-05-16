@@ -369,6 +369,10 @@ class StateBattle(BaseState):
                 else:
                     _target.life = _target.life - _damage
 
+                    # レイスの場合、一定確率でエナジードレイン攻撃をする
+                    if _attacker.isPlayer == False and _attacker.name[0:6] == "WRAITH":
+                        _target.maxlife = _target.maxlife - (_damage // 10 + 1)
+
                     if _target.life < 1:
                         # しとめた
                         self.addMessage(
@@ -405,6 +409,7 @@ class StateBattle(BaseState):
                         self.addMessage([""])
                         self.addMessage(["*" + str(_damage) + " ", "NO", " ", "ta", "d", "me", "-", "si",
                                          "d", "WO", " ", "A", "TA", "E", "TA", "* !"], self.getMessageColor(_attacker))
+                            
 
     def update_win_getexp(self):
         '''
