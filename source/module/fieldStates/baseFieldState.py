@@ -4,13 +4,13 @@ import random
 import pyxel
 from module.baseState import BaseState
 from module.character import enemyParty, playerParty
-from module.direction import Direction
-from module.eventData import eventdata
+from module.constant.direction import Direction
+from module.constant.state import State
 from module.eventHandler import eventhandler
 from module.messageHandler import messagehandler
+from module.params.eventData import eventdata
 from module.params.monster import monsterParams
 from module.pyxelUtil import PyxelUtil
-from module.state import State
 from overrides import EnforceOverrides, overrides
 
 
@@ -188,10 +188,11 @@ class BaseFieldState(BaseState, EnforceOverrides):
         pyxel.play(3, 1, loop=False)
 
         if monsterName == "":
-            enemyParty.generate(self.enemy_set[random.randint(0, len(self.enemy_set) - 1)])
+            enemyParty.generate(
+                self.enemy_set[random.randint(0, len(self.enemy_set) - 1)])
         else:
             enemyParty.generate(monsterParams[monsterName])
-            
+
     def update_fixed_encount_enemy(self):
         '''
         敵と固定エンカウントした時の処理\n
@@ -234,28 +235,31 @@ class BaseFieldState(BaseState, EnforceOverrides):
 
         # 地面部のグリッド
         if self.isSky():
-            pyxel.rect(self.DRAW_OFFSET_X, self.DRAW_OFFSET_Y, 79, 79, pyxel.COLOR_DARKBLUE)
+            pyxel.rect(self.DRAW_OFFSET_X, self.DRAW_OFFSET_Y,
+                       79, 79, pyxel.COLOR_DARKBLUE)
             # 満天の星空
-            pyxel.blt(self.DRAW_OFFSET_X, self.DRAW_OFFSET_Y + 47, 0, playerParty.direction * 32, 40, 80, -32, 0)
+            pyxel.blt(self.DRAW_OFFSET_X, self.DRAW_OFFSET_Y + 47,
+                      0, playerParty.direction * 32, 40, 80, -32, 0)
         else:
             pyxel.line(0 + self.DRAW_OFFSET_X, 40 + self.DRAW_OFFSET_Y, 78 +
-                    self.DRAW_OFFSET_X, 40 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
+                       self.DRAW_OFFSET_X, 40 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
             pyxel.line(0 + self.DRAW_OFFSET_X, 43 + self.DRAW_OFFSET_Y, 78 +
-                    self.DRAW_OFFSET_X, 43 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
+                       self.DRAW_OFFSET_X, 43 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
             pyxel.line(0 + self.DRAW_OFFSET_X, 50 + self.DRAW_OFFSET_Y, 78 +
-                    self.DRAW_OFFSET_X, 50 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
+                       self.DRAW_OFFSET_X, 50 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
             pyxel.line(0 + self.DRAW_OFFSET_X, 69 + self.DRAW_OFFSET_Y, 78 +
-                    self.DRAW_OFFSET_X, 69 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
+                       self.DRAW_OFFSET_X, 69 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
 
             pyxel.line(39 + self.DRAW_OFFSET_X, 39 + self.DRAW_OFFSET_Y, 0 +
-                    self.DRAW_OFFSET_X, 78 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
+                       self.DRAW_OFFSET_X, 78 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
             pyxel.line(39 + self.DRAW_OFFSET_X, 39 + self.DRAW_OFFSET_Y, 78 +
-                    self.DRAW_OFFSET_X, 78 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
+                       self.DRAW_OFFSET_X, 78 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
 
         if self.tick > 0:
             if self.isOuter():
                 # 満天の星空
-                pyxel.blt(self.DRAW_OFFSET_X, self.DRAW_OFFSET_Y, 0, playerParty.direction * 32, 40, 80, 32, 0)
+                pyxel.blt(self.DRAW_OFFSET_X, self.DRAW_OFFSET_Y, 0,
+                          playerParty.direction * 32, 40, 80, 32, 0)
             else:
                 # 天井部のグリッド
                 pyxel.line(0 + self.DRAW_OFFSET_X, 38 + self.DRAW_OFFSET_Y, 78 +
@@ -274,7 +278,7 @@ class BaseFieldState(BaseState, EnforceOverrides):
 
             # 迷路
             self.draw_maze(playerParty.x, playerParty.y,
-                            playerParty.direction, self._map)
+                           playerParty.direction, self._map)
 
         # エンカウント時のメッセージ
         # 迷路の表示を残したいので、stateBattleでは表示しない。
@@ -346,7 +350,8 @@ class BaseFieldState(BaseState, EnforceOverrides):
             return False
 
         # 現在の座標＋方向でイベントの関数を取得する
-        _event = eventdata.events.get(self.getEventKey(playerParty.direction, _mode), None)
+        _event = eventdata.events.get(
+            self.getEventKey(playerParty.direction, _mode), None)
 
         if _event == None:
             # 取得できなかったときは、現在の座標でイベントの関数を取得する
@@ -370,9 +375,9 @@ class BaseFieldState(BaseState, EnforceOverrides):
         EventDataを検索するためのキー文字列を生成し、返却する。\n
         '''
         return self.stateName + "{:02d}".format(playerParty.x) + \
-            "{:02d}".format(playerParty.y) +  "{:01d}".format(direction) + mode
+            "{:02d}".format(playerParty.y) + "{:01d}".format(direction) + mode
 
-    def startEvent(self, eventFileName:str) -> None:
+    def startEvent(self, eventFileName: str) -> None:
         '''
         イベントを開始する\n
         ただし、移動直後のみ開始する。

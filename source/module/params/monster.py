@@ -75,7 +75,7 @@ monsterParams = {
     "TAURUS_LV1":MonsterParam("TAURUS", 192, 16, 24, 24, 8, 95, 300, 40, 15, 200, 500, 1, 3, True,True),
     "GIANT_LV1":MonsterParam("GIANT", 216, 16, 24, 24, 8, 100, 500, 60, 18, 400, 700, 1, 2, False,True),
     "BEAST_LV1":MonsterParam("BEAST", 112, 16, 16, 16, 6, 40, 150, 100, 13, 100, 0, 1, 3, True,False),
-    "HIDER_LV1":MonsterParam("HIDER", 144, 16, 16, 16, 6, 30, 110, 100, 15, 100, 250, 1, 3, True,True),
+    "HIDER_LV1":MonsterParam("HIDER", 144, 16, 16, 16, 6, 30, 30, 30, 15, 100, 250, 1, 3, True,True),
     "DEMON_LV1":MonsterParam("DEMON", 80, 16, 16, 16, 6, 45, 100, 120, 13, 110, 0, 1, 1, False,True),
     "DEMON_LV2":MonsterParam("DEMON", 80, 16, 16, 16, 6, 45, 100, 120, 13, 110, 0, 1, 2, False,True),
     "GHOST_LV1":MonsterParam("GHOST", 64, 16, 16, 16, 6, 20, 90, 100, 9, 90, 0, 1, 2, True,False),

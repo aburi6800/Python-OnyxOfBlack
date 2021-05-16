@@ -2,8 +2,9 @@
 import random
 from typing import List
 
-from module.direction import Direction
-from module.params.alignment import Alignment
+from module.constant.alignment import Alignment
+from module.constant.direction import Direction
+from module.constant.itemType import ItemType
 from module.params.armor import armorParams
 from module.params.weapon import weaponParams
 
@@ -431,11 +432,6 @@ class EnemyParty(Party):
     HumanクラスまたはMonsterクラスを格納したListを管理する。\n
     利用するクラスでは、直接このクラスを使用せず、インスタンスを格納したenemyPartyをimportして使用すること。\n
     '''
-    # アイテムの種別
-    ITEMTYPE_WEAPON = 1
-    ITEMTYPE_ARMOR = 2
-    ITEMTYPE_SHIELD = 3 # 未実装だが定数としては定義しておく
-    ITEMTYPE_HELMET = 4 # 未実装だが定数としては定義しておく
 
     def __init__(self):
         super().__init__()
@@ -447,7 +443,7 @@ class EnemyParty(Party):
         self.item = None
 
         # アイテム種別
-        self.itemType = 0
+        self.itemType = None
 
     def initialize(self) -> None:
         self.memberList = []
@@ -460,23 +456,31 @@ class EnemyParty(Party):
         self.memberList = EnemyPartyGenerator.generate(enemyClass)
         self.level = self.memberList[0].level
 
-        if self.memberList[0].hasItem and random.randint(0, 32) == 0:
+        print("hasItem:" + str(self.memberList[0].hasItem))
+#        if self.memberList[0].hasItem and random.randint(0, 32) == 0:
+        if self.memberList[0].hasItem:
             # アイテムを持っている場合、ランダムで選出
             if self.memberList[0].name[0:5] == "HIDER":
                 self.item = armorParams[5]
-                self.itemType = self.ITEMTYPE_ARMOR
+                self.itemType = ItemType.ARMOR
             else:
                 _r = random.randint(0, 4)
                 if _r == 0 or _r == 1:
                     # 武器を選出
-                    self.item = weaponParams[random.randint(enemyParty.level - 1, enemyParty.level + 2)]
+                    _rndMin = enemyParty.level - 1
+                    _rndMax = enemyParty.level + 2
+                    self.item = weaponParams[random.randint(
+                        _rndMin, _rndMax if _rndMax < 9 else 8)]
                     self.item.attack = int(self.item.attack * 1.5)
-                    self.itemType = self.ITEMTYPE_WEAPON
+                    self.itemType = ItemType.WEAPON
                 elif _r == 2 or _r == 3:
                     # 鎧を選出
-                    self.item = armorParams[random.randint((enemyParty.level - 1) // 2, (enemyParty.level - 1) // 2 + 1)]
+                    _rndMin = (enemyParty.level - 1) // 2
+                    _rndMax = (enemyParty.level + 2) // 2 + 1
+                    self.item = armorParams[random.randint(
+                        _rndMin, _rndMax if _rndMax < 5 else 4)]
                     self.item.armor = int(self.item.armor * 1.5)
-                    self.itemType = self.ITEMTYPE_ARMOR
+                    self.itemType = ItemType.ARMOR
 
     def isEscape(self) -> bool:
         if isinstance(self.memberList[0], Monster):
@@ -535,15 +539,16 @@ class EnemyPartyGenerator(object):
             _monster.exp = enemyClass.exp
             _monster.gold = enemyClass.gold
             _monster.isEscape = enemyClass.isEscape
+            _monster.hasItem = enemyClass.hasItem
 
             # 表示位置
             _monster.setDisplayPosition(_count, idx)
 
             _memberList.append(_monster)
 
-            if __debug__:
-                print("enemy party generated.")
-                for v in _memberList:
-                    print(v)
+        if __debug__:
+            print("enemy party generated.")
+            for v in _memberList:
+                print(v)
 
         return _memberList

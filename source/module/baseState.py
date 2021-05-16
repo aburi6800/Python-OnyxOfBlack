@@ -5,8 +5,8 @@ import pyxel
 from overrides import EnforceOverrides
 
 from module.character import Character, Human, Monster, playerParty
+from module.constant.alignment import Alignment
 from module.messageHandler import messagehandler
-from module.params.alignment import Alignment
 from module.pyxelUtil import PyxelUtil
 
 

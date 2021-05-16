@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from typing import List
+
 from module.baseState import BaseState
 from module.battleStates.stateBattle import StateBattle
-from module.battleStates.stateGetItem import StateGetItem
+from module.constant.state import State
 from module.facilityStates.stateArmorShop import StateArmorShop
 from module.facilityStates.stateBarbar import StateBarbar
 from module.facilityStates.stateDrugs import StateDrugs
@@ -12,26 +13,25 @@ from module.facilityStates.stateShieldShop import StateShieldShop
 from module.facilityStates.stateSurgery import StateSurgery
 from module.facilityStates.stateWeaponShop import StateWeaponShop
 from module.fieldStates.baseFieldState import BaseFieldState
-from module.fieldStates.stateCity import StateCity
+from module.fieldStates.stateBlacktower import StateBlackTower
 from module.fieldStates.stateCemetery import StateCemetery
+from module.fieldStates.stateCity import StateCity
+from module.fieldStates.stateColordBlack import StateColordBlack
+from module.fieldStates.stateColordBlue import StateColordBlue
+from module.fieldStates.stateColordGreen import StateColordGreen
+from module.fieldStates.stateColordPurple import StateColordPurple
+from module.fieldStates.stateColordRed import StateColordRed
+from module.fieldStates.stateColordWhite import StateColordWhite
+from module.fieldStates.stateColordYellow import StateColordYellow
 from module.fieldStates.stateDungeonB1 import StateDungeonB1
 from module.fieldStates.stateDungeonB2 import StateDungeonB2
 from module.fieldStates.stateDungeonB3 import StateDungeonB3
 from module.fieldStates.stateDungeonB4 import StateDungeonB4
 from module.fieldStates.stateDungeonB5 import StateDungeonB5
-from module.fieldStates.stateColordYellow import StateColordYellow
-from module.fieldStates.stateColordRed import StateColordRed
-from module.fieldStates.stateColordPurple import StateColordPurple
-from module.fieldStates.stateColordGreen import StateColordGreen
-from module.fieldStates.stateColordBlue import StateColordBlue
-from module.fieldStates.stateColordWhite import StateColordWhite
-from module.fieldStates.stateColordBlack import StateColordBlack
 from module.fieldStates.stateWellB1 import StateWellB1
 from module.fieldStates.stateWellB2 import StateWellB2
 from module.fieldStates.stateWellB3 import StateWellB3
 from module.fieldStates.stateWellB4 import StateWellB4
-from module.fieldStates.stateBlacktower import StateBlackTower
-from module.state import State
 from module.systemStates.stateCamp import StateCamp
 from module.systemStates.stateMakeChracter import StateMakeCharacter
 from module.systemStates.stateTitle import StateTitle
@@ -78,7 +78,6 @@ class StateStack(object):
             State.SURGERY: StateSurgery,
             State.WEAPONSHOP: StateWeaponShop,
             State.BATTLE: StateBattle,
-            State.GETITEM: StateGetItem,
         }
 
         # スタックを初期化する

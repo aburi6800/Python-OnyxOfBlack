@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 import math
 import random
-from typing import Tuple
 
 import pyxel
 from module.baseState import BaseState
 from module.character import Character, Human, enemyParty, playerParty
-from module.params.alignment import Alignment
+from module.constant.alignment import Alignment
+from module.constant.itemType import ItemType
+from module.constant.state import State
 from module.pyxelUtil import PyxelUtil
-from module.state import State
 from overrides import overrides
 
 
@@ -36,6 +36,10 @@ class StateBattle(BaseState):
     STATE_TALK = 30
     STATE_TALK_FAILED = 31
     STATE_TALK_KOBOLD = 32
+    STATE_CHOOSE_EQUIP = 41
+    STATE_CHOOSE_ERROR = 42
+    STATE_EQUIP = 43
+    STATE_LEAVE = 44
 
     # ハンドラ用定数
     HANDLER_UPDATE = 0
@@ -105,6 +109,10 @@ class StateBattle(BaseState):
             self.STATE_TALK: [self.update_talk, self.draw_talk],
             self.STATE_TALK_FAILED: [self.update_talk_failed, self.draw_talk_failed],
             self.STATE_TALK_KOBOLD: [self.update_talk_kobold, self.draw_talk_kobold],
+            self.STATE_CHOOSE_EQUIP: [self.update_choose_equip, self.draw_choose_equip],
+            self.STATE_CHOOSE_ERROR: [self.update_choose_error, self.draw_choose_error],
+            self.STATE_EQUIP: [self.update_equip, self.draw_equip],
+            self.STATE_LEAVE: [self.update_leave, self.draw_leave],
         }
 
         # 状態
@@ -458,12 +466,11 @@ class StateBattle(BaseState):
         '''
         アイテム取得判定処理
         '''
-        # 戦闘終了
-        self.stateStack.pop()
-
-        # 一定確率でアイテム入手
+        # アイテム入手
         if enemyParty.item != None:
-            self.stateStack.push(State.GETITEM)
+            self.state = self.STATE_CHOOSE_EQUIP
+        else:
+            self.state = self.STATE_LEAVE
 
     def update_lose(self):
         '''
@@ -589,6 +596,64 @@ class StateBattle(BaseState):
             for _member in playerParty.memberList:
                 _member.target = None
 
+        
+    def update_choose_equip(self):
+        '''
+        装備するメンバーの選択処理
+        '''
+        if pyxel.btnp(pyxel.KEY_L):
+            self.change_state(self.STATE_LEAVE)
+            return
+
+        _idx = 0
+
+        if pyxel.btnp(pyxel.KEY_1):
+            _idx = 1
+        elif pyxel.btnp(pyxel.KEY_2) and len(playerParty.memberList) > 1:
+            _idx = 2
+        elif pyxel.btnp(pyxel.KEY_3) and len(playerParty.memberList) > 2:
+            _idx = 3
+        elif pyxel.btnp(pyxel.KEY_4) and len(playerParty.memberList) > 3:
+            _idx = 4
+        elif pyxel.btnp(pyxel.KEY_5) and len(playerParty.memberList) > 4:
+            _idx = 5
+
+        if _idx > 0:
+            self.member_index = _idx - 1
+            # 種別が武器の時で両手持ちの時は、対象キャラクターが盾を持っている場合はエラーとする
+            if enemyParty.itemType == ItemType.WEAPON and enemyParty.item.isDoubleHand and playerParty.memberList[self.member_index].shield != None:
+                self.change_state(self.STATE_CHOOSE_ERROR)
+            else:
+                self.change_state(self.STATE_EQUIP)
+
+
+    def update_choose_error(self):
+        '''
+        装備不可エラーの処理
+        '''
+        if pyxel.btnp(pyxel.KEY_SPACE):
+            self.change_state(self.STATE_CHOOSE_EQUIP)
+
+
+    def update_equip(self):
+        '''
+        アイテム装備処理
+        '''
+        if enemyParty.itemType == ItemType.WEAPON:
+            playerParty.memberList[self.member_index].weapon = enemyParty.item
+        elif enemyParty.itemType == ItemType.ARMOR:
+            playerParty.memberList[self.member_index].armor = enemyParty.item
+        else:
+            pass
+
+        self.change_state(self.STATE_LEAVE)
+
+    def update_leave(self):
+        '''
+        終了処理
+        '''
+        self.stateStack.pop()
+
     @overrides
     def draw(self):
         '''
@@ -634,11 +699,11 @@ class StateBattle(BaseState):
         '''
         PyxelUtil.text(16, 140, ["TO", "D", "U", "SI",
                                  "MA", "SU", "KA", "* ?"], pyxel.COLOR_WHITE)
-        PyxelUtil.text(32, 156, ["*[A] ", "TA", "TA",
+        PyxelUtil.text(16, 156, ["*     [A] ", "TA", "TA",
                                  "KA", "U"], pyxel.COLOR_YELLOW)
-        PyxelUtil.text(32, 164, ["*[R] ", "NI", "KE",
+        PyxelUtil.text(16, 164, ["*     [R] ", "NI", "KE",
                                  "D", "RU"], pyxel.COLOR_YELLOW)
-        PyxelUtil.text(32, 172, ["*[T] ", "HA", "NA",
+        PyxelUtil.text(16, 172, ["*     [T] ", "HA", "NA",
                                  "SU"], pyxel.COLOR_YELLOW)
 
     def draw_enemy_escape_judge(self):
@@ -748,11 +813,11 @@ class StateBattle(BaseState):
         '''
         PyxelUtil.text(16, 140, ["NA", "NI", "WO", " ", "HA", "NA",
                                  "SI", "KA", "KE", "MA", "SU", "KA", "* ?"], pyxel.COLOR_WHITE)
-        PyxelUtil.text(32, 156, ["*[J] JOIN US."], pyxel.COLOR_YELLOW)
+        PyxelUtil.text(16, 156, ["*     [J] JOIN US."], pyxel.COLOR_YELLOW)
         PyxelUtil.text(
-            32, 164, ["*[G] GOOD LUCK & GOOD BY."], pyxel.COLOR_YELLOW)
+            16, 164, ["*     [G] GOOD LUCK & GOOD BY."], pyxel.COLOR_YELLOW)
         PyxelUtil.text(
-            32, 172, ["*[Y] YOUR MONEY OR YOUR LIFE."], pyxel.COLOR_YELLOW)
+            16, 172, ["*     [Y] YOUR MONEY OR YOUR LIFE."], pyxel.COLOR_YELLOW)
 
     def draw_talk(self):
         '''
@@ -777,6 +842,42 @@ class StateBattle(BaseState):
         PyxelUtil.text(16, 148, ["u", "ma", "so", "u", "na", " ", "ni",
                                  "nn", "ke", "d", "nn", "ta", "d", "* !"], pyxel.COLOR_LIGHTBLUE)
         PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
+
+
+    def draw_choose_equip(self):
+        '''
+        装備するメンバーの選択表示処理
+        '''
+        if enemyParty.item.name == "MAGIC MANTLE":
+            PyxelUtil.text(16, 140, ["MA", "HO", "U", "NO", "ma", "nn", "to", "WO", " ", "MI", "TU", "KE", "TA", "* !"], pyxel.COLOR_WHITE)
+        else:
+            PyxelUtil.text(16, 140, ["SU", "HA", "D", "RA", "SI", "I",
+                                    "* " + enemyParty.item.name + " ", "WO", " ", "MI", "TU", "KE", "TA", "* !"], pyxel.COLOR_WHITE)
+        PyxelUtil.text(16, 148, ["TA", "D", "RE", "KA", "D", " ", "TU", "KA", "I", "MA", "SU", "KA", "* ?"], pyxel.COLOR_WHITE)
+        PyxelUtil.text(16, 172, ["*     [L] ", "TU", "KA",
+                                 "WA", "NA", "I"], pyxel.COLOR_YELLOW)
+
+    def draw_choose_error(self):
+        '''
+        装備不可エラーの表示処理
+        '''
+        PyxelUtil.text(16, 140, ["*" + playerParty.memberList[self.member_index].name + " ", "HA", 
+                                "* " + enemyParty.item.name + " ", "WO", " ", "MO", "TE", "NA", "I", "* !"], pyxel.COLOR_RED)
+        PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
+
+    def draw_equip(self):
+        '''
+        アイテム装備表示処理\n
+        ※実際はここで表示をするものはない
+        '''
+        pass
+
+    def draw_leave(self):
+        '''
+        終了表示処理\n
+        ※実際はここで表示をするものはない
+        '''
+        pass
 
     @overrides
     def onEnter(self):

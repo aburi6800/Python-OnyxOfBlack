@@ -25,6 +25,6 @@ class HelmetParam():
 '''
 helmetParams = (
     HelmetParam("CHAIN COIF", 128, 40, 8, 8, 4, 1, 40),
-    HelmetParam("WINGED HELM", 136, 40, 8, 8, 16, 8, 320),
-    HelmetParam("HORNED HELM", 144, 40, 8, 8, 32, 16, 2560),
+    HelmetParam("WINGED HELM", 136, 40, 8, 8, 16, 8, 320),
+    HelmetParam("HORNED HELM", 144, 40, 8, 8, 32, 16, 2560),
 )

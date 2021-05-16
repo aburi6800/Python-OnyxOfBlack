@@ -2,9 +2,8 @@
 import random
 
 import pyxel
-from module.character import (EnemyPartyGenerator, HumanGenerator, enemyParty,
-                              playerParty)
-from module.direction import Direction
+from module.character import HumanGenerator, enemyParty, playerParty
+from module.constant.direction import Direction
 from module.fieldStates.baseFieldState import BaseFieldState
 from module.map.uturotown import uturotown
 from module.params.monster import monsterParams
@@ -71,16 +70,16 @@ class StateCity(BaseFieldState):
         '''
         self.isEncount = True
         self.tick = 0
-        
+
         if monsterName == "":
             if playerParty.y < 16:
-                enemyParty.memberList = EnemyPartyGenerator.generate(
+                enemyParty.generate(
                     self.enemy_set[random.randint(0, 3)])
             else:
-                enemyParty.memberList = EnemyPartyGenerator.generate(
+                enemyParty.generate(
                     self.enemy_set[random.randint(0, len(self.enemy_set) - 1)])
         else:
-            enemyParty.memberList = EnemyPartyGenerator.generate(monsterParams[monsterName])
+            enemyParty.generate(monsterParams[monsterName])
 
     def draw_gate(self):
         '''

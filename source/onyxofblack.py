@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import pyxel
 from module.stateStack import stateStack
-from module.state import State
+from module.constant.state import State
+
 
 class App:
     '''

@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 import os
 import pickle
-import sys
 
 import pyxel
 from module.character import playerParty
-from module.eventData import eventdata
+from module.constant.state import State
 from module.eventHandler import eventhandler
 from module.messageHandler import messagehandler
+from module.params.eventData import eventdata
 from module.pyxelUtil import PyxelUtil
-from module.state import State
 from module.systemStates.baseSystemState import BaseSystemState
 from overrides import overrides
 
@@ -49,17 +48,25 @@ class StateTitle(BaseSystemState):
     # Upon hearing this story, you decide to seek out this mysterious treasure.
     # You head for the ruins of the city, which are said to lead to the Black Tower.
     STORY = (
-        ("HI", "HO", "U", " ", "hu", "d", "ra", "ltu", "ku", "o", "ni", "ki", "su", "."),
+        ("HI", "HO", "U", " ", "hu", "d", "ra",
+         "ltu", "ku", "o", "ni", "ki", "su", "."),
         ("SO", "RE", "WO", " ", "TE", "NI", "SU", "RE", "HA", "D"),
-        ("MU", "KE", "D", "NN", "NO", "TI", "KA", "RA", "TO", " ", "TO", "MI", "WO", " ", "SA", "SU", "D", "KA", "RU", "TO", " ", "I", "U", "."),
-        ("SO", "RE", "HA", " ", "u", "tu", "ro", "NO", "MA", "TI", "NO", " ", "hu", "d", "ra", "ltu", "ku", "ta", "wa", "-", "NO"),
-        ("TO", "D", "KO", "KA", "NI", " ", "A", "RU", "TO", " ", "TU", "TA", "E", "RA", "RE", "TE", "I", "TA", "."),
+        ("MU", "KE", "D", "NN", "NO", "TI", "KA", "RA", "TO", " ", "TO", "MI",
+         "WO", " ", "SA", "SU", "D", "KA", "RU", "TO", " ", "I", "U", "."),
+        ("SO", "RE", "HA", " ", "u", "tu", "ro", "NO", "MA", "TI", "NO",
+         " ", "hu", "d", "ra", "ltu", "ku", "ta", "wa", "-", "NO"),
+        ("TO", "D", "KO", "KA", "NI", " ", "A", "RU", "TO", " ",
+         "TU", "TA", "E", "RA", "RE", "TE", "I", "TA", "."),
         (""),
-        ("KO", "NO", " ", "HA", "NA", "SI", "WO", " ", "MI", "MI", "NI", "SI", "TA", " ", "A", "NA", "TA", "HA"),
-        ("KO", "NO", " ", "SI", "NN", "HI", "HD", "NO", " ", "TA", "KA", "RA", "WO", " ", "MO", "TO", "ME", "RU", "KO", "TO", "WO"),
+        ("KO", "NO", " ", "HA", "NA", "SI", "WO", " ", "MI",
+         "MI", "NI", "SI", "TA", " ", "A", "NA", "TA", "HA"),
+        ("KO", "NO", " ", "SI", "NN", "HI", "HD", "NO", " ", "TA", "KA",
+         "RA", "WO", " ", "MO", "TO", "ME", "RU", "KO", "TO", "WO"),
         ("KE", "TU", "I", "SU", "RU", "."),
-        ("SO", "SI", "TE", " ", "hu", "d", "ra", "ltu", "ku", "ta", "wa", "-", "NI", " ", "TU", "U", "SI", "D", "RU", "TO", " ", "I", "WA", "RE", "RU"),
-        ("MA", "TI", "NO", " ", "HA", "I", "KI", "LYO", "HE", " ", "MU", "KA", "LTU", "TA", "*...")
+        ("SO", "SI", "TE", " ", "hu", "d", "ra", "ltu", "ku", "ta", "wa", "-",
+         "NI", " ", "TU", "U", "SI", "D", "RU", "TO", " ", "I", "WA", "RE", "RU"),
+        ("MA", "TI", "NO", " ", "HA", "I", "KI", "LYO",
+         "HE", " ", "MU", "KA", "LTU", "TA", "*...")
     )
 
     def __init__(self, **kwargs):
@@ -109,7 +116,7 @@ class StateTitle(BaseSystemState):
 
             if self.story_index >= len(self.STORY):
                 self.state = self.STATE_STORY_WAIT
-        
+
         if pyxel.btnp(pyxel.KEY_SPACE):
             self.state = self.STATE_TITLE
 
@@ -123,7 +130,7 @@ class StateTitle(BaseSystemState):
         if self.story_count >= 30:
             self.state = self.STATE_STORY_FADEOUT
             self.story_count = 45
-        
+
         if pyxel.btnp(pyxel.KEY_SPACE):
             self.state = self.STATE_TITLE
 
@@ -134,7 +141,7 @@ class StateTitle(BaseSystemState):
         self.story_count -= 1
         if self.story_count == 0:
             self.state = self.STATE_TITLE
-        
+
         if pyxel.btnp(pyxel.KEY_SPACE):
             self.state = self.STATE_TITLE
 
@@ -215,8 +222,9 @@ class StateTitle(BaseSystemState):
         if self.story_index > 0:
             for i in range(self.story_index):
                 PyxelUtil.text(20, i * 14 + 20, self.STORY[i])
-        
-        PyxelUtil.text(20, self.story_index * 14 + 20, self.STORY[self.story_index], self.TEXTCOLOR[self.story_count - 1])
+
+        PyxelUtil.text(20, self.story_index * 14 + 20,
+                       self.STORY[self.story_index], self.TEXTCOLOR[self.story_count - 1])
 
     def draw_story_wait(self):
         '''
@@ -236,7 +244,8 @@ class StateTitle(BaseSystemState):
             pyxel.blt(119, 72, 0, 0, 16, 16, 24)
 
         for i in range(len(self.STORY)):
-            PyxelUtil.text(20, i * 14 + 20, self.STORY[i], self.TEXTCOLOR[self.story_count - 1])
+            PyxelUtil.text(20, i * 14 + 20,
+                           self.STORY[i], self.TEXTCOLOR[self.story_count - 1])
 
     def draw_title(self):
         '''

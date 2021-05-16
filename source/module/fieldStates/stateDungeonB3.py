@@ -4,8 +4,6 @@ from module.character import HumanGenerator
 from module.fieldStates.baseFieldState import BaseFieldState
 from module.map.dungeonB3 import dungeonB3
 from module.params.monster import monsterParams
-from module.pyxelUtil import PyxelUtil
-from module.state import State
 from overrides import overrides
 
 

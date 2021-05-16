@@ -7,7 +7,7 @@ from module.character import playerParty
 from module.facilityStates.baseFacilityState import BaseFacilityState
 from module.pyxelUtil import PyxelUtil
 from module.savedata import SaveData
-from module.state import State
+from module.constant.state import State
 from overrides import overrides
 
 class StateCamp(BaseFacilityState):

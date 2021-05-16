@@ -5,9 +5,9 @@ import os
 import pyxel
 
 from module.character import playerParty
+from module.constant.direction import Direction  # update_setPartyPosition で使用
+from module.constant.state import State  # update_pushState で使用
 from module.messageHandler import messageCommand, messagehandler
-from module.state import State # update_pushState で使用
-from module.direction import Direction # update_setPartyPosition で使用
 
 
 class eventHandler():
@@ -48,7 +48,8 @@ class eventHandler():
         '''
 
         # ファイル名にパスを追加する
-        filePath = os.path.normpath(os.path.join(os.path.dirname(__file__), "../assets/json/" + eventFileName))
+        filePath = os.path.normpath(os.path.join(
+            os.path.dirname(__file__), "../assets/json/" + eventFileName))
         if __debug__:
             print(f"load json file:{filePath}")
 
@@ -96,7 +97,7 @@ class eventHandler():
         '''
         if __debug__:
             print("called : eventHandler.update")
-        
+
         # イベントセクションデータのコマンドと引数から、各updateメソッドを呼び出す
         eval("self.update_" +
              self.eventSection["command"])(self.eventSection["args"])
@@ -143,7 +144,8 @@ class eventHandler():
 
         # 画像ロード
         # ここではロードするファイル名を表示するのみとする
-        fileName = os.path.normpath(os.path.join(os.path.dirname(__file__), "../assets/png/" + args.get("fileName")))
+        fileName = os.path.normpath(os.path.join(os.path.dirname(
+            __file__), "../assets/png/" + args.get("fileName")))
         print(f"loadPicture:{fileName}")
         pyxel.image(0).load(0, 205, fileName)
 
@@ -158,8 +160,8 @@ class eventHandler():
         メッセージ表示コマンド\n
         引数は以下の要素を設定した辞書型とする。\n
         ・"message"：リスト形式で、１要素目にメッセージ種別、２要素目に選択キー、メッセージ、選択肢を指定する。複数指定可能。\n
-        　　　　　　　　　　　　　　　　種別"M"の場合：メッセージ（文字列 or リスト）を指定する。\n
-        　　　　　　　　　　　　　　　　種別"C"の場合：メッセージ（文字列 or リスト）と選択キー、イベント定義jsonファイルの遷移先セクション名を指定する。\n
+        　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　種別"M"の場合：メッセージ（文字列 or リスト）を指定する。\n
+        　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　種別"C"の場合：メッセージ（文字列 or リスト）と選択キー、イベント定義jsonファイルの遷移先セクション名を指定する。\n
         ・"next"：イベント定義jsonファイルの次のセクション名。選択肢があるメッセージの場合は設定不要。
         '''
         if __debug__:
@@ -215,7 +217,8 @@ class eventHandler():
             print(f"called : update_setFlg({args})")
 
         # フラグセット
-        print("FlgNo:" + str(args.get("flgNo")) + " value:" + str(args.get("value")))
+        print("FlgNo:" + str(args.get("flgNo")) +
+              " value:" + str(args.get("value")))
         playerParty.eventFlg[args.get("flgNo")] = args.get("value")
 
         # 次のエントリーデータをセット
@@ -232,7 +235,8 @@ class eventHandler():
             print(f"called : update_pushState({args})")
 
         # stateのpush
-        self.calledState.stateStack.push(eval("State." + args.get("stateName")))
+        self.calledState.stateStack.push(
+            eval("State." + args.get("stateName")))
 
         # 次のエントリーデータをセット
         self.eventSection = self.getEventSection(args.get("next"))
@@ -302,7 +306,7 @@ class eventHandler():
         # 画像ロード済の場合、画像を表示
         if self.isPictureLoaded:
             pyxel.blt(self.DRAW_OFFSET_X + 15,
-                    self.DRAW_OFFSET_Y + 15, 0, 0, 205, 50, 50)
+                      self.DRAW_OFFSET_Y + 15, 0, 0, 205, 50, 50)
 
 
 eventhandler = eventHandler()

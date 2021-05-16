@@ -7,6 +7,7 @@ source/module/systemStates/__pycache__/*
 source/module/map/__pycache__/*
 source/module/params/__pycache__/*
 source/module/events/__pycache__/*
+source/module/constant/__pycache__/*
 savedata.dat
 source/dist/*
 .venv/*

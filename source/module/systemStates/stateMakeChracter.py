@@ -3,10 +3,10 @@ import random
 
 import pyxel
 from module.character import HumanGenerator, playerParty
-from module.direction import Direction
+from module.constant.direction import Direction
+from module.constant.state import State
 from module.input import Input
 from module.pyxelUtil import PyxelUtil
-from module.state import State
 from module.systemStates.baseSystemState import BaseSystemState
 from overrides import overrides
 
@@ -222,7 +222,7 @@ class StateMakeCharacter(BaseSystemState):
             playerParty.y = 4
             playerParty.direction = Direction.SOUTH
 
-    @overrides	
+    @overrides
     def draw(self):
         '''
         各フレームの描画処理
