@@ -1,0 +1,34 @@
+{
+    "init":{
+        "command":"loadPicture",
+        "args":{
+            "fileName":"blank.png",
+            "next":"section1_1"
+        }
+    },
+
+    "section1_1":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["TU", "I", "NI", " ", "hu", "d", "ra", "ltu", "ku", "o", "ni", "ki", "su", "WO", " ", "MI", "TU", "KE", "TA", "* !!"]],
+                ["M", ["KO", "RE", "TE", "D", " ", "KI", "MI", "TA", "TI", "HA", " ", "E", "I", "E", "NN", "NO", "WA", "KA", "SA", "TO"]],
+                ["M", ["HA", "D", "KU", "TA", "D", "I", "NA", "TO", "MI", "WO", " ", "E", "RU", "KO", "TO", "TA", "D", "RO", "U", "."]]
+            ],
+            "next":"section1_2"
+        }
+    },
+
+    "section1_2":{
+        "command":"pushState",
+        "args":{
+            "stateName":"ENDING",
+            "next":"end"
+        }
+    },
+
+    "end":{
+        "command":"end",
+        "args":{}
+    }
+}
