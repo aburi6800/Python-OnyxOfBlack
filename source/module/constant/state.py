@@ -8,6 +8,7 @@ class State(IntEnum):
     TITLE = auto()
     MAKECHARACTER = auto()
     CAMP = auto()
+    ENDING = auto()
     CEMETERY = auto()
     CITY = auto()
     WELLB1 = auto()

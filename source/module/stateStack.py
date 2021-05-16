@@ -33,6 +33,7 @@ from module.fieldStates.stateWellB2 import StateWellB2
 from module.fieldStates.stateWellB3 import StateWellB3
 from module.fieldStates.stateWellB4 import StateWellB4
 from module.systemStates.stateCamp import StateCamp
+from module.systemStates.stateEnding import StateEnding
 from module.systemStates.stateMakeChracter import StateMakeCharacter
 from module.systemStates.stateTitle import StateTitle
 
@@ -50,6 +51,7 @@ class StateStack(object):
             State.TITLE: StateTitle,
             State.MAKECHARACTER: StateMakeCharacter,
             State.CAMP: StateCamp,
+            State.ENDING: StateEnding,
             State.CEMETERY: StateCemetery,
             State.CITY: StateCity,
             State.WELLB1: StateWellB1,
