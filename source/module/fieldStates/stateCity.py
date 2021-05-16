@@ -70,6 +70,7 @@ class StateCity(BaseFieldState):
         '''
         self.isEncount = True
         self.tick = 0
+        pyxel.play(3, 1, loop=False)
 
         if monsterName == "":
             if playerParty.y < 16:
