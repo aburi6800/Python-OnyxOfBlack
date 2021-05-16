@@ -63,6 +63,16 @@ class StateCity(BaseFieldState):
         super().__init__(**kwargs)
 
     @overrides
+    def doEncounted(self) -> bool:
+        '''
+        エンカウントしたかを返却する\n
+        '''
+        if random.randint(0, 32) == 0:
+            return True
+        else:
+            return False
+
+    @overrides
     def encount_enemy(self, monsterName: str = ""):
         '''
         敵とエンカウントした時の処理\n

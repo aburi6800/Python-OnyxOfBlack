@@ -139,7 +139,7 @@ class BaseFieldState(BaseState, EnforceOverrides):
         # イベントチェック
         if self.checkEvent("U") == False:
             # イベントが何もない場合、エンカウントするか？
-            if self.isAfterMoved and random.randint(0, 24) == 0:
+            if self.isAfterMoved and self.doEncounted():
                 self.encount_enemy()
                 return
 
@@ -176,6 +176,16 @@ class BaseFieldState(BaseState, EnforceOverrides):
 
         # 移動後判定フラグをFalseに設定する
         self.isAfterMoved = False
+
+    def doEncounted(self) -> bool:
+        '''
+        エンカウントしたかを返却する\n
+        出現確率を変更する場合は、継承先クラスでオーバーライドする。
+        '''
+        if random.randint(0, 24) == 0:
+            return True
+        else:
+            return False
 
     def encount_enemy(self, monsterName: str = ""):
         '''

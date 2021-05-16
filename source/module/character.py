@@ -456,9 +456,7 @@ class EnemyParty(Party):
         self.memberList = EnemyPartyGenerator.generate(enemyClass)
         self.level = self.memberList[0].level
 
-        print("hasItem:" + str(self.memberList[0].hasItem))
-#        if self.memberList[0].hasItem and random.randint(0, 32) == 0:
-        if self.memberList[0].hasItem:
+        if self.memberList[0].hasItem and random.randint(0, 32) == 0:
             # アイテムを持っている場合、ランダムで選出
             if self.memberList[0].name[0:5] == "HIDER":
                 self.item = armorParams[5]

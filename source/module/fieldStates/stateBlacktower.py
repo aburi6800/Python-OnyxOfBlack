@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import random
+
 import pyxel
 from module.character import playerParty
 from module.fieldStates.baseFieldState import BaseFieldState
@@ -37,6 +39,16 @@ class StateBlackTower(BaseFieldState):
         クラス初期化
         '''
         super().__init__(**kwargs)
+
+    @overrides
+    def doEncounted(self) -> bool:
+        '''
+        エンカウントしたかを返却する\n
+        '''
+        if random.randint(0, 16) == 0:
+            return True
+        else:
+            return False
 
     @overrides
     def update_execute(self):
