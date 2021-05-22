@@ -19,6 +19,7 @@ class eventData(object):
         イベント辞書の初期化処理
         '''
         self.events = {
+            "CITY17049U": "self.startEvent('city_000.json')",
             "CITY17040D": "self.draw_gate()",
             "CITY18040D": "self.draw_gate()",
             "CITY17030U": "playerParty.restoreCondition()",
