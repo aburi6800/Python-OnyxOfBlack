@@ -249,7 +249,7 @@ class BaseFieldState(BaseState, EnforceOverrides):
                        79, 79, pyxel.COLOR_DARKBLUE)
             # 満天の星空
             pyxel.blt(self.DRAW_OFFSET_X, self.DRAW_OFFSET_Y + 47,
-                      0, playerParty.direction * 32, 40, 80, -32, 0)
+                      0, playerParty.direction * 32, 40, 79, -32, 0)
         else:
             pyxel.line(0 + self.DRAW_OFFSET_X, 40 + self.DRAW_OFFSET_Y, 78 +
                        self.DRAW_OFFSET_X, 40 + self.DRAW_OFFSET_Y, pyxel.COLOR_DARKBLUE)
@@ -269,7 +269,7 @@ class BaseFieldState(BaseState, EnforceOverrides):
             if self.isOuter():
                 # 満天の星空
                 pyxel.blt(self.DRAW_OFFSET_X, self.DRAW_OFFSET_Y, 0,
-                          playerParty.direction * 32, 40, 80, 32, 0)
+                          playerParty.direction * 32, 40, 79, 32, 0)
             else:
                 # 天井部のグリッド
                 pyxel.line(0 + self.DRAW_OFFSET_X, 38 + self.DRAW_OFFSET_Y, 78 +
@@ -319,7 +319,7 @@ class BaseFieldState(BaseState, EnforceOverrides):
         self.set_wall_color()
 
         # 移動後判定フラグ初期化
-        self.isAfterMoved = False
+        self.isAfterMoved = True
 
     @overrides
     def onExit(self):
