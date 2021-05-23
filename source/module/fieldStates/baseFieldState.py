@@ -68,6 +68,9 @@ class BaseFieldState(BaseState, EnforceOverrides):
     # 固定エンカウントフラグ
     isFixedEncount = False
 
+    # "おおっと！"のメッセージ用カウンタ
+    cntOops = 0
+
     def __init__(self, **kwargs):
         '''
         クラス初期化
@@ -166,13 +169,18 @@ class BaseFieldState(BaseState, EnforceOverrides):
             return
 
         # キー入力（上）
-        if pyxel.btnp(pyxel.KEY_UP) and self.can_move_forward(self._map, playerParty.x, playerParty.y, playerParty.direction):
-            self.tick = 0
-            playerParty.moveForward()
+        if pyxel.btnp(pyxel.KEY_UP):
+            if self.can_move_forward(self._map, playerParty.x, playerParty.y, playerParty.direction):
+                self.tick = 0
+                playerParty.moveForward()
 
-            # 移動後判定フラグをTrueに設定する
-            self.isAfterMoved = True
-            return
+                # 移動後判定フラグをTrueに設定する
+                self.isAfterMoved = True
+                return
+
+            else:
+                pyxel.play(3, 6)
+                self.cntOops = 20
 
         # 移動後判定フラグをFalseに設定する
         self.isAfterMoved = False
@@ -297,6 +305,11 @@ class BaseFieldState(BaseState, EnforceOverrides):
                                      "D", "I", "TE", "KI", "TA", "*!"], pyxel.COLOR_RED)
             return
 
+        if self.cntOops:
+            PyxelUtil.text(10, 146, ["O", "O", "LTU", "TO", "* !!"], pyxel.COLOR_RED)
+            self.cntOops -= 1
+            return
+            
         # イベントハンドラでイベントが実行中の場合は、イベントハンドラのdrawメソッドを呼ぶ
         if eventhandler.isExecute:
             eventhandler.draw()
