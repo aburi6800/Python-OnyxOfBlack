@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import pickle
+import random
 
 import pyxel
 from module.character import playerParty
@@ -24,9 +25,10 @@ class StateTitle(BaseSystemState):
     STATE_STORY = 2
     STATE_STORY_WAIT = 3
     STATE_STORY_FADEOUT = 4
-    STATE_TITLE = 5
+    STATE_TITLE_FADEIN = 5
+    STATE_TITLE = 6
 
-    # フェードイン／アウトの色
+    # テキストのフェードイン／アウトの色
     TEXTCOLOR = [pyxel.COLOR_BLACK] * 5
     TEXTCOLOR += [pyxel.COLOR_DARKBLUE] * 5
     TEXTCOLOR += [pyxel.COLOR_LIGHTBLUE] * 5
@@ -69,6 +71,50 @@ class StateTitle(BaseSystemState):
          "HE", " ", "MU", "KA", "LTU", "TA", "*...")
     )
 
+    # 星の数
+    STAR_MAX = 100
+
+    # 星の色
+    STAR_COLOR = (
+        pyxel.COLOR_LIGHTBLUE,
+        pyxel.COLOR_YELLOW,
+        pyxel.COLOR_DARKBLUE,
+    )
+
+    # 星の座標リスト
+    star_flg = [0] * STAR_MAX
+    star_x = [0] * STAR_MAX
+    star_y = [0] * STAR_MAX
+    star_speed = [0] * STAR_MAX
+    star_col = [0] * STAR_MAX
+
+    # タイトルロゴの色パターン
+    # 各要素は赤系、緑系、青系の順で定義している
+    TITLE_COLOR = (
+        (pyxel.COLOR_DARKBLUE, pyxel.COLOR_CYAN, pyxel.COLOR_ORANGE, pyxel.COLOR_YELLOW, pyxel.COLOR_YELLOW),
+        (pyxel.COLOR_DARKBLUE, pyxel.COLOR_CYAN, pyxel.COLOR_GREEN, pyxel.COLOR_LIME, pyxel.COLOR_WHITE),
+        (pyxel.COLOR_DARKBLUE, pyxel.COLOR_CYAN, pyxel.COLOR_LIGHTBLUE, pyxel.COLOR_LIGHTBLUE, pyxel.COLOR_WHITE),
+    )
+
+    # タイトルロゴのフェードイン処理用
+    # タイトルロゴの座標
+    TITLE_X = 0
+    TITLE_Y = 0
+    TITLE_W = 151
+    TITLE_H = 39
+
+    # バッファの書き出し座標
+    TITLE_BUFF_OFFSET_X = 0
+    TITLE_BUFF_OFFSET_Y = 208
+
+    title_loop_y = 0
+    title_loop_x = 0
+    title_color_gorup = 0
+
+    title_get_x = 0
+    title_get_y = 0
+    title_pick_color = 0
+
     def __init__(self, **kwargs):
         '''
         クラス初期化
@@ -81,6 +127,11 @@ class StateTitle(BaseSystemState):
         # ストーリー表示用カウンタ
         self.story_count = 0
 
+        # タイトルフェードイン用のバッファを初期化
+        for _x in range(self.TITLE_BUFF_OFFSET_X, self.TITLE_W):
+            for _y in range(self.TITLE_BUFF_OFFSET_Y, self.TITLE_H):
+                pyxel.image(0).set(_x, _y, 0)
+
     @overrides
     def update_execute(self):
         '''
@@ -90,10 +141,19 @@ class StateTitle(BaseSystemState):
             self.update_respect()
         elif self.state == self.STATE_STORY:
             self.update_stoty()
+            self.update_generatestar()
+            self.update_movestar()
         elif self.state == self.STATE_STORY_WAIT:
             self.update_story_wait()
+            self.update_generatestar()
+            self.update_movestar()
         elif self.state == self.STATE_STORY_FADEOUT:
             self.update_story_fadeout()
+            self.update_generatestar()
+            self.update_movestar()
+        elif self.state == self.STATE_TITLE_FADEIN:
+            self.update_title_fadein()
+            self.update_movestar()
         elif self.state == self.STATE_TITLE:
             self.update_title()
 
@@ -140,10 +200,80 @@ class StateTitle(BaseSystemState):
         '''
         self.story_count -= 1
         if self.story_count == 0:
-            self.state = self.STATE_TITLE
+            self.state = self.STATE_TITLE_FADEIN
 
         if pyxel.btnp(pyxel.KEY_SPACE):
             self.state = self.STATE_TITLE
+
+    def update_title_fadein(self):
+        '''
+        タイトルロゴフェードイン
+        '''
+        if pyxel.frame_count % 2 == 0:
+            # タイトルロゴのピクセルを走査し、バッファに描き込む
+            for _y in range(self.TITLE_Y + self.title_get_y, self.TITLE_H, 2):
+                for _x in range(self.TITLE_X + self.title_get_x, self.TITLE_W, 8):
+                    # イメージバンク0の指定した座標のピクセルの色を取得する
+                    _pick_color = pyxel.image(0).get(_x, _y)
+                    # 取得した色が現在のからーグループ以降に含まれているかを調べる
+                    # 赤系
+                    if self.TITLE_COLOR[0][self.title_color_gorup:].count(_pick_color):
+                        pyxel.image(0).set(self.TITLE_BUFF_OFFSET_X + _x, self.TITLE_BUFF_OFFSET_Y + _y, self.TITLE_COLOR[0][self.title_color_gorup])
+                    # 緑系
+                    elif self.TITLE_COLOR[1][self.title_color_gorup:].count(_pick_color):
+                        pyxel.image(0).set(self.TITLE_BUFF_OFFSET_X + _x, self.TITLE_BUFF_OFFSET_Y + _y, self.TITLE_COLOR[1][self.title_color_gorup])
+                    # 青系
+                    elif self.TITLE_COLOR[2][self.title_color_gorup:].count(_pick_color):
+                        pyxel.image(0).set(self.TITLE_BUFF_OFFSET_X + _x, self.TITLE_BUFF_OFFSET_Y + _y, self.TITLE_COLOR[2][self.title_color_gorup])
+                    
+            # 横1ドット移動
+            self.title_get_x += 2
+
+            # 8ドット分処理したか
+            if self.title_get_x > 8:
+                # 8ドット分処理したら、次の処理に向けて準備する
+                self.title_get_x = self.title_get_y
+                self.title_get_y += 1
+                # 偶数、奇数のY座標を処理したら、次のカラーグループに設定する
+                if self.title_get_y == 2:
+                    self.title_get_y = 0
+                    self.title_color_gorup += 1
+                    if self.title_color_gorup > len(self.TITLE_COLOR):
+                        self.state = self.STATE_TITLE
+
+        if pyxel.btnp(pyxel.KEY_SPACE):
+            self.state = self.STATE_TITLE
+
+
+    def update_generatestar(self):
+        '''
+        星の発生を行う
+        '''
+        # 3フレームごとに発生させる
+        if pyxel.frame_count % 3 == 0:
+            # 発生させる星を検索する
+            for idx, value in enumerate(self.star_flg):
+                if value == 0:
+                    # 星を発生
+                    self.star_flg[idx] = 1
+                    self.star_x[idx] = random.randrange(-256, 256)
+                    self.star_y[idx] = -1
+                    self.star_speed[idx] = random.randrange(1, 4)
+                    self.star_col[idx] = self.STAR_COLOR[random.randrange(0, 3)]
+                    break
+
+    def update_movestar(self):
+        '''
+        星の移動を行う
+        '''
+        # 生成された星を移動する
+        for idx, value in enumerate(self.star_flg):
+            if value == 1:
+                self.star_x[idx] += self.star_speed[idx]
+                self.star_y[idx] += self.star_speed[idx] * 1.5
+                if self.star_x[idx] > 256 or self.star_y[idx] > 192:
+                    self.star_flg[idx] = 0
+
 
     def update_title(self):
         '''
@@ -197,11 +327,17 @@ class StateTitle(BaseSystemState):
         if self.state == self.STATE_RESPECT:
             self.draw_respect()
         if self.state == self.STATE_STORY:
+            self.draw_star()
             self.draw_story()
         if self.state == self.STATE_STORY_WAIT:
+            self.draw_star()
             self.draw_story_wait()
         if self.state == self.STATE_STORY_FADEOUT:
+            self.draw_star()
             self.draw_story_fadeout()
+        if self.state == self.STATE_TITLE_FADEIN:
+            self.draw_star()
+            self.draw_title_fadein()
         elif self.state == self.STATE_TITLE:
             self.draw_title()
 
@@ -216,8 +352,8 @@ class StateTitle(BaseSystemState):
         '''
         ストーリー表示
         '''
-        if pyxel.frame_count % 2 == 0:
-            pyxel.blt(119, 72, 0, 0, 16, 16, 24)
+#        if pyxel.frame_count % 2 == 0:
+#            pyxel.blt(119, 72, 0, 0, 16, 16, 24)
 
         if self.story_index > 0:
             for i in range(self.story_index):
@@ -230,8 +366,8 @@ class StateTitle(BaseSystemState):
         '''
         ストーリー全文表示
         '''
-        if pyxel.frame_count % 2 == 0:
-            pyxel.blt(119, 72, 0, 0, 16, 16, 24)
+#        if pyxel.frame_count % 2 == 0:
+#            pyxel.blt(119, 72, 0, 0, 16, 16, 24)
 
         for i in range(len(self.STORY)):
             PyxelUtil.text(20, i * 14 + 20, self.STORY[i])
@@ -240,22 +376,34 @@ class StateTitle(BaseSystemState):
         '''
         ストーリーフェードアウト
         '''
-        if pyxel.frame_count % 2 == 0:
-            pyxel.blt(119, 72, 0, 0, 16, 16, 24)
+#        if pyxel.frame_count % 2 == 0:
+#            pyxel.blt(119, 72, 0, 0, 16, 16, 24)
 
         for i in range(len(self.STORY)):
             PyxelUtil.text(20, i * 14 + 20,
                            self.STORY[i], self.TEXTCOLOR[self.story_count - 1])
 
+    def draw_title_fadein(self):
+        '''
+        タイトルフェードイン
+        '''
+        pyxel.blt(52, 32, 0, 0, 208, 151, 39, 0)
+
+    def draw_star(self):
+        '''
+        星を描画
+        '''
+        # 生成された星を移動する
+        for idx, value in enumerate(self.star_flg):
+            if value == 1:
+                pyxel.pset(self.star_x[idx], self.star_y[idx], self.star_col[idx])
+
     def draw_title(self):
         '''
         タイトル
         '''
-        PyxelUtil.text(64, 36, ["*Role Playing game"], 2)
-        pyxel.blt(72, 48, 0, 0,  0, 26, 16, 0)
-        pyxel.blt(52, 54, 0, 0, 16, 63, 24, 0)
-        PyxelUtil.text(117, 68, ["*of"], 9)
-        pyxel.blt(124, 54, 0, 64, 16, 80, 24, 0)
+        # ロゴ
+        pyxel.blt(52, 32, 0, 0, 0, 151, 39, 0)
 
         color = [7, 7, 7, 7]
         if self.selected != 0:
