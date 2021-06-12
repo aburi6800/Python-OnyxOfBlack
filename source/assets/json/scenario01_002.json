@@ -7,26 +7,34 @@
             "off":"section1_1"
         }
     },
-
+    
     "section1_1":{
-        "command":"judgeFlg",
+        "command":"loadPicture",
         "args":{
-            "flgNo":10,
-            "on":"section1_2",
-            "off":"section5_1"
+            "fileName":"scenario01_002_01.png",
+            "next":"section1_2"
         }
     },
 
     "section1_2":{
         "command":"judgeFlg",
         "args":{
-            "flgNo":12,
+            "flgNo":10,
             "on":"section1_3",
-            "off":"section4_1"
+            "off":"section5_1"
         }
     },
 
     "section1_3":{
+        "command":"judgeFlg",
+        "args":{
+            "flgNo":12,
+            "on":"section1_4",
+            "off":"section4_1"
+        }
+    },
+
+    "section1_4":{
         "command":"judgeFlg",
         "args":{
             "flgNo":13,
