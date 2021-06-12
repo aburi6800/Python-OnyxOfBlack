@@ -66,6 +66,7 @@ class eventData(object):
             "CITY03069U": "self.startEvent('city_007.json')",
             "CITY16189U": "self.startEvent('city_004.json')",
             "CITY08069U": "self.startEvent('scenario01_001.json')",
+            "CITY10112U": "self.startEvent('scenario02_000.json')",
             "CITY10139U": "self.startEvent('scenario02_001.json')",
 
             "CEMETERY23189U": "self.startEvent('cemetery_001.json')",
