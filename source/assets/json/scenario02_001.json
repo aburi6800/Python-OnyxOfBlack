@@ -27,6 +27,14 @@
     },
 
     "section2_1":{
+        "command":"loadPicture",
+        "args":{
+            "fileName":"scenario02_001_01.png",
+            "next":"section2_2"
+        }
+    },
+
+    "section2_2":{
         "command":"printMessage",
         "args":{
             "message":[
@@ -44,11 +52,11 @@
                 ["M", ["TE", "D", "SI", "NO", " ", "*ARCANE", " ", "KA", "D", " ", "SI", "LTU", "TE", "I", "RU", "."], "pyxel.COLOR_LIGHTBLUE"],
                 ["M", ["ka", "re", "WO", " ", "SA", "KA", "D", "SI", "TE", "KI", "TE", " ", "KU", "RE", "NN", "SI", "D", "LYA", "RO", "U", "KA", "."], "pyxel.COLOR_LIGHTBLUE"]
             ],
-            "next":"section2_2"
+            "next":"section2_3"
         }
     },
 
-    "section2_2":{
+    "section2_3":{
         "command":"setFlg",
         "args":{
             "flgNo":20,
@@ -58,6 +66,14 @@
     },
 
     "section3_1":{
+        "command":"loadPicture",
+        "args":{
+            "fileName":"scenario02_001_01.png",
+            "next":"section3_2"
+        }
+    },
+
+    "section3_2":{
         "command":"printMessage",
         "args":{
             "message":[
@@ -70,6 +86,14 @@
     },
 
     "section4_1":{
+        "command":"loadPicture",
+        "args":{
+            "fileName":"scenario02_001_01.png",
+            "next":"section4_2"
+        }
+    },
+
+    "section4_2":{
         "command":"printMessage",
         "args":{
             "message":[
@@ -85,20 +109,20 @@
                 ["M", [""]],
                 ["M", ["a", "me", "si", "d", "su", "to", "NO", " ", "YU", "HI", "D", "WA", "WO", " ", "TE", "NI", "I", "RE", "TA", "* !"], "pyxel.COLOR_RED"]
             ],
-            "next":"section4_2"
-        }
-    },
-
-    "section4_2":{
-        "command":"setFlg",
-        "args":{
-            "flgNo":3,
-            "value":1,
             "next":"section4_3"
         }
     },
 
     "section4_3":{
+        "command":"setFlg",
+        "args":{
+            "flgNo":3,
+            "value":1,
+            "next":"section4_4"
+        }
+    },
+
+    "section4_4":{
         "command":"setFlg",
         "args":{
             "flgNo":23,

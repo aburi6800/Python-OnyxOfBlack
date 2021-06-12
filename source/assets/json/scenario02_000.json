@@ -1,0 +1,25 @@
+{
+    "init":{
+        "command":"judgeFlg",
+        "args":{
+            "flgNo":20,
+            "on":"end",
+            "off":"section1_1"
+        }
+    },
+
+    "section1_1":{
+        "command":"printMessage",
+        "args":{
+            "message":[
+                ["M", ["TO", "D", "KO", "KA", "RA", "KA", " ", "TA", "SU", "KE", "WO", "MO", "TO", "ME", "RU", " ", "KO", "E", "KA", "D", "SU", "RU", "*...", "."]]
+            ],
+            "next":"end"
+        }
+    },
+
+    "end":{
+        "command":"end",
+        "args":{}
+    }
+}
