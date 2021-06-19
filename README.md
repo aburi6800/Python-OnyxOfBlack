@@ -26,7 +26,19 @@ You head for the ruins of the city, which are said to lead to the Black Tower.
 
 ## How to Install
 
-This chapter is a work in progress.  
+Since we are still developing, we will run the .py file directly.
+Please run the following command with python 3.7 or later installed.
+
+    git clone https://github.com/aburi6800/Python-OnyxOfBlack.git
+    cd Python-OnyxOfBlack
+    pip install -r requiments.txt
+    cd source
+    python onyxofblack.py
+
+AFrom the second time, the command will be as follows.
+
+    cd Python-OnyxOfBlack/source
+    python onyxofblack.py
 
 ## How to Play
 

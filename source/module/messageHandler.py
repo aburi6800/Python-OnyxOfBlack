@@ -5,6 +5,7 @@ from enum import IntEnum, auto
 
 import pyxel
 
+from module.input import Input
 from module.pyxelUtil import PyxelUtil
 
 
@@ -15,6 +16,7 @@ class statusEnum(IntEnum):
     SHOW_MESSAGE = auto()
     WAIT_KEY = auto()
     WAIT_CHOOSE = auto()
+    WAIT_PROMPT = auto()
 
 class messageHandler():
     '''
@@ -104,6 +106,14 @@ class choose(message):
         self.key = key
 
 
+class prompt(message):
+    '''
+    プロンプトクラス
+    '''
+    def __init__(self, message, color:int = pyxel.COLOR_WHITE):
+        super().__init__(message, color)
+
+
 class baseCommand(metaclass=ABCMeta):
     '''
     コマンド基底抽象クラス
@@ -170,29 +180,48 @@ class messageCommand(baseCommand):
         # 選択肢の辞書
         self.chooseDict = {}
 
-    def addMessage(self, _message, color:int = pyxel.COLOR_WHITE):
+        # 文字入力クラス
+        self.input = Input(21, 180, 64)
+
+    def addMessage(self, _message:message, color:int = pyxel.COLOR_WHITE):
         '''
         メッセージを登録する。\n
         messageCommandのインスタンス生成後に、表示したいメッセージと色を引数に呼び出す。\n
         enqueueする前に呼ぶこと。
         '''
-        _messageList = []
-
-        # 引数の型を調べて変換する
-        if type(_message) == str:
-            _messageList.append(_message)
-        else:
-            _messageList = list(_message)
-
-        m = message(_messageList, color)
+        m = message(self.convertMessage(_message), color)
         self.messageList.append(m)
 
-    def addChoose(self, _message, key:int = pyxel.KEY_NONE, callback = None) -> None:
+    def addChoose(self, _message:choose, key:int = pyxel.KEY_NONE, callback = None) -> None:
         '''
         選択肢を登録する。\n
         messageCommandのインスタンス生成後に、表示したい選択肢を設定するために呼び出す。\n
         引数にはメッセージの他、対応するキーとコールバック先のメソッドを指定する。\n
         enqueueする前に呼ぶこと。
+        '''
+        c = choose(self.convertMessage(_message), pyxel.COLOR_YELLOW)
+        self.messageList.append(c)
+
+        # 入力キーとコールバック先のメソッドを選択肢の辞書に追加
+        self.chooseDict[key] = callback
+
+    def addPrompt(self, _promptDict:dict) -> None:
+        '''
+        プロンプトを登録する。\n
+        messageCommandのインスタンス生成後に、プロンプトの表示と入力文字に対するコールバック先を設定するために呼び出す。\n
+        なお、メッセージは設定不要。\n
+        enqueueする前に呼ぶこと。
+        '''
+        p = prompt(self.convertMessage(""), pyxel.COLOR_BLACK)
+        self.messageList.append(p)
+
+        # 引数の辞書型から、入力文字とコールバック先のメソッドを辞書に追加
+        for _key, _value in _promptDict.items():
+            self.chooseDict[_key] = _value
+
+    def convertMessage(self, _message) -> list:
+        '''
+        文字列 or リストの形式で受け取ったメッセージをリストの形式に変換する。
         '''
         # メッセージリストの初期化
         _messageList = []
@@ -203,12 +232,7 @@ class messageCommand(baseCommand):
         else:
             _messageList = list(_message)
 
-        c = choose(_messageList, pyxel.COLOR_YELLOW)
-        # 親クラスが持つメッセージリストにメッセージとして登録
-        self.messageList.append(c)
-
-        # キーと値を選択肢の辞書に追加
-        self.chooseDict[key] = callback
+        return _messageList        
 
     def update(self) -> None:
         '''
@@ -275,15 +299,35 @@ class messageCommand(baseCommand):
                         else:
                             _value()
 
+        # 文字入力状態の場合
+        if self.status == statusEnum.WAIT_PROMPT:
+
+            # Inputクラスのupdateメソッドを呼ぶ
+            self.input.update()
+
+            # 文字入力が完了したか
+            if self.input.isEnter and self.input.value != "":
+                # 完了処理を行う
+                self.complete()
+                # コールバック関数実行
+                _callback = self.chooseDict.get(self.input.value, self.chooseDict.get("$else", None))
+                if _callback != None:
+                    if type(_callback) is tuple:
+                        _callback[0](_callback[1])
+                    else:
+                        _callback()
+                else:
+                    if __debug__:
+                        print("callback method not defined.")
+
     def draw(self):
         '''
         各フレームの描画処理。
         '''
         super().draw()
 
-        # メッセージ表示状態の場合は、idx～idx+4までを画面に表示し、キー入力待ち状態にする
+        # メッセージ表示状態の場合は、1文字ずつ表示する
         if self.status == statusEnum.SHOW_MESSAGE:
-
             # 現在表示中のメッセージリストのインデックスを取得
             _tempIdx = self.idx + self.messageRow
 
@@ -297,7 +341,7 @@ class messageCommand(baseCommand):
                     PyxelUtil.text(16, 140 + (_messageRow * 8), self.messageList[_tempIdx].message, self.messageList[_tempIdx].color)
 
         # キー入力待ち状態の時は、メッセージを表示する
-        if self.status == statusEnum.WAIT_KEY or self.status == statusEnum.WAIT_CHOOSE:
+        if self.status == statusEnum.WAIT_KEY or self.status == statusEnum.WAIT_CHOOSE or self.status == statusEnum.WAIT_PROMPT:
             for _messageRow in range(0, self.messageRow):
                 _tempIdx = self.idx + _messageRow
                 PyxelUtil.text(16, 140 + (_messageRow * 8), self.messageList[_tempIdx].message, self.messageList[_tempIdx].color)
@@ -305,6 +349,11 @@ class messageCommand(baseCommand):
         # キー入力待ち状態の時は、SPACEキー入力待ちメッセージを表示する
         if self.status == statusEnum.WAIT_KEY:
             PyxelUtil.text(180, 180, "*[HIT SPACE KEY]", pyxel.COLOR_YELLOW)
+
+        # 文字入力状態の時は、Inputクラスのdrawメソッドを呼ぶ
+        if self.status == statusEnum.WAIT_PROMPT:
+            PyxelUtil.text(16, 179, "*>", pyxel.COLOR_WHITE)
+            self.input.draw()
 
     def changeStatus(self):
         '''
@@ -326,5 +375,7 @@ class messageCommand(baseCommand):
                     # 選択肢が含まれている場合は選択肢の入力待ちとする
                     self.status = statusEnum.WAIT_CHOOSE
                     break
-
-    
+                elif isinstance(self.messageList[self.idx + _messageRow], prompt):
+                    # プロンプトが含まれている場合は文字入力クラスを初期化する
+                    self.status = statusEnum.WAIT_PROMPT
+                    break

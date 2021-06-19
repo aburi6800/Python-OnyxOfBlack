@@ -25,7 +25,19 @@ Pythonで作られたレトロスタイルのロールプレイングゲーム�
 
 ## インストール方法
 
-この章は書きかけです。
+現在開発中につき、.pyファイルを直接実行します。
+python 3.7以降がインストールされた状態で、以下のコマンドを実行してください。
+
+    git clone https://github.com/aburi6800/Python-OnyxOfBlack.git
+    cd Python-OnyxOfBlack
+    pip install -r requiments.txt
+    cd source
+    python onyxofblack.py
+
+2回目以降は、以下のコマンドになります。
+
+    cd Python-OnyxOfBlack/source
+    python onyxofblack.py
 
 ## プレイ方法
 

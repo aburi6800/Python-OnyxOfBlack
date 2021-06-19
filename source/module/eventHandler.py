@@ -159,9 +159,10 @@ class eventHandler():
         '''
         メッセージ表示コマンド\n
         引数は以下の要素を設定した辞書型とする。\n
-        ・"message"：リスト形式で、１要素目にメッセージ種別、２要素目に選択キー、メッセージ、選択肢を指定する。複数指定可能。\n
-        　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　種別"M"の場合：メッセージ（文字列 or リスト）を指定する。\n
-        　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　種別"C"の場合：メッセージ（文字列 or リスト）と選択キー、イベント定義jsonファイルの遷移先セクション名を指定する。\n
+        ・"message"：メッセージを指定する。\n
+        通常のメッセージの場合；１要素目にメッセージ種別"M"、２要素目にメッセージ、３要素目（省略可）に表示色を指定する。\n
+        選択メッセージの場合　；１要素目にメッセージ種別"C"、２要素目にメッセージ、３要素目に入力キー、４要素目に遷移先セクション名を指定する。\n
+        入力メッセージの場合　；１要素目にメッセージ種別"P"、２要素目に入力値と遷移先セクション名を辞書型で指定する。（"$else"はいずれの入力値でもない場合の予約キーワード）\n
         ・"next"：イベント定義jsonファイルの次のセクション名。選択肢があるメッセージの場合は設定不要。
         '''
         if __debug__:
@@ -175,27 +176,46 @@ class eventHandler():
             # 種別
             _type = m[0]
 
-            # メッセージ内容
-            _message = m[1]
-
-            # メッセージ色、指定がない場合（=リストの長さ<2）の場合は白を指定する。
-            if len(m) < 3:
-                _color = pyxel.COLOR_WHITE
-            else:
-                _color = eval(m[2])
-
             # 通常のメッセージ
             if _type == "M":
+                # メッセージ内容
+                _message = m[1]
+                # メッセージ色、指定がない場合（=リストの長さ<2）の場合は白を指定する。
+                if len(m) < 3:
+                    _color = pyxel.COLOR_WHITE
+                else:
+                    _color = eval(m[2])
+
+                # メッセージ表示コマンドクラスに登録
                 cmd.addMessage(_message, _color)
 
             # 選択メッセージ
             if _type == "C":
+                # メッセージ内容
+                _message = m[1]
                 # 選択キー
                 _chooseKey = eval(m[2])
                 # 遷移先のセクション名からコールバックを生成する
                 _next = (self.setNextSection, m[3])
 
+                # メッセージ表示コマンドクラスに登録
                 cmd.addChoose(_message, _chooseKey, _next)
+
+            # 入力メッセージ
+            if _type == "P":
+                # 引数の値を明示的に辞書型に変換
+                _argsDict = dict(m[1])
+                # プロンプト設定用の辞書（入力値に対するコールバック）
+                _promptDict = {}
+                # 辞書型の全ての要素について処理
+                for _key, _value in _argsDict.items():
+                    # 遷移先のセクション名からコールバックを生成する
+                    _next = (self.setNextSection, _value)
+                    # プロンプト設定用の辞書に登録
+                    _promptDict[_key] = _next
+
+                # メッセージ表示コマンドクラスに登録
+                cmd.addPrompt(_promptDict)
 
         # メッセージキューに登録
         # このあと、messagequeueに制御が移る
