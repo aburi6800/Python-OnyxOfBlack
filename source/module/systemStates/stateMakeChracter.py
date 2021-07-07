@@ -102,6 +102,8 @@ class StateMakeCharacter(BaseSystemState):
 
             # 人間キャラクタ作成
             self.makeInitialHuman()
+            self.character.maxlife = self.character.maxlife + 5
+            self.character.life = self.character.maxlife
             self.character.gold = self.character.gold + 100
             self.character.name = self.nameInput.value
 

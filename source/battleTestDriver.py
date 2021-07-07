@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
+from types import MethodWrapperType
 
 import pyxel
 
@@ -43,6 +44,8 @@ class App:
 
         for idx in range(5):
             member = HumanGenerator.generate(level)
+            member.maxlife = member.maxlife + 5
+            member.life = member.maxlife
             member.isPlayer = True
             # 装備の指定
             member.weapon = weaponParams[int(
