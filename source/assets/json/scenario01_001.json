@@ -18,8 +18,8 @@
                 ["M", [""]],
                 ["M", [""]],
                 ["M", ["YO", "NN", "TE", "D", " ", "MI", "RU", "KA", "* ?"]],
-                ["C", ["*[Y] ", "YO", "NN", "TE", "D", " ", "MI", "RU"], "pyxel.KEY_Y", "section2_2"],
-                ["C", ["*[N] ", "YO", "MA", "SU", "D", "NI", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_N", "end"]
+                ["C", ["* [Y] ", "YO", "NN", "TE", "D", " ", "MI", "RU"], "pyxel.KEY_Y", "section2_2"],
+                ["C", ["* [N] ", "YO", "MA", "SU", "D", "NI", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_N", "end"]
             ]
         }
     },

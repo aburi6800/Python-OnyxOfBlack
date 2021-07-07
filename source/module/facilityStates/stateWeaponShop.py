@@ -128,5 +128,5 @@ class StateWeaponShop(BaseShopState):
         '''
         PyxelUtil.text(16, 140, ["KO", "NO", "HU", "D", "KI", "HA", " ", "RI", "LYO", "U", "TE", "MO", "TI", "TA", "D", "."], pyxel.COLOR_WHITE)
         PyxelUtil.text(16, 148, ["TA", "TE", "WO", " ", "MO", "TE", "NA", "KU", "NA", "RU", "KA", "D", " ", "I", "I", "KA", "NE", "* ?"], pyxel.COLOR_WHITE)
-        PyxelUtil.text(56, 164, ["*[Y]     ", "HA", "I"], pyxel.COLOR_YELLOW)
-        PyxelUtil.text(56, 172, ["*[N]     ", "I", "I", "E"], pyxel.COLOR_YELLOW)
+        PyxelUtil.text(56, 164, ["* [Y] ", "HA", "I"], pyxel.COLOR_YELLOW)
+        PyxelUtil.text(56, 172, ["* [N] ", "I", "I", "E"], pyxel.COLOR_YELLOW)

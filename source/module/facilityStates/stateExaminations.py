@@ -137,7 +137,7 @@ class StateExaminations(BaseFacilityState):
         '''
         PyxelUtil.text(16, 140, ["TA", "D", "RE", "WO", " ", "MI", "TE", " ", "A",
                                  "KE", "D", "MA", "SI", "LYO", "U", "KA", "* ?"], pyxel.COLOR_WHITE)
-        PyxelUtil.text(16, 164, ["*[L] ", "TA", "TI",
+        PyxelUtil.text(16, 164, ["* [L] ", "TA", "TI",
                                  "SA", "RU"], pyxel.COLOR_YELLOW)
 
     def draw_done(self):

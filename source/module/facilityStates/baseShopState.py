@@ -234,9 +234,9 @@ class BaseShopState(BaseFacilityState, EnforceOverrides):
         PyxelUtil.text(16, 140, _message, pyxel.COLOR_WHITE)
         PyxelUtil.text(16, 148, ["TO", "D", "NA", "TA", "KA", "D", " ", "O", "KA",
                                  "I", "NI", "NA", "RI", "MA", "SU", "KA", "*?"], pyxel.COLOR_WHITE)
-        PyxelUtil.text(56, 164, ["*[SPACE] ", "TU", "KI",
+        PyxelUtil.text(16, 164, ["* [SPACE] ", "TU", "KI",
                                  "D", "NO", "a", "i", "te", "mu"], pyxel.COLOR_YELLOW)
-        PyxelUtil.text(56, 172, ["*[L]     ", "MI", "SE",
+        PyxelUtil.text(16, 172, ["* [L]     ", "MI", "SE",
                                  "WO", "TE", "D", "RU"], pyxel.COLOR_YELLOW)
 
     def draw_equip(self):
@@ -245,9 +245,9 @@ class BaseShopState(BaseFacilityState, EnforceOverrides):
         '''
         PyxelUtil.text(16, 140, ["TO", "D", "NA", "TA", "KA", "D", " ", "O", "TU", "KA",
                                  "I", "NI", "NA", "RI", "MA", "SU", "KA", "*?"], pyxel.COLOR_WHITE)
-        PyxelUtil.text(56, 164, ["*[SPACE] ", "TU", "KI",
+        PyxelUtil.text(16, 164, ["* [SPACE] ", "TU", "KI",
                                  "D", "NO", "a", "i", "te", "mu"], pyxel.COLOR_YELLOW)
-        PyxelUtil.text(56, 172, ["*[L]     ", "MI", "SE",
+        PyxelUtil.text(16, 172, ["* [L]     ", "MI", "SE",
                                  "WO", "TE", "D", "RU"], pyxel.COLOR_YELLOW)
 
     def draw_leave(self):

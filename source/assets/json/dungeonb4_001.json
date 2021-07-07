@@ -13,8 +13,8 @@
             "message":[
                 ["M", ["U", "E", "NI", " ", "A", "KA", "D", "RU", " ", "KA", "I", "TA", "D", "NN", " ", "KA", "D", " ", "A", "RU", "."]],
                 ["M", ["TO", "D", "U", "SU", "RU", "* ?"]],
-                ["C", ["*[U] ","U", "E", " ", "NI", " ", "NO", "HO", "D", "RU"], "pyxel.KEY_U", "section2_1"],
-                ["C", ["*[L] ","KO", "NO", "HA", "D", "WO", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_L", "end"]
+                ["C", ["* [U] ","U", "E", " ", "NI", " ", "NO", "HO", "D", "RU"], "pyxel.KEY_U", "section2_1"],
+                ["C", ["* [L] ","KO", "NO", "HA", "D", "WO", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_L", "end"]
             ]
         }
     },

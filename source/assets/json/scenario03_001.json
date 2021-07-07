@@ -27,8 +27,8 @@
                 ["M", [""]],
                 ["M", [""]],
                 ["M", ["TO", "D", "U", "SU", "RU", "* ?"]],
-                ["C", ["*[A] ", "HA", "I", "KO", "D", "KA", "RA", " ", "O", "SO", "U"], "pyxel.KEY_A", "section3_1"],
-                ["C", ["*[L] ", "KO", "NO", "HA", "D", "WO", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_L", "section4_1"]
+                ["C", ["* [A] ", "HA", "I", "KO", "D", "KA", "RA", " ", "O", "SO", "U"], "pyxel.KEY_A", "section3_1"],
+                ["C", ["* [L] ", "KO", "NO", "HA", "D", "WO", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_L", "section4_1"]
             ]
         }
     },
@@ -60,8 +60,8 @@
                 ["M", ["TI", "NI", "MA", "MI", "RE", "TA", " ", "NI", "LTU", "KI", "WO", " ", "MI", "TU", "KE", "TA", "."]],
                 ["M", [""]],
                 ["M", ["YO", "NN", "TE", "D", "MI", "RU", "KA", "* ?"]],
-                ["C", ["*[Y] ", "YO", "MU"], "pyxel.KEY_Y", "section3_4"],
-                ["C", ["*[N] ", "YO", "MA", "SU", "D", "NI", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_N", "section4_1"]
+                ["C", ["* [Y] ", "YO", "MU"], "pyxel.KEY_Y", "section3_4"],
+                ["C", ["* [N] ", "YO", "MA", "SU", "D", "NI", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_N", "section4_1"]
             ]
         }
     },

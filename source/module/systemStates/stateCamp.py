@@ -236,13 +236,13 @@ class StateCamp(BaseFacilityState):
         メニューの描画処理
         '''
         PyxelUtil.text(97, 140, ["*** CAMP MENU **"], pyxel.COLOR_LIGHTBLUE)
-        PyxelUtil.text(16, 148, ["*[D] ", "KU", "SU", "RI",
+        PyxelUtil.text(16, 148, ["* [D] ", "KU", "SU", "RI",
                                  "WO", " ", "NO", "MU"], pyxel.COLOR_YELLOW)
-        PyxelUtil.text(16, 156, ["*[S] ", "se", "-",
+        PyxelUtil.text(16, 156, ["* [S] ", "se", "-",
                                  "hu", "d"], pyxel.COLOR_YELLOW)
-        PyxelUtil.text(16, 164, ["*[Q] ", "ke", "d", "-", "mu", "WO",
+        PyxelUtil.text(16, 164, ["* [Q] ", "ke", "d", "-", "mu", "WO",
                                  " ", "TI", "LYU", "U", "TA", "D", "NN"], pyxel.COLOR_YELLOW)
-        PyxelUtil.text(16, 172, ["*[SPACE] ", "ki", "lya", "nn", "hu",
+        PyxelUtil.text(16, 172, ["* [SPACE] ", "ki", "lya", "nn", "hu",
                                  "hd", "WO", " ", "O", "WA", "RU"], pyxel.COLOR_YELLOW)
 
     def draw_potion_selecthave(self):
@@ -250,7 +250,7 @@ class StateCamp(BaseFacilityState):
         薬の所持者選択の描画処理
         '''
         PyxelUtil.text(16, 140, ["TA", "D", "RE", "NO", " ", "KU", "SU", "RI", "WO", " ", "TU", "KA", "I", "MA", "SU", "KA", "*?"], pyxel.COLOR_WHITE)
-        PyxelUtil.text(16, 148, ["*[SPACE] ", "me", "ni", "lyu", "-", "HE", " ", "MO", "TO", "D", "RU"], pyxel.COLOR_YELLOW)
+        PyxelUtil.text(16, 156, ["* [SPACE] ", "me", "ni", "lyu", "-", "HE", " ", "MO", "TO", "D", "RU"], pyxel.COLOR_YELLOW)
 
     def draw_potion_selecthaveerror(self):
         '''
@@ -264,7 +264,7 @@ class StateCamp(BaseFacilityState):
         薬の使用者選択の描画処理
         '''
         PyxelUtil.text(16, 140, ["TA", "D", "RE", "KA", "D", " ", "NO", "MI", "MA", "SU", "KA", "*?"], pyxel.COLOR_WHITE)
-        PyxelUtil.text(16, 148, ["*[SPACE] ", "me", "ni", "lyu", "-", "HE", " ", "MO", "TO", "D", "RU"], pyxel.COLOR_YELLOW)
+        PyxelUtil.text(16, 156, ["*[SPACE] ", "me", "ni", "lyu", "-", "HE", " ", "MO", "TO", "D", "RU"], pyxel.COLOR_YELLOW)
 
     def draw_potion_selectuseerror(self):
         '''
@@ -285,7 +285,8 @@ class StateCamp(BaseFacilityState):
         セーブの確認の描画処理
         '''
         PyxelUtil.text(16, 140, ["se", "-", "hu", "d", " ", "SI", "MA", "SU", "KA", "*?"], pyxel.COLOR_WHITE)
-        PyxelUtil.text(16, 148, ["*[Y] / [N]"], pyxel.COLOR_YELLOW)
+        PyxelUtil.text(16, 156, ["* [Y] ", "se", "-", "hu", "d", "SU", "RU"], pyxel.COLOR_YELLOW)
+        PyxelUtil.text(16, 164, ["* [N] ", "YA", "ME", "RU"], pyxel.COLOR_YELLOW)
 
     def draw_save_done(self):
         '''
@@ -299,7 +300,8 @@ class StateCamp(BaseFacilityState):
         終了の確認の描画処理
         '''
         PyxelUtil.text(16, 140, ["ke", "d", "-", "mu", "WO", " ", "SI", "LYU", "U", "RI", "LYO", "U", " ", "SI", "MA", "SU", "KA", "*?"], pyxel.COLOR_WHITE)
-        PyxelUtil.text(16, 148, ["*[Y] / [N]"], pyxel.COLOR_YELLOW)
+        PyxelUtil.text(16, 156, ["* [Y] ", "TI", "LYU", "U", "TA", "D", "NN", "SU", "RU"], pyxel.COLOR_YELLOW)
+        PyxelUtil.text(16, 164, ["* [N] ", "TA", "NN", "SA", "KU", "NI", " ", "MO", "TO", "D", "RU"], pyxel.COLOR_YELLOW)
 
     @overrides
     def onEnter(self):

@@ -78,7 +78,7 @@ class StateBarbar(BaseShopState):
                                  "ka", "mi", "ka", "d", "ta", " ", "WO", " ", "KA", "E", "MA", "SU", "KA", "*?"], pyxel.COLOR_WHITE)
         PyxelUtil.text(16, 148, ["TA", "D", "I", "KI", "NN", " ", "HA", " ",
                                  "*" + str(self.itemList[0].price) + "G.P. ", "TE", "D", "SU", "."], pyxel.COLOR_WHITE)
-        PyxelUtil.text(56, 172, ["*[L] ", "MI", "SE",
+        PyxelUtil.text(16, 172, ["* [L] ", "MI", "SE",
                                  "WO", "TE", "D", "RU"], pyxel.COLOR_YELLOW)
 
     @overrides

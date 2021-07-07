@@ -704,11 +704,11 @@ class StateBattle(BaseState):
         '''
         PyxelUtil.text(16, 140, ["TO", "D", "U", "SI",
                                  "MA", "SU", "KA", "* ?"], pyxel.COLOR_WHITE)
-        PyxelUtil.text(16, 156, ["*     [A] ", "TA", "TA",
+        PyxelUtil.text(16, 156, ["* [A] ", "TA", "TA",
                                  "KA", "U"], pyxel.COLOR_YELLOW)
-        PyxelUtil.text(16, 164, ["*     [R] ", "NI", "KE",
+        PyxelUtil.text(16, 164, ["* [R] ", "NI", "KE",
                                  "D", "RU"], pyxel.COLOR_YELLOW)
-        PyxelUtil.text(16, 172, ["*     [T] ", "HA", "NA",
+        PyxelUtil.text(16, 172, ["* [T] ", "HA", "NA",
                                  "SU"], pyxel.COLOR_YELLOW)
 
     def draw_enemy_escape_judge(self):
@@ -731,9 +731,9 @@ class StateBattle(BaseState):
         PyxelUtil.text(16, 140, ["TO", "D", "RE", "WO", " ", "KO", "U", "KE", "D", "KI", " ", "SI", "MA",
                                  "SU", "KA", ",", "*" + playerParty.memberList[self.member_index].name, "* ?"], pyxel.COLOR_WHITE)
         for _idx in range(5 if len(enemyParty.memberList) > 5 else len(enemyParty.memberList)):
-            PyxelUtil.text(24, 148 + _idx * 8,
+            PyxelUtil.text(20, 148 + _idx * 8,
                            "*[{:1}]".format(_idx + 1), pyxel.COLOR_YELLOW)
-            PyxelUtil.text(40, 148 + _idx * 8, "*" +
+            PyxelUtil.text(36, 148 + _idx * 8, "*" +
                            enemyParty.memberList[_idx].name, pyxel.COLOR_LIGHTBLUE)
 
     def draw_start_battle(self):
@@ -818,11 +818,11 @@ class StateBattle(BaseState):
         '''
         PyxelUtil.text(16, 140, ["NA", "NI", "WO", " ", "HA", "NA",
                                  "SI", "KA", "KE", "MA", "SU", "KA", "* ?"], pyxel.COLOR_WHITE)
-        PyxelUtil.text(16, 156, ["*     [J] JOIN US."], pyxel.COLOR_YELLOW)
+        PyxelUtil.text(16, 156, ["* [J] ", "NA", "KA", "MA", "NI", "SA", "SO", "U"], pyxel.COLOR_YELLOW)
         PyxelUtil.text(
-            16, 164, ["*     [G] GOOD LUCK & GOOD BY."], pyxel.COLOR_YELLOW)
+            16, 164, ["* [G] ", "WA", "KA", "RE", "WO", "TU", "KE", "D", "RU"], pyxel.COLOR_YELLOW)
         PyxelUtil.text(
-            16, 172, ["*     [Y] YOUR MONEY OR YOUR LIFE."], pyxel.COLOR_YELLOW)
+            16, 172, ["* [Y] ", "O", "SO", "I", "KA", "KA", "RU"], pyxel.COLOR_YELLOW)
 
     def draw_talk(self):
         '''
@@ -859,7 +859,7 @@ class StateBattle(BaseState):
             PyxelUtil.text(16, 140, ["SU", "HA", "D", "RA", "SI", "I",
                                     "* " + enemyParty.item.name + " ", "WO", " ", "MI", "TU", "KE", "TA", "* !"], pyxel.COLOR_WHITE)
         PyxelUtil.text(16, 148, ["TA", "D", "RE", "KA", "D", " ", "TU", "KA", "I", "MA", "SU", "KA", "* ?"], pyxel.COLOR_WHITE)
-        PyxelUtil.text(16, 172, ["*     [L] ", "TU", "KA",
+        PyxelUtil.text(16, 172, ["* [L] ", "TU", "KA",
                                  "WA", "NA", "I"], pyxel.COLOR_YELLOW)
 
     def draw_choose_error(self):

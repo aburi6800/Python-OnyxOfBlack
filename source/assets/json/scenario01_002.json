@@ -101,9 +101,9 @@
                 ["M", [""]],
                 ["M", [""]],
                 ["M", ["TO", "D", "U", "SU", "RU", "* ?"]],
-                ["C", ["*[T] ", "HA", "NA", "SI", "WO", " ", "KI", "KU"], "pyxel.KEY_T", "section4_2"],
-                ["C", ["*[A] ", "TA", "TA", "KA", "U"], "pyxel.KEY_A", "section5_2"],
-                ["C", ["*[L] ", "KO", "NO", "HA", "D", "WO", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_L", "end"]
+                ["C", ["* [T] ", "HA", "NA", "SI", "WO", " ", "KI", "KU"], "pyxel.KEY_T", "section4_2"],
+                ["C", ["* [A] ", "TA", "TA", "KA", "U"], "pyxel.KEY_A", "section5_2"],
+                ["C", ["* [L] ", "KO", "NO", "HA", "D", "WO", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_L", "end"]
             ]
         }
     },
@@ -141,8 +141,8 @@
                 ["M", ["NA", "NI", "KA", "WO", "I", "LTU", "TE", "I", "RU", "KA", "D", " ", "KO", "TO", "HA", "D", "KA", "D", " ", "WA", "KA", "RA", "NA", "I", "."]],
                 ["M", [""]],
                 ["M", ["TO", "D", "U", "SU", "RU", "* ?"]],
-                ["C", ["*[A] ", "TA", "TA", "KA", "U"], "pyxel.KEY_A", "section5_2"],
-                ["C", ["*[L] ", "KO", "NO", "HA", "D", "WO", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_L", "end"]
+                ["C", ["* [A] ", "TA", "TA", "KA", "U"], "pyxel.KEY_A", "section5_2"],
+                ["C", ["* [L] ", "KO", "NO", "HA", "D", "WO", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_L", "end"]
             ]
         }
     },
