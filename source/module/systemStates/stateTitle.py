@@ -2,7 +2,7 @@
 import os
 import pickle
 import random
- 
+
 import pyxel
 from module.character import playerParty
 from module.constant.state import State
@@ -11,6 +11,7 @@ from module.messageHandler import messagehandler
 from module.params.eventData import eventdata
 from module.pyxelUtil import PyxelUtil
 from module.systemStates.baseSystemState import BaseSystemState
+from module.musicPlayer import musicPlayer
 from overrides import overrides
 
 
@@ -135,11 +136,18 @@ class StateTitle(BaseSystemState):
             for _y in range(self.TITLE_BUFF_OFFSET_Y, self.TITLE_H):
                 pyxel.image(0).set(_x, _y, 0)
 
+        # 音楽ロード
+        musicPlayer.load("20.mp3")  # 音楽ファイルロード
+
     @overrides
     def update_execute(self):
         '''
         各フレームの個別処理
         '''
+        # 音楽を再生
+        if self.state != self.STATE_RESPECT:
+            musicPlayer.play(loop=False)
+
         if self.state == self.STATE_RESPECT:
             self.update_respect()
         elif self.state == self.STATE_STORY:
@@ -166,7 +174,7 @@ class StateTitle(BaseSystemState):
         '''
         if self.tick - 1 == len(self.TEXTCOLOR):
             self.state = self.STATE_STORY
-            pyxel.playm(1)
+#            pyxel.playm(1)
 
     def update_stoty(self):
         '''
