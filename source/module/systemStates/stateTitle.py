@@ -137,7 +137,7 @@ class StateTitle(BaseSystemState):
                 pyxel.image(0).set(_x, _y, 0)
 
         # 音楽ロード
-        musicPlayer.load("20.mp3")  # 音楽ファイルロード
+        musicPlayer.load("title.ogg")  # 音楽ファイルロード
 
     @overrides
     def update_execute(self):
@@ -174,7 +174,6 @@ class StateTitle(BaseSystemState):
         '''
         if self.tick - 1 == len(self.TEXTCOLOR):
             self.state = self.STATE_STORY
-#            pyxel.playm(1)
 
     def update_stoty(self):
         '''
@@ -305,19 +304,19 @@ class StateTitle(BaseSystemState):
         '''
         if self.selected == 0:
             if pyxel.btnp(pyxel.KEY_N):
-                pyxel.stop()
+                musicPlayer.stop()
                 pyxel.play(3, 0, loop=False)
                 self.selected = 1
                 self.tick = 0
 
             if pyxel.btnp(pyxel.KEY_C) and self.doContinue:
-                pyxel.stop()
+                musicPlayer.stop()
                 pyxel.play(3, 0, loop=False)
                 self.selected = 2
                 self.tick = 0
 
             if pyxel.btnp(pyxel.KEY_Q):
-                pyxel.stop()
+                musicPlayer.stop()
                 pyxel.play(3, 0, loop=False)
                 self.selected = 3
                 self.tick = 0
