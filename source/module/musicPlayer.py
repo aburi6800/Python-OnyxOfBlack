@@ -54,7 +54,7 @@ class MusicPlayer():
                     
                 elif self.playStatus == self.PLAY_PLAYING: # 再生中の場合
                     pygame.mixer.music.stop()
-                    self.playStatus = self.PLAY_STOP
+                    self.playStatus = self.PLAY_END
                     print("play stop.")
 
     def stop(self):
