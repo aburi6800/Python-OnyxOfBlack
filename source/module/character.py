@@ -98,6 +98,7 @@ class Human(Character):
 
         # パラメータ増加
         self.level += 1
+        addLife += 3
         self.maxlife += addLife
         self.life += addLife
         self.strength += addStrength
