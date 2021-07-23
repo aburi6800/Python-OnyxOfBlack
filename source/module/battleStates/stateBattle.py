@@ -340,7 +340,7 @@ class StateBattle(BaseState):
                     if _target.armor != None:
                         _defend = _defend + \
                             random.randint(_target.armor.armor //
-                                           2, _target.armor.armor)
+                                           4, _target.armor.armor)
                     # 盾
                     if _target.shield != None:
                         _defend = _defend + \
@@ -355,7 +355,10 @@ class StateBattle(BaseState):
                 # ダメージ計算
                 if _attacker_d == 12:
                     self.addMessage(["**** GOOD SHOT ***"], pyxel.COLOR_YELLOW)
-                    _damage = _attack
+#                    _damage = _attack // 2
+                    _damage = _attack - (_defend // 2)
+                    if _damage < 1:
+                        _damage = 1
                 else:
                     self.addMessage([""])
                     _damage = _attack - _defend
