@@ -131,10 +131,11 @@ class StateTitle(BaseSystemState):
         # ストーリー表示用カウンタ
         self.story_count = 0
 
-        # タイトルフェードイン用のバッファを初期化
-        for _x in range(self.TITLE_BUFF_OFFSET_X, self.TITLE_W):
-            for _y in range(self.TITLE_BUFF_OFFSET_Y, self.TITLE_H):
-                pyxel.image(0).set(_x, _y, 0)
+        # イメージバンク0のタイトルフェードイン用のバッファ領域を初期化
+        for _x in range(0, self.TITLE_W):
+            for _y in range(0, self.TITLE_H):
+                pyxel.image(0).set(self.TITLE_BUFF_OFFSET_X + _x, self.TITLE_BUFF_OFFSET_Y + _y, ["0"])
+
 
         # 音楽ロード
         musicPlayer.load("title.ogg")  # 音楽ファイルロード
