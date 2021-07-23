@@ -34,6 +34,7 @@ class Character(object):
         self.x = 0
         self.y = 0
         self.hasItem = False
+        self.isDamaged = False
 
     def setDisplayPosition(self, _count: int, _idx: int) -> None:
         '''

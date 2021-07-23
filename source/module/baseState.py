@@ -166,6 +166,14 @@ class BaseState(EnforceOverrides):
                 pyxel.blt(_x + 8, _y + 8, 1, _shield_x,
                           _shield_y, _shield_w, _shield_h, 0)
 
+            # ダメージを受けていたら赤い矩形を表示する
+            if _chr.isDamaged and self.tick // 2 == 0:
+                pyxel.rect(_x + 4, _y, _chr.blt_w + 4, _chr.blt_h, pyxel.COLOR_RED)
+
         elif isinstance(_chr, Monster):
             pyxel.blt(_x, _y, 2, _chr.blt_x, _chr.blt_y,
                       _chr.blt_w, _chr.blt_h, 0)
+
+            # ダメージを受けていたら赤い矩形を表示する
+            if _chr.isDamaged and self.tick // 2 == 0:
+                pyxel.rect(_x, _y, _chr.blt_w, _chr.blt_h, pyxel.COLOR_RED)

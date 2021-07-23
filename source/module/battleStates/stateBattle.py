@@ -277,6 +277,7 @@ class StateBattle(BaseState):
         '''
         if self.tick > 30:
             self.tick = 0
+
             # 次の行動順リストへ
             self.turn_index += 1
 
@@ -366,8 +367,11 @@ class StateBattle(BaseState):
                     self.addMessage([""])
                     self.addMessage(["*" + _attacker.name + " ", "WO", " ", "U",
                                      "KE", "TO", "ME", "TA", "."], self.getMessageColor(_attacker))
+                    pyxel.play(0, 5)
                 else:
                     _target.life = _target.life - _damage
+                    _target.isDamaged = True
+                    pyxel.play(0, 6)
 
                     # レイスの場合、一定確率でエナジードレイン攻撃をする
                     if _attacker.isPlayer == False and _attacker.name[0:6] == "WRAITH":
@@ -409,7 +413,11 @@ class StateBattle(BaseState):
                         self.addMessage([""])
                         self.addMessage(["*" + str(_damage) + " ", "NO", " ", "ta", "d", "me", "-", "si",
                                          "d", "WO", " ", "A", "TA", "E", "TA", "* !"], self.getMessageColor(_attacker))
-                            
+
+        if self.tick > 8:
+            # ダメージ受けたフラグ初期化
+            for v in self.turn_table:
+                v.isDamaged = False
 
     def update_win_getexp(self):
         '''
