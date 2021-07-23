@@ -14,8 +14,8 @@
                 ["M", ["KA", "RE", "TA", " ", "I", "TO", "D", "KA", "D", "A", "RU", "."]],
                 ["M", ["SI", "TA", "NI", " ", "O", "RI", "RA", "RE", "SO", "U", "TA", "D", "."]],
                 ["M", ["TO", "D", "U", "SU", "RU", "* ?"]],
-                ["C", ["* [D]", "O", "RI", "TE", "MI", "RU"], "pyxel.KEY_D", "section2_1"],
-                ["C", ["* [L]", "KO", "NO", "HA", "D", "WO", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_L", "end"]
+                ["C", ["* [D] ", "O", "RI", "TE", "MI", "RU"], "pyxel.KEY_D", "section2_1"],
+                ["C", ["* [L] ", "KO", "NO", "HA", "D", "WO", " ", "TA", "TI", "SA", "RU"], "pyxel.KEY_L", "end"]
             ]
         }
     },
